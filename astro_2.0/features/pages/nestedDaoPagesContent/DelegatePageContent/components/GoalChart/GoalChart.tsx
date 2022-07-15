@@ -29,17 +29,20 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
     const sortedData = [
       {
         label: 'Threshold',
-        info: 'some info on tooltip',
+        info: `Threshold - Minimum votes to pass or reject a proposal. If Threshold is
+        less than Quorum then more votes will be required even after the
+        Threshold is met.`,
         value: threshold,
       },
       {
         label: 'Total Delegated',
-        info: 'some info on tooltip',
+        info: 'Total delegated tokens',
         value: totalDelegated,
       },
       {
         label: 'Quorum',
-        info: 'some info on tooltip',
+        info: `Quorum - Minimum tokens required to participate in the vote, regardless
+        of if they vote for or against a proposal.`,
         value: quorum,
       },
     ].sort((a, b) => {
