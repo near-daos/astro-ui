@@ -7,7 +7,6 @@ import { useWalletContext } from 'context/WalletContext';
 import { ProposalType, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
 import { Token } from 'types/token';
-import { Hashtag } from 'types/draftProposal';
 import { getNewProposalObject } from 'astro_2.0/features/CreateProposal/helpers/newProposalObject';
 import { keysToCamelCase } from 'utils/keysToCamelCase';
 import { DRAFT_PAGE_URL } from 'constants/routing';
@@ -59,9 +58,7 @@ export const useSubmitDraft = ({
             daoId: dao.id,
             title: data.title as string,
             description: data.description as string,
-            hashtags: (data.hashtags as Hashtag[]).map(
-              hashtag => hashtag.value
-            ),
+            hashtags: [],
             type: proposalType,
             kind: {
               type: proposalType,

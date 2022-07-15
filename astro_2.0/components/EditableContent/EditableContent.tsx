@@ -5,11 +5,8 @@ import { FieldError } from 'react-hook-form';
 import 'react-quill/dist/quill.snow.css';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
-import { Hashtag } from 'types/draftProposal';
 import { useImageUpload } from 'astro_2.0/features/CreateDao/components/hooks';
 import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
-
-import { EditHashtags } from './EditHashtags';
 
 import styles from './EditableContent.module.scss';
 
@@ -52,7 +49,6 @@ const formats = ['list', 'bold', 'italic', 'image', 'code-block'];
 
 type EditableContentErrors = {
   title?: FieldError;
-  hashtags?: FieldError;
   description?: FieldError;
 };
 
@@ -64,8 +60,6 @@ type EditableContentProps = {
   setHTML: (html: string) => void;
   title?: string;
   setTitle?: (value: string) => void;
-  hashtags?: Hashtag[];
-  setHashtags?: (hashtags: Hashtag[]) => void;
   handleSend?: (html: string) => void;
   handleCancel?: () => void;
   className?: string;
@@ -81,8 +75,6 @@ export const EditableContent: FC<EditableContentProps> = ({
   handleCancel,
   title,
   setTitle,
-  hashtags,
-  setHashtags,
   titlePlaceholder,
   className,
   errors,
@@ -158,13 +150,6 @@ export const EditableContent: FC<EditableContentProps> = ({
             placeholder={titlePlaceholder}
           />
         </div>
-      ) : null}
-      {setHashtags && hashtags ? (
-        <EditHashtags
-          hashtags={hashtags}
-          setHashtags={setHashtags}
-          error={errors?.hashtags?.message}
-        />
       ) : null}
       <ReactQuill
         ref={quillRef}

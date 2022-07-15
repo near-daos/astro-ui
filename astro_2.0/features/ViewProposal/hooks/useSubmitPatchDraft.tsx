@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 import { useWalletContext } from 'context/WalletContext';
-import { DraftProposal, Hashtag } from 'types/draftProposal';
+import { DraftProposal } from 'types/draftProposal';
 import { DRAFT_PAGE_URL } from 'constants/routing';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { useCallback } from 'react';
@@ -32,9 +32,7 @@ export const useSubmitPatchDraft = ({
             id: draftId,
             title: data.title as string,
             description: data.description as string,
-            hashtags: (data.hashtags as Hashtag[]).map(
-              hashtag => hashtag.value
-            ),
+            hashtags: [],
             daoId,
             kind: proposal?.kind,
             type: proposal?.kind.type || ProposalType.AddBounty,
