@@ -10,7 +10,6 @@ import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 import { TokenCard } from 'components/cards/TokenCard';
 import { Button } from 'components/button/Button';
 import { Input } from 'components/inputs/Input';
-import { Icon } from 'components/Icon';
 
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { sorter } from 'features/treasury/helpers';
@@ -116,7 +115,21 @@ export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
 
   return (
     <div className={styles.root}>
-      <h2>Choose existing token for using in voting</h2>
+      <h2>Contract address of your NEP-141 Fungible Token</h2>
+
+      <p className={styles.subheader}>
+        The address of your FT contract can be found by clicking on its name
+        at&nbsp;
+        <a
+          href="https://tkn.farm/"
+          rel="noreferrer"
+          target="_blank"
+          className={styles.link}
+        >
+          tkn.farm
+        </a>{' '}
+        or in your wallet.
+      </p>
 
       <section className={styles.hidden}>
         <div className={styles.tokens}>
@@ -166,7 +179,6 @@ export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <section>
           <div className={styles.inputWrapper}>
-            <Icon name="buttonSearch" className={styles.iconSearch} />
             <InputFormWrapper
               errors={errors}
               errorElRef={errorEl}
@@ -177,7 +189,7 @@ export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
                   inputClassName={styles.input}
                   size="block"
                   inputStyles={{ width: '100%' }}
-                  placeholder="Provide contract address"
+                  placeholder="E.g. first.tkn.farm"
                   {...register('contractAddress')}
                 />
               }
@@ -187,6 +199,7 @@ export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
 
           <div className={styles.controls}>
             <Button
+              capitalize
               className={styles.controlBtn}
               variant="secondary"
               size="medium"

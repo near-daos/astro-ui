@@ -206,7 +206,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             )
           }
           letterHeadNode={
-            <LetterHeadWidget type={proposalType} coverUrl={dao.flagCover} />
+            <LetterHeadWidget
+              type={proposalType}
+              coverUrl={dao.flagCover}
+              proposalVariant={selectedProposalVariant}
+            />
           }
           proposalCardNode={
             <CustomTokensContext.Provider value={{ tokens: daoTokens }}>

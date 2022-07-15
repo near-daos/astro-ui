@@ -21,7 +21,7 @@ import { formatValueToYokto, formatYoktoValue } from 'utils/format';
 import styles from './DelegateVoting.module.scss';
 
 interface Props {
-  onSubmit: () => void;
+  onSubmit: (opts: { symbol?: string; decimals?: number }) => void;
   dao: DAO;
   contractAddress: string;
 }
@@ -135,7 +135,10 @@ export const DelegateVoting: FC<Props> = ({
     );
 
     // toggle onsubmit
-    onSubmit();
+    onSubmit({
+      symbol: tokenDetails?.symbol,
+      decimals: tokenDetails?.decimals,
+    });
   };
 
   return (
@@ -147,7 +150,12 @@ export const DelegateVoting: FC<Props> = ({
       >
         <div className={styles.content}>
           <div className={styles.header}>
-            <h2>Delegate Voting</h2>
+            <h2>Delegate Voting Power</h2>
+
+            <p>
+              Your Stake Balance is your voting power. You can delegate that
+              power to yourself or others.
+            </p>
           </div>
           <div className={styles.body}>
             <div className={styles.rows}>

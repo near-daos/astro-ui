@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'next-i18next';
 
 import {
   FieldValue,
@@ -27,7 +26,6 @@ export const UpdateVotePolicyToWeightVoting: FC<Props> = ({
   threshold: rawThreshold,
   daoId,
 }) => {
-  const { t } = useTranslation();
   const { nearService } = useWalletContext();
 
   const { value: tokenDetails } = useAsync(async () => {
@@ -63,7 +61,8 @@ export const UpdateVotePolicyToWeightVoting: FC<Props> = ({
   return (
     <div className={styles.root}>
       <FieldWrapper
-        label="Balance (minimum amount of tokens delegated to user to vote in DAO)"
+        label="Minimum Balance - A user can vote if they have more than this number of
+        tokens delegated to them."
         flex
       >
         <FieldValue
@@ -76,9 +75,9 @@ export const UpdateVotePolicyToWeightVoting: FC<Props> = ({
         />
       </FieldWrapper>
       <FieldWrapper
-        label={`${t(
-          'threshold'
-        )} (minimum amount of tokens needed to approve/reject proposal)`}
+        label="Threshold - Minimum votes to pass or reject a proposal. If Threshold is
+        less than Quorum then more votes will be required even after the
+        Threshold is met."
       >
         <FieldValue
           value={
@@ -89,7 +88,10 @@ export const UpdateVotePolicyToWeightVoting: FC<Props> = ({
           }
         />
       </FieldWrapper>
-      <FieldWrapper label="Quorum (minimum amount of tokens required to approve/reject proposal)">
+      <FieldWrapper
+        label="Quorum - Minimum tokens required to participate in the vote, regardless
+        of if they vote for or against a proposal."
+      >
         <FieldValue
           value={
             <span>

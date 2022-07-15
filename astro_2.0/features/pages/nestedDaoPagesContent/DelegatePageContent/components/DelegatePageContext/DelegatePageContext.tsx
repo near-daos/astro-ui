@@ -11,6 +11,7 @@ interface DelegatePageContext {
   delegateToUser?: Record<string, string>;
   decimals?: number;
   symbol?: string;
+  votingGoal: number;
 }
 
 export const DelegatePageContext = createContext<DelegatePageContext>({
@@ -25,6 +26,7 @@ export const DelegatePageContext = createContext<DelegatePageContext>({
   delegateToUser: {},
   decimals: 0,
   symbol: '',
+  votingGoal: 0,
 });
 
 export const useDelegatePageContext = (): DelegatePageContext =>

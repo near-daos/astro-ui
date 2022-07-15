@@ -483,6 +483,13 @@ export function mapProposalVariantToProposalType(
     case ProposalVariant.ProposeCustomFunctionCall: {
       return ProposalType.FunctionCall;
     }
+    case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting:
+    case ProposalVariant.ProposeStakingContractDeployment:
+    case ProposalVariant.ProposeAcceptStakingContract:
+    case ProposalVariant.ProposeStakeTokens:
+    case ProposalVariant.ProposeDelegateVoting: {
+      return ProposalType.ChangePolicy;
+    }
     default:
     case ProposalVariant.ProposePoll: {
       return ProposalType.Vote;
