@@ -69,7 +69,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
 
   const title = watch('title');
   const description = watch('description');
-
+  const hashtags = watch('hashtags');
   const fcType = watch('functionCallType');
 
   const proposalTypesOptions = useProposalTypeOptions(
@@ -258,6 +258,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
                   {
                     title,
                     description,
+                    hashtags,
                   }
                 );
 
@@ -309,6 +310,14 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     [setValue, trigger]
   );
 
+  const handlerChangeHashtags = useCallback(
+    hashtagsValue => {
+      setValue('hashtags', hashtagsValue);
+      trigger('hashtags');
+    },
+    [setValue, trigger]
+  );
+
   const handlerChangeDescription = useCallback(
     html => {
       let value = html;
@@ -334,6 +343,8 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
           titlePlaceholder="Add draft name"
           title={title}
           setTitle={handlerChangeTitle}
+          hashtags={hashtags}
+          setHashtags={handlerChangeHashtags}
           className={styles.editable}
           html={description}
           setHTML={handlerChangeDescription}

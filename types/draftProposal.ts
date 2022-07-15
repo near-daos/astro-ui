@@ -1,5 +1,10 @@
 import { ProposalFeedItem, ProposalType } from 'types/proposal';
 
+export type Hashtag = {
+  id: string;
+  value: string;
+};
+
 export type DraftComment = {
   id: string;
   likes: number;
@@ -15,7 +20,7 @@ export interface DraftProposal extends ProposalFeedItem {
   title: string;
   description: string;
   text: string;
-  hashtags: string[];
+  hashtags: Hashtag[];
   views: number;
   replies: number;
   saves: number;

@@ -23,6 +23,7 @@ import {
   ProposalVariant,
   VoteAction,
 } from 'types/proposal';
+// import { Hashtag } from 'types/draftProposal';
 import { VoteDetail } from 'features/types';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { ProposalActions } from 'features/proposal/components/ProposalActions';
@@ -46,6 +47,7 @@ import { getGasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCountdown } from 'hooks/useCountdown';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { DraftDescription } from 'astro_2.0/components/ProposalCardRenderer/components/DraftDescription';
+// import { Badge } from 'components/Badge';
 import { DraftInfo } from 'astro_2.0/components/ProposalCardRenderer/components/DraftInfo';
 import { DraftManagement } from 'astro_2.0/components/ProposalCardRenderer/components/DraftManagement';
 import { EditableContent } from 'astro_2.0/components/EditableContent';
@@ -94,6 +96,7 @@ export interface ProposalCardProps {
   isDraft?: boolean;
   isEditDraft?: boolean;
   title?: string;
+  // hashtags?: Hashtag[];
   isSaved?: boolean;
   history?: ProposalFeedItem[];
   onSelect?: (p: string) => void;
@@ -214,6 +217,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   isDraft,
   isEditDraft,
   title,
+  // hashtags,
   isSaved,
   history,
   onSelect,
@@ -230,6 +234,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const draftTitle = draftMethods.watch('title');
   const draftDescription = draftMethods.watch('description');
+  const draftHashtags = draftMethods.watch('hashtags');
 
   const isDraftClosed = draftState === 'closed';
 
@@ -422,6 +427,14 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     [draftMethods]
   );
 
+  const handlerChangeHashtags = useCallback(
+    hashtagsValue => {
+      draftMethods.setValue('hashtags', hashtagsValue);
+      draftMethods.trigger('hashtags');
+    },
+    [draftMethods]
+  );
+
   const handlerChangeDescription = useCallback(
     html => {
       let value = html;
@@ -489,6 +502,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
             titlePlaceholder="Add draft name"
             title={draftTitle}
             setTitle={handlerChangeTitle}
+            hashtags={draftHashtags}
+            setHashtags={handlerChangeHashtags}
             className={styles.editable}
             html={draftDescription}
             setHTML={handlerChangeDescription}
@@ -505,6 +520,18 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           {renderLinkToProposal()}
           <div className={styles.draftContent}>
             <div className={styles.draftTitle}>{title}</div>
+            {/* <div className={styles.draftHashTags}> */}
+            {/*  {hashtags?.map(tag => ( */}
+            {/*    <Badge */}
+            {/*      key={tag.id} */}
+            {/*      size="small" */}
+            {/*      className={styles.tag} */}
+            {/*      variant="lightgray" */}
+            {/*    > */}
+            {/*      {tag.value} */}
+            {/*    </Badge> */}
+            {/*  ))} */}
+            {/* </div> */}
             <DraftDescription description={description} />
           </div>
           <div className={styles.contentCell}>{content}</div>

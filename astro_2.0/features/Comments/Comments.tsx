@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import cn from 'classnames';
 
 import { Comment } from 'astro_2.0/features/Comments/components/Comment';
 
@@ -17,7 +16,6 @@ interface Props {
   accountId: string;
   countComments: number;
   onDislike: (id: string, isDislike: boolean) => Promise<void>;
-  className?: string;
 }
 
 export const Comments: FC<Props> = ({
@@ -30,10 +28,9 @@ export const Comments: FC<Props> = ({
   accountId,
   countComments,
   onDislike,
-  className,
 }) => {
   return (
-    <div className={cn(styles.root, className)}>
+    <div className={styles.root}>
       <div className={styles.header}>
         {countComments} {countComments > 1 ? 'replies' : 'reply'}
       </div>

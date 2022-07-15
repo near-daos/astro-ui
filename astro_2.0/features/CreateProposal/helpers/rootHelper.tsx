@@ -996,6 +996,7 @@ export function getValidationSchema(
       yup.object().shape({
         details: yup.string().notRequired(),
         description: yup.string().required('Required'),
+        // hashtags: yup.array().min(1, 'Required'),
         title: yup.string().required('Required'),
       })
     );

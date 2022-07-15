@@ -67,10 +67,6 @@ $border-radius: 3px;
   width: 100%;
 }
 
-.send {
-  margin-left: 12px;
-}
-
 .error :global(.ql-editor.ql-blank) {
   &::before {
     color: var(--color-error);

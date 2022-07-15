@@ -14,7 +14,7 @@ import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 
 import { ProposalFeedItem } from 'types/proposal';
-import { DraftProposal } from 'types/draftProposal';
+import { DraftProposal, Hashtag } from 'types/draftProposal';
 import { Token } from 'types/token';
 
 import { useWalletContext } from 'context/WalletContext';
@@ -70,10 +70,12 @@ export const ViewProposal: FC<ViewProposalProps> = ({
 }) => {
   const methods = useForm<{
     title: string;
+    hashtags: Hashtag[];
     description: string;
   }>({
     defaultValues: {
       title: 'title' in proposal ? proposal?.title : undefined,
+      hashtags: 'hashtags' in proposal ? proposal?.hashtags : undefined,
       description:
         'description' in proposal ? proposal?.description : undefined,
     },
@@ -81,6 +83,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
     resolver: yupResolver(
       yup.object().shape({
         description: yup.string().required('Required'),
+        // hashtags: yup.array().min(1, 'Required'),
         title: yup.string().required('Required'),
       })
     ),
@@ -167,6 +170,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
           <ProposalCard
             convertToProposal={handleToggleCreateProposal}
             title={'title' in proposal ? proposal?.title : undefined}
+            // hashtags={'hashtags' in proposal ? proposal?.hashtags : undefined}
             history={'history' in proposal ? proposal?.history : undefined}
             isSaved={'isSaved' in proposal ? proposal?.isSaved : undefined}
             saves={'isSaved' in proposal ? proposal?.saves : undefined}

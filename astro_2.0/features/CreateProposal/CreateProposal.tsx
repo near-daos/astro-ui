@@ -151,6 +151,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   );
 
   const draftTitle = methods.watch('title');
+  const draftHashtags = methods.watch('hashtags');
   const draftDescription = methods.watch('description');
 
   const onTypeSelect = useCallback(
@@ -164,6 +165,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             ? {
                 title: draftTitle,
                 description: draftDescription,
+                hashtags: draftHashtags,
               }
             : undefined,
           undefined,
@@ -177,7 +179,15 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 
       setSelectedProposalVariant(value);
     },
-    [draftTitle, draftDescription, t, accountId, isDraft, methods]
+    [
+      draftTitle,
+      draftDescription,
+      draftHashtags,
+      t,
+      accountId,
+      isDraft,
+      methods,
+    ]
   );
 
   return (

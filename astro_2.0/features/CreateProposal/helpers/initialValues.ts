@@ -321,6 +321,7 @@ export function getFormInitialValues(
 
   if (isDraft) {
     result.title = initialValues.title || '';
+    result.hashtags = initialValues.hashtags || [];
     result.description = initialValues.description || '';
   }
 
