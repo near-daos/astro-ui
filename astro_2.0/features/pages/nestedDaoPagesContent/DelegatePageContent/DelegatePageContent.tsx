@@ -93,10 +93,17 @@ export const DelegatePageContent: FC<Props> = ({
           threshold: votingThreshold,
           quorum,
           balance,
+          contractAddress: tokenDetails?.contractAddress,
         },
       });
     }
-  }, [balance, quorum, toggleCreateProposal, votingThreshold]);
+  }, [
+    balance,
+    quorum,
+    toggleCreateProposal,
+    tokenDetails?.contractAddress,
+    votingThreshold,
+  ]);
 
   const handleSort = useCallback(
     async value => {

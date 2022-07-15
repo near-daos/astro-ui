@@ -25,20 +25,23 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
       return undefined;
     }
 
-    const contract = nearService.getContract(contractAddress, [
-      'ft_balance_of',
-      'ft_metadata',
-    ]) as CustomContract;
+    try {
+      const contract = nearService.getContract(contractAddress, [
+        'ft_metadata',
+      ]) as CustomContract;
 
-    const meta = await contract.ft_metadata();
+      const meta = await contract.ft_metadata();
 
-    setValue('decimals', meta.decimals);
-    setValue('symbol', meta.symbol);
+      setValue('decimals', meta.decimals);
+      setValue('symbol', meta.symbol);
 
-    return {
-      symbol: meta.symbol,
-      decimals: meta.decimals,
-    };
+      return {
+        symbol: meta.symbol,
+        decimals: meta.decimals,
+      };
+    } catch (e) {
+      return undefined;
+    }
   }, [nearService, accountId, contractAddress]);
 
   return (
