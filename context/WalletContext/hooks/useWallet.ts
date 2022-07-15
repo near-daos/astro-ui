@@ -63,10 +63,10 @@ export const useWallet = (): ReturnVal => {
   }, [availableWallets, persistedWallet]);
 
   return {
-    currentWallet,
-    availableWallets,
     getWallet,
     setWallet,
+    currentWallet,
+    availableWallets,
     removePersistedWallet,
   };
 };

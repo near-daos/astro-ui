@@ -17,17 +17,12 @@ import { parseNearAmount } from 'near-api-js/lib/utils/format';
 import { httpService } from 'services/HttpService';
 import { KeyStore } from 'near-api-js/lib/key_stores';
 
+import { SENDER_WALLET_METADATA } from './constants';
+
 export class SenderWalletService implements WalletService {
   private readonly walletInstance: SenderWalletInstance;
 
   private readonly walletType = WalletType.SENDER;
-
-  private readonly walletInfo: WalletMeta = {
-    name: 'Sender (beta)',
-    type: 'extension',
-    url: 'senderwallet.io',
-    id: WalletType.SENDER,
-  };
 
   constructor(walletInstance: SenderWalletInstance) {
     this.walletInstance = walletInstance;
@@ -174,8 +169,9 @@ export class SenderWalletService implements WalletService {
     return Promise.resolve([this.walletInstance.accountId]);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   walletMeta(): WalletMeta {
-    return this.walletInfo;
+    return SENDER_WALLET_METADATA;
   }
 
   getKeyStore(): KeyStore {

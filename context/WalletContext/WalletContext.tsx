@@ -39,13 +39,14 @@ export interface WalletContext {
 const WalletContext = createContext<WalletContext>({} as WalletContext);
 
 export const WrappedWalletContext: FC = ({ children }) => {
-  const [
-    currentWallet,
-    availableWallets,
+  const {
     getWallet,
     setWallet,
+    currentWallet,
+    availableWallets,
     removePersistedWallet,
-  ] = useWallet();
+  } = useWallet();
+
   const availableAccounts = useAvailableAccounts(currentWallet);
   const pkAndSignature = usePkAndSignature(currentWallet);
   const { nearConfig } = configService.get();
@@ -66,9 +67,11 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
       toggleConnection(false);
 
+      const accountId = await wallet.getAccountId();
+
       sendGAEvent({
         name: GA_EVENTS.SIGN_IN,
-        accountId: wallet.getAccountId(),
+        accountId,
       });
     },
     [setWallet, toggleConnection]
@@ -88,9 +91,11 @@ export const WrappedWalletContext: FC = ({ children }) => {
   );
 
   const logout = useCallback(async () => {
+    const accountId = (await currentWallet?.getAccountId()) ?? '';
+
     sendGAEvent({
       name: GA_EVENTS.SIGN_OUT,
-      accountId: currentWallet?.getAccountId() ?? '',
+      accountId,
     });
 
     CookieService.remove(ACCOUNT_COOKIE);
@@ -156,8 +161,8 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
       await signIn(selectedWallet, nearConfig.contractName);
 
-      const currentWalletAccountId = currentWallet.getAccountId();
-      const selectedWalletAccountId = selectedWallet.getAccountId();
+      const currentWalletAccountId = await currentWallet.getAccountId();
+      const selectedWalletAccountId = await selectedWallet.getAccountId();
 
       sendGAEvent({
         name: GA_EVENTS.SWITCH_WALLET,
@@ -181,7 +186,8 @@ export const WrappedWalletContext: FC = ({ children }) => {
       availableWallets: availableWallets.map(availableWallet =>
         availableWallet.walletMeta()
       ),
-      accountId: currentWallet?.getAccountId() ?? '',
+      // TODO need to implement proper retrieving of accountId
+      accountId: '',
       currentWallet: currentWallet?.getWalletType() ?? null,
       connectingToWallet,
       availableAccounts,

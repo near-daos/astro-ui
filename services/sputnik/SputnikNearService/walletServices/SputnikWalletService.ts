@@ -37,6 +37,8 @@ import {
 } from 'near-api-js/lib/providers/provider';
 import { httpService } from 'services/HttpService';
 
+import { NEAR_WALLET_METADATA } from './constants';
+
 export class SputnikWalletService implements WalletService {
   private readonly near: Near;
 
@@ -47,13 +49,6 @@ export class SputnikWalletService implements WalletService {
   private readonly config: NearConfig;
 
   private keyStore: BrowserLocalStorageKeyStore;
-
-  private walletInfo: WalletMeta = {
-    name: 'NEAR',
-    type: 'web',
-    url: 'wallet.near.org',
-    id: WalletType.NEAR,
-  };
 
   public readonly successUrl: string = `${window.origin}/callback/auth`;
 
@@ -81,8 +76,9 @@ export class SputnikWalletService implements WalletService {
     return this.keyStore;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   walletMeta(): WalletMeta {
-    return this.walletInfo;
+    return NEAR_WALLET_METADATA;
   }
 
   async getAvailableAccounts(): Promise<string[]> {
