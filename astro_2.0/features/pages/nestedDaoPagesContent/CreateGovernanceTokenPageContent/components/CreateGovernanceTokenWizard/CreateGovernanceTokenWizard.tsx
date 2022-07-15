@@ -85,31 +85,35 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
     [canControl, onUpdate, status]
   );
 
-  const handleViewProposalApprove = useCallback(async () => {
-    if (!canControl) {
-      return;
-    }
+  const handleViewProposalApprove = useCallback(
+    async (opts: { symbol?: string; decimals?: number } = {}) => {
+      if (!canControl) {
+        return;
+      }
 
-    const nextStep = getNextCreateGovernanceTokenWizardStep(status.step);
+      const nextStep = getNextCreateGovernanceTokenWizardStep(status.step);
 
-    const isFinalise =
-      status.step === CreateGovernanceTokenSteps.DelegateVoting &&
-      nextStep === null;
+      const isFinalise =
+        status.step === CreateGovernanceTokenSteps.DelegateVoting &&
+        nextStep === null;
 
-    await onUpdate({
-      ...status,
-      step: nextStep,
-      proposalId: null,
-      wizardCompleted: isFinalise,
-    });
-
-    if (isFinalise) {
-      router.push({
-        pathname: DELEGATE_PAGE_URL,
-        query: { dao: daoContext.dao.id },
+      await onUpdate({
+        ...status,
+        ...opts,
+        step: nextStep,
+        proposalId: null,
+        wizardCompleted: isFinalise,
       });
-    }
-  }, [canControl, daoContext.dao.id, onUpdate, router, status]);
+
+      if (isFinalise) {
+        router.push({
+          pathname: DELEGATE_PAGE_URL,
+          query: { dao: daoContext.dao.id },
+        });
+      }
+    },
+    [canControl, daoContext.dao.id, onUpdate, router, status]
+  );
 
   const handleViewProposalReject = useCallback(async () => {
     if (!canControl) {

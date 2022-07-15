@@ -812,7 +812,7 @@ export async function getAcceptStakingContractProposal(
   return ({
     daoId: id,
     daoBond: policy.proposalBond,
-    description: `Accept staking contract ${stakingContractName}`,
+    description: `Adopt staking contract ${stakingContractName}`,
     stakingContractName,
   } as unknown) as CreateProposalParams;
 }
@@ -835,7 +835,6 @@ export async function getChangeVotingPolicyToWeightVoting(
 
   const {
     threshold: rawThreshold,
-    symbol,
     balance: rawBalance,
     quorum: rawQuorum,
     decimals,
@@ -884,7 +883,8 @@ export async function getChangeVotingPolicyToWeightVoting(
 
   return {
     daoId: id,
-    description: `Change voting policy to weight voting ${threshold} ${symbol}`,
+    description:
+      'With every vote on a proposal the Balance, Quorum, and Threshold determine if the proposal passes or fails.',
     kind: 'ChangePolicy',
     data: {
       policy: {

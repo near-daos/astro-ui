@@ -1,8 +1,11 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 
-import { CreateGovernanceTokenSteps } from 'types/settings';
+import {
+  CreateGovernanceTokenFlow,
+  CreateGovernanceTokenSteps,
+} from 'types/settings';
 
 import { Button } from 'components/button/Button';
 import { Accordion } from 'astro_2.0/components/Accordion';
@@ -16,9 +19,11 @@ interface Props {
   onUpdate: ({
     step,
     proposalId,
+    flow,
   }: {
     step: CreateGovernanceTokenSteps | null;
     proposalId: number | null;
+    flow: CreateGovernanceTokenFlow;
   }) => Promise<void>;
 }
 
@@ -29,7 +34,30 @@ export const Intro: FC<Props> = ({ onUpdate, disabled }) => {
   return (
     <div className={styles.root}>
       <div className={styles.description}>
-        {t('createGovernanceTokenPage.intro.description')}
+        <Trans i18nKey="createGovernanceTokenPage.intro.description">
+          <a
+            href="https://tkn.farm/"
+            rel="noreferrer"
+            target="_blank"
+            className={styles.link}
+          >
+            tkn.farm
+          </a>
+        </Trans>
+        <br />
+        <br />
+        <b>{t('createGovernanceTokenPage.intro.warningTitle')}</b>
+        <br />
+        <Trans i18nKey="createGovernanceTokenPage.intro.warningDetails">
+          <a
+            href="https://testnet.app.astrodao.com/"
+            rel="noreferrer"
+            target="_blank"
+            className={styles.link}
+          >
+            experiment on testnet
+          </a>
+        </Trans>
       </div>
       <div className={styles.advantageContainer}>
         <AdvantageDescription className={styles.advantage} icon="treasuryOne">
@@ -49,12 +77,13 @@ export const Intro: FC<Props> = ({ onUpdate, disabled }) => {
         className={styles.startToCreate}
         onClick={async () => {
           await onUpdate({
-            step: CreateGovernanceTokenSteps.ChooseFlow,
+            step: CreateGovernanceTokenSteps.CreateToken,
+            flow: CreateGovernanceTokenFlow.SelectToken,
             proposalId: null,
           });
         }}
       >
-        {t('createGovernanceTokenPage.intro.setupGovernanceToken')}
+        {t('continue')}
       </Button>
 
       {createGovernanceTokenFaq && (

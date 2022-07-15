@@ -68,7 +68,9 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
   return (
     <div className={styles.root}>
       <h1 className={styles.header}>
-        {t('createGovernanceTokenPage.tokenWeightedVoting')}
+        {isInProgress
+          ? t('createGovernanceTokenPage.governanceTokenSetup')
+          : t('createGovernanceTokenPage.tokenWeightedVoting')}
       </h1>
       {showLowBalanceWarning && (
         <DaoWarning

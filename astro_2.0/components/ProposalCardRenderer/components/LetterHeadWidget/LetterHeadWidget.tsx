@@ -1,4 +1,4 @@
-import { ProposalType } from 'types/proposal';
+import { ProposalType, ProposalVariant } from 'types/proposal';
 import cn from 'classnames';
 
 import React from 'react';
@@ -15,9 +15,10 @@ interface LetterHeadWidgetProps {
   iconWrapperClassName?: string;
   iconClassName?: string;
   backgroundClassName?: string;
+  proposalVariant?: ProposalVariant;
 }
 
-const getIconName = (type: ProposalType) => {
+const getIconName = (type: ProposalType, variant?: ProposalVariant) => {
   switch (type) {
     case 'AddMemberToRole':
       return 'proposalAddMember';
@@ -30,8 +31,19 @@ const getIconName = (type: ProposalType) => {
       return 'proposalSendFunds';
     case 'Vote':
       return 'proposalPoll';
-    case 'ChangePolicy':
-      return 'proposalGovernance';
+    case 'ChangePolicy': {
+      switch (variant) {
+        case ProposalVariant.ProposeStakingContractDeployment:
+        case ProposalVariant.ProposeAcceptStakingContract:
+        case ProposalVariant.ProposeStakeTokens:
+        case ProposalVariant.ProposeDelegateVoting: {
+          return 'tokenWizard';
+        }
+        default: {
+          return 'proposalGovernance';
+        }
+      }
+    }
     case 'FunctionCall':
       return 'proposalFunctionCall';
     default:
@@ -47,6 +59,7 @@ export const LetterHeadWidget: React.FC<LetterHeadWidgetProps> = ({
   iconWrapperClassName,
   iconClassName,
   backgroundClassName,
+  proposalVariant,
 }) => {
   return (
     <div
@@ -66,7 +79,7 @@ export const LetterHeadWidget: React.FC<LetterHeadWidgetProps> = ({
       <div className={cn(styles.background, backgroundClassName)} />
       <div className={cn(styles.iconHolder, iconWrapperClassName)}>
         <Icon
-          name={getIconName(type)}
+          name={getIconName(type, proposalVariant)}
           className={cn(styles.icon, iconClassName)}
         />
       </div>

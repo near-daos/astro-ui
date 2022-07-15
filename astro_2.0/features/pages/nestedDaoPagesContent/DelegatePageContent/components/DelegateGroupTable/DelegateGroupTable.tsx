@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { Loader } from 'components/loader';
 
@@ -56,13 +57,22 @@ export const DelegateGroupTable: FC<Props> = ({
         <div>Actions</div>
       </div>
       <div className={styles.body}>
-        {addMemberMode && (
-          <AddMemberRow
-            votingThreshold={votingThreshold}
-            symbol={tokenDetails?.symbol}
-            onAddMember={onAddMember}
-          />
-        )}
+        <AnimatePresence>
+          {addMemberMode && (
+            <motion.div
+              layout
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <AddMemberRow
+                votingThreshold={votingThreshold}
+                symbol={tokenDetails?.symbol}
+                onAddMember={onAddMember}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
         {data
           .sort((a, b) => {
             if (a.accountId > b.accountId) {
@@ -88,9 +98,6 @@ export const DelegateGroupTable: FC<Props> = ({
               }}
               isActive={activeRow?.index === index}
               actionContext={activeRow?.actionType}
-              votingThreshold={votingThreshold}
-              decimals={tokenDetails?.decimals}
-              symbol={tokenDetails?.symbol}
               availableBalance={tokenDetails?.balance ?? 0}
             />
           ))}

@@ -57,6 +57,7 @@ export const DelegatePageContent: FC<Props> = ({
   const {
     loadingDelegateByUser,
     loadingTotalSupply,
+    loadingTokenDetails,
     totalSupply,
     tokenDetails,
     handleSearch,
@@ -65,11 +66,15 @@ export const DelegatePageContent: FC<Props> = ({
     data,
   } = useDelegatePageData(daoContext.dao);
 
+  const loading =
+    loadingDelegateByUser || loadingTotalSupply || loadingTokenDetails;
+
   const {
     threshold: votingThreshold,
     balance,
     quorum,
   } = useVotingPolicyDetails(daoContext.dao);
+
   const canCreateProposal =
     daoContext.userPermissions.isCanCreatePolicyProposals &&
     daoContext.policyAffectsProposals.length === 0;
@@ -128,8 +133,10 @@ export const DelegatePageContent: FC<Props> = ({
       delegateToUser: delegateByUser?.delegatedToUser,
       symbol: tokenDetails?.symbol,
       decimals: tokenDetails?.decimals,
+      votingGoal,
     };
   }, [
+    votingGoal,
     balance,
     daoContext.dao.name,
     delegateByUser?.delegatedBalance,
@@ -151,7 +158,7 @@ export const DelegatePageContent: FC<Props> = ({
           })}
         >
           <MyBalanceWidget
-            loading={loadingDelegateByUser}
+            loading={loading}
             decimals={tokenDetails?.decimals}
             delegatedBalance={delegateByUser?.delegatedBalance}
             stakedBalance={delegateByUser?.stakedBalance}
@@ -163,7 +170,7 @@ export const DelegatePageContent: FC<Props> = ({
           <DelegatePageWidget
             title={`Total Delegated Balance (${tokenDetails?.symbol})`}
           >
-            {loadingTotalSupply ? (
+            {loading ? (
               <ContentLoader height={28} width={80}>
                 <rect x="0" y="0" width="80" height="28" />
               </ContentLoader>
@@ -176,7 +183,7 @@ export const DelegatePageContent: FC<Props> = ({
             )}
           </DelegatePageWidget>
           <VotingThresholdWidget
-            loading={loadingDelegateByUser}
+            loading={loading}
             value={votingGoal}
             disabled={!canCreateProposal}
             showGoalChart={showGoalChart}
@@ -252,7 +259,7 @@ export const DelegatePageContent: FC<Props> = ({
             votingThreshold={votingThreshold}
             tokenDetails={tokenDetails}
             data={data}
-            loading={loadingDelegateByUser}
+            loading={loading}
             addMemberMode={addNewMemberMode}
             onAddMember={() => setAddNewMemeberMode(false)}
           />
