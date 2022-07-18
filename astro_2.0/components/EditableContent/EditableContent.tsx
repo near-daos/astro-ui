@@ -9,7 +9,7 @@ import { Hashtag } from 'types/draftProposal';
 import { useImageUpload } from 'astro_2.0/features/CreateDao/components/hooks';
 import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
 
-import { EditHashtags } from './EditHashtags';
+// import { EditHashtags } from './EditHashtags';
 
 import styles from './EditableContent.module.scss';
 
@@ -81,8 +81,8 @@ export const EditableContent: FC<EditableContentProps> = ({
   handleCancel,
   title,
   setTitle,
-  hashtags,
-  setHashtags,
+  // hashtags,
+  // setHashtags,
   titlePlaceholder,
   className,
   errors,
@@ -159,13 +159,13 @@ export const EditableContent: FC<EditableContentProps> = ({
           />
         </div>
       ) : null}
-      {setHashtags && hashtags ? (
-        <EditHashtags
-          hashtags={hashtags}
-          setHashtags={setHashtags}
-          error={errors?.hashtags?.message}
-        />
-      ) : null}
+      {/* {setHashtags && hashtags ? ( */}
+      {/*  <EditHashtags */}
+      {/*    hashtags={hashtags} */}
+      {/*    setHashtags={setHashtags} */}
+      {/*    error={errors?.hashtags?.message} */}
+      {/*  /> */}
+      {/* ) : null} */}
       <ReactQuill
         ref={quillRef}
         onChange={setHTML}
@@ -183,7 +183,6 @@ export const EditableContent: FC<EditableContentProps> = ({
             capitalize
             variant="secondary"
             size="small"
-            // className={styles.send}
             onClick={handleCancel}
           >
             Cancel

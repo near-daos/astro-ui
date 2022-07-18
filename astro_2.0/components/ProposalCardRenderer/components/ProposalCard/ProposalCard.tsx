@@ -23,7 +23,7 @@ import {
   ProposalVariant,
   VoteAction,
 } from 'types/proposal';
-import { Hashtag } from 'types/draftProposal';
+// import { Hashtag } from 'types/draftProposal';
 import { VoteDetail } from 'features/types';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { ProposalActions } from 'features/proposal/components/ProposalActions';
@@ -47,7 +47,7 @@ import { getGasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCountdown } from 'hooks/useCountdown';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { DraftDescription } from 'astro_2.0/components/ProposalCardRenderer/components/DraftDescription';
-import { Badge } from 'components/Badge';
+// import { Badge } from 'components/Badge';
 import { DraftInfo } from 'astro_2.0/components/ProposalCardRenderer/components/DraftInfo';
 import { DraftManagement } from 'astro_2.0/components/ProposalCardRenderer/components/DraftManagement';
 import { EditableContent } from 'astro_2.0/components/EditableContent';
@@ -96,7 +96,7 @@ export interface ProposalCardProps {
   isDraft?: boolean;
   isEditDraft?: boolean;
   title?: string;
-  hashtags?: Hashtag[];
+  // hashtags?: Hashtag[];
   isSaved?: boolean;
   history?: ProposalFeedItem[];
   onSelect?: (p: string) => void;
@@ -217,7 +217,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   isDraft,
   isEditDraft,
   title,
-  hashtags,
+  // hashtags,
   isSaved,
   history,
   onSelect,
@@ -520,18 +520,18 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           {renderLinkToProposal()}
           <div className={styles.draftContent}>
             <div className={styles.draftTitle}>{title}</div>
-            <div className={styles.draftHashTags}>
-              {hashtags?.map(tag => (
-                <Badge
-                  key={tag.id}
-                  size="small"
-                  className={styles.tag}
-                  variant="lightgray"
-                >
-                  {tag.value}
-                </Badge>
-              ))}
-            </div>
+            {/* <div className={styles.draftHashTags}> */}
+            {/*  {hashtags?.map(tag => ( */}
+            {/*    <Badge */}
+            {/*      key={tag.id} */}
+            {/*      size="small" */}
+            {/*      className={styles.tag} */}
+            {/*      variant="lightgray" */}
+            {/*    > */}
+            {/*      {tag.value} */}
+            {/*    </Badge> */}
+            {/*  ))} */}
+            {/* </div> */}
             <DraftDescription description={description} />
           </div>
           <div className={styles.contentCell}>{content}</div>
@@ -734,7 +734,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       );
     }
 
-    if (isDraft) {
+    if (isDraftClosed) {
       return (
         <div className={styles.countdownCell}>
           <span>
