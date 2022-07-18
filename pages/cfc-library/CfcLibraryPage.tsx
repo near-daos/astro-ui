@@ -75,7 +75,7 @@ const CfcLibraryPage: NextPage<Props> = ({ accountDaos }) => {
           query: nextQuery,
         },
         undefined,
-        { shallow: false, scroll: false }
+        { shallow: true, scroll: false }
       );
     },
     [query, router]

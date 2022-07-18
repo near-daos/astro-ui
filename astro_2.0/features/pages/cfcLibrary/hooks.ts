@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAsyncFn, useMountedState } from 'react-use';
+import { useAsyncFn, useMount, useMountedState } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { PaginationResponse } from 'types/api';
@@ -14,7 +14,7 @@ export function useCfcLibraryData(): {
   loading: boolean;
   loadMore: () => void;
   data: PageData | null;
-  handleSearch: (val: string) => Promise<PageData | null>;
+  handleSearch: (val: string) => Promise<void>;
   handleReset: () => void;
   onUpdate: (templateId: string, daosCount: number) => void;
 } {
@@ -24,14 +24,14 @@ export function useCfcLibraryData(): {
   const [data, setData] = useState<PageData | null>(null);
 
   const [{ loading }, fetchData] = useAsyncFn(
-    async (_initialData?: PageData | null, searchInput?: string) => {
+    async (_initialData?: PageData | null) => {
       let accumulatedListData = _initialData || null;
 
       const res = await SputnikHttpService.getSharedProposalTemplates({
         offset: accumulatedListData?.data.length || 0,
         limit: LIST_LIMIT_DEFAULT,
         sort: query.sort as string,
-        searchInput,
+        searchInput: (query.search as string) ?? '',
       });
 
       if (!res) {
@@ -45,31 +45,41 @@ export function useCfcLibraryData(): {
 
       return accumulatedListData;
     },
-    [query.sort]
+    [query.sort, query.search]
   );
 
   const handleSearch = useCallback(
-    async searchInput => {
-      const newData = await fetchData(null, searchInput);
+    async value => {
+      const nextQuery = {
+        ...query,
+        search: value,
+      };
 
-      if (isMounted()) {
-        setData(newData);
-      }
-
-      window.scroll(0, 0);
-
-      return Promise.resolve(null);
+      await router.replace(
+        {
+          query: nextQuery,
+        },
+        undefined,
+        { shallow: true, scroll: false }
+      );
     },
-    [fetchData, isMounted]
+    [query, router]
   );
 
   const handleReset = useCallback(async () => {
-    const newData = await fetchData();
+    const nextQuery = {
+      ...query,
+      search: '',
+    };
 
-    if (isMounted()) {
-      setData(newData);
-    }
-  }, [fetchData, isMounted]);
+    await router.replace(
+      {
+        query: nextQuery,
+      },
+      undefined,
+      { shallow: true, scroll: false }
+    );
+  }, [query, router]);
 
   useDebounceEffect(
     async ({ isInitialCall, depsHaveChanged }) => {
@@ -86,7 +96,7 @@ export function useCfcLibraryData(): {
       window.scroll(0, 0);
     },
     1000,
-    [query.sort]
+    [query.sort, query.search]
   );
 
   const loadMore = async () => {
@@ -100,6 +110,8 @@ export function useCfcLibraryData(): {
       setData(newData);
     }
   };
+
+  useMount(() => loadMore());
 
   const onUpdate = useCallback(
     (templateId, daosCount) => {

@@ -1,6 +1,7 @@
 import {
   ALL_DAOS_URL,
   ALL_FEED_URL,
+  CFC_LIBRARY,
   CREATE_DAO_URL,
   DISCOVER,
   MY_DAOS_URL,
@@ -14,6 +15,13 @@ export const DISCOVER_NAV_CONFIG: NavItemProps = {
   hoverIcon: 'aDiscover',
   href: DISCOVER,
   label: 'Discovery',
+};
+
+export const CFC_LIBRARY_NAV_CONFIG: NavItemProps = {
+  icon: 'proposalFunctionCall',
+  hoverIcon: 'proposalFunctionCall',
+  href: CFC_LIBRARY,
+  label: 'Actions Library',
 };
 
 export const ALL_DAOS_NAV_CONFIG: NavItemProps = {
