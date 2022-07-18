@@ -106,7 +106,11 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
       {infoPanelNode && <div className={styles.infoPanel}>{infoPanelNode}</div>}
       {isEditDraft ? (
         <Button
-          disabled={Object.keys(formMethods?.formState?.errors).length > 0}
+          disabled={
+            !formMethods?.formState.isValid ||
+            !formMethods?.formState.isDirty ||
+            Object.keys(formMethods?.formState?.errors).length > 0
+          }
           capitalize
           type="submit"
           className={styles.saveDraftButton}

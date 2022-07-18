@@ -234,7 +234,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const draftTitle = draftMethods.watch('title');
   const draftDescription = draftMethods.watch('description');
-  const draftHashtags = draftMethods.watch('hashtags');
+  // const draftHashtags = draftMethods.watch('hashtags');
 
   const isDraftClosed = draftState === 'closed';
 
@@ -421,19 +421,19 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const handlerChangeTitle = useCallback(
     titleValue => {
-      draftMethods.setValue('title', titleValue);
+      draftMethods.setValue('title', titleValue, { shouldDirty: true });
       draftMethods.trigger('title');
     },
     [draftMethods]
   );
 
-  const handlerChangeHashtags = useCallback(
-    hashtagsValue => {
-      draftMethods.setValue('hashtags', hashtagsValue);
-      draftMethods.trigger('hashtags');
-    },
-    [draftMethods]
-  );
+  // const handlerChangeHashtags = useCallback(
+  //   hashtagsValue => {
+  //     draftMethods.setValue('hashtags', hashtagsValue);
+  //     draftMethods.trigger('hashtags');
+  //   },
+  //   [draftMethods]
+  // );
 
   const handlerChangeDescription = useCallback(
     html => {
@@ -443,8 +443,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         value = '';
       }
 
-      draftMethods.setValue('description', value);
-      draftMethods.setValue('details', value);
+      draftMethods.setValue('description', value, { shouldDirty: true });
+      draftMethods.setValue('details', value, { shouldDirty: true });
       draftMethods.trigger('description');
       draftMethods.trigger('details');
     },
@@ -502,8 +502,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
             titlePlaceholder="Add draft name"
             title={draftTitle}
             setTitle={handlerChangeTitle}
-            hashtags={draftHashtags}
-            setHashtags={handlerChangeHashtags}
+            // hashtags={draftHashtags}
+            // setHashtags={handlerChangeHashtags}
             className={styles.editable}
             html={draftDescription}
             setHTML={handlerChangeDescription}
