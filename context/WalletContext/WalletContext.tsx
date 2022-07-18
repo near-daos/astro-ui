@@ -10,8 +10,9 @@ import {
 import get from 'lodash/get';
 import { useBoolean } from 'react-use';
 import { useRouter } from 'next/router';
+import { Account, WalletSelector } from '@near-wallet-selector/core';
 
-import { WalletType } from 'types/config';
+import { LoginResponse, WalletType } from 'types/config';
 import {
   WalletMeta,
   WalletService,
@@ -22,8 +23,11 @@ import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikNearService } from 'services/sputnik';
 import { ConnectingWalletModal } from 'astro_2.0/features/Auth/components/ConnectingWalletModal';
-import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 
+import { GA_EVENTS, sendGAEvent } from 'utils/ga';
+import { isSelectorWalletType } from 'utils/isSelectorWalletType';
+
+import { LOGIN_PAGE } from 'constants/routing';
 import {
   NEAR_WALLET_METADATA,
   SENDER_WALLET_METADATA,
@@ -34,8 +38,11 @@ import { PkAndSignature } from './types';
 import { useWallet } from './hooks/useWallet';
 import { useAvailableAccounts } from './hooks/useAvailableAccounts';
 import { usePkAndSignature } from './hooks/usePkAndSignature';
+import { useSelector } from './hooks/walletSelector/useSelector';
+import { useCanCreateSelector } from './hooks/walletSelector/useCanCreateSelector';
 
 export interface WalletContext {
+  selector?: WalletSelector;
   availableWallets: WalletMeta[];
   currentWallet: WalletType | null;
   accountId: string;
@@ -46,6 +53,7 @@ export interface WalletContext {
   switchWallet: (walletType: WalletType) => void;
   availableAccounts: string[];
   pkAndSignature: PkAndSignature | null;
+  signInSelectorWallet: (walletType: WalletType) => Promise<Account[]>;
   // todo get rid of
   nearService: SputnikNearService | null;
 }
@@ -61,11 +69,18 @@ export const WrappedWalletContext: FC = ({ children }) => {
   } = useWallet();
 
   const { nearConfig } = configService.get();
+  const { canCreateSelector, setCanCreateSelector } = useCanCreateSelector();
+
+  const { selector, signInSelectorWallet } = useSelector({
+    setWallet,
+    canCreate: canCreateSelector,
+  });
+
   const pkAndSignature = usePkAndSignature(currentWallet);
   const availableAccounts = useAvailableAccounts(currentWallet);
   const [currentAccount, setCurrentAccount] = useState('');
 
-  const [connectingToWallet, toggleConnection] = useBoolean(false);
+  const [connectingToWallet, setConnectingToWallet] = useBoolean(false);
 
   const router = useRouter();
 
@@ -83,7 +98,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
   const signIn = useCallback(
     async (wallet: WalletService, contractName: string) => {
-      toggleConnection(true);
+      setConnectingToWallet(true);
 
       const isSignedIn = await wallet.isSignedIn();
 
@@ -93,7 +108,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
       setWallet(wallet);
 
-      toggleConnection(false);
+      setConnectingToWallet(false);
 
       const accountId = await wallet.getAccountId();
 
@@ -102,20 +117,55 @@ export const WrappedWalletContext: FC = ({ children }) => {
         accountId,
       });
     },
-    [setWallet, toggleConnection]
+    [setWallet, setConnectingToWallet]
+  );
+
+  const initiateSignInSelectorWallets = useCallback(
+    (walletId: WalletType) => {
+      setConnectingToWallet(true);
+
+      window.open(`${window.origin}${LOGIN_PAGE}?wallet=${walletId}`, '_blank');
+
+      return new Promise((resolve, reject) => {
+        window.onLogin = async (result: LoginResponse) => {
+          const { error } = result;
+
+          if (error) {
+            // we might catch an error if unsupported wallet type is provided
+            reject(result);
+          }
+
+          try {
+            setCanCreateSelector(true);
+
+            resolve('');
+          } catch (e) {
+            console.error(e);
+            reject(e);
+          }
+
+          setConnectingToWallet(false);
+        };
+      });
+    },
+    [setCanCreateSelector, setConnectingToWallet]
   );
 
   const login = useCallback(
     async (walletType: WalletType) => {
-      const wallet = await getWallet(walletType);
+      if (isSelectorWalletType(walletType)) {
+        initiateSignInSelectorWallets(walletType);
+      } else {
+        const wallet = await getWallet(walletType);
 
-      if (!wallet) {
-        return;
+        if (!wallet) {
+          return;
+        }
+
+        signIn(wallet, nearConfig.contractName);
       }
-
-      signIn(wallet, nearConfig.contractName);
     },
-    [getWallet, nearConfig.contractName, signIn]
+    [signIn, getWallet, nearConfig.contractName, initiateSignInSelectorWallets]
   );
 
   const logout = useCallback(async () => {
@@ -220,21 +270,24 @@ export const WrappedWalletContext: FC = ({ children }) => {
     }
 
     return {
-      nearService: currentWallet ? new SputnikNearService(currentWallet) : null,
-      availableWallets,
-      accountId: currentAccount,
-      currentWallet: currentWallet?.getWalletType() ?? null,
-      connectingToWallet,
-      availableAccounts,
-      pkAndSignature,
       login,
       logout,
-      switchAccount,
+      selector,
       switchWallet,
+      switchAccount,
+      pkAndSignature,
+      availableWallets,
+      availableAccounts,
+      connectingToWallet,
+      signInSelectorWallet,
+      accountId: currentAccount,
+      currentWallet: currentWallet?.getWalletType() ?? null,
+      nearService: currentWallet ? new SputnikNearService(currentWallet) : null,
     };
   }, [
     login,
     logout,
+    selector,
     switchWallet,
     switchAccount,
     currentWallet,
@@ -242,6 +295,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
     currentAccount,
     availableAccounts,
     connectingToWallet,
+    signInSelectorWallet,
   ]);
 
   return (
@@ -250,7 +304,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
       {connectingToWallet && (
         <ConnectingWalletModal
           isOpen
-          onClose={() => toggleConnection(false)}
+          onClose={() => setConnectingToWallet(false)}
           walletType={walletContext?.currentWallet ?? WalletType.NEAR}
         />
       )}
