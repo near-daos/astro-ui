@@ -15,13 +15,11 @@ export const NewComment: FC<Props> = ({ onSubmit }) => {
 
   const handleSend = useCallback(
     async msg => {
-      await onSubmit(msg);
-
       setHTML('');
 
-      setToggleWriteComment();
+      await onSubmit(msg);
     },
-    [onSubmit, setToggleWriteComment]
+    [onSubmit]
   );
 
   if (!accountId) {
