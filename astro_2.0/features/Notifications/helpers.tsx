@@ -496,7 +496,7 @@ export function generateProposalNotificationText(
   switch (status) {
     case NotificationStatus.Created: {
       const actioner =
-        accountId === signerId ? t('you') : extractPrefix(signerId);
+        accountId === proposerId ? t('you') : extractPrefix(proposerId);
 
       return `<b>${actioner}</b> ${t('submittedNewProposal', {
         type,
@@ -505,7 +505,7 @@ export function generateProposalNotificationText(
     }
     case NotificationStatus.Rejected: {
       const actioner =
-        accountId === signerId ? t('your') : extractPrefix(signerId);
+        accountId === proposerId ? t('your') : extractPrefix(proposerId);
 
       return `<b>${actioner}'s</b> "${type}" ${t('proposalWasRejected', {
         dao: dao.displayName || extractPrefix(dao.id),
@@ -513,7 +513,7 @@ export function generateProposalNotificationText(
     }
     case NotificationStatus.Approved: {
       const actioner =
-        accountId === signerId ? t('your') : extractPrefix(signerId);
+        accountId === proposerId ? t('your') : extractPrefix(proposerId);
 
       return `<b>${actioner}'s</b> "${type}" ${t('proposalWasApproved', {
         dao: dao.displayName || extractPrefix(dao.id),
