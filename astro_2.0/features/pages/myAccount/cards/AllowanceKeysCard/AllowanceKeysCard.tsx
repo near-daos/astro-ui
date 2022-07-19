@@ -27,6 +27,7 @@ export const AllowanceKeysCard: FC = () => {
       const result: DaoWithAllowanceKey[] = daosList.map(dao => {
         return {
           daoId: dao.id,
+          daoName: dao.displayName,
           allowanceKey: allowanceKeys.find(key => key.daoId === dao.id),
         };
       });
