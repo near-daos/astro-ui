@@ -31,6 +31,8 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
     daoContext.dao.id
   );
   const { accountId } = useWalletContext();
+  const { daoVersion } = daoContext.dao;
+  const isSupportedVersion = daoVersion?.version[0] > 2;
   const isInProgress = status && status.step !== null;
   const isViewProposal = status?.proposalId !== null;
   const isCouncil = isCouncilUser(daoContext.dao, accountId);
@@ -66,7 +68,7 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
     return (
       <Intro
         onUpdate={update}
-        disabled={!isPermitted || showLowBalanceWarning}
+        disabled={!isPermitted || showLowBalanceWarning || !isSupportedVersion}
       />
     );
   }
@@ -78,6 +80,19 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
           ? t('createGovernanceTokenPage.governanceTokenSetup')
           : t('createGovernanceTokenPage.tokenWeightedVoting')}
       </h1>
+      {!isSupportedVersion && (
+        <DaoWarning
+          content={
+            <>
+              <div className={styles.title}>Warning</div>
+              <div className={styles.text}>
+                Token weighted voting is not supported in DAO 2.0
+              </div>
+            </>
+          }
+          className={styles.warningWrapper}
+        />
+      )}
       {showLowBalanceWarning && (
         <DaoWarning
           content={
