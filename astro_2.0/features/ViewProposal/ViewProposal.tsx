@@ -68,17 +68,19 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   dao,
   userPermissions,
 }) => {
+  const defaultValues = {
+    title: 'title' in proposal ? proposal?.title : undefined,
+    // hashtags: 'hashtags' in proposal ? proposal?.hashtags : undefined,
+    details: 'description' in proposal ? proposal?.description : undefined,
+    description: 'description' in proposal ? proposal?.description : undefined,
+  };
+
   const methods = useForm<{
     title: string;
     hashtags: Hashtag[];
     description: string;
   }>({
-    defaultValues: {
-      title: 'title' in proposal ? proposal?.title : undefined,
-      hashtags: 'hashtags' in proposal ? proposal?.hashtags : undefined,
-      description:
-        'description' in proposal ? proposal?.description : undefined,
-    },
+    defaultValues,
     mode: 'onSubmit',
     resolver: yupResolver(
       yup.object().shape({
