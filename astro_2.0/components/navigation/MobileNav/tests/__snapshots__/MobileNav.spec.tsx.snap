@@ -8,12 +8,7 @@ exports[`Mobile nav Should render full navigation for logged user 1`] = `
     <div
       data-testid="nav-item"
     >
-      All DAOs
-    </div>
-    <div
-      data-testid="nav-item"
-    >
-      Global Feed
+      My Feed
     </div>
     <div
       data-testid="nav-item"
@@ -23,12 +18,17 @@ exports[`Mobile nav Should render full navigation for logged user 1`] = `
     <div
       data-testid="nav-item"
     >
-      My Feed
+      Actions Library
     </div>
     <div
       data-testid="nav-item"
     >
       Discovery
+    </div>
+    <div
+      data-testid="nav-item"
+    >
+      Global Feed
     </div>
   </div>
 </div>
@@ -42,17 +42,17 @@ exports[`Mobile nav Should render partial navigation if user did not log in 1`] 
     <div
       data-testid="nav-item"
     >
-      All DAOs
+      Discovery
+    </div>
+    <div
+      data-testid="nav-item"
+    >
+      Actions Library
     </div>
     <div
       data-testid="nav-item"
     >
       Global Feed
-    </div>
-    <div
-      data-testid="nav-item"
-    >
-      Discovery
     </div>
   </div>
 </div>

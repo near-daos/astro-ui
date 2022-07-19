@@ -3,7 +3,7 @@ import React, { VFC } from 'react';
 import { useWalletContext } from 'context/WalletContext';
 
 import {
-  ALL_DAOS_NAV_CONFIG,
+  CFC_LIBRARY_NAV_CONFIG,
   MY_DAOS_NAV_CONFIG,
   MY_FEED_NAV_CONFIG,
   ASTRO_FEED_NAV_CONFIG,
@@ -20,13 +20,13 @@ export const MobileNav: VFC = () => {
 
   const navConfig = accountId
     ? [
-        ALL_DAOS_NAV_CONFIG,
-        ASTRO_FEED_NAV_CONFIG,
-        MY_DAOS_NAV_CONFIG,
         MY_FEED_NAV_CONFIG,
+        MY_DAOS_NAV_CONFIG,
+        CFC_LIBRARY_NAV_CONFIG,
         DISCOVER_NAV_CONFIG,
+        ASTRO_FEED_NAV_CONFIG,
       ]
-    : [ALL_DAOS_NAV_CONFIG, ASTRO_FEED_NAV_CONFIG, DISCOVER_NAV_CONFIG];
+    : [DISCOVER_NAV_CONFIG, CFC_LIBRARY_NAV_CONFIG, ASTRO_FEED_NAV_CONFIG];
 
   const navItems = navConfig.map(conf => {
     return (
