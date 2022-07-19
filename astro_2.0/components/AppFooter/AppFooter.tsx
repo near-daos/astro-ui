@@ -2,7 +2,6 @@ import cn from 'classnames';
 import Link from 'next/link';
 import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { Icon, IconName } from 'components/Icon';
 import { LocaleSelector } from 'astro_2.0/components/LocaleSelector';
@@ -23,7 +22,6 @@ export const AppFooter: FC<AppFooterProps> = ({
   onClick,
 }) => {
   const { t } = useTranslation();
-  const { canny } = useFlags();
 
   const { appConfig } = configService.get();
 
@@ -61,16 +59,14 @@ export const AppFooter: FC<AppFooterProps> = ({
             {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
           </div>
           <div className={styles.version}>
-            {canny && (
-              <a
-                className={styles.devLink}
-                href="https://feedback.astrodao.com"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                {t('leaveFeedback')}
-              </a>
-            )}
+            <a
+              className={styles.devLink}
+              href="https://feedback.astrodao.com"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              {t('leaveFeedback')}
+            </a>
           </div>
           <div className={styles.terms}>
             <Link passHref href="/terms-conditions">

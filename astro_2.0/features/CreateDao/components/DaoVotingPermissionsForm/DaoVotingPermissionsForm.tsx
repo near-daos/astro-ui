@@ -2,7 +2,6 @@ import React, { VFC } from 'react';
 import useQuery from 'hooks/useQuery';
 import { useStateMachine } from 'little-state-machine';
 import { useTranslation } from 'next-i18next';
-import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { updateAction } from 'astro_2.0/features/CreateDao/components/helpers';
 
@@ -21,8 +20,6 @@ export const DaoVotingPermissionsForm: VFC = () => {
     step: string;
   }>({ shallow: true });
   const { actions, state } = useStateMachine({ updateAction });
-
-  const { allowEveryoneVoting } = useFlags();
 
   const onSubmit = (data: SelectorRow[]) => {
     actions.updateAction({
@@ -54,20 +51,12 @@ export const DaoVotingPermissionsForm: VFC = () => {
           state.voting.data ||
           getInitialVotingPermissions({
             policy: {
-              roles: state.groups.items
-                .filter(role => {
-                  if (allowEveryoneVoting) {
-                    return true;
-                  }
-
-                  return role.slug !== 'all';
-                })
-                .map(role => ({
-                  name: role.name,
-                  slug: role?.slug,
-                  permissions: ['*:*'],
-                  kind: 'Group',
-                })),
+              roles: state.groups.items.map(role => ({
+                name: role.name,
+                slug: role?.slug,
+                permissions: ['*:*'],
+                kind: 'Group',
+              })),
             },
           })
         }
