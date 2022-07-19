@@ -166,8 +166,11 @@
   border-radius: 5px;
   color: var(--color-brand-black);
   height: 32px;
-  margin-left: 12px;
   width: 32px;
+
+  &:not(:first-of-type) {
+    margin-left: 12px;
+  }
 }
 
 .mobile {
