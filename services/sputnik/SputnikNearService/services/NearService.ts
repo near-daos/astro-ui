@@ -173,7 +173,7 @@ export class NearService extends BaseService {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
-    const accountId = this.getAccountId();
+    const accountId = await this.getAccountId();
     const { bountyId: id, deadline, bountyBond, gas, tokenId } = args;
 
     let storageDepositTransactionAction;

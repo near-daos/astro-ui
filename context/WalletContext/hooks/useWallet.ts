@@ -9,8 +9,8 @@ import { WalletType } from 'types/config';
 import { WalletService } from 'services/sputnik/SputnikNearService/walletServices/types';
 
 import { CookieService } from 'services/CookieService';
-import { initNearWallet } from '../utils/initNearWallet';
-import { initSenderWallet } from '../utils/initSenderWallet';
+import { initNearWallet } from 'context/WalletContext/utils/initNearWallet';
+import { initSenderWallet } from 'context/WalletContext/utils/initSenderWallet';
 
 type ReturnVal = {
   removePersistedWallet: () => void;
@@ -47,11 +47,13 @@ export const useWallet = (): ReturnVal => {
   );
 
   const setWallet = useCallback(
-    (wallet: WalletService) => {
+    async (wallet: WalletService) => {
       setPersistedWallet(wallet.getWalletType());
       setCurrentWallet(wallet);
 
-      CookieService.set(ACCOUNT_COOKIE, wallet.getAccountId(), {
+      const accountId = await wallet.getAccountId();
+
+      CookieService.set(ACCOUNT_COOKIE, accountId, {
         path: '/',
       });
     },

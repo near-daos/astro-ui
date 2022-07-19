@@ -231,7 +231,7 @@ export class SputnikWalletService implements WalletService {
   public async sendTransactions(
     transactionsConf: Transaction[]
   ): Promise<FinalExecutionOutcome[]> {
-    const accountId = this.getAccountId();
+    const accountId = await this.getAccountId();
     const publicKey = await this.getPublicKey();
 
     const accessKey = ((await this.near.connection.provider.query(
