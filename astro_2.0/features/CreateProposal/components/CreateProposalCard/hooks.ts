@@ -39,7 +39,7 @@ export function useProposalTypeOptions(
   const { templates } = useProposalTemplates(daoId);
   const { settings } = useDaoSettings(daoId);
 
-  const { voteInOtherDao, roketoStreaming } = useFlags();
+  const { roketoStreaming } = useFlags();
 
   const customFunctionCallsOptions = useMemo<DropdownOption[]>(() => {
     const templateOptions = [
@@ -81,14 +81,12 @@ export function useProposalTypeOptions(
       });
     }
 
-    if (voteInOtherDao) {
-      templateOptions.push({
-        label: 'Vote in Another DAO',
-        value: ProposalVariant.ProposeCustomFunctionCall,
-        group: fcLabel,
-        opt: FunctionCallType.VoteInAnotherDao,
-      });
-    }
+    templateOptions.push({
+      label: 'Vote in Another DAO',
+      value: ProposalVariant.ProposeCustomFunctionCall,
+      group: fcLabel,
+      opt: FunctionCallType.VoteInAnotherDao,
+    });
 
     const result = [
       {
@@ -127,7 +125,6 @@ export function useProposalTypeOptions(
     fcLabel,
     roketoStreaming,
     settings?.daoUpgrade?.versionHash,
-    voteInOtherDao,
     allowedProposalsToCreate,
     templates,
   ]);

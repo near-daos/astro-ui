@@ -61,7 +61,16 @@ exports[`App Footer Should render AppFooter component 1`] = `
         </div>
         <div
           class="version"
-        />
+        >
+          <a
+            class="devLink"
+            href="https://feedback.astrodao.com"
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            leaveFeedback
+          </a>
+        </div>
         <div
           class="terms"
         >
