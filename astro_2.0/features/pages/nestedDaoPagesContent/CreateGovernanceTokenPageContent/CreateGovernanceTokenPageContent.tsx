@@ -13,6 +13,9 @@ import {
   useLowBalanceWarning,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/hooks';
 
+import { isCouncilUser } from 'astro_2.0/features/DraftComments/helpers';
+import { useWalletContext } from 'context/WalletContext';
+
 import { Intro } from './components/steps/Intro';
 
 import styles from './CreateGovernanceTokenPageContent.module.scss';
@@ -27,9 +30,12 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
   const { status, update, loading } = useCreateGovernanceTokenStatus(
     daoContext.dao.id
   );
+  const { accountId } = useWalletContext();
   const isInProgress = status && status.step !== null;
   const isViewProposal = status?.proposalId !== null;
+  const isCouncil = isCouncilUser(daoContext.dao, accountId);
   const isPermitted =
+    isCouncil &&
     daoContext.userPermissions.isCanCreateProposals &&
     daoContext.userPermissions.allowedProposalsToCreate[
       ProposalType.SetStakingContract
@@ -39,7 +45,7 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
     !status?.wizardCompleted;
 
   function renderContent() {
-    if (!daoContext.userPermissions.isCanCreateProposals && !isViewProposal) {
+    if (!isPermitted && !isViewProposal) {
       return <NoResultsView title="You don't have permissions to proceed" />;
     }
 
