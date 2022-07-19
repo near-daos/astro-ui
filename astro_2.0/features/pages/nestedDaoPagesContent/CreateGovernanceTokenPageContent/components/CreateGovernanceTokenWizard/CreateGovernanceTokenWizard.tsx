@@ -34,6 +34,8 @@ import { DELEGATE_PAGE_URL } from 'constants/routing';
 
 import { useWalletContext } from 'context/WalletContext';
 
+import { isCouncilUser } from 'astro_2.0/features/DraftComments/helpers';
+
 import styles from './CreateGovernanceTokenWizard.module.scss';
 
 interface Props {
@@ -64,9 +66,11 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
   const stepProposalVariant = getCreateGovernanceTokenStepProposalVariant(
     status
   );
+  const isCouncil = isCouncilUser(daoContext.dao, accountId);
   const proposalId = status?.proposalId;
   const isViewProposal = proposalId !== null;
   const canControl =
+    isCouncil &&
     daoContext.userPermissions.isCanCreateProposals &&
     daoContext.userPermissions.allowedProposalsToCreate[
       ProposalType.UpgradeSelf

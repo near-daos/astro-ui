@@ -104,7 +104,7 @@ export const PuzzleCaptcha: VFC<PuzzleCaptchaProps> = props => {
         }}
       >
         <Icon
-          name="captchaHole"
+          name="captchaHoleReg"
           className={styles.hole}
           style={{
             width: HOLE_WIDTH + 1,
