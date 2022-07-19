@@ -151,7 +151,7 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
               <div className={styles.label}>
                 <span>{item.label}</span>
                 <Tooltip
-                  placement="top"
+                  placement="bottom"
                   overlay={<span className={styles.tooltip}>{item.info}</span>}
                 >
                   <Icon name="info" width={12} className={styles.infoIcon} />

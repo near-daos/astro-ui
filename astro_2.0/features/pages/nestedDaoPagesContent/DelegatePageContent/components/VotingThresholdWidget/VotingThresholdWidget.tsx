@@ -62,7 +62,7 @@ export const VotingThresholdWidget: FC<Props> = ({
         onClick={onEdit}
       >
         <div className={styles.editButton}>
-          <Icon name="buttonEdit" className={styles.toggleIcon} />
+          <Icon name="buttonEdit" className={styles.toggleIcon} width={16} />
         </div>
       </Button>
       <Button
@@ -71,7 +71,11 @@ export const VotingThresholdWidget: FC<Props> = ({
         className={styles.chartToggle}
         onClick={onToggleChart}
       >
-        <Icon name="info" className={styles.toggleIcon} />
+        <Icon
+          name={showGoalChart ? 'close' : 'info'}
+          className={styles.toggleIcon}
+          width={showGoalChart ? 12 : 16}
+        />
       </Button>
     </DelegatePageWidget>
   );
