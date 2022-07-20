@@ -1,5 +1,6 @@
 import { ProposalType } from 'types/proposal';
 import { APP_TO_CONTRACT_PROPOSAL_TYPE } from 'utils/dataConverter';
+import { DaoRoleKind } from 'types/role';
 
 export type SelectorRow = {
   label: string;
@@ -20,7 +21,7 @@ export type SelectorRow = {
 export function getInitialCreationPermissions(dao: {
   policy: {
     roles: {
-      kind: 'Everyone' | 'Group' | 'Member';
+      kind: DaoRoleKind;
       name: string;
       slug?: string;
       permissions: string[];
@@ -144,7 +145,7 @@ export function getInitialCreationPermissions(dao: {
 export function getInitialVotingPermissions(dao: {
   policy: {
     roles: {
-      kind: 'Everyone' | 'Group' | 'Member';
+      kind: DaoRoleKind;
       name: string;
       permissions: string[];
     }[];

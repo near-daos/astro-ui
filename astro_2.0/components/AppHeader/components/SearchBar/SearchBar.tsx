@@ -13,13 +13,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import { usePopper } from 'react-popper';
-import {
-  useClickAway,
-  useDebounce,
-  useMount,
-  useMountedState,
-  useToggle,
-} from 'react-use';
+import { useClickAway, useMount, useMountedState, useToggle } from 'react-use';
+
+import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 
 import { SEARCH_PAGE_URL } from 'constants/routing';
 
@@ -159,8 +155,12 @@ export const SearchBar: FC<SearchBarProps> = ({
     setExpanded(isDesktopResolution() || !!searchResults?.query);
   });
 
-  useDebounce(
-    () => {
+  useDebounceEffect(
+    async ({ isInitialCall, depsHaveChanged }) => {
+      if (isInitialCall || !depsHaveChanged) {
+        return;
+      }
+
       const query = value?.trim() ?? '';
 
       if (expanded && query.length >= 3) {
@@ -170,6 +170,7 @@ export const SearchBar: FC<SearchBarProps> = ({
         toggleShowHint(true);
       } else if (expanded) {
         toggleShowHint(false);
+
         handleClose();
       }
     },

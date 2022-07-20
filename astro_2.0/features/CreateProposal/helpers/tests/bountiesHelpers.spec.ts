@@ -119,7 +119,7 @@ describe('bountiesHelpers', () => {
               updatedAt: '2022-03-30T20:00:33.563Z',
               id: 'legaldao.sputnikv2.testnet-Everyone',
               name: 'Everyone',
-              kind: 'Group',
+              kind: { Group: ['alexeysputnik.testnet'] },
               balance: null,
               accountIds: ['alexeysputnik.testnet'],
               permissions: [

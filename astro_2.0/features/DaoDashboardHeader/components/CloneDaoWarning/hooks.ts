@@ -1,7 +1,7 @@
 import { useWalletContext } from 'context/WalletContext';
 import { useEffect, useState } from 'react';
 import { Settings } from 'types/settings';
-import { useAsyncFn, useMount } from 'react-use';
+import { useAsyncFn, useMount, useMountedState } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { YOKTO_NEAR } from 'services/sputnik/constants';
@@ -13,16 +13,17 @@ export function useDaoSettings(
   update: (updates: Record<string, unknown>) => Promise<void>;
   settings: Settings | null | undefined;
 } {
+  const isMounted = useMountedState();
   const { accountId, nearService } = useWalletContext();
   const [settings, setSettings] = useState<Settings | null>(null);
 
   const [{ loading }, getSettings] = useAsyncFn(async () => {
     const res = await SputnikHttpService.getDaoSettings(daoId);
 
-    if (res) {
+    if (res && isMounted()) {
       setSettings(res);
     }
-  }, [daoId]);
+  }, [daoId, isMounted]);
 
   const [{ loading: updatingStatus }, update] = useAsyncFn(
     async updates => {

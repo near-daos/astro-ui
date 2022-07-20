@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import { DAO, DaoFeedItem, Member } from 'types/dao';
 import { ProposalFeedItem } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
-import { DaoPermission } from 'types/role';
+import { DaoPermission, DaoRoleKind } from 'types/role';
 
 import {
   DaoFeedItemResponse,
@@ -19,7 +19,7 @@ type MemberDTO = {
   accountId: string;
   roles: {
     daoId: string;
-    kind: 'Everyone' | 'Group';
+    kind: DaoRoleKind;
     name: string;
     permissions: DaoPermission[];
   }[];

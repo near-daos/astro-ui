@@ -1,6 +1,7 @@
 import { DAO } from 'types/dao';
 import { ProposalType, ProposalVariant } from 'types/proposal';
 import { ProposalPermissions } from 'types/context';
+import { isMemberKind } from 'services/sputnik/mappers';
 
 export function isUserPermittedToCreateProposal(
   accountId: string | null | undefined,
@@ -69,7 +70,7 @@ export function getAllowedProposalsToCreate(
     if (
       role.kind === 'Everyone' ||
       role.accountIds?.includes(accountId) ||
-      (role.kind === 'Member' && userHasDelegatedTokens)
+      (isMemberKind(role) && userHasDelegatedTokens)
     ) {
       role.permissions.forEach(permission => {
         switch (permission) {

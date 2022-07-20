@@ -109,6 +109,9 @@ class SputnikHttpServiceClass {
     try {
       const { data } = await this.httpService.get<DAO | null>(`/daos/${id}`, {
         responseMapper: { name: API_MAPPERS.MAP_DAO_DTO_TO_DAO },
+        baseURL: process.browser
+          ? '/api/server/v2/'
+          : `${process.env.API_URL}/api/v2/`,
       });
 
       return data;
