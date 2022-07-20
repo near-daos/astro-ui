@@ -34,7 +34,7 @@ export const AllowanceKeyRow: FC<Props> = ({ daoWithAllowanceKey }) => {
     <div className={styles.root}>
       <div className={styles.name}>
         <div className={styles.details}>
-          <div className={styles.daoName}>{daoWithAllowanceKey.daoId}</div>
+          <div className={styles.daoName}>{daoWithAllowanceKey.daoName}</div>
           <div className={styles.address}>
             <CopyButton
               tooltipPlacement="auto"

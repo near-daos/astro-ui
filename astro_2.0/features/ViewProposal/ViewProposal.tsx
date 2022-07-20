@@ -148,7 +148,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
         daoFlagNode={
           showFlag && (
             <DaoFlagWidget
-              daoName={proposal.dao.name}
+              daoName={proposal.daoDetails.displayName || proposal.dao.name}
               flagUrl={proposal.dao.flagLogo}
               daoId={proposal.dao.id}
               fallBack={proposal.dao.logo}
