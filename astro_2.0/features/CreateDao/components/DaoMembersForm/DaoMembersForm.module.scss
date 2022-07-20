@@ -24,6 +24,10 @@
 
 .description {
   @extend %body2;
+
+  &.error {
+    color: var(--color-error-60);
+  }
 }
 
 .row {
@@ -49,7 +53,7 @@
 }
 
 .submit {
-  margin-top: auto;
+  margin-top: 24px;
 
   @include max-large-x-desktop {
     margin-top: 32px;

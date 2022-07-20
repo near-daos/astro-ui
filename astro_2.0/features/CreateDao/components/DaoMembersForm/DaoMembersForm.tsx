@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import useQuery from 'hooks/useQuery';
 import { useStateMachine } from 'little-state-machine';
+import cn from 'classnames';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
@@ -19,7 +20,7 @@ import { validateUserAccount } from 'astro_2.0/features/CreateProposal/helpers';
 
 import styles from './DaoMembersForm.module.scss';
 
-type Form = { accounts: { name: string; role: string }[] };
+type Form = { accounts: { name: string; role: string }[]; groups: string };
 
 export const DaoMembersForm: VFC = () => {
   const { t } = useTranslation();
@@ -66,6 +67,25 @@ export const DaoMembersForm: VFC = () => {
             }),
           })
         ),
+        groups: yup.string().test({
+          name: 'emptyGroups',
+          exclusive: true,
+          message:
+            'There are still empty groups in your DAO. Each group should have at least one member.',
+          test: async (value, context) => {
+            const selectedGroups = context.parent.accounts.map(
+              (item: { role: string }) => item.role
+            );
+            const existingGroups = state.groups.items
+              .map(item => item.name)
+              .filter(item => item !== 'all');
+
+            return (
+              existingGroups.filter(item => !selectedGroups.includes(item))
+                .length === 0
+            );
+          },
+        }),
       })
     ),
   });
@@ -73,7 +93,7 @@ export const DaoMembersForm: VFC = () => {
   const {
     control,
     handleSubmit,
-    formState: { isValid },
+    formState: { errors, isValid },
   } = methods;
 
   const { fields, append, remove } = useFieldArray({
@@ -105,6 +125,12 @@ export const DaoMembersForm: VFC = () => {
           {t('createDAO.daoMembersForm.addMembersDescription')}
         </p>
 
+        {errors.groups && (
+          <p className={cn(styles.description, styles.error)}>
+            {errors.groups.message}
+          </p>
+        )}
+
         <div className={styles.row}>
           <div className={styles.column}>
             <section className={styles.links}>
@@ -114,7 +140,11 @@ export const DaoMembersForm: VFC = () => {
                     key={item.name}
                     item={item}
                     index={index}
-                    onRemove={() => remove(index)}
+                    onRemove={() => {
+                      remove(index);
+
+                      methods.trigger('groups');
+                    }}
                     canBeRemoved={item.name !== accountId}
                   />
                 );
@@ -140,9 +170,9 @@ export const DaoMembersForm: VFC = () => {
                 <Icon className={styles.addBtn} name="buttonAdd" width={24} />
               </Button>
             </section>
-          </div>
 
-          <SubmitButton className={styles.submit} />
+            <SubmitButton className={styles.submit} />
+          </div>
         </div>
       </form>
     </FormProvider>
