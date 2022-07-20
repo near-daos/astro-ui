@@ -180,9 +180,9 @@ export const DaoGroupsForm: VFC = () => {
           {checkUniqError() && (
             <p className={styles.errorText}>Group name must be unique</p>
           )}
-
-          <SubmitButton className={styles.submit} disabled={!isValid} />
         </div>
+
+        <SubmitButton className={styles.submit} disabled={!isValid} />
       </form>
     </FormProvider>
   );

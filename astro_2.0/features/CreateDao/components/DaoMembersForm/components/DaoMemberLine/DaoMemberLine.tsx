@@ -31,6 +31,7 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({
   const {
     register,
     watch,
+    trigger,
     setValue: setFormValue,
     formState: { errors },
   } = useFormContext();
@@ -76,6 +77,8 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({
                     shouldValidate: true,
                   }
                 );
+
+                trigger('groups');
               }}
               size="block"
             />
@@ -115,6 +118,8 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({
                         shouldValidate: true,
                       }
                     );
+
+                    trigger('groups');
 
                     closeDropdown();
                   }}
