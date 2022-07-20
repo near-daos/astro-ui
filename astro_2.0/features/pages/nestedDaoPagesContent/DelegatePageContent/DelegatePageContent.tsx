@@ -204,6 +204,7 @@ export const DelegatePageContent: FC<Props> = ({
               threshold={Number(votingThreshold ?? 0)}
               quorum={Number(quorum ?? 0)}
               totalDelegated={Number(totalSupply ?? 0)}
+              balance={Number(balance ?? 0)}
             />
           </div>
         )}

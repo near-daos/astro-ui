@@ -74,11 +74,7 @@ export const UpdateVotePolicyToWeightVoting: FC<Props> = ({
           }
         />
       </FieldWrapper>
-      <FieldWrapper
-        label="Threshold - Minimum votes to pass or reject a proposal. If Threshold is
-        less than Quorum then more votes will be required even after the
-        Threshold is met."
-      >
+      <FieldWrapper label="Threshold - Minimum votes to pass or reject a proposal.">
         <FieldValue
           value={
             <span>
@@ -89,6 +85,7 @@ export const UpdateVotePolicyToWeightVoting: FC<Props> = ({
         />
       </FieldWrapper>
       <FieldWrapper
+        hidden
         label="Quorum - Minimum tokens required to participate in the vote, regardless
         of if they vote for or against a proposal."
       >

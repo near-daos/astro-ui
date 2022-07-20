@@ -194,7 +194,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
           initialValues = {
             contractAddress,
             details:
-              'With every vote on a proposal the Balance, Quorum, and Threshold determine if the proposal passes or fails.',
+              'With every vote on a proposal the Balance and Threshold determine if the proposal passes or fails.',
             quorum: daoContext.dao.policy.defaultVotePolicy.quorum,
             balance: 1,
           };
