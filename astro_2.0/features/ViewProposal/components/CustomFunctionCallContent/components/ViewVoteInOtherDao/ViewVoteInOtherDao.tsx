@@ -25,7 +25,7 @@ export const ViewVoteInOtherDao: VFC<ViewVoteInOtherDaoProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const { dao, kind } = proposal;
+  const { kind } = proposal;
   const { actions, receiverId } = kind as FunctionCallProposalType;
   const { id, action } = fromBase64ToObj(get(actions, '0.args')) || {};
 
@@ -35,7 +35,7 @@ export const ViewVoteInOtherDao: VFC<ViewVoteInOtherDaoProps> = ({
   return (
     <div className={styles.root}>
       <FieldWrapper label={getLabel('targetDao')}>
-        <FieldValue value={dao.id} />
+        <FieldValue value={receiverId} />
       </FieldWrapper>
 
       <FieldWrapper label={getLabel('proposal')}>
