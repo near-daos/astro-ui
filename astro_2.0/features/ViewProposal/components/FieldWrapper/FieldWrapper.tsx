@@ -11,6 +11,7 @@ interface InputWrapperProps {
   flex?: boolean;
   labelClassName?: string;
   className?: string;
+  hidden?: boolean;
 }
 
 export const FieldWrapper: FC<InputWrapperProps> = ({
@@ -21,6 +22,7 @@ export const FieldWrapper: FC<InputWrapperProps> = ({
   alignRight,
   labelClassName,
   className,
+  hidden,
 }) => {
   return (
     <div
@@ -30,6 +32,7 @@ export const FieldWrapper: FC<InputWrapperProps> = ({
           [styles.fullWidth]: fullWidth,
           [styles.flex]: flex,
           [styles.alignRight]: alignRight,
+          [styles.hidden]: hidden,
         },
         className
       )}

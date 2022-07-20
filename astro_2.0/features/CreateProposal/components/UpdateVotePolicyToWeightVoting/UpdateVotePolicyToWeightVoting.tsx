@@ -75,9 +75,7 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
       </div>
       <br />
       <div className={styles.blockExplanation}>
-        Threshold - Minimum votes to pass or reject a proposal. If Threshold is
-        less than Quorum then more votes will be required even after the
-        Threshold is met.
+        Threshold - Minimum votes to pass or reject a proposal.
       </div>
       <div className={styles.row}>
         <InputWrapper
@@ -103,11 +101,11 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
         <span className={styles.suffix}>{tokenDetails?.symbol}</span>
       </div>
       <br />
-      <div className={styles.blockExplanation}>
+      <div className={cn(styles.blockExplanation, styles.hidden)}>
         Quorum - Minimum tokens required to participate in the vote, regardless
         of if they vote for or against a proposal.
       </div>
-      <div className={styles.row}>
+      <div className={cn(styles.row, styles.hidden)}>
         <InputWrapper
           fieldName="quorum"
           label="Quorum"

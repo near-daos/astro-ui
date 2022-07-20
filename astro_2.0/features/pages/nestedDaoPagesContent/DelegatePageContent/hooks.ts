@@ -183,17 +183,19 @@ export function useDelegatePageData(
     .map(item => ({
       ...item,
       balance: formatYoktoValue(item.balance, tokenDetails?.decimals),
-      delegators: objectKeys(item.delegators).reduce<Record<string, string>>(
-        (acc, key) => {
-          acc[key] = formatYoktoValue(
-            item.delegators[key],
-            tokenDetails?.decimals
-          );
+      delegators: item.delegators
+        ? objectKeys(item.delegators).reduce<Record<string, string>>(
+            (acc, key) => {
+              acc[key] = formatYoktoValue(
+                item.delegators[key],
+                tokenDetails?.decimals
+              );
 
-          return acc;
-        },
-        {}
-      ),
+              return acc;
+            },
+            {}
+          )
+        : {},
     }));
 
   return {
