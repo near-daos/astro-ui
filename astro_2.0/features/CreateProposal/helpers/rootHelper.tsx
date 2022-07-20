@@ -637,6 +637,45 @@ export function getValidationSchema(
               return !!id && value !== id;
             }
           )
+          .test({
+            name: 'lastMember',
+            exclusive: true,
+            message:
+              'Cannot remove last member of the group. Group requires at least one member.',
+            test: async (value, context) => {
+              const selectedGroupName = context.parent.group;
+              const selectedGroup = dao?.groups.find(
+                item => item.name === selectedGroupName
+              );
+
+              if (
+                selectedGroup &&
+                value &&
+                selectedGroup.members.includes(value)
+              ) {
+                return selectedGroup.members.length > 1;
+              }
+
+              return true;
+            },
+          })
+          .test({
+            name: 'notAMember',
+            exclusive: true,
+            message: 'This account is not a member of selected group',
+            test: async (value, context) => {
+              const selectedGroupName = context.parent.group;
+              const selectedGroup = dao?.groups.find(
+                item => item.name === selectedGroupName
+              );
+
+              return !(
+                selectedGroup &&
+                value &&
+                !selectedGroup.members.includes(value)
+              );
+            },
+          })
           .required(t('validation.required')),
         details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
