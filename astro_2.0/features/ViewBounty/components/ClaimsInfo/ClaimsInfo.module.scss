@@ -2,12 +2,12 @@
 
 .root {
   align-items: flex-start;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   width: 100%;
 
   @include tablet-landscape {
-    flex-direction: row;
+    grid-template-columns: 1.4fr 1fr;
   }
 }
 
@@ -17,4 +17,8 @@
 
 .noResults {
   padding: 0;
+}
+
+.card {
+  max-width: 100%;
 }

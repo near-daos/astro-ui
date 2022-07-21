@@ -18,6 +18,7 @@ interface ClaimCardProps {
   data: BountyClaim;
   doneProposals: BountyProposal[];
   maxDeadline: string;
+  className?: string;
 }
 
 const FORMAT = 'dd MMM, yyyy';
@@ -26,6 +27,7 @@ export const ClaimCard: FC<ClaimCardProps> = ({
   data,
   doneProposals,
   maxDeadline,
+  className,
 }) => {
   const { startTime, id } = data;
 
@@ -75,12 +77,16 @@ export const ClaimCard: FC<ClaimCardProps> = ({
 
   return (
     <div
-      className={cn(styles.root, {
-        [styles.inProgress]: status === 'InProgress',
-        [styles.approved]: status === 'Approved',
-        [styles.pending]: status === 'Pending',
-        [styles.rejected]: status === 'Rejected',
-      })}
+      className={cn(
+        styles.root,
+        {
+          [styles.inProgress]: status === 'InProgress',
+          [styles.approved]: status === 'Approved',
+          [styles.pending]: status === 'Pending',
+          [styles.rejected]: status === 'Rejected',
+        },
+        className
+      )}
     >
       <div className={styles.legend} />
       <div className={styles.person}>
