@@ -5,6 +5,7 @@ import { useAsyncFn, useMountedState } from 'react-use';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import Head from 'next/head';
 
 // Types
 import { DAO } from 'types/dao';
@@ -204,6 +205,12 @@ export const Feed = ({
 
   return (
     <main className={cn(styles.root, className)}>
+      <Head>
+        <title>
+          Astro - {title} - {status} - {queries.category}
+        </title>
+        <meta name="viewport" content="width=device-width, minimum-scale=1" />
+      </Head>
       <HeaderWithFilter
         title={renderTitle()}
         titleRef={neighbourRef}
