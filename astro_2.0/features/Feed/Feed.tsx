@@ -3,7 +3,14 @@ import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
 import { useAsyncFn, useMountedState } from 'react-use';
 import { useRouter } from 'next/router';
-import React, { ReactNode, useMemo, useRef, useState } from 'react';
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useTranslation } from 'next-i18next';
 
 // Types
@@ -36,9 +43,11 @@ import { getStatusFilterOptions } from 'astro_2.0/features/Proposals/helpers/get
 
 // Services
 import { SputnikHttpService } from 'services/sputnik';
+import { CookieService } from 'services/CookieService';
 
 // Constants
 import { FEED_CATEGORIES } from 'constants/proposals';
+import { FEED_STATUS_COOKIE } from 'constants/cookies';
 
 import styles from './Feed.module.scss';
 
@@ -70,10 +79,12 @@ export const Feed = ({
   const isMounted = useMountedState();
 
   const queries = query as ProposalsQueries;
+  const lastFeedStatus = CookieService.get(FEED_STATUS_COOKIE);
 
   const status =
     (query.status as ProposalsFeedStatuses) ||
     initialProposalsStatusFilterValue ||
+    lastFeedStatus ||
     ProposalsFeedStatuses.All;
 
   const isMyFeed = pathname.startsWith('/my');
@@ -172,27 +183,38 @@ export const Feed = ({
     }
   };
 
-  const onProposalFilterChange = async (value: string) => {
-    const nextQuery = {
-      ...queries,
-      status: value as ProposalsFeedStatuses,
-    } as ProposalsQueries;
+  const onProposalFilterChange = useCallback(
+    async (value: string) => {
+      const nextQuery = {
+        ...queries,
+        status: value as ProposalsFeedStatuses,
+      } as ProposalsQueries;
 
-    // We use custom loading flag here and not the existing proposalsDataIsLoading because
-    // we want loader to be visible immediately once we click on radio button
-    // which is not possible using existing proposalsDataIsLoading flag
-    if (isMounted()) {
-      setLoading(true);
+      // We use custom loading flag here and not the existing proposalsDataIsLoading because
+      // we want loader to be visible immediately once we click on radio button
+      // which is not possible using existing proposalsDataIsLoading flag
+      if (isMounted()) {
+        setLoading(true);
+      }
+
+      CookieService.set(FEED_STATUS_COOKIE, value);
+
+      await replace(
+        {
+          query: nextQuery,
+        },
+        undefined,
+        { shallow: false, scroll: false }
+      );
+    },
+    [isMounted, queries, replace]
+  );
+
+  useEffect(() => {
+    if (status !== lastFeedStatus) {
+      onProposalFilterChange(lastFeedStatus);
     }
-
-    await replace(
-      {
-        query: nextQuery,
-      },
-      undefined,
-      { shallow: false, scroll: false }
-    );
-  };
+  }, [lastFeedStatus, onProposalFilterChange, status]);
 
   function renderTitle() {
     if (isString(title)) {
