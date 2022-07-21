@@ -10,6 +10,7 @@ exports[`Token icon Should render component 1`] = `
     >
       <div
         class="icon"
+        data-testid="custom-icon"
         style="background-image: url(myIcon);"
       />
     </div>

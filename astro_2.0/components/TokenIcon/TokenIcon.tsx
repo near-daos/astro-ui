@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 import { useIsValidImage } from 'hooks/useIsValidImage';
 import { Icon, IconName } from 'components/Icon';
 
@@ -7,9 +8,10 @@ import styles from './TokenIcon.module.scss';
 interface TokenIconProps {
   symbol: string;
   icon: string;
+  className?: string;
 }
 
-export const TokenIcon: FC<TokenIconProps> = ({ symbol, icon }) => {
+export const TokenIcon: FC<TokenIconProps> = ({ symbol, icon, className }) => {
   let type: 'ICON' | 'URL';
   let iconName: IconName | null;
   let url = '';
@@ -26,6 +28,11 @@ export const TokenIcon: FC<TokenIconProps> = ({ symbol, icon }) => {
       iconName = 'aurora';
       break;
     }
+    case 'usn': {
+      type = 'ICON';
+      iconName = 'logoUsn';
+      break;
+    }
     default: {
       type = 'URL';
       iconName = null;
@@ -40,6 +47,7 @@ export const TokenIcon: FC<TokenIconProps> = ({ symbol, icon }) => {
   if (isValid) {
     content = (
       <div
+        data-testid="custom-icon"
         style={{
           backgroundImage: `url(${encodeURI(decodeURIComponent(url))})`,
         }}
@@ -54,7 +62,7 @@ export const TokenIcon: FC<TokenIconProps> = ({ symbol, icon }) => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.iconWrapper}>{content}</div>
+      <div className={cn(styles.iconWrapper, className)}>{content}</div>
     </div>
   );
 };
