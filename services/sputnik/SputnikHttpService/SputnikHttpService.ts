@@ -50,6 +50,7 @@ import {
   ProposalTemplateInput,
   SharedProposalTemplate,
 } from 'types/proposalTemplate';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 class SputnikHttpServiceClass {
   private readonly httpService: HttpService = httpService;
@@ -884,7 +885,19 @@ class SputnikHttpServiceClass {
 
       return response.data.accountId;
     } catch (error) {
-      console.error(error);
+      const { response } = error;
+      let { message } = error;
+
+      if (response?.status === 429) {
+        message =
+          'Due to spam protection no more than 5 messages per minute are allowed.';
+      }
+
+      showNotification({
+        type: NOTIFICATION_TYPES.ERROR,
+        lifetime: 20000,
+        description: message,
+      });
 
       return '';
     }
