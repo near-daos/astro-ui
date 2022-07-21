@@ -2,6 +2,7 @@
 
 import map from 'lodash/map';
 import first from 'lodash/first';
+import { BrowserWallet, WalletSelector } from '@near-wallet-selector/core';
 
 import { ConnectedWalletAccount } from 'near-api-js';
 import { KeyStore } from 'near-api-js/lib/key_stores';
@@ -15,9 +16,12 @@ import { Transaction, SignInOptions, WalletMeta, WalletService } from './types';
 export class WalletSelectorService implements WalletService {
   private wallet: Wallet;
 
+  private selector: WalletSelector;
+
   private walletInfo: WalletMeta;
 
-  constructor(wallet: Wallet) {
+  constructor(wallet: Wallet, selector: WalletSelector) {
+    this.selector = selector;
     this.wallet = wallet;
 
     this.walletInfo =
@@ -86,10 +90,8 @@ export class WalletSelectorService implements WalletService {
     return this.wallet.id as WalletType;
   }
 
-  async isSignedIn(): Promise<boolean> {
-    const accountId = await this.getAccountId();
-
-    return !!accountId;
+  isSignedIn(): Promise<boolean> {
+    return Promise.resolve(this.selector.isSignedIn());
   }
 
   logout(): void {
@@ -116,11 +118,12 @@ export class WalletSelectorService implements WalletService {
     return Promise.resolve([]);
   }
 
-  // Selector wallets are being "signed in" in a different way and do not need
-  // implementation of the method.
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars,class-methods-use-this
   signIn(contractId: string, signInOptions?: SignInOptions): Promise<boolean> {
-    return Promise.resolve(false);
+    const wallet = this.wallet as BrowserWallet;
+
+    wallet.signIn({ contractId, ...signInOptions });
+
+    return Promise.resolve(true);
   }
 
   walletMeta(): WalletMeta {

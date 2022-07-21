@@ -1,58 +1,42 @@
-import first from 'lodash/first';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { GetServerSideProps, NextPage } from 'next';
 import nextI18NextConfig from 'next-i18next.config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import { LoginResponse, WalletType } from 'types/config';
+import { useWallet } from 'context/WalletContext/hooks/useWallet';
 
-import { useWalletContext } from 'context/WalletContext';
+import { configService } from 'services/ConfigService';
 
 const SelectorLogin: NextPage = () => {
   const { query } = useRouter();
-  const { selector, signInSelectorWallet } = useWalletContext();
+  const { currentWallet } = useWallet({ canCreateSelector: true });
 
   useEffect(() => {
-    function callOnLogin(result: LoginResponse = {}) {
+    function callOnLogin() {
       window.close();
 
       if (window.opener?.onLogin) {
-        window.opener?.onLogin(result);
+        window.opener?.onLogin();
       }
     }
 
     async function handleMount() {
-      let accountId;
+      if (currentWallet) {
+        const signedIn = await currentWallet?.isSignedIn();
 
-      if (selector) {
-        try {
-          const wallet = await selector?.wallet();
-
-          const accounts = await wallet?.getAccounts();
-
-          const { accountId: currentAcc = '' } = first(accounts) || {};
-
-          accountId = currentAcc;
-        } catch (e) {
-          // eslint-disable-next-line no-console
-          console.log("Can not get account, but that's ok");
-        }
-
-        if (accountId) {
+        if (signedIn) {
           callOnLogin();
         } else {
-          const { wallet } = query;
+          const { nearConfig } = configService.get();
 
-          signInSelectorWallet(wallet as WalletType).catch((error: Error) => {
-            callOnLogin({ error });
-          });
+          currentWallet.signIn(nearConfig.contractName);
         }
       }
     }
 
     handleMount();
-  }, [query, selector, signInSelectorWallet]);
+  }, [query, currentWallet]);
 
   return null;
 };

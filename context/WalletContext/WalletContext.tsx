@@ -10,9 +10,8 @@ import {
 import get from 'lodash/get';
 import { useBoolean } from 'react-use';
 import { useRouter } from 'next/router';
-import { Account, WalletSelector } from '@near-wallet-selector/core';
 
-import { LoginResponse, WalletType } from 'types/config';
+import { WalletType } from 'types/config';
 import {
   WalletMeta,
   WalletService,
@@ -36,13 +35,11 @@ import {
 import { PkAndSignature } from './types';
 
 import { useWallet } from './hooks/useWallet';
-import { useAvailableAccounts } from './hooks/useAvailableAccounts';
 import { usePkAndSignature } from './hooks/usePkAndSignature';
-import { useSelector } from './hooks/walletSelector/useSelector';
-import { useCanCreateSelector } from './hooks/walletSelector/useCanCreateSelector';
+import { useAvailableAccounts } from './hooks/useAvailableAccounts';
+import { useSelectorLsAccount } from './hooks/walletSelector/useSelectorLsAccount';
 
 export interface WalletContext {
-  selector?: WalletSelector;
   availableWallets: WalletMeta[];
   currentWallet: WalletType | null;
   accountId: string;
@@ -53,7 +50,7 @@ export interface WalletContext {
   switchWallet: (walletType: WalletType) => void;
   availableAccounts: string[];
   pkAndSignature: PkAndSignature | null;
-  signInSelectorWallet: (walletType: WalletType) => Promise<Account[]>;
+  canCreateSelector: boolean;
   // todo get rid of
   nearService: SputnikNearService | null;
 }
@@ -61,28 +58,26 @@ export interface WalletContext {
 const WalletContext = createContext<WalletContext>({} as WalletContext);
 
 export const WrappedWalletContext: FC = ({ children }) => {
+  const { nearConfig } = configService.get();
+
+  const router = useRouter();
+  const [selectorAccountId] = useSelectorLsAccount();
+  const [canCreateSelector, setCanCreateSelector] = useState(
+    !!selectorAccountId
+  );
+
   const {
     getWallet,
     setWallet,
     currentWallet,
     removePersistedWallet,
-  } = useWallet();
-
-  const { nearConfig } = configService.get();
-  const { canCreateSelector, setCanCreateSelector } = useCanCreateSelector();
-
-  const { selector, signInSelectorWallet } = useSelector({
-    setWallet,
-    canCreate: canCreateSelector,
-  });
+  } = useWallet({ canCreateSelector });
 
   const pkAndSignature = usePkAndSignature(currentWallet);
   const availableAccounts = useAvailableAccounts(currentWallet);
   const [currentAccount, setCurrentAccount] = useState('');
 
   const [connectingToWallet, setConnectingToWallet] = useBoolean(false);
-
-  const router = useRouter();
 
   useEffect(() => {
     async function updateAccountId() {
@@ -126,23 +121,11 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
       window.open(`${window.origin}${LOGIN_PAGE}?wallet=${walletId}`, '_blank');
 
-      return new Promise((resolve, reject) => {
-        window.onLogin = async (result: LoginResponse) => {
-          const { error } = result;
+      return new Promise(resolve => {
+        window.onLogin = async () => {
+          setCanCreateSelector(true);
 
-          if (error) {
-            // we might catch an error if unsupported wallet type is provided
-            reject(result);
-          }
-
-          try {
-            setCanCreateSelector(true);
-
-            resolve('');
-          } catch (e) {
-            console.error(e);
-            reject(e);
-          }
+          resolve('');
 
           setConnectingToWallet(false);
         };
@@ -272,14 +255,13 @@ export const WrappedWalletContext: FC = ({ children }) => {
     return {
       login,
       logout,
-      selector,
       switchWallet,
       switchAccount,
       pkAndSignature,
       availableWallets,
       availableAccounts,
+      canCreateSelector,
       connectingToWallet,
-      signInSelectorWallet,
       accountId: currentAccount,
       currentWallet: currentWallet?.getWalletType() ?? null,
       nearService: currentWallet ? new SputnikNearService(currentWallet) : null,
@@ -287,15 +269,14 @@ export const WrappedWalletContext: FC = ({ children }) => {
   }, [
     login,
     logout,
-    selector,
     switchWallet,
     switchAccount,
     currentWallet,
     pkAndSignature,
     currentAccount,
     availableAccounts,
+    canCreateSelector,
     connectingToWallet,
-    signInSelectorWallet,
   ]);
 
   return (

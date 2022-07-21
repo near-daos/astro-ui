@@ -12,6 +12,12 @@ import { CookieService } from 'services/CookieService';
 import { initNearWallet } from 'context/WalletContext/utils/initNearWallet';
 import { initSenderWallet } from 'context/WalletContext/utils/initSenderWallet';
 
+import { useSelector } from './walletSelector/useSelector';
+
+type Props = {
+  canCreateSelector: boolean;
+};
+
 type ReturnVal = {
   removePersistedWallet: () => void;
   currentWallet: WalletService | null;
@@ -19,8 +25,10 @@ type ReturnVal = {
   getWallet: (walletType: WalletType) => Promise<WalletService | undefined>;
 };
 
-export const useWallet = (): ReturnVal => {
+export const useWallet = (props: Props): ReturnVal => {
   const router = useRouter();
+
+  const { canCreateSelector } = props;
 
   const [
     persistedWallet,
@@ -59,6 +67,8 @@ export const useWallet = (): ReturnVal => {
     },
     [setPersistedWallet]
   );
+
+  useSelector({ setWallet, canCreateSelector });
 
   useEffect(() => {
     async function initWallet() {

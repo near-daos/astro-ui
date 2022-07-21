@@ -1,5 +1,3 @@
-import { WalletSelector } from '@near-wallet-selector/core';
-
 export type Config = {
   AWS_BUCKET: string;
   AWS_REGION: string;
@@ -29,8 +27,3 @@ export enum WalletType {
   SELECTOR_NEAR = 'near-wallet',
   SELECTOR_SENDER = 'sender',
 }
-
-export type LoginResponse = {
-  error?: Error;
-  selector?: WalletSelector;
-};

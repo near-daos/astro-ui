@@ -1,18 +1,13 @@
 import {
-  Account,
   NetworkId,
-  BrowserWallet,
   WalletSelector,
   setupWalletSelector,
 } from '@near-wallet-selector/core';
-import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 import { setupSender } from '@near-wallet-selector/sender';
 import { setupNearWallet } from '@near-wallet-selector/near-wallet';
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet';
-
-import { WalletType } from 'types/config';
-
-import { isSelectorWalletType } from 'utils/isSelectorWalletType';
 
 import { configService } from 'services/ConfigService';
 import { WalletService } from 'services/sputnik/SputnikNearService/walletServices/types';
@@ -22,11 +17,10 @@ import { useTrackSelectorAccount } from './useTrackSelectorAccount';
 
 type ReturnType = {
   selector?: WalletSelector;
-  signInSelectorWallet: (walletType: WalletType) => Promise<Account[]>;
 };
 
 type InputProps = {
-  canCreate: boolean;
+  canCreateSelector: boolean;
   setWallet: (wallet: WalletService) => void;
 };
 
@@ -51,9 +45,11 @@ type InputProps = {
  * will stop working.
  */
 export function useSelector(props: InputProps): ReturnType {
+  const { query } = useRouter();
+
   const { nearConfig } = configService.get();
 
-  const { canCreate, setWallet } = props;
+  const { setWallet, canCreateSelector } = props;
 
   const [selector, setSelector] = useState<WalletSelector>();
 
@@ -68,10 +64,10 @@ export function useSelector(props: InputProps): ReturnType {
       });
 
       try {
-        const wallet = await s.wallet();
+        const wallet = await s.wallet(query.wallet as string);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const walletService = new WalletSelectorService(wallet);
+        const walletService = new WalletSelectorService(wallet, s);
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -83,34 +79,12 @@ export function useSelector(props: InputProps): ReturnType {
       setSelector(s);
     }
 
-    if (canCreate) {
+    if (canCreateSelector) {
       createSelector();
     }
-  }, [setWallet, canCreate, nearConfig.networkId]);
-
-  const signInSelectorWallet = useCallback(
-    async (walletType: WalletType) => {
-      if (!isSelectorWalletType(walletType)) {
-        throw new Error(
-          `Wrong wallet type provided to wallet selector: ${walletType}`
-        );
-      }
-
-      const wallet = (await selector?.wallet(
-        walletType as string
-      )) as BrowserWallet;
-
-      const result = await wallet?.signIn({
-        contractId: nearConfig.contractName,
-      });
-
-      return result;
-    },
-    [selector, nearConfig]
-  );
+  }, [query, setWallet, canCreateSelector, nearConfig.networkId]);
 
   return {
     selector,
-    signInSelectorWallet,
   };
 }
