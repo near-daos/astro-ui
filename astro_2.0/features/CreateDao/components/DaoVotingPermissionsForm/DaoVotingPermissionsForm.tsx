@@ -55,7 +55,7 @@ export const DaoVotingPermissionsForm: VFC = () => {
                 name: role.name,
                 slug: role?.slug,
                 permissions: ['*:*'],
-                kind: 'Group',
+                kind: { Group: [] },
               })),
             },
           })

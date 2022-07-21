@@ -4,6 +4,7 @@ import { ProposalAction } from 'types/role';
 import { ProposalType, ProposalVotingPermissions } from 'types/proposal';
 import { DAO } from 'types/dao';
 import { useMountedState } from 'react-use';
+import { isGroupKind } from 'services/sputnik/mappers';
 
 const APP_TO_CONTRACT_PROPOSAL_TYPE = {
   [ProposalType.ChangeConfig]: 'config',
@@ -47,8 +48,10 @@ export function useGetVotePermissions(
     }
 
     if (accountId && dao) {
-      const groupRole = dao.policy.roles.filter(({ kind, accountIds }) => {
-        return kind === 'Group' && accountIds?.includes(accountId);
+      const groupRole = dao.policy.roles.filter(role => {
+        const { accountIds } = role;
+
+        return isGroupKind(role) && accountIds?.includes(accountId);
       });
 
       const perms = groupRole.reduce(

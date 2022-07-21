@@ -12,6 +12,7 @@ import {
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
 import { objectKeys } from 'utils/objects';
 import { useFlags } from 'launchdarkly-react-client-sdk';
+import { isMemberKind } from 'services/sputnik/mappers';
 
 export function useDelegatePageData(
   dao: DAO
@@ -258,7 +259,7 @@ export function useVotingPolicyDetails(
   }, [nearService]);
 
   const holdersRole = dao.policy.roles.find(
-    role => role.kind === 'Member' && role.name === 'TokenHolders'
+    role => isMemberKind(role) && role.name === 'TokenHolders'
   );
 
   if (!holdersRole) {

@@ -7,6 +7,7 @@ import {
 } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 import { ProposalType } from 'types/proposal';
 import { getClient } from 'utils/launchdarkly-server-client';
+import { isMemberKind } from 'services/sputnik/mappers';
 
 interface GetDaoListProps {
   sort?: string;
@@ -75,7 +76,7 @@ export async function getDaoContext(
   let userHasDelegatedTokens = false;
   const userDelegation = delegations.find(item => item.accountId === accountId);
   const holdersRole = dao.policy.roles.find(
-    role => role.kind === 'Member' && role.name === 'TokenHolders'
+    role => isMemberKind(role) && role.name === 'TokenHolders'
   );
 
   if (

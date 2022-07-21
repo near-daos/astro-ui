@@ -67,7 +67,7 @@ export const daoMock = ({
         updatedAt: '2022-01-13T22:39:52.173Z',
         id: 'default-flag-test.sputnikv2.testnet-Everyone',
         name: 'Everyone',
-        kind: 'Group',
+        kind: { Group: ['alexeysputnik.testnet'] },
         balance: null,
         accountIds: ['alexeysputnik.testnet'],
         permissions: [
