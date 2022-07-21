@@ -58,12 +58,6 @@
     font-weight: 400;
   }
 
-  &.noWrap {
-    @include ellipse-text;
-    max-width: 200px;
-    width: 100%;
-  }
-
   .ellipse {
     @include ellipse-text;
     display: block;
