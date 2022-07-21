@@ -101,7 +101,7 @@ const CfcLibraryPage: NextPage<Props> = ({ accountDaos }) => {
         <title>DAO Custom FC Templates</title>
       </Head>
       <div className={styles.header}>
-        <h1>{t('cfcLibrary')}</h1>
+        <h1>{t('actionsLibrary')}</h1>
         <p className={styles.description}>{t('cfcLibraryDesc')}</p>
         <SearchInput
           onSubmit={handleSearch}

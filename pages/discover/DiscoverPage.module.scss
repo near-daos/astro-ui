@@ -40,18 +40,25 @@
 }
 
 .row {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
   width: 100%;
+
+  @media (max-width: 1125px) {
+    align-items: flex-start;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+  }
 }
 
 .titleWrapper {
   align-items: center;
   display: flex;
 
-  @include tablet-portrait {
-    flex-direction: row;
-    margin-right: 24px;
+  @media (max-width: 1125px) {
+    justify-content: space-between;
+    width: 100%;
   }
 }
 
@@ -65,6 +72,13 @@
 
   @include tablet-landscape {
     margin-top: unset;
+  }
+
+  @media (max-width: 1125px) {
+    margin-left: 0;
+    margin-top: 24px;
+    max-width: unset;
+    width: 100%;
   }
 }
 
