@@ -91,37 +91,37 @@ jobs:
             --set ingress.host=${K8S_INGRESS_HOST}
 
 
-  run-autotests:
-    name: Run Autotests
-    needs:
-    - build-deploy
-    - get-environment
-    if: needs.get-environment.outputs.environment == 'test'
-    uses: near-daos/astro-ui/.github/workflows/run-autotests.yaml@develop
-    with:
-      environment: test
-      tags: smoke
-      browser: chrome
-    secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-      TEST_REPO_TOKEN: ${{ secrets.TEST_REPO_TOKEN }}
-
-  build-deploy-storybook:
-    runs-on: ubuntu-latest
-    if: needs.get-environment.outputs.environment == 'test'
-    name: Build Deploy Storybook
-    needs:
-    - get-environment
-    environment:
-      name: ${{ needs.get-environment.outputs.environment }}
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set Environment
-      run: |
-        echo DOCKER_ENV_TAG=${{ needs.get-environment.outputs.environment }}-$GITHUB_SHA >> $GITHUB_ENV
-        cat ".github/env.common" >>$GITHUB_ENV
-        cat ".github/env.${{ needs.get-environment.outputs.environment }}" >>$GITHUB_ENV
-    - name: Build Deploy Storybook
-      uses: ./.github/actions/build-deploy-storybook
+#  run-autotests:
+#    name: Run Autotests
+#    needs:
+#    - build-deploy
+#    - get-environment
+#    if: needs.get-environment.outputs.environment == 'test'
+#    uses: near-daos/astro-ui/.github/workflows/run-autotests.yaml@develop
+#    with:
+#      environment: test
+#      tags: smoke
+#      browser: chrome
+#    secrets:
+#      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+#      TEST_REPO_TOKEN: ${{ secrets.TEST_REPO_TOKEN }}
+#
+#  build-deploy-storybook:
+#    runs-on: ubuntu-latest
+#    if: needs.get-environment.outputs.environment == 'test'
+#    name: Build Deploy Storybook
+#    needs:
+#    - get-environment
+#    environment:
+#      name: ${{ needs.get-environment.outputs.environment }}
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Set Environment
+#      run: |
+#        echo DOCKER_ENV_TAG=${{ needs.get-environment.outputs.environment }}-$GITHUB_SHA >> $GITHUB_ENV
+#        cat ".github/env.common" >>$GITHUB_ENV
+#        cat ".github/env.${{ needs.get-environment.outputs.environment }}" >>$GITHUB_ENV
+#    - name: Build Deploy Storybook
+#      uses: ./.github/actions/build-deploy-storybook

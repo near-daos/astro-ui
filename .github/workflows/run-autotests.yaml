@@ -1,5 +1,7 @@
 name: Run Autotests
 on:
+  schedule:
+  - cron: '0 3 * * *'
   workflow_dispatch:
     inputs:
       environment:
@@ -97,7 +99,7 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: -n sputnik-v2-development get pods --selector=app.kubernetes.io/instance=automation-report -o jsonpath='{.items[0].metadata.name}'
+        args: -n autotests get pods --selector=app.kubernetes.io/instance=automation-report -o jsonpath='{.items[0].metadata.name}'
 
     - name: Clean Output
       id: get_pod
@@ -130,13 +132,13 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: cp -n sputnik-v2-development astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }} ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ steps.set_environment.outputs.environment }}
+        args: cp -n autotests astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }} ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ steps.set_environment.outputs.environment }}
 
     - uses: Consensys/kubernetes-action@1.1.0
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: cp -n sputnik-v2-development astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/allure-report/history ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ steps.set_environment.outputs.environment }}/history
+        args: cp -n autotests astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/allure-report/history ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ steps.set_environment.outputs.environment }}/history
 
     - name: Add Annotation
       run: |
