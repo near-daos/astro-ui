@@ -77,6 +77,7 @@ export const VoteTimeline: FC<VoteTimelineProps> = ({
                   : ''
               }
               name={voteAction?.action?.accountId || ''}
+              hash={voteAction?.action?.transactionHash}
             />
           ))}
       </div>
