@@ -11,7 +11,6 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { useAsyncFn, useMountedState } from 'react-use';
 import { useSocket } from 'context/SocketContext';
 import { useWalletContext } from 'context/WalletContext';
-import { useTranslation } from 'next-i18next';
 
 export function useProposalComments(
   proposalId: string,
@@ -23,8 +22,7 @@ export function useProposalComments(
   reportComment: (params: ReportCommentsInput) => void;
   deleteComment: (commentId: number, reason: string) => void;
 } {
-  const { accountId, nearService } = useWalletContext();
-  const { t } = useTranslation();
+  const { accountId, nearService, pkAndSignature } = useWalletContext();
   const { socket } = useSocket();
   const isMounted = useMountedState();
   const [comments, setComments] = useState<ProposalComment[] | null>(null);
@@ -47,33 +45,22 @@ export function useProposalComments(
 
   const [{ loading: uploading }, sendComment] = useAsyncFn(
     async params => {
-      try {
-        const publicKey = await nearService?.getPublicKey();
-        const signature = await nearService?.getSignature();
+      if (!pkAndSignature) {
+        return;
+      }
 
-        if (publicKey && signature && accountId) {
-          await SputnikHttpService.sendProposalComment({
-            ...params,
-            accountId,
-            publicKey,
-            signature,
-          });
-        }
-      } catch (err) {
-        let { message } = err;
+      const { publicKey, signature } = pkAndSignature;
 
-        if (err.response.status === 429) {
-          message = t('comments.commentsSpamProtection');
-        }
-
-        showNotification({
-          type: NOTIFICATION_TYPES.ERROR,
-          lifetime: 20000,
-          description: message,
+      if (publicKey && signature && accountId) {
+        await SputnikHttpService.sendProposalComment({
+          ...params,
+          accountId,
+          publicKey,
+          signature,
         });
       }
     },
-    [proposalId, nearService]
+    [proposalId, pkAndSignature]
   );
 
   const [, reportComment] = useAsyncFn(
