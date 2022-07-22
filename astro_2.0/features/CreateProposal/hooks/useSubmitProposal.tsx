@@ -283,6 +283,8 @@ export function useSubmitProposal({
             if (onCreate && isMounted()) {
               onCreate(null);
             }
+          } finally {
+            onClose();
           }
         }
       }
