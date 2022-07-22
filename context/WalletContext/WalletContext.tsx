@@ -82,7 +82,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
         return;
       }
 
-      signIn(wallet, nearConfig.contractName);
+      await signIn(wallet, nearConfig.contractName);
     },
     [getWallet, nearConfig.contractName, signIn]
   );
