@@ -91,7 +91,7 @@ export const TopicsFilter: FC = () => {
           })}
           onClick={() => handleToggle('overview', DaoStatsTopics.GENERAL_INFO)}
         >
-          {t('discover.overview')}
+          {t('discover.daoActivity')}
         </Button>
         <Button
           variant="tertiary"
