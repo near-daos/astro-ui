@@ -5,6 +5,7 @@ import { useAsyncFn, useMountedState } from 'react-use';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useMemo, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'next-i18next';
+import Head from 'next/head';
 
 // Types
 import { DAO, DaoFeedItem } from 'types/dao';
@@ -254,6 +255,11 @@ export const FeedProposals = ({
 
   return (
     <main className={cn(styles.root, className)}>
+      <Head>
+        <title>
+          DAO Proposals - {status} - {queries.category}
+        </title>
+      </Head>
       <HeaderWithFilter
         classNameContainer={styles.headerWithFilterContainer}
         title={renderTitle()}

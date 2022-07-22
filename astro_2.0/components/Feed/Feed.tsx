@@ -1,6 +1,5 @@
 import React from 'react';
 import cn from 'classnames';
-import Head from 'next/head';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -47,10 +46,6 @@ export const Feed = <T,>({
 
   return (
     <div className={cn(styles.root, className)}>
-      <Head>
-        <title>Astro</title>
-        <meta name="viewport" content="width=device-width, minimum-scale=1" />
-      </Head>
       <InfiniteScroll
         dataLength={data.data.length}
         next={loadMore}
