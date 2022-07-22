@@ -33,7 +33,7 @@ export const DraftManagement: FC<DraftManagementProps> = ({
 
   return (
     <div className={styles.draftManagement}>
-      {state !== 'closed' ? (
+      {state !== 'closed' && dao?.daoMembersList.includes(accountId) ? (
         <>
           <Button
             disabled={disabled}
