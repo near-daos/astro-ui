@@ -99,15 +99,18 @@ const DiscoverPage: NextPage = () => {
       <Head>
         <title>Discovery</title>
       </Head>
+
       <div className={styles.root}>
         <div className={styles.header}>
           <div className={styles.row}>
             <div className={styles.titleWrapper}>
-              <h1 className={styles.title}>{t('discover.title')}</h1>
+              <h1 className={styles.title}>{t('daosAndUsers')}</h1>
+
               <Button variant="black" size="small" onClick={handleCreateDao}>
                 {t('createNewDao')}
               </Button>
             </div>
+
             <SearchInput
               key={searchQuery.dao}
               placeholder="Search DAO name"
@@ -131,11 +134,14 @@ const DiscoverPage: NextPage = () => {
               }}
             />
           </div>
+
           <SelectedDaoDetails />
         </div>
+
         <div className={styles.sidebar}>
           <TopicsFilter />
         </div>
+
         <div className={styles.body}>
           <ContentPanel title={t(`discover.${topic}`)}>
             <DiscoverPageProvider>{renderContent()}</DiscoverPageProvider>
