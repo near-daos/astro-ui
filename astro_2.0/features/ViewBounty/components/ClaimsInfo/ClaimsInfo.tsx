@@ -32,6 +32,7 @@ export const ClaimsInfo: FC<ClaimsInfoProps> = ({ bounty }) => {
             data={item}
             doneProposals={bounty.bountyDoneProposals}
             maxDeadline={bounty.maxDeadline}
+            className={styles.card}
           />
         ))}
       </div>
