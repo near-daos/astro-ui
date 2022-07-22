@@ -1,14 +1,13 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 
-import { Icon } from 'components/Icon';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 
 import { Tokens } from 'context/CustomTokensContext';
 import { formatYoktoValue, kFormatter } from 'utils/format';
-import { useIsValidImage } from 'hooks/useIsValidImage';
 
 import { Tooltip } from 'astro_2.0/components/Tooltip';
+import { TokenIcon } from 'astro_2.0/components/TokenIcon';
 
 import styles from './AmountContent.module.scss';
 
@@ -26,28 +25,6 @@ export const AmountContent: FC<AmountContentProps> = ({
 }) => {
   const tokenData = token ? tokens[token] : tokens.NEAR;
 
-  const isValid = useIsValidImage(tokenData?.icon);
-
-  function renderIcon() {
-    if (tokenData?.symbol === 'NEAR') {
-      return <Icon name="tokenNearBig" />;
-    }
-
-    if (isValid) {
-      return (
-        <div
-          style={{
-            backgroundImage: `url(${tokenData.icon})`,
-          }}
-          className={styles.icon}
-          data-testid="custom-icon"
-        />
-      );
-    }
-
-    return <div className={styles.icon} />;
-  }
-
   return (
     <div className={styles.root}>
       <span className={styles.item}>
@@ -64,7 +41,11 @@ export const AmountContent: FC<AmountContentProps> = ({
                 )}
               </div>
             </Tooltip>
-            <div className={styles.iconWrapper}>{renderIcon()}</div>
+            <TokenIcon
+              symbol={tokenData?.symbol}
+              icon={tokenData?.icon}
+              className={styles.iconWrapper}
+            />
             <Tooltip
               overlay={<span>{tokenData.symbol || 'NEAR'}</span>}
               className={styles.label}

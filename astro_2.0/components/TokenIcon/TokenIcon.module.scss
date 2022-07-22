@@ -2,23 +2,23 @@
   align-items: center;
   display: flex;
   grid-area: icon;
+}
 
-  .iconWrapper {
-    height: 32px;
-    width: 32px;
-  }
+.iconWrapper {
+  height: 32px;
+  width: 32px;
+}
 
-  .iconWrapper svg {
-    color: var(--color-brand-black);
-  }
+.iconWrapper svg {
+  color: var(--color-brand-black);
+}
 
-  .icon {
-    background-color: var(--color-brand-black);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-radius: 50%;
-    height: 100%;
-    width: 100%;
-  }
+.icon {
+  background-color: var(--color-brand-black);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
 }
