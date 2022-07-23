@@ -157,11 +157,11 @@
   ) !important;
 }
 
-
 .inputWrapper {
-  justify-content: space-between;
-  grid-area: title;
-  display: flex;
   align-items: center;
+  display: flex;
+  gap: 6px;
+  grid-area: title;
+  justify-content: flex-start;
   overflow: hidden;
 }
