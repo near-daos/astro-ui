@@ -12,13 +12,16 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   CookieService.initServerSideCookies(req?.headers.cookie || null);
 
-  const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
+  const accountId = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
   const daoId = query.dao as string;
 
-  const daoContext = await getDaoContext(account, daoId as string);
+  const daoContext = await getDaoContext(accountId, daoId as string);
 
-  if (!daoContext) {
+  if (
+    !daoContext ||
+    !daoContext.dao?.daoMembersList.includes(accountId || '')
+  ) {
     return {
       notFound: true,
     };

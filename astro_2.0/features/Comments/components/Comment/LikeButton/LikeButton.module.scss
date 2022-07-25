@@ -19,3 +19,8 @@
 .dislikeIcon {
   transform: rotate(180deg);
 }
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

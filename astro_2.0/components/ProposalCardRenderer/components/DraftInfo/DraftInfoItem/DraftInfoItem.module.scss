@@ -22,4 +22,8 @@
   font-family: var(--font-family-primary);
   font-size: 16px;
   padding: 0;
+
+  &:disabled {
+    pointer-events: none;
+  }
 }

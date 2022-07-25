@@ -608,7 +608,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
             onEditDraft={handleEditDraft}
             dao={dao}
           />
-          <DraftInfo saves={saves || 0} isSaved={Boolean(isSaved)} />
+          <DraftInfo dao={dao} saves={saves || 0} isSaved={Boolean(isSaved)} />
         </div>
       );
     }

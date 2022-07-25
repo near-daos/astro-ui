@@ -60,6 +60,7 @@ $border-radius: 3px;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   display: flex;
+  gap: 12px;
   height: 40px + $gap * 2;
   justify-content: flex-end;
   padding: 0 12px;
