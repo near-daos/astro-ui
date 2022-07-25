@@ -45,15 +45,29 @@ export const DraftInfo: FC<DraftInfoProps> = ({
     }
 
     try {
-      const { data } = await draftsService.updateDraftSave({
-        id: draftId,
-        publicKey,
-        signature,
-        accountId,
-      });
+      let response;
 
-      setSavedDraft(data);
-      setSavesCount(data ? savesCount + 1 : savesCount);
+      if (isSavedDraft) {
+        response = await draftsService.deleteDraftSave({
+          id: draftId,
+          publicKey,
+          signature,
+          accountId,
+        });
+
+        setSavesCount(response.data ? savesCount - 1 : savesCount);
+        setSavedDraft(false);
+      } else {
+        response = await draftsService.updateDraftSave({
+          id: draftId,
+          publicKey,
+          signature,
+          accountId,
+        });
+
+        setSavesCount(response.data ? savesCount + 1 : savesCount);
+        setSavedDraft(true);
+      }
     } catch (e) {
       showNotification({
         type: NOTIFICATION_TYPES.ERROR,
@@ -61,7 +75,15 @@ export const DraftInfo: FC<DraftInfoProps> = ({
         description: e?.message,
       });
     }
-  }, [accountId, draftId, draftsService, pkAndSignature, savesCount]);
+  }, [
+    accountId,
+    draftId,
+    draftsService,
+    isSavedDraft,
+    pkAndSignature,
+    savesCount,
+  ]);
+
   const disabled = !dao?.daoMembersList.includes(accountId);
 
   return (
@@ -74,8 +96,7 @@ export const DraftInfo: FC<DraftInfoProps> = ({
           className={styles.draftInfoItem}
         />
         <DraftInfoItem
-          disabled={disabled}
-          onClick={!isSavedDraft ? () => handlerSaveDraft() : undefined}
+          onClick={() => handlerSaveDraft()}
           iconName={isSavedDraft ? 'draftBookmarkFulfill' : 'draftBookmark'}
           count={savesCount}
           className={styles.draftInfoItem}

@@ -126,6 +126,23 @@ export class DraftsService {
     });
   }
 
+  public async deleteDraftSave(
+    params: {
+      id: string;
+      accountId: string;
+    } & Authorization
+  ): Promise<AxiosResponse<boolean>> {
+    return this.httpService.delete(
+      `/draft-proposals/${params.id}/save`,
+      params,
+      {
+        queryRequest: {
+          name: API_QUERIES.ADD_AUTHORIZATION,
+        },
+      }
+    );
+  }
+
   public async updateDraftClose(
     params: {
       id: string;
