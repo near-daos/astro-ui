@@ -15,7 +15,7 @@ import { initSenderWallet } from 'context/WalletContext/utils/initSenderWallet';
 import { useSelector } from './walletSelector/useSelector';
 
 type Props = {
-  canCreateSelector: boolean;
+  setConnectingToWallet: (connecting: boolean) => void;
 };
 
 type ReturnVal = {
@@ -23,12 +23,13 @@ type ReturnVal = {
   currentWallet: WalletService | null;
   setWallet: (walletService: WalletService) => void;
   getWallet: (walletType: WalletType) => Promise<WalletService | undefined>;
+  initiateSignInSelectorWallets: (walletId: WalletType) => Promise<unknown>;
 };
 
 export const useWallet = (props: Props): ReturnVal => {
   const router = useRouter();
 
-  const { canCreateSelector } = props;
+  const { setConnectingToWallet } = props;
 
   const [
     persistedWallet,
@@ -68,7 +69,10 @@ export const useWallet = (props: Props): ReturnVal => {
     [setPersistedWallet]
   );
 
-  useSelector({ setWallet, canCreateSelector });
+  const { initiateSignInSelectorWallets } = useSelector({
+    setWallet,
+    setConnectingToWallet,
+  });
 
   useEffect(() => {
     async function initWallet() {
@@ -97,5 +101,6 @@ export const useWallet = (props: Props): ReturnVal => {
     setWallet,
     currentWallet,
     removePersistedWallet,
+    initiateSignInSelectorWallets,
   };
 };

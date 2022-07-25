@@ -26,7 +26,6 @@ import { ConnectingWalletModal } from 'astro_2.0/features/Auth/components/Connec
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 import { isSelectorWalletType } from 'utils/isSelectorWalletType';
 
-import { LOGIN_PAGE } from 'constants/routing';
 import {
   NEAR_WALLET_METADATA,
   SENDER_WALLET_METADATA,
@@ -37,7 +36,6 @@ import { PkAndSignature } from './types';
 import { useWallet } from './hooks/useWallet';
 import { usePkAndSignature } from './hooks/usePkAndSignature';
 import { useAvailableAccounts } from './hooks/useAvailableAccounts';
-import { useSelectorLsAccount } from './hooks/walletSelector/useSelectorLsAccount';
 
 export interface WalletContext {
   availableWallets: WalletMeta[];
@@ -50,7 +48,6 @@ export interface WalletContext {
   switchWallet: (walletType: WalletType) => void;
   availableAccounts: string[];
   pkAndSignature: PkAndSignature | null;
-  canCreateSelector: boolean;
   // todo get rid of
   nearService: SputnikNearService | null;
 }
@@ -61,23 +58,20 @@ export const WrappedWalletContext: FC = ({ children }) => {
   const { nearConfig } = configService.get();
 
   const router = useRouter();
-  const [selectorAccountId] = useSelectorLsAccount();
-  const [canCreateSelector, setCanCreateSelector] = useState(
-    !!selectorAccountId
-  );
+
+  const [connectingToWallet, setConnectingToWallet] = useBoolean(false);
 
   const {
     getWallet,
     setWallet,
     currentWallet,
     removePersistedWallet,
-  } = useWallet({ canCreateSelector });
+    initiateSignInSelectorWallets,
+  } = useWallet({ setConnectingToWallet });
 
   const pkAndSignature = usePkAndSignature(currentWallet);
   const availableAccounts = useAvailableAccounts(currentWallet);
   const [currentAccount, setCurrentAccount] = useState('');
-
-  const [connectingToWallet, setConnectingToWallet] = useBoolean(false);
 
   useEffect(() => {
     async function updateAccountId() {
@@ -115,29 +109,10 @@ export const WrappedWalletContext: FC = ({ children }) => {
     [setWallet, setConnectingToWallet]
   );
 
-  const initiateSignInSelectorWallets = useCallback(
-    (walletId: WalletType) => {
-      setConnectingToWallet(true);
-
-      window.open(`${window.origin}${LOGIN_PAGE}?wallet=${walletId}`, '_blank');
-
-      return new Promise(resolve => {
-        window.onLogin = async () => {
-          setCanCreateSelector(true);
-
-          resolve('');
-
-          setConnectingToWallet(false);
-        };
-      });
-    },
-    [setCanCreateSelector, setConnectingToWallet]
-  );
-
   const login = useCallback(
     async (walletType: WalletType) => {
       if (isSelectorWalletType(walletType)) {
-        initiateSignInSelectorWallets(walletType);
+        await initiateSignInSelectorWallets(walletType);
       } else {
         const wallet = await getWallet(walletType);
 
@@ -145,7 +120,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
           return;
         }
 
-        signIn(wallet, nearConfig.contractName);
+        await signIn(wallet, nearConfig.contractName);
       }
     },
     [signIn, getWallet, nearConfig.contractName, initiateSignInSelectorWallets]
@@ -260,7 +235,6 @@ export const WrappedWalletContext: FC = ({ children }) => {
       pkAndSignature,
       availableWallets,
       availableAccounts,
-      canCreateSelector,
       connectingToWallet,
       accountId: currentAccount,
       currentWallet: currentWallet?.getWalletType() ?? null,
@@ -275,7 +249,6 @@ export const WrappedWalletContext: FC = ({ children }) => {
     pkAndSignature,
     currentAccount,
     availableAccounts,
-    canCreateSelector,
     connectingToWallet,
   ]);
 

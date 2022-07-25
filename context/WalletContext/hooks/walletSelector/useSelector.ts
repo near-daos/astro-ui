@@ -4,24 +4,30 @@ import {
   setupWalletSelector,
 } from '@near-wallet-selector/core';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { setupSender } from '@near-wallet-selector/sender';
 import { setupNearWallet } from '@near-wallet-selector/near-wallet';
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet';
+
+import { WalletType } from 'types/config';
+
+import { LOGIN_PAGE } from 'constants/routing';
 
 import { configService } from 'services/ConfigService';
 import { WalletService } from 'services/sputnik/SputnikNearService/walletServices/types';
 import { WalletSelectorService } from 'services/sputnik/SputnikNearService/walletServices/WalletSelectorService';
 
 import { useTrackSelectorAccount } from './useTrackSelectorAccount';
+import { useSelectorLsAccount } from './useSelectorLsAccount';
+
+type InputProps = {
+  setWallet: (wallet: WalletService) => void;
+  setConnectingToWallet: (connecting: boolean) => void;
+};
 
 type ReturnType = {
   selector?: WalletSelector;
-};
-
-type InputProps = {
-  canCreateSelector: boolean;
-  setWallet: (wallet: WalletService) => void;
+  initiateSignInSelectorWallets: (walletId: WalletType) => Promise<unknown>;
 };
 
 /**
@@ -45,13 +51,17 @@ type InputProps = {
  * will stop working.
  */
 export function useSelector(props: InputProps): ReturnType {
-  const { query } = useRouter();
+  const { query, pathname } = useRouter();
 
   const { nearConfig } = configService.get();
 
-  const { setWallet, canCreateSelector } = props;
+  const { setWallet, setConnectingToWallet } = props;
 
   const [selector, setSelector] = useState<WalletSelector>();
+  const [selectorAccountId] = useSelectorLsAccount();
+  const [canCreateSelector, setCanCreateSelector] = useState(
+    !!selectorAccountId || pathname === LOGIN_PAGE
+  );
 
   useTrackSelectorAccount(selector);
 
@@ -84,7 +94,27 @@ export function useSelector(props: InputProps): ReturnType {
     }
   }, [query, setWallet, canCreateSelector, nearConfig.networkId]);
 
+  const initiateSignInSelectorWallets = useCallback(
+    (walletId: WalletType) => {
+      setConnectingToWallet(true);
+
+      window.open(`${window.origin}${LOGIN_PAGE}?wallet=${walletId}`, '_blank');
+
+      return new Promise(resolve => {
+        window.onLogin = async () => {
+          setCanCreateSelector(true);
+
+          resolve('');
+
+          setConnectingToWallet(false);
+        };
+      });
+    },
+    [setCanCreateSelector, setConnectingToWallet]
+  );
+
   return {
     selector,
+    initiateSignInSelectorWallets,
   };
 }

@@ -10,7 +10,9 @@ import { configService } from 'services/ConfigService';
 
 const SelectorLogin: NextPage = () => {
   const { query } = useRouter();
-  const { currentWallet } = useWallet({ canCreateSelector: true });
+  const { currentWallet } = useWallet({
+    setConnectingToWallet: () => 0,
+  });
 
   useEffect(() => {
     function callOnLogin() {
