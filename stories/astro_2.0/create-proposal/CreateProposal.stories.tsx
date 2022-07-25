@@ -110,7 +110,7 @@ Template.args = {
           createdAt: '2021-10-22T12:46:32.885Z',
           id: 'saturn.sputnikv2.testnet-Council',
           name: 'Council',
-          kind: { Group: ['anima.testnet', 'animatronic.testnet'] },
+          kind: 'Group',
           balance: null,
           accountIds: ['anima.testnet', 'animatronic.testnet'],
           permissions: [

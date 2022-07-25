@@ -1,7 +1,6 @@
 import uniq from 'lodash/uniq';
 import { useRouter } from 'next/router';
 import React, { VFC, useState, useCallback } from 'react';
-import { useMountedState } from 'react-use';
 
 // Types
 import { DaoContext } from 'types/context';
@@ -56,8 +55,6 @@ export const GroupsPageContent: VFC<GroupsPageContentProps> = ({
     dao,
     userPermissions: { isCanCreateProposals, allowedProposalsToCreate },
   } = daoContext;
-
-  const isMounted = useMountedState();
 
   const { data: delegations } = useDelegatePageData(daoContext.dao);
   const { balance } = useVotingPolicyDetails(daoContext.dao);
@@ -118,11 +115,7 @@ export const GroupsPageContent: VFC<GroupsPageContentProps> = ({
           options={sortOptions}
           value={activeSort}
           defaultValue={activeSort}
-          onChange={value => {
-            if (isMounted()) {
-              setActiveSort(value ?? sortOptions[0].value);
-            }
-          }}
+          onChange={value => setActiveSort(value ?? sortOptions[0].value)}
         />
       </div>
       <div className={styles.content}>
