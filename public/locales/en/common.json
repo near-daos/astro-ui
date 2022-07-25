@@ -543,6 +543,8 @@
         "selectToken": "Select Token",
         "deployStakingContract": "Deploy Staking Contract",
         "acceptStakingContract": "Adopt Staking Contract",
+        "proposalCreation": "Proposal Creation",
+        "votingPermissions": "Voting Permissions",
         "stakeTokens": "Stake tokens",
         "delegateVoting": "Delegate Voting"
       }
