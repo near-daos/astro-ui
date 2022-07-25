@@ -104,13 +104,12 @@ export function useProposalVotingDetails(
     };
 
     dao.policy.roles.forEach(role => {
-      if (role.kind !== 'Member' && role.kind !== 'Everyone') {
+      if (role.kind === 'Group') {
         const val = role.votePolicy.policy
           ? formatPolicyRatio(role.votePolicy.policy)
           : formatPolicyRatio(dao.policy.defaultVotePolicy);
 
-        const kind = role.kind as { Group: string[] };
-        const totalGroupMembers = kind.Group.length;
+        const totalGroupMembers = role.accountIds?.length ?? 0;
         const votesToPass = Math.ceil((totalGroupMembers * val) / 100);
 
         result[role.name] = {
