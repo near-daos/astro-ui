@@ -32,9 +32,8 @@ export const useSubmitPatchDraft = ({
             id: draftId,
             title: data.title as string,
             description: data.description as string,
-            hashtags: (data.hashtags as Hashtag[]).map(
-              hashtag => hashtag.value
-            ),
+            hashtags:
+              (data.hashtags as Hashtag[])?.map(hashtag => hashtag.value) ?? [],
             daoId,
             kind: proposal?.kind,
             type: proposal?.kind.type || ProposalType.AddBounty,
