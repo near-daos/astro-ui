@@ -164,7 +164,7 @@ const dao = {
         updatedAt: '2021-11-02T14:02:04.271Z',
         id: 'testdao3-near-cli-example.sputnikv2.testnet-Council',
         name: 'Council',
-        kind: { Group: ['testdao2.testnet'] },
+        kind: 'Group',
         balance: null,
         accountIds: ['testdao2.testnet'],
         permissions: [

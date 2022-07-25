@@ -15,7 +15,6 @@ import { GroupPolicyDetails, VoterDetail } from 'features/types';
 import { ProposalFeedItem } from 'types/proposal';
 import { DaoContext } from 'types/context';
 import { Member } from 'types/dao';
-import { isGroupKind } from 'services/sputnik/mappers';
 
 export function useProposalVotingDetails(
   proposal: ProposalFeedItem,
@@ -105,7 +104,7 @@ export function useProposalVotingDetails(
     };
 
     dao.policy.roles.forEach(role => {
-      if (isGroupKind(role)) {
+      if (role.kind !== 'Member' && role.kind !== 'Everyone') {
         const val = role.votePolicy.policy
           ? formatPolicyRatio(role.votePolicy.policy)
           : formatPolicyRatio(dao.policy.defaultVotePolicy);

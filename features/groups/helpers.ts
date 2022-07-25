@@ -7,7 +7,6 @@ import { DATA_SEPARATOR } from 'constants/common';
 import { APP_TO_CONTRACT_PROPOSAL_TYPE } from 'utils/dataConverter';
 
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
-import { isGroupKind, isMemberKind } from 'services/sputnik/mappers';
 
 import { IGroupForm } from './types';
 
@@ -78,16 +77,24 @@ export function dataRoleToContractRole(role: DaoRole): ContractRole {
 
   let newKind;
 
-  if (isGroupKind(role)) {
-    newKind = {
-      Group: accountIds,
-    };
-  } else if (isMemberKind(role)) {
-    newKind = {
-      Member: balance ?? '1',
-    };
-  } else {
-    newKind = kind;
+  switch (kind) {
+    case 'Group': {
+      newKind = {
+        Group: accountIds,
+      };
+
+      break;
+    }
+    case 'Member': {
+      newKind = {
+        Member: balance ?? '1',
+      };
+
+      break;
+    }
+    default: {
+      newKind = kind;
+    }
   }
 
   return {
@@ -225,7 +232,7 @@ export function getUpdateGroupProposal(
       policy: {
         roles: [
           ...dao.policy.roles
-            .filter(role => !isGroupKind(role))
+            .filter(role => role.kind !== 'Group')
             .map(dataRoleToContractRole),
           ...(groups.map(group => {
             const role = {
