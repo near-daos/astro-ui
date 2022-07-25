@@ -109,10 +109,18 @@ export function useProposalVotingDetails(
           ? formatPolicyRatio(role.votePolicy.policy)
           : formatPolicyRatio(dao.policy.defaultVotePolicy);
 
+        const kind = role.kind as { Group: string[] };
+        const totalGroupMembers = kind.Group.length;
+        const votesToPass = Math.ceil((totalGroupMembers * val) / 100);
+
         result[role.name] = {
           value: val,
           suffix: '%',
-          tooltip: `${val}% of group votes to pass`,
+          tooltip: `${val}%  - ${votesToPass} vote${
+            votesToPass > 1 ? 's' : ''
+          } from ${totalGroupMembers} group member${
+            totalGroupMembers > 1 ? 's' : ''
+          } to pass.`,
         };
       }
     });
