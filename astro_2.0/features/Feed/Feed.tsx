@@ -85,7 +85,6 @@ export const Feed = ({
   const status =
     (query.status as ProposalsFeedStatuses) ||
     initialProposalsStatusFilterValue ||
-    lastFeedStatus ||
     ProposalsFeedStatuses.All;
 
   const isMyFeed = pathname.startsWith('/my');
@@ -198,7 +197,15 @@ export const Feed = ({
         setLoading(true);
       }
 
-      CookieService.set(FEED_STATUS_COOKIE, value);
+      CookieService.set(
+        FEED_STATUS_COOKIE,
+        Object.values(ProposalsFeedStatuses).includes(
+          value as ProposalsFeedStatuses
+        )
+          ? value
+          : ProposalsFeedStatuses.All,
+        { path: '/' }
+      );
 
       await replace(
         {
