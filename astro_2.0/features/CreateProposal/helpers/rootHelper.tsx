@@ -616,7 +616,33 @@ export function getValidationSchema(
       break;
     }
     case ProposalVariant.ProposeCreateGroup:
-    case ProposalVariant.ProposeAddMember:
+    case ProposalVariant.ProposeAddMember: {
+      const id = dao?.id ?? null;
+
+      schema = yup.object().shape({
+        group: yup.string().required(t('validation.required')),
+        memberName: yup
+          .string()
+          .test({
+            name: 'notValidNearAccount',
+            exclusive: true,
+            message: t('validation.onlyValidNearAccounts'),
+            test: async value => validateUserAccount(value, nearService),
+          })
+          .test(
+            'daoMember',
+            t('validation.daoCanNotBeSpecifiedInThisField'),
+            value => {
+              return !!id && value !== id;
+            }
+          )
+          .required(t('validation.required')),
+        details: yup.string().required(t('validation.required')),
+        externalUrl: yup.string().url(),
+        gas: getGasValidation(t),
+      });
+      break;
+    }
     case ProposalVariant.ProposeRemoveMember: {
       const id = dao?.id ?? null;
 
