@@ -10,6 +10,7 @@ interface DraftInfoItemProps {
   count: number;
   iconName: IconName;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 export const DraftInfoItem: FC<DraftInfoItemProps> = ({
@@ -17,6 +18,7 @@ export const DraftInfoItem: FC<DraftInfoItemProps> = ({
   count,
   iconName,
   onClick,
+  disabled,
 }) => {
   const infoItem = (
     <>
@@ -29,6 +31,7 @@ export const DraftInfoItem: FC<DraftInfoItemProps> = ({
     if (onClick) {
       return (
         <button
+          disabled={disabled}
           className={cn(styles.button, className)}
           type="button"
           onClick={onClick}
@@ -39,7 +42,15 @@ export const DraftInfoItem: FC<DraftInfoItemProps> = ({
     }
 
     return (
-      <div className={cn(styles.draftInfoItem, className)}>{infoItem}</div>
+      <div
+        className={cn(
+          styles.draftInfoItem,
+          { [styles.disabled]: disabled },
+          className
+        )}
+      >
+        {infoItem}
+      </div>
     );
   };
 

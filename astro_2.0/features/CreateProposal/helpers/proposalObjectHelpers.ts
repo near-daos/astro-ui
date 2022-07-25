@@ -21,7 +21,6 @@ import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 import { dataRoleToContractRole } from 'features/groups/helpers';
 
 import { configService } from 'services/ConfigService';
-import { isGroupKind, isMemberKind } from 'services/sputnik/mappers';
 
 export type CustomFunctionCallInput = {
   smartContractAddress: string;
@@ -696,7 +695,7 @@ export function getNewDaoProposal(
       policy: {
         roles: dao.policy.roles.map(role => ({
           name: role.name,
-          kind: isGroupKind(role) ? { Group: role.accountIds } : role.kind,
+          kind: role.kind === 'Group' ? { Group: role.accountIds } : role.kind,
           permissions: role.permissions,
           vote_policy: role.votePolicy
             ? Object.keys(role.votePolicy).reduce<Record<string, unknown>>(
@@ -879,7 +878,7 @@ export async function getChangeVotingPolicyToWeightVoting(
   };
 
   const holdersRole = roles.find(
-    role => isMemberKind(role) && role.name === 'TokenHolders'
+    role => role.kind === 'Member' && role.name === 'TokenHolders'
   );
 
   return {
@@ -891,7 +890,7 @@ export async function getChangeVotingPolicyToWeightVoting(
       policy: {
         roles: [
           ...roles
-            .filter(role => !isMemberKind(role))
+            .filter(role => role.kind !== 'Member')
             .map(dataRoleToContractRole),
           {
             name: 'TokenHolders',

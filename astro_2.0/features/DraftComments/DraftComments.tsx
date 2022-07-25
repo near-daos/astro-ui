@@ -32,12 +32,14 @@ export const DraftComments: FC<DraftCommentsProps> = ({ className, dao }) => {
   } = useDraftComments();
   const { accountId } = useWalletContext();
   const isCouncil = isCouncilUser(dao, accountId);
+  const isMemberDAO = !dao.daoMembersList.includes(accountId);
 
   return (
     <div className={cn(styles.root, className)}>
-      <NewComment onSubmit={addComment} />
+      {!isMemberDAO ? <NewComment onSubmit={addComment} /> : null}
       <Loader className={cn({ [styles.hidden]: !loading })} />
       <Comments
+        disabled={isMemberDAO}
         className={cn({ [styles.hidden]: loading })}
         data={data}
         countComments={countComments}

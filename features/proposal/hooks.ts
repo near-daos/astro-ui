@@ -15,7 +15,6 @@ import { GroupPolicyDetails, VoterDetail } from 'features/types';
 import { ProposalFeedItem } from 'types/proposal';
 import { DaoContext } from 'types/context';
 import { Member } from 'types/dao';
-import { isGroupKind } from 'services/sputnik/mappers';
 
 export function useProposalVotingDetails(
   proposal: ProposalFeedItem,
@@ -105,15 +104,22 @@ export function useProposalVotingDetails(
     };
 
     dao.policy.roles.forEach(role => {
-      if (isGroupKind(role)) {
+      if (role.kind === 'Group') {
         const val = role.votePolicy.policy
           ? formatPolicyRatio(role.votePolicy.policy)
           : formatPolicyRatio(dao.policy.defaultVotePolicy);
 
+        const totalGroupMembers = role.accountIds?.length ?? 0;
+        const votesToPass = Math.ceil((totalGroupMembers * val) / 100);
+
         result[role.name] = {
           value: val,
           suffix: '%',
-          tooltip: `${val}% of group votes to pass`,
+          tooltip: `${val}%  - ${votesToPass} vote${
+            votesToPass > 1 ? 's' : ''
+          } from ${totalGroupMembers} group member${
+            totalGroupMembers > 1 ? 's' : ''
+          } to pass.`,
         };
       }
     });

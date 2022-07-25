@@ -65,7 +65,7 @@ export const DaoProposalCreationForm: VFC = () => {
                       name: group.name,
                       slug: group.slug,
                       permissions: ['*:*'],
-                      kind: { Group: [] },
+                      kind: 'Group',
                     }
               ),
             },

@@ -2,7 +2,6 @@ import { TFunction } from 'next-i18next';
 import min from 'lodash/min';
 import max from 'lodash/max';
 import { DAO, DaoDelegation } from 'types/dao';
-import { isMemberKind } from 'services/sputnik/mappers';
 
 export function getSortOptions(
   t: TFunction
@@ -48,7 +47,7 @@ export function getTokensVotingPolicyDetails(
   quorum: string;
 } {
   const holdersRole = dao?.policy.roles.find(
-    role => isMemberKind(role) && role.name === 'TokenHolders'
+    role => role.kind === 'Member' && role.name === 'TokenHolders'
   );
 
   if (!holdersRole) {

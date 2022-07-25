@@ -18,6 +18,7 @@ interface Props {
   countComments: number;
   onDislike: (id: string, isDislike: boolean) => Promise<void>;
   className?: string;
+  disabled?: boolean;
 }
 
 export const Comments: FC<Props> = ({
@@ -31,6 +32,7 @@ export const Comments: FC<Props> = ({
   countComments,
   onDislike,
   className,
+  disabled,
 }) => {
   return (
     <div className={cn(styles.root, className)}>
@@ -41,6 +43,7 @@ export const Comments: FC<Props> = ({
         {data.map(comment => {
           return (
             <Comment
+              disabled={disabled}
               onDislike={onDislike}
               key={comment.id}
               data={comment}

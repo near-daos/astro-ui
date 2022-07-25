@@ -22,6 +22,7 @@ interface CommentProps {
   onEdit: (value: string, id: string) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
   isEditable: boolean;
+  disabled?: boolean;
 }
 
 export const Comment: FC<CommentProps> = ({
@@ -32,6 +33,7 @@ export const Comment: FC<CommentProps> = ({
   onEdit,
   onDelete,
   isEditable,
+  disabled,
 }) => {
   const {
     author,
@@ -120,20 +122,21 @@ export const Comment: FC<CommentProps> = ({
         )}
         <div className={styles.right}>
           <LikeButton
-            disabled={!accountId}
+            disabled={!accountId || Boolean(disabled)}
             onClick={() => onLike(id, isLikedByMe)}
             isActive={isLikedByMe}
             amount={likeAccounts.length}
           />
           <LikeButton
             iconClassName={styles.dislike}
-            disabled={!accountId}
+            disabled={!accountId || Boolean(disabled)}
             onClick={() => onDislike(id, isDislikedByMe)}
             isActive={isDislikedByMe}
             amount={dislikeAccounts.length}
           />
           {accountId && (
             <ReplyButton
+              disabled={disabled}
               className={styles.replyButton}
               onClick={() => setShowReplyInput(!showReplyInput)}
             />
@@ -154,7 +157,7 @@ export const Comment: FC<CommentProps> = ({
           ))}
         </div>
       )}
-      {showReplyInput && (
+      {showReplyInput && !disabled && (
         <div className={styles.replyInputWrapper}>
           <EditableContent
             id={`key-${id}`}

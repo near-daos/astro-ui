@@ -6,6 +6,7 @@ import { ReplyButton } from 'astro_2.0/components/ReplyButton';
 import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { DAO } from 'types/dao';
 import { DraftInfoItem } from './DraftInfoItem';
 
 import styles from './DraftInfo.module.scss';
@@ -14,12 +15,14 @@ interface DraftInfoProps {
   className?: string;
   isSaved: boolean;
   saves: number;
+  dao?: DAO;
 }
 
 export const DraftInfo: FC<DraftInfoProps> = ({
   className,
   isSaved,
   saves,
+  dao,
 }) => {
   const [isSavedDraft, setSavedDraft] = useState(isSaved);
   const [savesCount, setSavesCount] = useState(saves);
@@ -81,10 +84,13 @@ export const DraftInfo: FC<DraftInfoProps> = ({
     savesCount,
   ]);
 
+  const disabled = !dao?.daoMembersList.includes(accountId);
+
   return (
     <div className={cn(styles.draftInfo, className)}>
       <div className={styles.draftInfoWrapper}>
         <DraftInfoItem
+          disabled={disabled}
           iconName="draftComments"
           count={amountComments}
           className={styles.draftInfoItem}
@@ -97,7 +103,10 @@ export const DraftInfo: FC<DraftInfoProps> = ({
         />
       </div>
 
-      <ReplyButton onClick={() => setToggleWriteComment(true)} />
+      <ReplyButton
+        disabled={disabled}
+        onClick={() => setToggleWriteComment(true)}
+      />
     </div>
   );
 };

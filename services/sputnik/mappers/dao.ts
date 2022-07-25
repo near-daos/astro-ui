@@ -107,14 +107,6 @@ export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
   return fromBase64ToObj(metaAsBase64);
 };
 
-export function isGroupKind(item: DaoRole): boolean {
-  return typeof item.kind === 'object' && Reflect.has(item.kind, 'Group');
-}
-
-export function isMemberKind(item: DaoRole): boolean {
-  return typeof item.kind === 'object' && Reflect.has(item.kind, 'Member');
-}
-
 export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
   if (!daoDTO.id) {
     return null;
@@ -125,7 +117,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
 
   // Get DAO groups
   const daoGroups = roles
-    .filter((item: DaoRole) => isGroupKind(item))
+    .filter((item: DaoRole) => item.kind === 'Group')
     .map((item: DaoRole) => {
       return {
         members: item.accountIds,
