@@ -32,8 +32,8 @@ export const CaptchaModal: FC<CaptchaModalProps> = ({ isOpen, onClose }) => {
             <div>
               <div className={styles.title}>Attention!</div>
               <p className={styles.message}>
-                You can not undo an action by Acceptance of contract. Are you
-                sure you agree to Acceptance of contract?
+                You can not undo an action by Adopt Staking contract. Are you
+                sure you agree to Adopt Staking contract?
               </p>
             </div>
           }

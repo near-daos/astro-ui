@@ -35,6 +35,10 @@ import { DELEGATE_PAGE_URL } from 'constants/routing';
 import { useWalletContext } from 'context/WalletContext';
 
 import { isCouncilUser } from 'astro_2.0/features/DraftComments/helpers';
+import {
+  getInitialCreationPermissions,
+  getInitialVotingPermissions,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
 
 import styles from './CreateGovernanceTokenWizard.module.scss';
 
@@ -183,6 +187,8 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
             unstakingPeriod: new Decimal(daoContext.dao.policy.proposalPeriod)
               .div('3.6e12')
               .toString(),
+            details:
+              'Please pay attention that deploying a staking contract will cost 6N',
           };
           break;
         case ProposalVariant.ProposeAcceptStakingContract:
@@ -197,6 +203,26 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
               'With every vote on a proposal the Balance and Threshold determine if the proposal passes or fails.',
             quorum: daoContext.dao.policy.defaultVotePolicy.quorum,
             balance: 1,
+          };
+
+          break;
+        }
+        case ProposalVariant.ProposeChangeProposalCreationPermissions: {
+          initialValues = {
+            details:
+              'Update proposal creation permissions for newly created group Token Holders',
+            policy: getInitialCreationPermissions(daoContext.dao),
+            allowPolicyChange: true,
+          };
+
+          break;
+        }
+        case ProposalVariant.ProposeChangeProposalVotingPermissions: {
+          initialValues = {
+            details:
+              'Update voting permissions for newly created group Token Holders',
+            policy: getInitialVotingPermissions(daoContext.dao),
+            allowPolicyChange: true,
           };
 
           break;

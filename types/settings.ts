@@ -21,6 +21,8 @@ export enum CreateGovernanceTokenSteps {
   ContractAcceptance,
   AcceptStakingContract,
   ChangeDaoPolicy,
+  ProposalCreationPolicy,
+  ProposalVotingPolicy,
   StakeTokens,
   DelegateVoting,
 }
