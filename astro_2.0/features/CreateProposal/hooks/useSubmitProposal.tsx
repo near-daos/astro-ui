@@ -257,9 +257,11 @@ export function useSubmitProposal({
               });
             }
 
-            if (onCreate) {
+            if (onCreate && isMounted()) {
               onCreate(newProposalId);
             }
+
+            await onClose();
 
             if (redirectAfterCreation) {
               await router.push({
@@ -282,8 +284,6 @@ export function useSubmitProposal({
             if (onCreate && isMounted()) {
               onCreate(null);
             }
-          } finally {
-            onClose();
           }
         }
       }
