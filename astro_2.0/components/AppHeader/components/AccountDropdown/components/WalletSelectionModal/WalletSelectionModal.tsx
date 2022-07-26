@@ -50,17 +50,30 @@ export const WalletSelectionModal: React.FC<WalletSelectionModal> = ({
         className={styles.wallet}
       />
       {useWalletSelector && (
-        <WalletButton
-          walletType={WalletType.NEAR}
-          onClick={() => {
-            signIn(WalletType.SELECTOR_NEAR);
-            onClose();
-          }}
-          name="Selector NEAR"
-          type={t('header.wallets.near.type')}
-          url="wallet.near.org"
-          className={styles.wallet}
-        />
+        <>
+          <WalletButton
+            walletType={WalletType.NEAR}
+            onClick={() => {
+              signIn(WalletType.SELECTOR_NEAR);
+              onClose();
+            }}
+            name="Selector NEAR"
+            type={t('header.wallets.near.type')}
+            url="wallet.near.org"
+            className={styles.wallet}
+          />
+          <WalletButton
+            walletType={WalletType.SENDER}
+            onClick={() => {
+              signIn(WalletType.SELECTOR_SENDER);
+              onClose();
+            }}
+            name="Selector Sender"
+            type={t('header.wallets.sender.type')}
+            url="senderwallet.io"
+            className={styles.wallet}
+          />
+        </>
       )}
     </Modal>
   );

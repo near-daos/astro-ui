@@ -48,7 +48,7 @@ export interface WalletService {
   ): Promise<FinalExecutionOutcome[]>;
   getWalletType(): WalletType;
   getKeyStore(): KeyStore;
-  logout(): void;
+  logout(): Promise<void>;
   isSignedIn(): Promise<boolean>;
   getAccount(): ConnectedWalletAccount;
   getAccountId(): Promise<string>;

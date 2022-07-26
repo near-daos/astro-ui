@@ -174,8 +174,8 @@ export class SputnikWalletService implements WalletService {
     return Promise.resolve(true);
   }
 
-  public logout(): void {
-    this.walletConnection.signOut();
+  public logout(): Promise<void> {
+    return Promise.resolve(this.walletConnection.signOut());
   }
 
   public getAccount(): ConnectedWalletAccount {

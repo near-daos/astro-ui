@@ -94,8 +94,8 @@ export class WalletSelectorService implements WalletService {
     return Promise.resolve(this.selector.isSignedIn());
   }
 
-  logout(): void {
-    this.wallet.signOut();
+  logout(): Promise<void> {
+    return this.wallet.signOut();
   }
 
   // TODO TBD

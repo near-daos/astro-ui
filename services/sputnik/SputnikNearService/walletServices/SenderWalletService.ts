@@ -35,8 +35,8 @@ export class SenderWalletService implements WalletService {
     return Promise.resolve(isSigned);
   }
 
-  logout(): void {
-    this.walletInstance.signOut();
+  logout(): Promise<void> {
+    return Promise.resolve(this.walletInstance.signOut());
   }
 
   async signIn(contractId: string): Promise<boolean> {

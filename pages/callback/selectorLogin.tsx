@@ -9,7 +9,7 @@ import { useWallet } from 'context/WalletContext/hooks/useWallet';
 import { configService } from 'services/ConfigService';
 
 const SelectorLogin: NextPage = () => {
-  const { query } = useRouter();
+  const router = useRouter();
   const { currentWallet } = useWallet({
     setConnectingToWallet: () => 0,
   });
@@ -32,13 +32,13 @@ const SelectorLogin: NextPage = () => {
         } else {
           const { nearConfig } = configService.get();
 
-          currentWallet.signIn(nearConfig.contractName);
+          currentWallet.signIn(nearConfig.contractName).then(router.reload);
         }
       }
     }
 
     handleMount();
-  }, [query, currentWallet]);
+  }, [router, currentWallet]);
 
   return null;
 };

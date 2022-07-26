@@ -36,6 +36,7 @@ import { PkAndSignature } from './types';
 import { useWallet } from './hooks/useWallet';
 import { usePkAndSignature } from './hooks/usePkAndSignature';
 import { useAvailableAccounts } from './hooks/useAvailableAccounts';
+import { useSelectorLsAccount } from './hooks/walletSelector/useSelectorLsAccount';
 
 export interface WalletContext {
   availableWallets: WalletMeta[];
@@ -59,6 +60,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
   const router = useRouter();
 
+  const [, , removeSelectorLsAccount] = useSelectorLsAccount();
   const [connectingToWallet, setConnectingToWallet] = useBoolean(false);
 
   const {
@@ -137,7 +139,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
     CookieService.remove(ACCOUNT_COOKIE);
     removePersistedWallet();
 
-    currentWallet?.logout();
+    await currentWallet?.logout();
 
     router.reload();
   }, [currentWallet, removePersistedWallet, router]);
@@ -212,10 +214,21 @@ export const WrappedWalletContext: FC = ({ children }) => {
       });
 
       if (currentWalletAccountId !== selectedWalletAccountId) {
+        if (isSelectorWalletType(currentWallet.getWalletType())) {
+          removeSelectorLsAccount();
+        }
+
         router.reload();
       }
     },
-    [currentWallet, getWallet, nearConfig.contractName, router, signIn]
+    [
+      router,
+      signIn,
+      getWallet,
+      currentWallet,
+      nearConfig.contractName,
+      removeSelectorLsAccount,
+    ]
   );
 
   const walletContext = useMemo(() => {
