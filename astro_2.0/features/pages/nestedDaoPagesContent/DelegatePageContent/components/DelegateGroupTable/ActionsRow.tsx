@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import styles from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegateGroupTable/DelegateGroupTable.module.scss';
-import { kFormatter } from 'utils/format';
+import { formatValueToYokto, kFormatter } from 'utils/format';
 import { ControlledInput } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/ControlledInput';
 import { Button } from 'components/button/Button';
 import { useForm } from 'react-hook-form';
@@ -17,7 +17,6 @@ interface Props {
   actionContext?: 'Delegate' | 'Undelegate';
   onActionClick: (actionType: string | null) => void;
   availableBalance: number;
-  formattedBalance: string;
   symbol?: string;
   decimals?: number;
 }
@@ -29,20 +28,26 @@ interface Form {
 export const ActionsRow: FC<Props> = ({
   accountId,
   actionContext,
-  // availableBalance,
-  formattedBalance,
   symbol,
   onActionClick,
 }) => {
   const { nearService } = useWalletContext();
   const { triggerUpdate } = useTriggerUpdate();
 
-  const { daoName, stakedBalance, delegatedBalance } = useDelegatePageContext();
+  const {
+    daoName,
+    stakedBalance,
+    delegatedBalance,
+    delegateToUser,
+    decimals,
+  } = useDelegatePageContext();
+
+  const delegatedAmount = (delegateToUser && delegateToUser[accountId]) || 0;
 
   const maxValue =
     actionContext === 'Delegate'
       ? Number(stakedBalance) - Number(delegatedBalance)
-      : formattedBalance;
+      : delegatedAmount;
 
   const maxValueFormatted = kFormatter(+maxValue);
 
@@ -81,7 +86,7 @@ export const ActionsRow: FC<Props> = ({
           [
             {
               name: accountId,
-              amount: values.amount.toFixed(),
+              amount: formatValueToYokto(values.amount, decimals ?? 0),
             },
           ]
         );
@@ -91,7 +96,7 @@ export const ActionsRow: FC<Props> = ({
           [
             {
               name: accountId,
-              amount: values.amount.toFixed(),
+              amount: formatValueToYokto(values.amount, decimals ?? 0),
             },
           ]
         );

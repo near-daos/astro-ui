@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 
 import { Comment } from 'astro_2.0/features/Comments/components/Comment';
 
@@ -16,6 +17,8 @@ interface Props {
   accountId: string;
   countComments: number;
   onDislike: (id: string, isDislike: boolean) => Promise<void>;
+  className?: string;
+  disabled?: boolean;
 }
 
 export const Comments: FC<Props> = ({
@@ -28,9 +31,11 @@ export const Comments: FC<Props> = ({
   accountId,
   countComments,
   onDislike,
+  className,
+  disabled,
 }) => {
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, className)}>
       <div className={styles.header}>
         {countComments} {countComments > 1 ? 'replies' : 'reply'}
       </div>
@@ -38,6 +43,7 @@ export const Comments: FC<Props> = ({
         {data.map(comment => {
           return (
             <Comment
+              disabled={disabled}
               onDislike={onDislike}
               key={comment.id}
               data={comment}

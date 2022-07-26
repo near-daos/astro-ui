@@ -29,31 +29,35 @@ export const DraftManagement: FC<DraftManagementProps> = ({
     isCouncil = isCouncilUser(dao, accountId);
   }
 
-  const disabled = state === 'closed' || !(isCouncil || proposer === accountId);
+  const disabled = !(isCouncil || proposer === accountId);
 
   return (
     <div className={styles.draftManagement}>
-      <Button
-        disabled={disabled}
-        capitalize
-        variant="secondary"
-        className={styles.button}
-        onClick={onEditDraft}
-      >
-        Edit
-      </Button>
-      <Button
-        disabled={disabled}
-        capitalize
-        className={styles.button}
-        onClick={() => {
-          if (convertToProposal) {
-            convertToProposal();
-          }
-        }}
-      >
-        Convert to proposal
-      </Button>
+      {state !== 'closed' && dao?.daoMembersList.includes(accountId) ? (
+        <>
+          <Button
+            disabled={disabled}
+            capitalize
+            variant="secondary"
+            className={styles.button}
+            onClick={onEditDraft}
+          >
+            Edit
+          </Button>
+          <Button
+            disabled={disabled}
+            capitalize
+            className={styles.button}
+            onClick={() => {
+              if (convertToProposal) {
+                convertToProposal();
+              }
+            }}
+          >
+            Convert to proposal
+          </Button>
+        </>
+      ) : null}
     </div>
   );
 };

@@ -32,25 +32,25 @@ export const DraftComments: FC<DraftCommentsProps> = ({ className, dao }) => {
   } = useDraftComments();
   const { accountId } = useWalletContext();
   const isCouncil = isCouncilUser(dao, accountId);
+  const isMemberDAO = !dao.daoMembersList.includes(accountId);
 
   return (
     <div className={cn(styles.root, className)}>
-      <NewComment onSubmit={addComment} />
-      {loading ? (
-        <Loader />
-      ) : (
-        <Comments
-          data={data}
-          countComments={countComments}
-          onDislike={dislikeComment}
-          onLike={likeComment}
-          onReply={addComment}
-          onEdit={editComment}
-          onDelete={deleteComment}
-          canModerate={isCouncil}
-          accountId={accountId}
-        />
-      )}
+      {!isMemberDAO ? <NewComment onSubmit={addComment} /> : null}
+      <Loader className={cn({ [styles.hidden]: !loading })} />
+      <Comments
+        disabled={isMemberDAO}
+        className={cn({ [styles.hidden]: loading })}
+        data={data}
+        countComments={countComments}
+        onDislike={dislikeComment}
+        onLike={likeComment}
+        onReply={addComment}
+        onEdit={editComment}
+        onDelete={deleteComment}
+        canModerate={isCouncil}
+        accountId={accountId}
+      />
     </div>
   );
 };

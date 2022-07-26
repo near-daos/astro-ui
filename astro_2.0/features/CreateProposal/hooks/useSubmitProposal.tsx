@@ -76,8 +76,7 @@ export function useSubmitProposal({
     async data => {
       // show captcha modal for some proposals
       if (
-        selectedProposalVariant ===
-        ProposalVariant.ProposeStakingContractDeployment
+        selectedProposalVariant === ProposalVariant.ProposeAcceptStakingContract
       ) {
         const [res] = await showModal();
 
@@ -283,6 +282,8 @@ export function useSubmitProposal({
             if (onCreate && isMounted()) {
               onCreate(null);
             }
+          } finally {
+            onClose();
           }
         }
       }

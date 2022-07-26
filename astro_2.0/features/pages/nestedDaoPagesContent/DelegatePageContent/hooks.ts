@@ -10,12 +10,15 @@ import {
   DelegateTokenDetails,
   UserDelegateDetails,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
+import { objectKeys } from 'utils/objects';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 export function useDelegatePageData(
   dao: DAO
 ): {
   loadingTotalSupply: boolean;
   totalSupply: string | undefined;
+  loadingTokenDetails: boolean;
   tokenDetails:
     | (DelegateTokenDetails & { contractAddress: string })
     | undefined;
@@ -30,6 +33,7 @@ export function useDelegatePageData(
   handleReset: () => void;
   data: DaoDelegation[];
 } {
+  const { governanceToken } = useFlags();
   const router = useRouter();
   const { nearService, accountId } = useWalletContext();
 
@@ -39,7 +43,10 @@ export function useDelegatePageData(
   const [data, setData] = useState<DaoDelegation[]>([]);
   const [searchFilter, setSearchFilter] = useState('');
 
-  const { value: tokenDetails } = useAsync(async () => {
+  const {
+    loading: loadingTokenDetails,
+    value: tokenDetails,
+  } = useAsync(async () => {
     if (!nearService) {
       return undefined;
     }
@@ -93,59 +100,69 @@ export function useDelegatePageData(
       return undefined;
     }
 
-    const stackingContract = nearService.getStackingContract(dao.name);
+    try {
+      const stackingContract = nearService.getStackingContract(dao.name);
 
-    if (!stackingContract) {
+      if (!stackingContract) {
+        return undefined;
+      }
+
+      const contract = nearService.getContract(stackingContract, [
+        'get_user',
+      ]) as CustomContract;
+
+      const userData = await contract.get_user({ account_id: accountId });
+
+      if (!userData) {
+        return undefined;
+      }
+
+      const {
+        delegatedTotal,
+        delegatedToUser,
+      } = userData.delegated_amounts.reduce<{
+        delegatedTotal: number;
+        delegatedToUser: Record<string, string>;
+      }>(
+        (res, item) => {
+          const [acc, balance] = item;
+
+          res.delegatedTotal += +balance;
+
+          res.delegatedToUser[acc] = formatYoktoValue(
+            balance,
+            tokenDetails?.decimals
+          );
+
+          return res;
+        },
+        { delegatedTotal: 0, delegatedToUser: {} }
+      );
+
+      return {
+        accountId,
+        delegatedBalance: Number(
+          formatYoktoValue(delegatedTotal.toString(), tokenDetails?.decimals)
+        ),
+        stakedBalance: formatYoktoValue(
+          userData.vote_amount,
+          tokenDetails?.decimals
+        ),
+        nextActionTime: new Date(
+          Number(userData.next_action_timestamp) / 1000000
+        ),
+        delegatedToUser,
+      };
+    } catch (e) {
       return undefined;
     }
-
-    const contract = nearService.getContract(stackingContract, [
-      'ft_balance_of',
-      'ft_metadata',
-      'get_user',
-    ]) as CustomContract;
-
-    const userData = await contract.get_user({ account_id: accountId });
-
-    if (!userData) {
-      return undefined;
-    }
-
-    const {
-      delegatedTotal,
-      delegatedToUser,
-    } = userData.delegated_amounts.reduce<{
-      delegatedTotal: number;
-      delegatedToUser: Record<string, string>;
-    }>(
-      (res, item) => {
-        const [acc, balance] = item;
-
-        res.delegatedTotal += +balance;
-
-        res.delegatedToUser[acc] = balance;
-
-        return res;
-      },
-      { delegatedTotal: 0, delegatedToUser: {} }
-    );
-
-    return {
-      accountId,
-      delegatedBalance: delegatedTotal,
-      stakedBalance: userData.vote_amount,
-      nextActionTime: new Date(
-        Number(userData.next_action_timestamp) / 1000000
-      ),
-      delegatedToUser,
-    };
-  }, [dao, nearService, accountId, ts]);
+  }, [dao, nearService, accountId, ts, tokenDetails]);
 
   const [, fetchData] = useAsyncFn(async () => {
-    const res = await SputnikHttpService.getDelegations(daoId);
+    const res = await SputnikHttpService.getDelegations(daoId, governanceToken);
 
     setData(res);
-  }, [daoId, ts]);
+  }, [daoId, ts, governanceToken]);
 
   const handleSearch = useCallback(async searchInput => {
     setSearchFilter(searchInput);
@@ -161,13 +178,33 @@ export function useDelegatePageData(
     })();
   }, [fetchData]);
 
-  const filteredData = data.filter(item =>
-    item.accountId.startsWith(searchFilter)
-  );
+  const filteredData = data
+    .filter(item => item.accountId.startsWith(searchFilter))
+    .map(item => ({
+      ...item,
+      balance: formatYoktoValue(item.balance, tokenDetails?.decimals),
+      delegators: item.delegators
+        ? objectKeys(item.delegators).reduce<Record<string, string>>(
+            (acc, key) => {
+              acc[key] = formatYoktoValue(
+                item.delegators[key],
+                tokenDetails?.decimals
+              );
+
+              return acc;
+            },
+            {}
+          )
+        : {},
+    }));
 
   return {
     loadingTotalSupply,
-    totalSupply,
+    totalSupply: formatYoktoValue(
+      totalSupply ?? '0',
+      tokenDetails?.decimals ?? 0
+    ),
+    loadingTokenDetails,
     tokenDetails,
     loadingDelegateByUser,
     delegateByUser,
@@ -184,6 +221,42 @@ export function useVotingPolicyDetails(
   threshold: string;
   quorum: string;
 } {
+  const { nearService, accountId } = useWalletContext();
+  const { value: tokenDetails } = useAsync(async () => {
+    if (!nearService) {
+      return undefined;
+    }
+
+    try {
+      const settings = await SputnikHttpService.getDaoSettings(dao.id);
+
+      const contractAddress = settings?.createGovernanceToken?.contractAddress;
+
+      if (!contractAddress) {
+        return undefined;
+      }
+
+      const contract = nearService.getContract(contractAddress, [
+        'ft_balance_of',
+        'ft_metadata',
+      ]) as CustomContract;
+
+      const [meta, balance] = await Promise.all([
+        contract.ft_metadata(),
+        contract.ft_balance_of({ account_id: accountId }),
+      ]);
+
+      return {
+        balance: Number(formatYoktoValue(balance, meta.decimals)),
+        symbol: meta.symbol,
+        decimals: meta.decimals,
+        contractAddress,
+      };
+    } catch (e) {
+      return undefined;
+    }
+  }, [nearService]);
+
   const holdersRole = dao.policy.roles.find(
     role => role.kind === 'Member' && role.name === 'TokenHolders'
   );
@@ -197,9 +270,18 @@ export function useVotingPolicyDetails(
   }
 
   return {
-    threshold: holdersRole.votePolicy.vote.weight ?? '0',
-    balance: holdersRole.balance ?? '0',
-    quorum: holdersRole.votePolicy.vote.quorum ?? '0',
+    threshold: formatYoktoValue(
+      holdersRole.votePolicy.vote.weight ?? '0',
+      tokenDetails?.decimals
+    ),
+    balance: formatYoktoValue(
+      holdersRole.balance ?? '0',
+      tokenDetails?.decimals
+    ),
+    quorum: formatYoktoValue(
+      holdersRole.votePolicy.vote.quorum ?? '0',
+      tokenDetails?.decimals
+    ),
   };
 }
 

@@ -105,9 +105,9 @@ export const ManageGroups: React.FC<Props> = ({
       return { hasError: true, message: 'Add group name' };
     }
 
-    // if (group.members.length === 0) {
-    //   return { hasError: true, message: 'Add group members' };
-    // }
+    if (group.members.length === 0) {
+      return { hasError: true, message: 'Group requires at least one member' };
+    }
 
     return { hasError: false, message: '' };
   };

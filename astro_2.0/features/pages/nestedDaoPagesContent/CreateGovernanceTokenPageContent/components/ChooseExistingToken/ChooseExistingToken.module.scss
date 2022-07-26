@@ -55,6 +55,7 @@
 
 .input.input {
   background-color: var(--color-neutral-10);
+  padding: 0 12px;
 }
 
 .hidden {
@@ -63,4 +64,12 @@
 
 .fullWidth {
   width: 100%;
+}
+
+.link {
+  color: var(--color-pending);
+}
+
+.subheader {
+  margin: 0 0 24px;
 }

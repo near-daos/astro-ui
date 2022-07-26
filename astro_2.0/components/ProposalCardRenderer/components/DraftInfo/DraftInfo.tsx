@@ -6,6 +6,7 @@ import { ReplyButton } from 'astro_2.0/components/ReplyButton';
 import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { DAO } from 'types/dao';
 import { DraftInfoItem } from './DraftInfoItem';
 
 import styles from './DraftInfo.module.scss';
@@ -14,12 +15,14 @@ interface DraftInfoProps {
   className?: string;
   isSaved: boolean;
   saves: number;
+  dao?: DAO;
 }
 
 export const DraftInfo: FC<DraftInfoProps> = ({
   className,
   isSaved,
   saves,
+  dao,
 }) => {
   const [isSavedDraft, setSavedDraft] = useState(isSaved);
   const [savesCount, setSavesCount] = useState(saves);
@@ -42,15 +45,29 @@ export const DraftInfo: FC<DraftInfoProps> = ({
     }
 
     try {
-      const { data } = await draftsService.updateDraftSave({
-        id: draftId,
-        publicKey,
-        signature,
-        accountId,
-      });
+      let response;
 
-      setSavedDraft(data);
-      setSavesCount(data ? savesCount + 1 : savesCount);
+      if (isSavedDraft) {
+        response = await draftsService.deleteDraftSave({
+          id: draftId,
+          publicKey,
+          signature,
+          accountId,
+        });
+
+        setSavesCount(response.data ? savesCount - 1 : savesCount);
+        setSavedDraft(false);
+      } else {
+        response = await draftsService.updateDraftSave({
+          id: draftId,
+          publicKey,
+          signature,
+          accountId,
+        });
+
+        setSavesCount(response.data ? savesCount + 1 : savesCount);
+        setSavedDraft(true);
+      }
     } catch (e) {
       showNotification({
         type: NOTIFICATION_TYPES.ERROR,
@@ -58,25 +75,38 @@ export const DraftInfo: FC<DraftInfoProps> = ({
         description: e?.message,
       });
     }
-  }, [accountId, draftId, draftsService, pkAndSignature, savesCount]);
+  }, [
+    accountId,
+    draftId,
+    draftsService,
+    isSavedDraft,
+    pkAndSignature,
+    savesCount,
+  ]);
+
+  const disabled = !dao?.daoMembersList.includes(accountId);
 
   return (
     <div className={cn(styles.draftInfo, className)}>
       <div className={styles.draftInfoWrapper}>
         <DraftInfoItem
+          disabled={disabled}
           iconName="draftComments"
           count={amountComments}
           className={styles.draftInfoItem}
         />
         <DraftInfoItem
-          onClick={!isSavedDraft ? () => handlerSaveDraft() : undefined}
+          onClick={() => handlerSaveDraft()}
           iconName={isSavedDraft ? 'draftBookmarkFulfill' : 'draftBookmark'}
           count={savesCount}
           className={styles.draftInfoItem}
         />
       </div>
 
-      <ReplyButton onClick={() => setToggleWriteComment(true)} />
+      <ReplyButton
+        disabled={disabled}
+        onClick={() => setToggleWriteComment(true)}
+      />
     </div>
   );
 };

@@ -67,6 +67,7 @@ export const VoteCollapsableList: FC<VoteCollapsableListProps> = ({
         return (
           <li key={votesGroupsKey} className={styles.voteCollapsableItem}>
             <Collapsable
+              initialOpenState
               renderHeading={(setToggle, state) => (
                 <VoteCollapsableHeader
                   setToggle={setToggle}

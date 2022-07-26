@@ -34,6 +34,12 @@ import { DELEGATE_PAGE_URL } from 'constants/routing';
 
 import { useWalletContext } from 'context/WalletContext';
 
+import { isCouncilUser } from 'astro_2.0/features/DraftComments/helpers';
+import {
+  getInitialCreationPermissions,
+  getInitialVotingPermissions,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
+
 import styles from './CreateGovernanceTokenWizard.module.scss';
 
 interface Props {
@@ -64,9 +70,11 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
   const stepProposalVariant = getCreateGovernanceTokenStepProposalVariant(
     status
   );
+  const isCouncil = isCouncilUser(daoContext.dao, accountId);
   const proposalId = status?.proposalId;
   const isViewProposal = proposalId !== null;
   const canControl =
+    isCouncil &&
     daoContext.userPermissions.isCanCreateProposals &&
     daoContext.userPermissions.allowedProposalsToCreate[
       ProposalType.UpgradeSelf
@@ -85,31 +93,35 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
     [canControl, onUpdate, status]
   );
 
-  const handleViewProposalApprove = useCallback(async () => {
-    if (!canControl) {
-      return;
-    }
+  const handleViewProposalApprove = useCallback(
+    async (opts: { symbol?: string; decimals?: number } = {}) => {
+      if (!canControl) {
+        return;
+      }
 
-    const nextStep = getNextCreateGovernanceTokenWizardStep(status.step);
+      const nextStep = getNextCreateGovernanceTokenWizardStep(status.step);
 
-    const isFinalise =
-      status.step === CreateGovernanceTokenSteps.DelegateVoting &&
-      nextStep === null;
+      const isFinalise =
+        status.step === CreateGovernanceTokenSteps.DelegateVoting &&
+        nextStep === null;
 
-    await onUpdate({
-      ...status,
-      step: nextStep,
-      proposalId: null,
-      wizardCompleted: isFinalise,
-    });
-
-    if (isFinalise) {
-      router.push({
-        pathname: DELEGATE_PAGE_URL,
-        query: { dao: daoContext.dao.id },
+      await onUpdate({
+        ...status,
+        ...opts,
+        step: nextStep,
+        proposalId: null,
+        wizardCompleted: isFinalise,
       });
-    }
-  }, [canControl, daoContext.dao.id, onUpdate, router, status]);
+
+      if (isFinalise) {
+        router.push({
+          pathname: DELEGATE_PAGE_URL,
+          query: { dao: daoContext.dao.id },
+        });
+      }
+    },
+    [canControl, daoContext.dao.id, onUpdate, router, status]
+  );
 
   const handleViewProposalReject = useCallback(async () => {
     if (!canControl) {
@@ -175,6 +187,8 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
             unstakingPeriod: new Decimal(daoContext.dao.policy.proposalPeriod)
               .div('3.6e12')
               .toString(),
+            details:
+              'Please pay attention that deploying a staking contract will cost 6N',
           };
           break;
         case ProposalVariant.ProposeAcceptStakingContract:
@@ -185,9 +199,30 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
         case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
           initialValues = {
             contractAddress,
-            details: 'Detailed explanation about threshold, balance and quorum',
+            details:
+              'With every vote on a proposal the Balance and Threshold determine if the proposal passes or fails.',
             quorum: daoContext.dao.policy.defaultVotePolicy.quorum,
             balance: 1,
+          };
+
+          break;
+        }
+        case ProposalVariant.ProposeChangeProposalCreationPermissions: {
+          initialValues = {
+            details:
+              'Update proposal creation permissions for newly created group Token Holders',
+            policy: getInitialCreationPermissions(daoContext.dao),
+            allowPolicyChange: true,
+          };
+
+          break;
+        }
+        case ProposalVariant.ProposeChangeProposalVotingPermissions: {
+          initialValues = {
+            details:
+              'Update voting permissions for newly created group Token Holders',
+            policy: getInitialVotingPermissions(daoContext.dao),
+            allowPolicyChange: true,
           };
 
           break;

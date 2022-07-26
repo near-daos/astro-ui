@@ -179,7 +179,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       case ProposalVariant.ProposeStakingContractDeployment: {
         return (
           <InfoBlockWidget
-            label={getTranslation('createGovernanceToken')}
+            label={getTranslation('governanceTokenSetup')}
             value={getTranslation('deployStakingContract')}
           />
         );
@@ -203,7 +203,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       case ProposalVariant.ProposeAcceptStakingContract: {
         return (
           <InfoBlockWidget
-            label={getTranslation('createGovernanceToken')}
+            label={getTranslation('governanceTokenSetup')}
             value={getTranslation('acceptStakingContract')}
           />
         );
@@ -211,7 +211,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
         return (
           <InfoBlockWidget
-            label={getTranslation('createGovernanceToken')}
+            label={getTranslation('governanceTokenSetup')}
             value={getTranslation('changeVotingPolicy')}
           />
         );
@@ -471,6 +471,24 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     }
   }
 
+  function renderVoteControl() {
+    switch (type) {
+      case ProposalVariant.ProposeStakingContractDeployment:
+      case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting:
+      case ProposalVariant.ProposeAcceptStakingContract: {
+        return null;
+      }
+      default: {
+        return (
+          <div className={styles.voteControlCell}>
+            <Icon name="votingYesChecked" className={styles.voteIcon} />
+            <Icon name="votingNoChecked" className={styles.voteIcon} />
+          </div>
+        );
+      }
+    }
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.proposalCell}>{renderProposalCell()}</div>
@@ -478,10 +496,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
         {t('createProposal.countdown')}
       </div>
       {renderCardContent()}
-      <div className={styles.voteControlCell}>
-        <Icon name="votingYesChecked" className={styles.voteIcon} />
-        <Icon name="votingNoChecked" className={styles.voteIcon} />
-      </div>
+      {renderVoteControl()}
       {renderCloseButton()}
     </div>
   );

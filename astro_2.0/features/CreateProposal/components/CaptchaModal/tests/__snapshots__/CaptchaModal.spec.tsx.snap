@@ -34,7 +34,7 @@ exports[`CaptchaModal Should render component 1`] = `
             <p
               class="message"
             >
-              You can not undo an action by Acceptance of contract. Are you sure you agree to Acceptance of contract?
+              You can not undo an action by Adopt Staking contract. Are you sure you agree to Adopt Staking contract?
             </p>
           </div>
         </div>

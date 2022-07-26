@@ -18,7 +18,6 @@ import { UserPermissions } from 'types/context';
 import { DepositToDaoForm } from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm';
 import { DaoLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks';
 import { DaoWarning } from 'astro_2.0/components/DaoWarning';
-import { UpgradeDaoWarning } from 'astro_2.0/features/DaoDashboardHeader/components/UpgradeDaoWarning';
 import { CloneDaoWarning } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning';
 
 import { useJoinDao } from 'astro_2.0/features/DaoDashboardHeader/components/hooks';
@@ -148,14 +147,6 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
             dao={dao}
             className={styles.warning}
             onCreateProposal={onCreateProposal}
-          />
-        )}
-
-        {flags.migrateDaoFlow && (
-          <UpgradeDaoWarning
-            dao={dao}
-            userPermissions={userPermissions}
-            className={styles.warning}
           />
         )}
       </div>

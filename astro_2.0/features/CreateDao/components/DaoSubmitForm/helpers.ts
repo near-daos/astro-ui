@@ -116,7 +116,7 @@ export function getDetailedRolesVotingPolicy(
         kind: {
           Group: accountIds
             .filter(account => account.role === item.name)
-            .map(account => account.name),
+            .map(account => account.name.trim()),
         },
         permissions: [
           '*:Finalize',

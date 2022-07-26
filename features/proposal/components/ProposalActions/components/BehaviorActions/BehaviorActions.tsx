@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import cn from 'classnames';
-import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { IconButton } from 'components/button/IconButton';
 import { Icon } from 'components/Icon';
@@ -27,7 +26,6 @@ export const BehaviorActions: FC<Props> = ({
   allowSelect,
   hideSelect,
 }) => {
-  const { multiVoting } = useFlags();
   const [open, setOpen] = useState(false);
 
   return (
@@ -41,7 +39,7 @@ export const BehaviorActions: FC<Props> = ({
       }
     >
       <ul className={styles.menu}>
-        {multiVoting && !hideSelect && (
+        {!hideSelect && (
           <li className={styles.menuItem}>
             <Button
               variant="transparent"

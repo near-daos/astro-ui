@@ -1,7 +1,7 @@
 import React, { VFC } from 'react';
-import { useTranslation } from 'next-i18next';
 import { useFormContext } from 'react-hook-form';
 import { useAsync } from 'react-use';
+import cn from 'classnames';
 
 import { Input } from 'components/inputs/Input';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
@@ -12,7 +12,6 @@ import { useWalletContext } from 'context/WalletContext';
 import styles from './UpdateVotePolicyToWeightVoting.module.scss';
 
 export const UpdateVotePolicyToWeightVoting: VFC = () => {
-  const { t } = useTranslation();
   const { register, watch, setValue } = useFormContext();
   const { nearService, accountId } = useWalletContext();
 
@@ -26,88 +25,109 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
       return undefined;
     }
 
-    const contract = nearService.getContract(contractAddress, [
-      'ft_balance_of',
-      'ft_metadata',
-    ]) as CustomContract;
+    try {
+      const contract = nearService.getContract(contractAddress, [
+        'ft_metadata',
+      ]) as CustomContract;
 
-    const meta = await contract.ft_metadata();
+      const meta = await contract.ft_metadata();
 
-    setValue('decimals', meta.decimals);
-    setValue('symbol', meta.symbol);
+      setValue('decimals', meta.decimals);
+      setValue('symbol', meta.symbol);
 
-    return {
-      symbol: meta.symbol,
-      decimals: meta.decimals,
-    };
+      return {
+        symbol: meta.symbol,
+        decimals: meta.decimals,
+      };
+    } catch (e) {
+      return undefined;
+    }
   }, [nearService, accountId, contractAddress]);
 
   return (
     <div className={styles.root}>
-      <InputWrapper
-        fieldName="balance"
-        label="Balance (minimum amount of tokens delegated to user to vote in DAO)"
-        flex
-        className={styles.inputWrapper}
-      >
-        <div className={styles.input}>
-          <Input
-            placeholder="1"
-            isBorderless
-            size="auto"
-            inputStyles={{
-              padding: '10.5px 0',
-              width: getInputWidth(balance, 30, 6),
-            }}
-            {...register('balance')}
-          />
-          <span className={styles.suffix}>{tokenDetails?.symbol}</span>
-        </div>
-      </InputWrapper>
-
-      <InputWrapper
-        fieldName="threshold"
-        label={`${t(
-          'threshold'
-        )} (minimum amount of tokens needed to approve/reject proposal)`}
-        flex
-        className={styles.inputWrapper}
-      >
-        <div className={styles.input}>
-          <Input
-            placeholder="0000"
-            isBorderless
-            size="auto"
-            inputStyles={{
-              padding: '10.5px 0',
-              width: getInputWidth(threshold, 30, 6),
-            }}
-            {...register('threshold')}
-          />
-          <span className={styles.suffix}>{tokenDetails?.symbol}</span>
-        </div>
-      </InputWrapper>
-
-      <InputWrapper
-        fieldName="quorum"
-        label="Quorum (minimum amount of tokens required to approve/reject proposal)"
-        flex
-        className={styles.inputWrapper}
-      >
-        <div className={styles.input}>
-          <Input
-            placeholder="0"
-            isBorderless
-            size="auto"
-            inputStyles={{
-              padding: '10.5px 0',
-              width: getInputWidth(quorum, 30, 6),
-            }}
-            {...register('quorum')}
-          />
-          <span className={styles.suffix}>{tokenDetails?.symbol}</span>
-        </div>
-      </InputWrapper>
+      <div className={styles.blockExplanation}>
+        Minimum Balance - A user can vote if they have more than this number of
+        tokens delegated to them.
+      </div>
+      <div className={styles.row}>
+        <InputWrapper
+          fieldName="balance"
+          label="Minimum Balance"
+          className={cn(styles.detailsItem)}
+          labelClassName={cn(styles.inputLabel)}
+        >
+          <div className={styles.input}>
+            <Input
+              className={cn(styles.inputWrapper, styles.detailsInput)}
+              placeholder="1"
+              isBorderless
+              size="auto"
+              inputStyles={{
+                padding: '10.5px 0',
+                width: getInputWidth(balance, 30, 12),
+              }}
+              {...register('balance')}
+            />
+          </div>
+        </InputWrapper>
+        <span className={styles.suffix}>{tokenDetails?.symbol}</span>
+      </div>
+      <br />
+      <div className={styles.blockExplanation}>
+        Threshold - Minimum votes to pass or reject a proposal.
+      </div>
+      <div className={styles.row}>
+        <InputWrapper
+          fieldName="threshold"
+          label="Threshold"
+          className={cn(styles.detailsItem)}
+          labelClassName={cn(styles.inputLabel)}
+        >
+          <div className={styles.input}>
+            <Input
+              className={cn(styles.inputWrapper, styles.detailsInput)}
+              placeholder="0"
+              isBorderless
+              size="auto"
+              inputStyles={{
+                padding: '10.5px 0',
+                width: getInputWidth(threshold, 30, 12),
+              }}
+              {...register('threshold')}
+            />
+          </div>
+        </InputWrapper>
+        <span className={styles.suffix}>{tokenDetails?.symbol}</span>
+      </div>
+      <br />
+      <div className={cn(styles.blockExplanation, styles.hidden)}>
+        Quorum - Minimum tokens required to participate in the vote, regardless
+        of if they vote for or against a proposal.
+      </div>
+      <div className={cn(styles.row, styles.hidden)}>
+        <InputWrapper
+          fieldName="quorum"
+          label="Quorum"
+          className={cn(styles.detailsItem)}
+          labelClassName={cn(styles.inputLabel)}
+        >
+          <div className={styles.input}>
+            <Input
+              className={cn(styles.inputWrapper, styles.detailsInput)}
+              placeholder="0"
+              isBorderless
+              size="auto"
+              inputStyles={{
+                padding: '10.5px 0',
+                width: getInputWidth(quorum, 30, 12),
+              }}
+              {...register('quorum')}
+            />
+          </div>
+        </InputWrapper>
+        <span className={styles.suffix}>{tokenDetails?.symbol}</span>
+      </div>
     </div>
   );
 };

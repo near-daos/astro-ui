@@ -18,3 +18,7 @@
 .warningWrapper {
   margin-bottom: 48px;
 }
+
+.title {
+  @extend %title3;
+}

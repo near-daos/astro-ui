@@ -472,7 +472,7 @@ export class GovernanceTokenService extends BaseService {
                 msg: '',
               },
               GAS_VALUE,
-              new BN('1')
+              new BN('0')
             ),
           ],
         };

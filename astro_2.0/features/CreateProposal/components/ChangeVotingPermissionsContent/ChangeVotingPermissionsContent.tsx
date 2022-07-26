@@ -6,17 +6,24 @@ import { PermissionsSelector } from 'astro_2.0/features/pages/nestedDaoPagesCont
 import styles from './ChangeVotingPermissionsContent.module.scss';
 
 export const ChangeVotingPermissionsContent: FC = () => {
-  const { watch } = useFormContext();
+  const { watch, setValue } = useFormContext();
 
   const data = watch('policy');
+  const allowPolicyChange = watch('allowPolicyChange');
 
   return (
     <div className={styles.root}>
       <div className={styles.row}>
         <PermissionsSelector
-          disableNewProposal
+          disableNewProposal={!allowPolicyChange}
           initialData={data}
           className={styles.selector}
+          onChange={val => {
+            setValue('policy', val, {
+              shouldValidate: true,
+              shouldDirty: true,
+            });
+          }}
         />
       </div>
     </div>

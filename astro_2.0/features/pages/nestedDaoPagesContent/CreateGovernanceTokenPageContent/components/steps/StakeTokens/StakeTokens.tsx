@@ -1,5 +1,5 @@
 import React, { FC, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -8,9 +8,14 @@ import { Input } from 'components/inputs/Input';
 import { Button } from 'components/button/Button';
 import { useWalletContext } from 'context/WalletContext';
 import { useAsync } from 'react-use';
-import { formatYoktoValue } from 'utils/format';
+import cn from 'classnames';
+import { formatValueToYokto, formatYoktoValue } from 'utils/format';
 
 import { CustomContract } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/types';
+
+import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
+
+import { getInputWidth } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent/helpers';
 
 import styles from './StakeTokens.module.scss';
 
@@ -69,18 +74,23 @@ export const StakeTokens: FC<Props> = ({
     });
   }, [tokenDetails]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<Form>({
+  const methods = useForm<Form>({
     mode: 'all',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });
 
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { isValid },
+  } = methods;
+
+  const stake = watch('stake');
+
   const submitHandler = async (data: Form) => {
-    if (!nearService) {
+    if (!nearService || !tokenDetails) {
       return;
     }
 
@@ -88,7 +98,7 @@ export const StakeTokens: FC<Props> = ({
     await nearService.stakeTokens({
       tokenContract: contractAddress,
       stakingContract: nearService.getStackingContract(daoName),
-      amount: data.stake.toFixed(),
+      amount: formatValueToYokto(data.stake, tokenDetails.decimals),
     });
 
     // toggle onsubmit
@@ -96,52 +106,64 @@ export const StakeTokens: FC<Props> = ({
   };
 
   return (
-    <form
-      className={styles.root}
-      noValidate
-      onSubmit={handleSubmit(submitHandler)}
-    >
-      <div className={styles.content}>
-        <div className={styles.header}>
-          <h2>Stake tokens</h2>
+    <FormProvider {...methods}>
+      <form
+        className={styles.root}
+        noValidate
+        onSubmit={handleSubmit(submitHandler)}
+      >
+        <div className={styles.content}>
+          <div className={styles.header}>
+            <h2>Stake tokens</h2>
+          </div>
+          <div className={styles.body}>
+            <p className={styles.description}>
+              For every token you stake you will receive voting power, which you
+              can delegate to yourself or others.
+            </p>
+            <AmountBalanceCard
+              value={tokenDetails?.balance}
+              suffix={tokenDetails?.symbol}
+              loading={loadingAmount}
+            />
+          </div>
+          <div className={styles.footer}>
+            <div className={styles.row}>
+              <InputWrapper
+                fieldName="stake"
+                label="Stake"
+                className={cn(styles.detailsItem)}
+                labelClassName={cn(styles.inputLabel)}
+              >
+                <div className={styles.input}>
+                  <Input
+                    className={cn(styles.inputWrapper, styles.detailsInput)}
+                    placeholder={`${tokenDetails?.balance ?? 0}`}
+                    isBorderless
+                    size="auto"
+                    inputStyles={{
+                      padding: '10.5px 0',
+                      width: getInputWidth(`${stake}`, 30, 12),
+                    }}
+                    {...register('stake')}
+                  />
+                </div>
+              </InputWrapper>
+              <span className={styles.suffix}>{tokenDetails?.symbol}</span>
+            </div>
+          </div>
         </div>
-        <div className={styles.body}>
-          <p className={styles.description}>
-            Stake your voting tokens. You can delegate voting to other
-            participants with these tokens
-          </p>
-          <AmountBalanceCard
-            value={tokenDetails?.balance}
-            suffix={tokenDetails?.symbol}
-            loading={loadingAmount}
-          />
+        <div className={styles.controls}>
+          <Button
+            className={styles.controlBtn}
+            type="submit"
+            variant="black"
+            disabled={!isValid}
+          >
+            Next step
+          </Button>
         </div>
-        <div className={styles.footer}>
-          <span className={styles.inputLabel}>{tokenDetails?.symbol}</span>
-          <Input
-            isBorderless
-            isValid={!errors.stake?.message}
-            className={styles.input}
-            size="small"
-            textAlign="left"
-            min={0}
-            max={tokenDetails?.balance}
-            type="number"
-            placeholder={`${tokenDetails?.balance ?? 0}`}
-            {...register('stake')}
-          />
-        </div>
-      </div>
-      <div className={styles.controls}>
-        <Button
-          className={styles.controlBtn}
-          type="submit"
-          variant="black"
-          disabled={!isValid}
-        >
-          Next step
-        </Button>
-      </div>
-    </form>
+      </form>
+    </FormProvider>
   );
 };

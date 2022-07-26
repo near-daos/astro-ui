@@ -144,7 +144,7 @@
 }
 
 .contentValue {
-  @extend %heading3;
+  @extend %heading4;
   margin-top: 14px;
 
   @include desktop-max {
@@ -154,7 +154,7 @@
 }
 
 .contentValueName {
-  @extend %heading3;
+  @extend %heading4;
   margin-top: 2px;
   max-width: 100%;
   overflow: hidden;
@@ -167,6 +167,8 @@
 }
 
 .member {
+  @extend %body2;
+  line-height: 1.2;
   margin: 0 0 12px;
   max-width: 100%;
   overflow: hidden;

@@ -25,6 +25,7 @@ interface PermissionsSelectorProps {
   contentClassName?: string;
   controlClassName?: string;
   controlLabel?: string;
+  onChange?: (values: SelectorRow[]) => void;
 }
 
 const DATA_FIELDS = [
@@ -53,6 +54,7 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
   contentClassName,
   controlClassName,
   controlLabel = 'Propose Changes',
+  onChange,
 }) => {
   const rootRef = useRef(null);
   const leftIntersectionRef = React.useRef(null);
@@ -82,6 +84,17 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
     })
   );
 
+  const handleUpdateData = useCallback(
+    val => {
+      setRows(val);
+
+      if (onChange) {
+        onChange(val);
+      }
+    },
+    [onChange]
+  );
+
   const handleToggle = useCallback(
     (dataField: string, groupName: string, value: boolean) => {
       const res = rows.map(row => {
@@ -95,9 +108,9 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
         return row;
       });
 
-      setRows(res);
+      handleUpdateData(res);
     },
-    [rows]
+    [handleUpdateData, rows]
   );
 
   function isAllChecked(row: SelectorRow) {
@@ -131,9 +144,9 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
         return row;
       });
 
-      setRows(res);
+      handleUpdateData(res);
     },
-    [rows]
+    [handleUpdateData, rows]
   );
 
   function renderValueCell(
@@ -273,17 +286,17 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
                       <Tooltip
                         overlay={<span>{row.label}</span>}
                         placement="top"
-                        className={styles.columnLabel}
                       >
-                        {row.label}
+                        <Button
+                          size="small"
+                          disabled={disableNewProposal}
+                          variant="transparent"
+                          onClick={() => handleAllToggle(row, !allChecked)}
+                          className={styles.columnLabel}
+                        >
+                          {row.label}
+                        </Button>
                       </Tooltip>
-                      <Checkbox
-                        label=""
-                        checked={allChecked}
-                        disabled={disableNewProposal}
-                        onClick={() => handleAllToggle(row, !allChecked)}
-                        className={styles.checkbox}
-                      />
                     </div>
                   </div>
                   {renderValueCell('config', row.label, row.config)}

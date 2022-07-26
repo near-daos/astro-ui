@@ -450,6 +450,7 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
               balance={balance ?? '0'}
               quorum={quorum ?? '0'}
               threshold={threshold ?? '0'}
+              daoId={proposal.daoId}
             />
           );
         }
@@ -812,10 +813,10 @@ export async function getInitialFormValuesFromDraft(
         return {
           details: data.title,
           externalUrl,
-          token: bountyData.token || 'NEAR',
+          token: daoTokens[bountyData.token]?.symbol ?? 'NEAR',
           amount: formatYoktoValue(
             bountyData.amount,
-            daoTokens[bountyData.token].decimals
+            daoTokens[bountyData.token]?.decimals
           ),
           slots: bountyData.times,
           deadlineThreshold: differenceInDays(
@@ -845,7 +846,7 @@ export async function getInitialFormValuesFromDraft(
         return {
           details: data.title,
           externalUrl,
-          token: kind.tokenId || 'NEAR',
+          token: daoTokens[kind.tokenId]?.symbol ?? 'NEAR',
           amount: formatYoktoValue(
             kind.amount,
             daoTokens[kind.tokenId]?.decimals

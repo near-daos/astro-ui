@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useTranslation } from 'next-i18next';
 import { TFunction } from 'react-i18next';
+import Link from 'next/link';
 
 import {
   SINGLE_PROPOSAL_PAGE_URL,
@@ -22,7 +23,7 @@ import {
   ProposalVariant,
   VoteAction,
 } from 'types/proposal';
-import { Hashtag } from 'types/draftProposal';
+// import { Hashtag } from 'types/draftProposal';
 import { VoteDetail } from 'features/types';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { ProposalActions } from 'features/proposal/components/ProposalActions';
@@ -46,7 +47,7 @@ import { getGasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCountdown } from 'hooks/useCountdown';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { DraftDescription } from 'astro_2.0/components/ProposalCardRenderer/components/DraftDescription';
-import { Badge } from 'components/Badge';
+// import { Badge } from 'components/Badge';
 import { DraftInfo } from 'astro_2.0/components/ProposalCardRenderer/components/DraftInfo';
 import { DraftManagement } from 'astro_2.0/components/ProposalCardRenderer/components/DraftManagement';
 import { EditableContent } from 'astro_2.0/components/EditableContent';
@@ -95,7 +96,7 @@ export interface ProposalCardProps {
   isDraft?: boolean;
   isEditDraft?: boolean;
   title?: string;
-  hashtags?: Hashtag[];
+  // hashtags?: Hashtag[];
   isSaved?: boolean;
   history?: ProposalFeedItem[];
   onSelect?: (p: string) => void;
@@ -103,7 +104,7 @@ export interface ProposalCardProps {
   convertToProposal?: () => void;
   saves?: number;
   dao?: DAO;
-  state?: string;
+  draftState?: string;
 }
 
 function getTimestampLabel(
@@ -216,7 +217,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   isDraft,
   isEditDraft,
   title,
-  hashtags,
+  // hashtags,
   isSaved,
   history,
   onSelect,
@@ -224,7 +225,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   convertToProposal,
   saves,
   dao,
-  state,
+  draftState,
 }) => {
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
@@ -233,7 +234,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const draftTitle = draftMethods.watch('title');
   const draftDescription = draftMethods.watch('description');
-  const draftHashtags = draftMethods.watch('hashtags');
+  // const draftHashtags = draftMethods.watch('hashtags');
+
+  const isDraftClosed = draftState === 'closed';
 
   const schema = yup.object().shape({
     gas: getGasValidation(t),
@@ -418,19 +421,19 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const handlerChangeTitle = useCallback(
     titleValue => {
-      draftMethods.setValue('title', titleValue);
+      draftMethods.setValue('title', titleValue, { shouldDirty: true });
       draftMethods.trigger('title');
     },
     [draftMethods]
   );
 
-  const handlerChangeHashtags = useCallback(
-    hashtagsValue => {
-      draftMethods.setValue('hashtags', hashtagsValue);
-      draftMethods.trigger('hashtags');
-    },
-    [draftMethods]
-  );
+  // const handlerChangeHashtags = useCallback(
+  //   hashtagsValue => {
+  //     draftMethods.setValue('hashtags', hashtagsValue);
+  //     draftMethods.trigger('hashtags');
+  //   },
+  //   [draftMethods]
+  // );
 
   const handlerChangeDescription = useCallback(
     html => {
@@ -440,8 +443,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         value = '';
       }
 
-      draftMethods.setValue('description', value);
-      draftMethods.setValue('details', value);
+      draftMethods.setValue('description', value, { shouldDirty: true });
+      draftMethods.setValue('details', value, { shouldDirty: true });
       draftMethods.trigger('description');
       draftMethods.trigger('details');
     },
@@ -458,6 +461,36 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     });
   }, [daoId, id, router]);
 
+  function renderLinkToProposal() {
+    if (!isDraftClosed) {
+      return null;
+    }
+
+    return (
+      <InfoBlockWidget
+        className={styles.createdProposal}
+        label="Link to proposal"
+        value={
+          <Link
+            passHref
+            href={{
+              pathname: SINGLE_PROPOSAL_PAGE_URL,
+              query: {
+                dao: daoId,
+                proposal: `${daoId}-${proposalId}`,
+              },
+            }}
+          >
+            <a className={styles.createdProposalLink}>
+              <Icon name="buttonLink" className={styles.createdProposalIcon} />
+              Proposal link
+            </a>
+          </Link>
+        }
+      />
+    );
+  }
+
   function renderCardContent() {
     if (isEditDraft) {
       return (
@@ -469,8 +502,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
             titlePlaceholder="Add draft name"
             title={draftTitle}
             setTitle={handlerChangeTitle}
-            hashtags={draftHashtags}
-            setHashtags={handlerChangeHashtags}
+            // hashtags={draftHashtags}
+            // setHashtags={handlerChangeHashtags}
             className={styles.editable}
             html={draftDescription}
             setHTML={handlerChangeDescription}
@@ -484,20 +517,21 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       return (
         <>
           {renderProposer()}
+          {renderLinkToProposal()}
           <div className={styles.draftContent}>
             <div className={styles.draftTitle}>{title}</div>
-            <div className={styles.draftHashTags}>
-              {hashtags?.map(tag => (
-                <Badge
-                  key={tag.id}
-                  size="small"
-                  className={styles.tag}
-                  variant="lightgray"
-                >
-                  {tag.value}
-                </Badge>
-              ))}
-            </div>
+            {/* <div className={styles.draftHashTags}> */}
+            {/*  {hashtags?.map(tag => ( */}
+            {/*    <Badge */}
+            {/*      key={tag.id} */}
+            {/*      size="small" */}
+            {/*      className={styles.tag} */}
+            {/*      variant="lightgray" */}
+            {/*    > */}
+            {/*      {tag.value} */}
+            {/*    </Badge> */}
+            {/*  ))} */}
+            {/* </div> */}
             <DraftDescription description={description} />
           </div>
           <div className={styles.contentCell}>{content}</div>
@@ -567,14 +601,14 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       return (
         <div className={styles.draftFooter}>
           <DraftManagement
-            state={state}
+            state={draftState}
             accountId={accountId}
             proposer={proposer}
             convertToProposal={convertToProposal}
             onEditDraft={handleEditDraft}
             dao={dao}
           />
-          <DraftInfo saves={saves || 0} isSaved={Boolean(isSaved)} />
+          <DraftInfo dao={dao} saves={saves || 0} isSaved={Boolean(isSaved)} />
         </div>
       );
     }
@@ -693,10 +727,23 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       return (
         <DeleteDraftButton
           proposer={proposer}
-          state={state}
+          state={draftState}
           draftId={id || ''}
           dao={dao}
         />
+      );
+    }
+
+    if (isDraftClosed) {
+      return (
+        <div className={styles.countdownCell}>
+          <span>
+            <span className={styles.convertedDraftCountdownTitle}>
+              Converted
+            </span>{' '}
+            {formatISODate(updatedAt, 'dd MMMM yyyy, HH:mm')}
+          </span>
+        </div>
       );
     }
 
@@ -715,6 +762,25 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     );
   }
 
+  const renderStatusSeal = () => {
+    if (isDraftClosed) {
+      return (
+        <div className={cn(styles.proposalStatusSeal, styles.sealClosed)}>
+          <Icon name="sealClosed" />
+        </div>
+      );
+    }
+
+    return (
+      sealIcon &&
+      !showFinalize && (
+        <div className={styles.proposalStatusSeal}>
+          <Icon name={sealIcon as IconName} />
+        </div>
+      )
+    );
+  };
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div
@@ -730,11 +796,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           {t('proposalCard.signingTransaction')}
         </div>
       )}
-      {sealIcon && !showFinalize && (
-        <div className={styles.proposalStatusSeal}>
-          <Icon name={sealIcon as IconName} />
-        </div>
-      )}
+      {renderStatusSeal()}
       <div className={styles.proposalCell}>
         <InfoBlockWidget
           valueFontSize="L"

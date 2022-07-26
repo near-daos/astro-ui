@@ -57,6 +57,7 @@ export const DelegatePageContent: FC<Props> = ({
   const {
     loadingDelegateByUser,
     loadingTotalSupply,
+    loadingTokenDetails,
     totalSupply,
     tokenDetails,
     handleSearch,
@@ -64,11 +65,16 @@ export const DelegatePageContent: FC<Props> = ({
     delegateByUser,
     data,
   } = useDelegatePageData(daoContext.dao);
+
+  const loading =
+    loadingDelegateByUser || loadingTotalSupply || loadingTokenDetails;
+
   const {
     threshold: votingThreshold,
     balance,
     quorum,
   } = useVotingPolicyDetails(daoContext.dao);
+
   const canCreateProposal =
     daoContext.userPermissions.isCanCreatePolicyProposals &&
     daoContext.policyAffectsProposals.length === 0;
@@ -87,10 +93,17 @@ export const DelegatePageContent: FC<Props> = ({
           threshold: votingThreshold,
           quorum,
           balance,
+          contractAddress: tokenDetails?.contractAddress,
         },
       });
     }
-  }, [balance, quorum, toggleCreateProposal, votingThreshold]);
+  }, [
+    balance,
+    quorum,
+    toggleCreateProposal,
+    tokenDetails?.contractAddress,
+    votingThreshold,
+  ]);
 
   const handleSort = useCallback(
     async value => {
@@ -125,8 +138,12 @@ export const DelegatePageContent: FC<Props> = ({
       nextActionTime: delegateByUser?.nextActionTime,
       memberBalance: balance,
       delegateToUser: delegateByUser?.delegatedToUser,
+      symbol: tokenDetails?.symbol,
+      decimals: tokenDetails?.decimals,
+      votingGoal,
     };
   }, [
+    votingGoal,
     balance,
     daoContext.dao.name,
     delegateByUser?.delegatedBalance,
@@ -134,6 +151,8 @@ export const DelegatePageContent: FC<Props> = ({
     delegateByUser?.nextActionTime,
     delegateByUser?.stakedBalance,
     tokenDetails?.contractAddress,
+    tokenDetails?.decimals,
+    tokenDetails?.symbol,
   ]);
 
   return (
@@ -146,17 +165,19 @@ export const DelegatePageContent: FC<Props> = ({
           })}
         >
           <MyBalanceWidget
-            loading={loadingDelegateByUser}
+            loading={loading}
             decimals={tokenDetails?.decimals}
             delegatedBalance={delegateByUser?.delegatedBalance}
             stakedBalance={delegateByUser?.stakedBalance}
             symbol={tokenDetails?.symbol}
             availableBalance={tokenDetails?.balance}
+            actionsNotAvailable={actionsNotAvailable}
+            nextActionTime={delegateByUser?.nextActionTime}
           />
           <DelegatePageWidget
             title={`Total Delegated Balance (${tokenDetails?.symbol})`}
           >
-            {loadingTotalSupply ? (
+            {loading ? (
               <ContentLoader height={28} width={80}>
                 <rect x="0" y="0" width="80" height="28" />
               </ContentLoader>
@@ -169,7 +190,7 @@ export const DelegatePageContent: FC<Props> = ({
             )}
           </DelegatePageWidget>
           <VotingThresholdWidget
-            loading={loadingDelegateByUser}
+            loading={loading}
             value={votingGoal}
             disabled={!canCreateProposal}
             showGoalChart={showGoalChart}
@@ -183,6 +204,7 @@ export const DelegatePageContent: FC<Props> = ({
               threshold={Number(votingThreshold ?? 0)}
               quorum={Number(quorum ?? 0)}
               totalDelegated={Number(totalSupply ?? 0)}
+              balance={Number(balance ?? 0)}
             />
           </div>
         )}
@@ -245,7 +267,7 @@ export const DelegatePageContent: FC<Props> = ({
             votingThreshold={votingThreshold}
             tokenDetails={tokenDetails}
             data={data}
-            loading={loadingDelegateByUser}
+            loading={loading}
             addMemberMode={addNewMemberMode}
             onAddMember={() => setAddNewMemeberMode(false)}
           />

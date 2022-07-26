@@ -16,7 +16,7 @@ import { CreateTokenInput } from 'astro_2.0/features/CreateProposal/types';
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
 
-import { formatGasValue } from 'utils/format';
+import { formatGasValue, formatValueToYokto } from 'utils/format';
 import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 import { dataRoleToContractRole } from 'features/groups/helpers';
 
@@ -812,7 +812,7 @@ export async function getAcceptStakingContractProposal(
   return ({
     daoId: id,
     daoBond: policy.proposalBond,
-    description: `Accept staking contract ${stakingContractName}`,
+    description: `Adopt staking contract ${stakingContractName}`,
     stakingContractName,
   } as unknown) as CreateProposalParams;
 }
@@ -833,12 +833,22 @@ export async function getChangeVotingPolicyToWeightVoting(
 
   const { ratio, weightKind, quorum: defaultQuorum } = defaultVotePolicy;
 
-  const { threshold, symbol, balance, quorum } = data as {
+  const {
+    threshold: rawThreshold,
+    balance: rawBalance,
+    quorum: rawQuorum,
+    decimals,
+  } = data as {
     threshold: number;
     symbol: string;
     balance: number;
     quorum: number;
+    decimals: number;
   };
+
+  const balance = formatValueToYokto(rawBalance, decimals);
+  const threshold = formatValueToYokto(rawThreshold, decimals);
+  const quorum = formatValueToYokto(rawQuorum, decimals);
 
   // TODO: add selector or use wildcard instead(should be changed on a smart contract side)
   const proposalKindPolicyLabels = [
@@ -873,7 +883,8 @@ export async function getChangeVotingPolicyToWeightVoting(
 
   return {
     daoId: id,
-    description: `Change voting policy to weight voting ${threshold} ${symbol}`,
+    description:
+      'With every vote on a proposal the Balance, Quorum, and Threshold determine if the proposal passes or fails.',
     kind: 'ChangePolicy',
     data: {
       policy: {

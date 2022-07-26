@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import { format } from 'date-fns';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { DaoDelegation } from 'types/dao';
 
@@ -19,9 +20,6 @@ import { IconButton } from 'components/button/IconButton';
 import styles from './DelegateGroupTable.module.scss';
 
 interface Props extends DaoDelegation {
-  votingThreshold: string;
-  decimals?: number;
-  symbol?: string;
   isActive: boolean;
   actionContext?: 'Delegate' | 'Undelegate';
   onActionClick: (actionType: string | null) => void;
@@ -31,24 +29,24 @@ interface Props extends DaoDelegation {
 export const TableRow: FC<Props> = ({
   accountId,
   balance,
-  votingThreshold,
-  decimals,
-  symbol,
   isActive,
   actionContext,
   onActionClick,
   availableBalance,
 }) => {
-  const progressPercent = (+balance * 100) / +votingThreshold;
-  const formattedBalance = Number(balance).toFixed(0);
-
   const {
     nextActionTime,
     stakedBalance = 0,
     delegatedBalance = 0,
     memberBalance,
     delegateToUser,
+    votingGoal,
+    decimals,
+    symbol,
   } = useDelegatePageContext();
+
+  const progressPercent = (+balance * 100) / (votingGoal || 1);
+  const formattedBalance = Number(balance).toFixed(0);
 
   const actionsNotAvailable = nextActionTime && nextActionTime > new Date();
   const notEnoughStakedBalance =
@@ -168,18 +166,26 @@ export const TableRow: FC<Props> = ({
           </div>
         </div>
       </div>
-      {isActive && (
-        <ActionsRow
-          key={actionContext}
-          accountId={accountId}
-          actionContext={actionContext}
-          onActionClick={onActionClick}
-          availableBalance={availableBalance}
-          formattedBalance={formattedBalance}
-          symbol={symbol}
-          decimals={decimals}
-        />
-      )}
+      <AnimatePresence>
+        {isActive && (
+          <motion.div
+            layout
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <ActionsRow
+              key={actionContext}
+              accountId={accountId}
+              actionContext={actionContext}
+              onActionClick={onActionClick}
+              availableBalance={availableBalance}
+              symbol={symbol}
+              decimals={decimals}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

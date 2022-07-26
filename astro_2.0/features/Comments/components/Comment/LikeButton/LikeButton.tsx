@@ -20,7 +20,7 @@ export const LikeButton: FC<LikeButtonProps> = ({
   iconClassName,
 }) => {
   return (
-    <div className={styles.likes}>
+    <div className={cn(styles.likes, { [styles.disabled]: disabled })}>
       {amount}
       <IconButton
         size="medium"

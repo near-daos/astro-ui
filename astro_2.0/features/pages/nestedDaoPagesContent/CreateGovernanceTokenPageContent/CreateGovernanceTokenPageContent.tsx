@@ -13,6 +13,9 @@ import {
   useLowBalanceWarning,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/hooks';
 
+import { isCouncilUser } from 'astro_2.0/features/DraftComments/helpers';
+import { useWalletContext } from 'context/WalletContext';
+
 import { Intro } from './components/steps/Intro';
 
 import styles from './CreateGovernanceTokenPageContent.module.scss';
@@ -27,9 +30,14 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
   const { status, update, loading } = useCreateGovernanceTokenStatus(
     daoContext.dao.id
   );
+  const { accountId } = useWalletContext();
+  const { daoVersion } = daoContext.dao;
+  const isSupportedVersion = daoVersion?.version[0] > 2;
   const isInProgress = status && status.step !== null;
   const isViewProposal = status?.proposalId !== null;
+  const isCouncil = isCouncilUser(daoContext.dao, accountId);
   const isPermitted =
+    isCouncil &&
     daoContext.userPermissions.isCanCreateProposals &&
     daoContext.userPermissions.allowedProposalsToCreate[
       ProposalType.SetStakingContract
@@ -39,7 +47,7 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
     !status?.wizardCompleted;
 
   function renderContent() {
-    if (!daoContext.userPermissions.isCanCreateProposals && !isViewProposal) {
+    if (!isPermitted && !isViewProposal) {
       return <NoResultsView title="You don't have permissions to proceed" />;
     }
 
@@ -60,7 +68,7 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
     return (
       <Intro
         onUpdate={update}
-        disabled={!isPermitted || showLowBalanceWarning}
+        disabled={!isPermitted || showLowBalanceWarning || !isSupportedVersion}
       />
     );
   }
@@ -68,8 +76,23 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
   return (
     <div className={styles.root}>
       <h1 className={styles.header}>
-        {t('createGovernanceTokenPage.tokenWeightedVoting')}
+        {isInProgress
+          ? t('createGovernanceTokenPage.governanceTokenSetup')
+          : t('createGovernanceTokenPage.tokenWeightedVoting')}
       </h1>
+      {!isSupportedVersion && (
+        <DaoWarning
+          content={
+            <>
+              <div className={styles.title}>Warning</div>
+              <div className={styles.text}>
+                Token weighted voting is not supported in DAO 2.0
+              </div>
+            </>
+          }
+          className={styles.warningWrapper}
+        />
+      )}
       {showLowBalanceWarning && (
         <DaoWarning
           content={

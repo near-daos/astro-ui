@@ -185,15 +185,14 @@
   }
 
   &.groupName {
-    @extend %title5;
     color: var(--color-black);
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   .columnLabel {
+    @extend %title5;
     @include ellipse-text;
-    margin-right: 4px;
   }
 
   &.alignCenter {

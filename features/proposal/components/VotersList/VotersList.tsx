@@ -17,18 +17,34 @@ export const VotersList: FC<VotersListProps> = ({ data, showTokensInfo }) => {
 
   return (
     <ul className={styles.votersList}>
-      {data.map(item => (
-        <li key={item.name} className={styles.voteListItem}>
-          <VoterDetailsCard
-            timestamp={item.timestamp}
-            transactionHash={item.transactionHash}
-            vote={item.vote}
-            name={item.name}
-            groups={item.groups}
-            tokensDetails={showTokensInfo ? item.tokens : null}
-          />
-        </li>
-      ))}
+      {data
+        .sort((a, b) => {
+          if (!a.timestamp || !b.timestamp) {
+            return 0;
+          }
+
+          if (a.timestamp > b.timestamp) {
+            return -1;
+          }
+
+          if (a.timestamp < b.timestamp) {
+            return 1;
+          }
+
+          return 0;
+        })
+        .map(item => (
+          <li key={item.name} className={styles.voteListItem}>
+            <VoterDetailsCard
+              timestamp={item.timestamp}
+              transactionHash={item.transactionHash}
+              vote={item.vote}
+              name={item.name}
+              groups={item.groups}
+              tokensDetails={showTokensInfo ? item.tokens : null}
+            />
+          </li>
+        ))}
     </ul>
   );
 };

@@ -9,6 +9,7 @@
   justify-content: flex-start;
   margin-bottom: 8px;
   max-width: 320px;
+  overflow: hidden;
   width: 100%;
 
   @include tablet-landscape {
@@ -70,10 +71,10 @@
 }
 
 .person {
-  max-width: 116px;
+  @include ellipse-text;
   overflow: hidden;
   padding: 16px 6px;
-  width: 116px;
+  width: 100%;
 
   .label {
     @extend %caption1;
@@ -85,6 +86,7 @@
     @extend %caption1;
     @include ellipse-text;
     color: var(--color-black);
+    max-width: 220px;
   }
 }
 

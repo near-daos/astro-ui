@@ -38,6 +38,10 @@
   left: 0;
   position: absolute;
   top: 0;
+
+  &:hover {
+    z-index: 10;
+  }
 }
 
 .label {
@@ -65,7 +69,7 @@
 
 .tooltip {
   display: inline-block;
-  width: 120px;
+  width: 220px;
   z-index: 10;
 }
 
@@ -107,9 +111,11 @@
 
   white-space: nowrap;
 
+  z-index: -1;
+
   @include tablet-landscape {
     left: unset;
-    position: static;
+    position: relative;
     top: unset;
   }
 
@@ -192,4 +198,8 @@
   @include tablet-landscape {
     display: flex;
   }
+}
+
+.hidden {
+  display: none;
 }

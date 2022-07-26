@@ -15,6 +15,7 @@ data:
   LOG_ROCKET_APP_ID: "{{ .Values.environment.log_rocket_app_id }}"
   STATS_API_URL: "{{ .Values.environment.stats_api_url }}"
   NEXT_PUBLIC_LAUNCHDARKLY_ID: "{{ .Values.environment.next_public_launchdarkly_id }}"
+  NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY: "{{ .Values.environment.next_public_launchdarkly_sdk_key }}"
   APP_DOMAIN: "{{ .Values.environment.app_domain }}"
   RELEASE_NOTES: "{{ .Values.environment.release_notes }}"
   DRAFTS_API_URL: "{{ .Values.environment.drafts_api_url }}"

@@ -18,6 +18,7 @@ import { Feed as FeedList } from 'astro_2.0/components/Feed';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { useDraftsPageData } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/hooks';
+import { useWalletContext } from 'context/WalletContext';
 
 import { CREATE_DRAFT_PAGE_URL } from 'constants/routing';
 
@@ -35,6 +36,7 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
   const router = useRouter();
   const { t } = useTranslation();
   const { dao } = daoContext;
+  const { accountId } = useWalletContext();
 
   const {
     data,
@@ -95,22 +97,23 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
                             : t('noMoreResults')
                         }
                       >
-                        {data?.total === 0 && (
-                          <Button
-                            capitalize
-                            size="small"
-                            onClick={() => {
-                              router.push({
-                                pathname: CREATE_DRAFT_PAGE_URL,
-                                query: {
-                                  dao: dao.id,
-                                },
-                              });
-                            }}
-                          >
-                            Create Draft
-                          </Button>
-                        )}
+                        {data?.total === 0 &&
+                          dao.daoMembersList.includes(accountId) && (
+                            <Button
+                              capitalize
+                              size="small"
+                              onClick={() => {
+                                router.push({
+                                  pathname: CREATE_DRAFT_PAGE_URL,
+                                  query: {
+                                    dao: dao.id,
+                                  },
+                                });
+                              }}
+                            >
+                              Create Draft
+                            </Button>
+                          )}
                       </NoResultsView>
                     </div>
                   }

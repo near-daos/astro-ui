@@ -56,6 +56,7 @@
   "depositToDao": "Deposit to DAO",
   "deposit": "Deposit",
   "joinDao": "Join DAO",
+  "continue": "Continue",
   "threshold": "Threshold",
   "amount": "Amount",
   "minimumSearchCharacters": "Please enter at least 3 characters to search",
@@ -419,6 +420,7 @@
   },
   "createProposal": {
     "header": {
+      "governanceTokenSetup": "Governance Token Setup",
       "changePolicy": "Proposal type: Change Policy",
       "proposalCreation": "Proposal Creation",
       "votingPermissions": "Voting Permissions",
@@ -439,7 +441,7 @@
       "createToken": "Create Token",
       "group": "Group",
       "createGovToken": "Create Governance Token",
-      "acceptStakingContract": "Accept Staking Contract",
+      "acceptStakingContract": "Adopt Staking Contract",
       "changeVotingPolicy": "Change Voting Policy"
     },
     "countdown": "Countdown will be here"
@@ -468,7 +470,7 @@
       "recoverStorageCosts": "Recover Storage Costs",
       "createDao": "Create DAO",
       "deployStakingContract": "Deploy Staking Contract",
-      "contractAcceptance": "Accept Staking Contract"
+      "contractAcceptance": "Adopt Staking Contract"
     },
     "proposalType": {
       "addBounty": "Add Bounty",
@@ -500,12 +502,15 @@
     "tokenWeightedVoting": "Token weighted voting",
     "createGovernanceToken": "Create Governance Token",
     "underConstruction": "The feature is under construction",
+    "governanceTokenSetup": "Governance Token Setup",
     "intro": {
       "setupGovernanceToken": "Setup Governance Token",
-      "description": "Governance tokens are blockchain tokens that grant voting and management power to their users. They are really important in a DeFi environment where there is a requirement for power balance. Through governance tokens, you can vote on proposals that are related to your blockchain.",
-      "advOne": "Governance tokens pave the way for collaboration. They get people involved in the project and help engineers in the decision-making process.",
-      "advTwo": "Founders can distribute these tokens based on distribution of funds or with users' normal income. ",
-      "advThree": "Having a governance token can only give you the right to vote. This does not give you the opportunity to influence the blockchain if the other participants do not support your idea.",
+      "description": "In this wizard we'll set up your DAO for token holder participation. If\n        you haven't created your own NEP-141 fungible token then right now is a\n        good time to hit up <0>tkn.farm</0>. Then you will deploy a staking contract,\n        distribute tokens, and configure voting for holders.",
+      "warningTitle": "Setting up a governance token is a permanent change to your DAO.",
+      "warningDetails": "If you are unsure about taking this step it would be wise to research more and <0>experiment on testnet.</0> \n",
+      "advOne": "Creating your own governance token costs less than 3 NEAR at tkn.farm. Your NEP-141 fungible token isn't limited to governance. It's there for anything you and your community dream up.",
+      "advTwo": "Be mindful when distributing your tokens. By default, anyone who controls more than 50% of the token supply can attack your DAO. \n",
+      "advThree": "Owning your community token will be the smoothest route for people to vote in your DAO. Configure your groups and quorums so you never have to manually add or remove members in the future.",
       "startToCreate": "Start to create",
       "faq": "FAQ",
       "accordions": {
@@ -537,7 +542,9 @@
         "changeDaoPolicy": "Change DAO Policy",
         "selectToken": "Select Token",
         "deployStakingContract": "Deploy Staking Contract",
-        "acceptStakingContract": "Accept Staking Contract",
+        "acceptStakingContract": "Adopt Staking Contract",
+        "proposalCreation": "Proposal Creation",
+        "votingPermissions": "Voting Permissions",
         "stakeTokens": "Stake tokens",
         "delegateVoting": "Delegate Voting"
       }

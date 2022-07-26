@@ -18,13 +18,17 @@ exports[`AmountContent Should render component 1`] = `
         </div>
       </div>
       <div
-        class="iconWrapper"
+        class="root"
       >
-        <svg>
-          <use
-            href="/_next/undefined"
-          />
-        </svg>
+        <div
+          class="iconWrapper iconWrapper"
+        >
+          <svg>
+            <use
+              href="/_next/undefined"
+            />
+          </svg>
+        </div>
       </div>
       <div
         class="label"

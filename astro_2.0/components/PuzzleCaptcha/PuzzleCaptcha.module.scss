@@ -13,7 +13,9 @@ $slider-height: 48px;
 }
 
 .sliderContainer {
+  align-items: center;
   background-color: var(--color-neutral-30);
+  display: flex;
   height: 48px;
   position: relative;
 }
@@ -55,9 +57,10 @@ $slider-height: 48px;
   /* All the same stuff for Firefox */
   &::-moz-range-thumb {
     background-image: url('/assets/captcha/slider/regular.svg');
+    border-radius: 0;
     cursor: grab;
-    height: 36px;
-    width: 16px;
+    height: $slider-height;
+    width: $slider-height;
 
     &:active {
       cursor: grabbing;
@@ -67,9 +70,10 @@ $slider-height: 48px;
   /* All the same stuff for IE */
   &::-ms-thumb {
     background-image: url('/assets/captcha/slider/regular.svg');
+    border-radius: 0;
     cursor: grab;
-    height: 36px;
-    width: 16px;
+    height: $slider-height;
+    width: $slider-height;
 
     &:active {
       cursor: grabbing;
@@ -92,6 +96,7 @@ $slider-height: 48px;
 }
 
 .hole {
+  color: var(--color-neutral-30);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

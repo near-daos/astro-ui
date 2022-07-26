@@ -27,3 +27,11 @@ $point: 32px;
   padding: 8px;
   white-space: nowrap;
 }
+
+.tooltipOverlay {
+  text-align: left;
+}
+
+.sub {
+  @extend %caption1;
+}

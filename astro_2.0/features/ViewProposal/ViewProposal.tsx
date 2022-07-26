@@ -32,6 +32,8 @@ import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { DAO } from 'types/dao';
 import { UserPermissions } from 'types/context';
 
+import styles from './ViewProposal.module.scss';
+
 export interface ViewProposalProps {
   proposal: ProposalFeedItem | DraftProposal;
   isDraft?: boolean;
@@ -66,22 +68,24 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   dao,
   userPermissions,
 }) => {
+  const defaultValues = {
+    title: 'title' in proposal ? proposal?.title : undefined,
+    // hashtags: 'hashtags' in proposal ? proposal?.hashtags : undefined,
+    details: 'description' in proposal ? proposal?.description : undefined,
+    description: 'description' in proposal ? proposal?.description : undefined,
+  };
+
   const methods = useForm<{
     title: string;
     hashtags: Hashtag[];
     description: string;
   }>({
-    defaultValues: {
-      title: 'title' in proposal ? proposal?.title : undefined,
-      hashtags: 'hashtags' in proposal ? proposal?.hashtags : undefined,
-      description:
-        'description' in proposal ? proposal?.description : undefined,
-    },
+    defaultValues,
     mode: 'onSubmit',
     resolver: yupResolver(
       yup.object().shape({
         description: yup.string().required('Required'),
-        hashtags: yup.array().min(1, 'Required'),
+        // hashtags: yup.array().min(1, 'Required'),
         title: yup.string().required('Required'),
       })
     ),
@@ -128,6 +132,8 @@ export const ViewProposal: FC<ViewProposalProps> = ({
     proposal.votes[accountId] === 'Dismiss' ||
     (proposal.status && proposal.status !== 'InProgress');
 
+  const isClosedDraft = 'state' in proposal && proposal?.state === 'closed';
+
   return (
     <FormProvider {...methods}>
       <ProposalCardRenderer
@@ -142,7 +148,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
         daoFlagNode={
           showFlag && (
             <DaoFlagWidget
-              daoName={proposal.dao.name}
+              daoName={proposal.daoDetails.displayName || proposal.dao.name}
               flagUrl={proposal.dao.flagLogo}
               daoId={proposal.dao.id}
               fallBack={proposal.dao.logo}
@@ -154,6 +160,10 @@ export const ViewProposal: FC<ViewProposalProps> = ({
         }
         letterHeadNode={
           <LetterHeadWidget
+            className={isClosedDraft ? styles.closedDraft : ''}
+            backgroundClassName={
+              isClosedDraft ? styles.letterHeaderBackgroundClosedDraft : ''
+            }
             type={proposal.kind.type}
             coverUrl={proposal.dao.flagCover}
           />
@@ -162,11 +172,11 @@ export const ViewProposal: FC<ViewProposalProps> = ({
           <ProposalCard
             convertToProposal={handleToggleCreateProposal}
             title={'title' in proposal ? proposal?.title : undefined}
-            hashtags={'hashtags' in proposal ? proposal?.hashtags : undefined}
+            // hashtags={'hashtags' in proposal ? proposal?.hashtags : undefined}
             history={'history' in proposal ? proposal?.history : undefined}
             isSaved={'isSaved' in proposal ? proposal?.isSaved : undefined}
             saves={'isSaved' in proposal ? proposal?.saves : undefined}
-            state={'state' in proposal ? proposal?.state : undefined}
+            draftState={'state' in proposal ? proposal?.state : undefined}
             isDraft={isDraft}
             isEditDraft={isEditDraft}
             id={proposal.id}

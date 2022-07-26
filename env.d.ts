@@ -28,6 +28,7 @@ declare global {
       I18_RELOAD_ON_PRERENDER: boolean;
 
       NEXT_PUBLIC_LAUNCHDARKLY_ID: string;
+      NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY: string;
 
       GENERIC_FACTORY_CONTRACT_NAME: string;
       STAKING_CONTRACT_BINARY_HASH: string;

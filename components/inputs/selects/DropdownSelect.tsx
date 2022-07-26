@@ -92,7 +92,7 @@ export const DropdownSelect = React.forwardRef<
           >
             <div className={styles.container}>
               <div className={styles.selected}>
-                {selectedItem?.label ?? (
+                {selectedItem?.label || (
                   <div className={styles.placeholder}>{placeholder || ''}</div>
                 )}
               </div>

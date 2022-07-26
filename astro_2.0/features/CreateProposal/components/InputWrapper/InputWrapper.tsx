@@ -14,6 +14,7 @@ interface InputWrapperProps {
   flex?: boolean;
   className?: string;
   labelClassName?: string;
+  hidden?: boolean;
 }
 
 export const InputWrapper: FC<InputWrapperProps> = ({
@@ -25,6 +26,7 @@ export const InputWrapper: FC<InputWrapperProps> = ({
   alignRight,
   className = '',
   labelClassName = '',
+  hidden,
 }) => {
   const {
     formState: { errors },
@@ -39,6 +41,7 @@ export const InputWrapper: FC<InputWrapperProps> = ({
         [styles.fullWidth]: fullWidth,
         [styles.flex]: flex,
         [styles.alignRight]: alignRight,
+        [styles.hidden]: hidden,
       })}
     >
       <div

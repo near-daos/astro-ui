@@ -22,6 +22,7 @@ env:
   KUBE_CONFIG_DATA:  ${{ secrets.KUBE_CONFIG_DATA }}
   NODE_OPTIONS: "--max-old-space-size=7168"
   NEXT_PUBLIC_LAUNCHDARKLY_ID: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_ID }}
+  NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY }}
 
 jobs:
   get-environment:
@@ -81,6 +82,7 @@ jobs:
             --set environment.near_env=${NEAR_ENV} \
             --set environment.stats_api_url=${STATS_API_URL} \
             --set environment.next_public_launchdarkly_id=${NEXT_PUBLIC_LAUNCHDARKLY_ID} \
+            --set environment.next_public_launchdarkly_sdk_key=${NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY} \
             --set environment.app_domain=${APP_DOMAIN} \
             --set environment.release_notes=${RELEASE_NOTES} \
             --set environment.drafts_api_url=${DRAFTS_API_URL} \
@@ -89,37 +91,37 @@ jobs:
             --set ingress.host=${K8S_INGRESS_HOST}
 
 
-  run-autotests:
-    name: Run Autotests
-    needs:
-    - build-deploy
-    - get-environment
-    if: needs.get-environment.outputs.environment == 'test'
-    uses: near-daos/astro-ui/.github/workflows/run-autotests.yaml@develop
-    with:
-      environment: test
-      tags: smoke
-      browser: chrome
-    secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-      TEST_REPO_TOKEN: ${{ secrets.TEST_REPO_TOKEN }}
-
-  build-deploy-storybook:
-    runs-on: ubuntu-latest
-    if: needs.get-environment.outputs.environment == 'test'
-    name: Build Deploy Storybook
-    needs:
-    - get-environment
-    environment:
-      name: ${{ needs.get-environment.outputs.environment }}
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set Environment
-      run: |
-        echo DOCKER_ENV_TAG=${{ needs.get-environment.outputs.environment }}-$GITHUB_SHA >> $GITHUB_ENV
-        cat ".github/env.common" >>$GITHUB_ENV
-        cat ".github/env.${{ needs.get-environment.outputs.environment }}" >>$GITHUB_ENV
-    - name: Build Deploy Storybook
-      uses: ./.github/actions/build-deploy-storybook
+#  run-autotests:
+#    name: Run Autotests
+#    needs:
+#    - build-deploy
+#    - get-environment
+#    if: needs.get-environment.outputs.environment == 'test'
+#    uses: near-daos/astro-ui/.github/workflows/run-autotests.yaml@develop
+#    with:
+#      environment: test
+#      tags: smoke
+#      browser: chrome
+#    secrets:
+#      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+#      TEST_REPO_TOKEN: ${{ secrets.TEST_REPO_TOKEN }}
+#
+#  build-deploy-storybook:
+#    runs-on: ubuntu-latest
+#    if: needs.get-environment.outputs.environment == 'test'
+#    name: Build Deploy Storybook
+#    needs:
+#    - get-environment
+#    environment:
+#      name: ${{ needs.get-environment.outputs.environment }}
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Set Environment
+#      run: |
+#        echo DOCKER_ENV_TAG=${{ needs.get-environment.outputs.environment }}-$GITHUB_SHA >> $GITHUB_ENV
+#        cat ".github/env.common" >>$GITHUB_ENV
+#        cat ".github/env.${{ needs.get-environment.outputs.environment }}" >>$GITHUB_ENV
+#    - name: Build Deploy Storybook
+#      uses: ./.github/actions/build-deploy-storybook

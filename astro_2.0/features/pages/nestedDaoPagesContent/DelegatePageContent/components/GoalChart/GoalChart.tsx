@@ -13,12 +13,18 @@ interface Props {
   threshold: number;
   totalDelegated: number;
   quorum: number;
+  balance: number;
 }
 
 const ITEM_WIDTH = 110;
 const ITEM_HEIGHT = 50;
 
-export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
+export const GoalChart: FC<Props> = ({
+  threshold,
+  totalDelegated,
+  quorum,
+  balance,
+}) => {
   const [contentWrapperRef, { width, height }] = useMeasure();
   const isMobile = useMedia('(max-width: 768px)');
 
@@ -29,19 +35,28 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
     const sortedData = [
       {
         label: 'Threshold',
-        info: 'some info on tooltip',
+        info: `Threshold - Minimum votes to pass or reject a proposal. If Threshold is more than Total delegated tokens then Total delegated tokens will be used as a threshold`,
         value: threshold,
       },
       {
         label: 'Total Delegated',
-        info: 'some info on tooltip',
+        info:
+          'Total delegated tokens. If Total delegated tokens is less than Threshold then this value will be used as a threshold',
         value: totalDelegated,
       },
       {
-        label: 'Quorum',
-        info: 'some info on tooltip',
-        value: quorum,
+        label: 'Balance',
+        info: `Minimum Balance - A user can vote if they have more than this number of tokens delegated to them.`,
+        value: balance,
+        hidden: false,
       },
+      // {
+      //   label: 'Quorum',
+      //   info: `Quorum - Minimum tokens required to participate in the vote, regardless
+      //   of if they vote for or against a proposal.`,
+      //   value: quorum,
+      //   hidden: true,
+      // },
     ].sort((a, b) => {
       if (a.value < b.value) {
         return -1;
@@ -120,7 +135,7 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
 
       return item;
     });
-  }, [height, isMobile, quorum, threshold, totalDelegated, votingGoal, width]);
+  }, [balance, height, isMobile, threshold, totalDelegated, votingGoal, width]);
 
   return (
     <div className={styles.root}>
@@ -134,9 +149,11 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
         {data.map((item, i) => {
           return (
             <div
+              key={item.label}
               id={`goal-item-${i}`}
               className={cn(styles.itemWrapper, {
                 [styles.leftOriented]: item.isLeftOriented,
+                [styles.hidden]: item.hidden,
               })}
               style={{
                 transform: isMobile
@@ -147,7 +164,7 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
               <div className={styles.label}>
                 <span>{item.label}</span>
                 <Tooltip
-                  placement="top"
+                  placement="bottom"
                   overlay={<span className={styles.tooltip}>{item.info}</span>}
                 >
                   <Icon name="info" width={12} className={styles.infoIcon} />
