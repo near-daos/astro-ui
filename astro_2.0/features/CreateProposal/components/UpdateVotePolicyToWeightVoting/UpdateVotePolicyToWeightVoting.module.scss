@@ -3,7 +3,7 @@
 .root {
   display: flex;
   flex-direction: column;
-  margin-top: -24px;
+  margin-top: -48px;
 }
 
 .row {
@@ -14,7 +14,7 @@
 .suffix {
   @extend %title3;
   margin-left: 4px;
-  transform: translateY(-8px);
+  transform: translateY(-6px);
 }
 
 .blockTitle {
@@ -23,6 +23,7 @@
 
 .blockExplanation {
   @extend %body2;
+  margin-top: 12px;
 }
 
 .inputWrapper {
@@ -54,12 +55,6 @@
 
   input[disabled] {
     background-color: var(--color-white);
-  }
-}
-
-.detailsItem {
-  @include tablet-landscape {
-    margin-left: 12px;
   }
 }
 

@@ -94,12 +94,14 @@ export const DelegatePageContent: FC<Props> = ({
           quorum,
           balance,
           contractAddress: tokenDetails?.contractAddress,
+          details: t('delegateVoting.policyDescription'),
         },
       });
     }
   }, [
     balance,
     quorum,
+    t,
     toggleCreateProposal,
     tokenDetails?.contractAddress,
     votingThreshold,

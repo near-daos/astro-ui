@@ -53,7 +53,11 @@ export function dFormatter(n: number, toFixed = 0): string {
   return n % 1 !== 0 ? `${n.toFixed(toFixed)}` : n.toFixed();
 }
 
-export function kFormatter(n: number, toFixed = 0): string {
+export function kFormatter(
+  n: number,
+  toFixed = 0,
+  skip?: ('k' | 'm')[]
+): string {
   if (n === undefined) {
     return '0';
   }
@@ -62,11 +66,11 @@ export function kFormatter(n: number, toFixed = 0): string {
     return `${(n / 1000000000).toFixed(1).replace(/\.0$/, '')}B`;
   }
 
-  if (n >= 1000000) {
+  if (n >= 1000000 && !skip?.includes('m')) {
     return `${(n / 1000000).toFixed(1).replace(/\.0$/, '')}M`;
   }
 
-  if (n >= 1000) {
+  if (n >= 1000 && !skip?.includes('k')) {
     return `${(n / 1000).toFixed(1).replace(/\.0$/, '')}K`;
   }
 

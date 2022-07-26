@@ -838,12 +838,14 @@ export async function getChangeVotingPolicyToWeightVoting(
     balance: rawBalance,
     quorum: rawQuorum,
     decimals,
+    details,
   } = data as {
     threshold: number;
     symbol: string;
     balance: number;
     quorum: number;
     decimals: number;
+    details: string;
   };
 
   const balance = formatValueToYokto(rawBalance, decimals);
@@ -883,8 +885,7 @@ export async function getChangeVotingPolicyToWeightVoting(
 
   return {
     daoId: id,
-    description:
-      'With every vote on a proposal the Balance, Quorum, and Threshold determine if the proposal passes or fails.',
+    description: details,
     kind: 'ChangePolicy',
     data: {
       policy: {

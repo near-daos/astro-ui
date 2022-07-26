@@ -60,29 +60,38 @@ export const UpdateVotePolicyToWeightVoting: FC<Props> = ({
 
   return (
     <div className={styles.root}>
-      <FieldWrapper
-        label="Minimum Balance - A user can vote if they have more than this number of
-        tokens delegated to them."
-        flex
-      >
+      <FieldWrapper label="" flex>
         <FieldValue
           value={
             <span>
               <span>{balance}</span>
-              <span className={styles.suffix}>{tokenDetails?.symbol}</span>
+              <span className={styles.suffix}>
+                {tokenDetails?.symbol} Minimum Balance
+              </span>
             </span>
           }
         />
+        <div className={styles.sub}>
+          A DAO member can only cast a vote if they hold an amount of tokens
+          equal or greater to the minimum balance.
+        </div>
       </FieldWrapper>
-      <FieldWrapper label="Threshold - Minimum votes to pass or reject a proposal.">
+      <FieldWrapper label="">
         <FieldValue
           value={
             <span>
               <span>{threshold}</span>
-              <span className={styles.suffix}>{tokenDetails?.symbol}</span>
+              <span className={styles.suffix}>
+                {tokenDetails?.symbol} Threshold
+              </span>
             </span>
           }
         />
+        <div className={styles.sub}>
+          When a vote is cast the total token weight in that direction compares
+          against the threshold. If that token weight is greater than the
+          threshold, the proposal finalizes with a pass or fail.{' '}
+        </div>
       </FieldWrapper>
       <FieldWrapper
         hidden

@@ -263,6 +263,13 @@
     "activeProposals": "active proposals",
     "proposalsInTotal": "proposals in total"
   },
+  "delegateVoting": {
+    "delegate": "Delegate",
+    "retract": "Retract",
+    "voteActions": "Vote Actions",
+    "delegatedToken": "Delegated {{token}}",
+    "policyDescription": "A DAO member can only cast a vote if they hold an amount of tokens equal or greater to the minimum balance. When a vote is cast the total token weight in that direction compares against the threshold. If that token weight is greater than the threshold, the proposal finalizes with a pass or fail."
+  },
   "daoDetailsMinimized": {
     "delegates": "Delegate",
     "drafts": "Drafts",

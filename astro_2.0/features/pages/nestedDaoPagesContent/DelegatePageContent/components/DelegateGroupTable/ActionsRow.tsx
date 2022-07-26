@@ -11,6 +11,7 @@ import * as yup from 'yup';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import cn from 'classnames';
 import { useTriggerUpdate } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/hooks';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   accountId: string;
@@ -31,6 +32,7 @@ export const ActionsRow: FC<Props> = ({
   symbol,
   onActionClick,
 }) => {
+  const { t } = useTranslation();
   const { nearService } = useWalletContext();
   const { triggerUpdate } = useTriggerUpdate();
 
@@ -113,7 +115,9 @@ export const ActionsRow: FC<Props> = ({
   function renderSubmitButton() {
     const content = (
       <Button size="small" capitalize type="submit" disabled={!isValid}>
-        {actionContext}
+        {actionContext === 'Undelegate'
+          ? t('delegateVoting.retract')
+          : t('delegateVoting.delegate')}
       </Button>
     );
 
@@ -138,7 +142,11 @@ export const ActionsRow: FC<Props> = ({
       onSubmit={handleSubmit(onSubmit)}
       noValidate
     >
-      <div className={styles.desktop}>{actionContext}</div>
+      <div className={styles.desktop}>
+        {actionContext === 'Undelegate'
+          ? t('delegateVoting.retract')
+          : t('delegateVoting.delegate')}
+      </div>
       <div className={styles.desktop}>
         <span
           className={cn(styles.label, {
