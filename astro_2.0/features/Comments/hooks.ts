@@ -299,12 +299,6 @@ export function useDraftComments(): {
         });
       }
     }
-
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
   }, [accountId, isMounted, pkAndSignature]);
 
   const preparedData = prepareData(value.data);

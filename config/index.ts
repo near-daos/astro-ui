@@ -5,7 +5,7 @@ function getApiUrl() {
     return `${process.env.API_URL}/api/v1/`;
   }
 
-  if (window?.APP_CONFIG.API_URL) {
+  if (window?.APP_CONFIG?.API_URL) {
     return `${window.APP_CONFIG.API_URL}/api/v1/`;
   }
 

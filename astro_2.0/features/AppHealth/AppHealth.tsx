@@ -1,6 +1,6 @@
 import { useEffect, useState, VFC } from 'react';
 import cn from 'classnames';
-import { format } from 'date-fns';
+import { format, millisecondsToSeconds } from 'date-fns';
 import { useSocket } from 'context/SocketContext';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
@@ -20,8 +20,10 @@ type AggregatorBlocks = {
   lastHandledBlock: AggregatorBlock;
 };
 
+type Status = 'success' | 'warn' | 'error' | null;
+
 type State = {
-  isError: boolean;
+  status: Status;
   lastAstroBlockDetails?: AggregatorBlock;
   lastHandledBlockDetails?: AggregatorBlock;
 };
@@ -29,40 +31,40 @@ type State = {
 export const AppHealth: VFC = () => {
   const { socket } = useSocket();
   const { appHealth } = useFlags();
-  const [status, setStatus] = useState<State>({ isError: false });
+  const [state, setState] = useState<State>({ status: null });
 
   useEffect(() => {
     if (socket && appHealth) {
       socket.on(
         'aggregator-blocks',
         ({ lastAstroBlock, lastHandledBlock }: AggregatorBlocks) => {
-          if (
-            lastAstroBlock.height !== lastHandledBlock.height &&
-            !status.isError
-          ) {
-            setStatus({
-              isError: true,
-              lastAstroBlockDetails: lastAstroBlock,
-              lastHandledBlockDetails: lastHandledBlock,
-            });
-          } else if (
-            lastAstroBlock.height === lastHandledBlock.height &&
-            status.isError
-          ) {
-            setStatus({
-              isError: false,
-              lastAstroBlockDetails: lastAstroBlock,
-              lastHandledBlockDetails: lastHandledBlock,
-            });
+          if (!lastAstroBlock.timestamp || !lastHandledBlock.timestamp) {
+            return;
           }
+
+          const diff = millisecondsToSeconds(
+            (+lastAstroBlock.timestamp - +lastHandledBlock.timestamp) / 1000000
+          );
+
+          let status: Status = null;
+
+          if (diff > 20) {
+            status = 'error';
+          } else if (diff > 10 && diff <= 20) {
+            status = 'warn';
+          } else if (diff <= 10) {
+            status = 'success';
+          }
+
+          setState({
+            status,
+            lastAstroBlockDetails: lastAstroBlock,
+            lastHandledBlockDetails: lastHandledBlock,
+          });
         }
       );
     }
-
-    return () => {
-      socket?.disconnect();
-    };
-  }, [appHealth, socket, status]);
+  }, [appHealth, socket, state.status]);
 
   function renderTooltipRow(title: string, data?: AggregatorBlock) {
     return (
@@ -90,18 +92,22 @@ export const AppHealth: VFC = () => {
       className={styles.root}
       overlay={
         <div className={styles.tooltipWrapper}>
+          <h3 className={styles.tooltipStatus}>
+            Application Health: <b>{state.status}</b>
+          </h3>
           {renderTooltipRow(
             'Last handled block',
-            status.lastHandledBlockDetails
+            state.lastHandledBlockDetails
           )}
-          {renderTooltipRow('Last Astro block', status.lastAstroBlockDetails)}
+          {renderTooltipRow('Last Astro block', state.lastAstroBlockDetails)}
         </div>
       }
     >
       <div
         className={cn(styles.indicator, {
-          [styles.success]: !status.isError,
-          [styles.error]: status.isError,
+          [styles.success]: state.status === 'success',
+          [styles.error]: state.status === 'error',
+          [styles.warn]: state.status === 'warn',
         })}
       />
     </Tooltip>
