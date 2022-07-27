@@ -41,6 +41,7 @@ export const AddMemberToGroupContent: FC<AddMemberToGroupContentProps> = ({
             onChange={onChange}
             defaultValue={getValues().group}
             reverseMenu
+            placeholder="Select group"
             isBorderless
             options={groups.map(group => ({
               value: group,

@@ -216,9 +216,8 @@ export function useProposalTypeOptions(
         title: getLabel('groupChangeMembers'),
         disabled:
           !isDraft &&
-          (!isCanCreatePolicyProposals ||
-            (!allowedProposalsToCreate[ProposalType.AddMemberToRole] &&
-              !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole])),
+          !allowedProposalsToCreate[ProposalType.AddMemberToRole] &&
+          !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole],
         options: [
           {
             label: getLabel('proposeAddMember'),
