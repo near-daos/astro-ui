@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTranslation } from 'next-i18next';
 
 import { Loader } from 'components/loader';
 
@@ -10,6 +11,8 @@ import { DaoDelegation } from 'types/dao';
 import { TableRow } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegateGroupTable/TableRow';
 
 import useQuery from 'hooks/useQuery';
+
+import { useDelegatePageContext } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegatePageContext';
 
 import styles from './DelegateGroupTable.module.scss';
 
@@ -32,8 +35,11 @@ export const DelegateGroupTable: FC<Props> = ({
   addMemberMode,
   onAddMember,
 }) => {
+  const { t } = useTranslation();
   const { query } = useQuery<{ sort: string }>();
   const { sort } = query;
+
+  const { symbol } = useDelegatePageContext();
 
   const [activeRow, setActiveRow] = useState<{
     index: number;
@@ -52,9 +58,9 @@ export const DelegateGroupTable: FC<Props> = ({
     <div className={styles.root}>
       <div className={styles.header}>
         <div>Name</div>
-        <div>Delegated Balance</div>
+        <div>{t('delegateVoting.delegatedToken', { token: symbol })}</div>
         <div className={styles.desktop}>Voting Power</div>
-        <div>Actions</div>
+        <div>{t('delegateVoting.voteActions')}</div>
       </div>
       <div className={styles.body}>
         <AnimatePresence>

@@ -97,12 +97,12 @@
   min-width: unset;
   padding: 0;
 
-  &:last-of-type {
-    margin-left: 24px;
-  }
-
   &:hover {
     color: var(--color-primary-50);
+  }
+
+  &.withMargin {
+    margin-left: 24px;
   }
 
   &.disabled {

@@ -46,10 +46,6 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.blockExplanation}>
-        Minimum Balance - A user can vote if they have more than this number of
-        tokens delegated to them.
-      </div>
       <div className={styles.row}>
         <InputWrapper
           fieldName="balance"
@@ -73,10 +69,11 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
         </InputWrapper>
         <span className={styles.suffix}>{tokenDetails?.symbol}</span>
       </div>
-      <br />
       <div className={styles.blockExplanation}>
-        Threshold - Minimum votes to pass or reject a proposal.
+        Minimum Balance - A user can vote if they have more than this number of
+        tokens delegated to them.
       </div>
+      <br />
       <div className={styles.row}>
         <InputWrapper
           fieldName="threshold"
@@ -100,11 +97,10 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
         </InputWrapper>
         <span className={styles.suffix}>{tokenDetails?.symbol}</span>
       </div>
-      <br />
-      <div className={cn(styles.blockExplanation, styles.hidden)}>
-        Quorum - Minimum tokens required to participate in the vote, regardless
-        of if they vote for or against a proposal.
+      <div className={styles.blockExplanation}>
+        Threshold - Minimum votes to pass or reject a proposal.
       </div>
+      <br />
       <div className={cn(styles.row, styles.hidden)}>
         <InputWrapper
           fieldName="quorum"
@@ -127,6 +123,10 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
           </div>
         </InputWrapper>
         <span className={styles.suffix}>{tokenDetails?.symbol}</span>
+      </div>
+      <div className={cn(styles.blockExplanation, styles.hidden)}>
+        Quorum - Minimum tokens required to participate in the vote, regardless
+        of if they vote for or against a proposal.
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTranslation } from 'next-i18next';
 
 import { DaoDelegation } from 'types/dao';
 
@@ -34,6 +35,7 @@ export const TableRow: FC<Props> = ({
   onActionClick,
   availableBalance,
 }) => {
+  const { t } = useTranslation();
   const {
     nextActionTime,
     stakedBalance = 0,
@@ -72,8 +74,7 @@ export const TableRow: FC<Props> = ({
             }
           >
             <FormattedNumericValue
-              value={kFormatter(Number(formattedBalance))}
-              suffix={symbol}
+              value={kFormatter(Number(formattedBalance), 0, ['k'])}
             />
             {inactiveVotingPower && (
               <Icon name="alertTriangle" className={styles.alert} />
@@ -151,7 +152,7 @@ export const TableRow: FC<Props> = ({
               variant="transparent"
               size="small"
               capitalize
-              className={cn(styles.controlButton, {
+              className={cn(styles.controlButton, styles.withMargin, {
                 [styles.disabled]: +balance === 0 || notEnoughDelegatedBalance,
               })}
               disabled={+balance === 0 || notEnoughDelegatedBalance}
@@ -161,7 +162,7 @@ export const TableRow: FC<Props> = ({
                 )
               }
             >
-              Undelegate
+              {t('delegateVoting.retract')}
             </Button>
           </div>
         </div>
