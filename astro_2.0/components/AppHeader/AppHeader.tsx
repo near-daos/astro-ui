@@ -5,6 +5,7 @@ import { useTranslation } from 'next-i18next';
 import { useWalletContext } from 'context/WalletContext';
 import { FEATURE_FLAGS } from 'constants/featureFlags';
 
+import { AppHealth } from 'astro_2.0/features/AppHealth';
 import { Icon } from 'components/Icon';
 import { AccountDropdown } from 'astro_2.0/components/AppHeader/components/AccountDropdown';
 import { SearchBar } from './components/SearchBar';
@@ -47,8 +48,8 @@ export const AppHeader: FC = () => {
           className={styles.search}
         />
       </div>
+      <AppHealth />
       {!!accountId && <NotificationsBell className={styles.bell} />}
-
       <AccountDropdown />
     </header>
   );
