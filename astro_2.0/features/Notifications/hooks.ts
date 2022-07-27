@@ -279,10 +279,6 @@ export function useNotificationsList(
         }
       });
     }
-
-    return () => {
-      socket?.disconnect();
-    };
   }, [
     fetchData,
     isMounted,
