@@ -7,6 +7,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk';
 import { WalletType } from 'types/config';
 
 import { useWalletContext } from 'context/WalletContext';
+import { DAO } from 'types/dao';
 
 import { CREATE_DRAFT_PAGE_URL } from 'constants/routing';
 
@@ -18,10 +19,19 @@ import styles from './DaoAction.module.scss';
 
 interface Props {
   onCreateProposalClick?: () => void;
-  daoId: string;
+  dao: Pick<
+    DAO,
+    | 'id'
+    | 'flagCover'
+    | 'flagLogo'
+    | 'logo'
+    | 'displayName'
+    | 'stakingContract'
+    | 'daoMembersList'
+  >;
 }
 
-export const DaoAction: FC<Props> = ({ onCreateProposalClick, daoId }) => {
+export const DaoAction: FC<Props> = ({ onCreateProposalClick, dao }) => {
   const router = useRouter();
   const flags = useFlags();
   const { accountId, login } = useWalletContext();
@@ -45,12 +55,12 @@ export const DaoAction: FC<Props> = ({ onCreateProposalClick, daoId }) => {
     router.push({
       pathname: CREATE_DRAFT_PAGE_URL,
       query: {
-        dao: daoId,
+        dao: dao.id,
       },
     });
 
     closeDropdown();
-  }, [closeDropdown, daoId, router]);
+  }, [closeDropdown, dao.id, router]);
 
   function renderAction(
     icon: IconName,
@@ -117,12 +127,14 @@ export const DaoAction: FC<Props> = ({ onCreateProposalClick, daoId }) => {
       }}
     >
       <div className={styles.menu}>
-        {renderAction(
-          'sheet',
-          'Draft a Proposal',
-          'for preliminary discussion',
-          handleCreateDraft
-        )}
+        {dao.daoMembersList.includes(accountId)
+          ? renderAction(
+              'sheet',
+              'Draft a Proposal',
+              'for preliminary discussion',
+              handleCreateDraft
+            )
+          : null}
         {renderAction(
           'buttonEdit',
           'Proposal',

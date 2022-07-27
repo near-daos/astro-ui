@@ -13,7 +13,7 @@ export default {
     story => (
       <div
         style={{
-          padding: '3rem 1rem 1rem 1rem',
+          padding: '3rem 1rem 1rem',
           background: '#e5e5e5',
           maxWidth: 960,
         }}
@@ -40,5 +40,6 @@ Template.args = {
     logo:
       'https://image.freepik.com/free-photo/blue-liquid-marble-background-abstract-flowing-texture-experimental-art_53876-104502.jpg',
     displayName: 'Saturn',
+    daoMembersList: ['saturn.sputnikv2.testnet'],
   },
 };

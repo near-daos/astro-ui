@@ -25,7 +25,13 @@ import styles from './DaoDetailsMinimized.module.scss';
 export interface DaoDetailsMinimizedProps {
   dao: Pick<
     DAO,
-    'id' | 'flagCover' | 'flagLogo' | 'logo' | 'displayName' | 'stakingContract'
+    | 'id'
+    | 'flagCover'
+    | 'flagLogo'
+    | 'logo'
+    | 'displayName'
+    | 'stakingContract'
+    | 'daoMembersList'
   >;
   className?: string;
   onCreateProposalClick?: () => void;
@@ -195,7 +201,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           <section className={styles.proposals}>
             <DaoAction
               onCreateProposalClick={onCreateProposalClick}
-              daoId={dao.id}
+              dao={dao}
             />
           </section>
         )}
