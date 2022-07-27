@@ -14,7 +14,11 @@
   }
 
   &.error {
-    background-color: var(--color-error-50);
+    background-color: var(--color-error-60);
+  }
+
+  &.warn {
+    background-color: var(--color-error-30);
   }
 }
 
@@ -24,6 +28,11 @@
   flex-direction: column;
 
   justify-content: flex-start;
+}
+
+.tooltipStatus {
+  margin: 4px 0;
+  text-transform: capitalize;
 }
 
 .tooltipRow {

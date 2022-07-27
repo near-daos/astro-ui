@@ -18,20 +18,19 @@ export const useSocket = (): ISocketContext => useContext(SocketContext);
 
 export const SocketProvider: FC = ({ children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const { accountId, nearService } = useWalletContext();
+  const { accountId, pkAndSignature } = useWalletContext();
   const isMounted = useMountedState();
 
   useEffect(() => {
-    if (!nearService) {
-      return;
-    }
-
     async function initSocket() {
       let socketIo: Socket;
       const { appConfig } = configService.get();
 
-      const publicKey = await nearService?.getPublicKey();
-      const signature = await nearService?.getSignature();
+      if (!pkAndSignature) {
+        return;
+      }
+
+      const { publicKey, signature } = pkAndSignature;
 
       if (accountId && publicKey && isMounted() && appConfig) {
         socketIo = io(appConfig.API_URL, {
@@ -48,7 +47,7 @@ export const SocketProvider: FC = ({ children }) => {
     }
 
     initSocket();
-  }, [accountId, isMounted, nearService]);
+  }, [accountId, isMounted, pkAndSignature]);
 
   return (
     <SocketContext.Provider value={{ socket }}>
