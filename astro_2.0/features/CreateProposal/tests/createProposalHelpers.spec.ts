@@ -54,14 +54,14 @@ describe('createProposalHelpers', () => {
       expect(result).toEqual(ProposalVariant.ProposeCreateToken);
     });
 
-    it('Should return transfer proposal variant', () => {
+    it('Should return ProposeRemoveMember proposal variant', () => {
       const result = getInitialProposalVariant(
         ProposalVariant.ProposeRemoveMember,
         false,
         allowedProposalsToCreate
       );
 
-      expect(result).toEqual(ProposalVariant.ProposeTransfer);
+      expect(result).toEqual(ProposalVariant.ProposeRemoveMember);
     });
   });
 

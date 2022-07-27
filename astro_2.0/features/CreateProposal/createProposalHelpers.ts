@@ -242,7 +242,6 @@ export function getAllowedProposalsToVote(
 
 const policyAffectsProposalVariants = [
   ProposalVariant.ProposeChangeDaoLinks,
-  ProposalVariant.ProposeAddMember,
   ProposalVariant.ProposeChangeBonds,
   ProposalVariant.ProposeChangeDaoFlag,
   ProposalVariant.ProposeChangeDaoLegalInfo,
@@ -250,7 +249,6 @@ const policyAffectsProposalVariants = [
   ProposalVariant.ProposeChangeDaoPurpose,
   ProposalVariant.ProposeChangeVotingPolicy,
   ProposalVariant.ProposeCreateGroup,
-  ProposalVariant.ProposeRemoveMember,
   ProposalVariant.ProposeUpdateGroup,
 ];
 
