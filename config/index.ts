@@ -1,9 +1,19 @@
 export { awsConfig } from './aws';
 
+function getApiUrl() {
+  if (!process.browser) {
+    return `${process.env.API_URL}/api/v1/`;
+  }
+
+  if (window?.APP_CONFIG.API_URL) {
+    return `${window.APP_CONFIG.API_URL}/api/v1/`;
+  }
+
+  return '/api/server/v1/';
+}
+
 export const appConfig = {
-  API_URL: process.browser
-    ? '/api/server/v1/'
-    : `${process.env.API_URL}/api/v1/`,
+  API_URL: getApiUrl(),
   LOCAL_WALLET_REDIRECT: process.env.LOCAL_WALLET_REDIRECT,
   STATS_API_URL: process.env.STATS_API_URL,
   DRAFTS_API_URL: process.env.DRAFTS_API_URL,

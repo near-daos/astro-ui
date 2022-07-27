@@ -54,7 +54,7 @@ const PollsPage: FC<PollsPageProps> = ({
         <title>Polls</title>
       </Head>
       <Feed
-        title={<h1 className={styles.header}>Polls</h1>}
+        title="Polls"
         dao={daoContext.dao}
         showFlag={false}
         className={styles.feed}
