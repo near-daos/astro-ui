@@ -20,8 +20,10 @@ type AggregatorBlocks = {
   lastHandledBlock: AggregatorBlock;
 };
 
+type Status = 'success' | 'warn' | 'error' | null;
+
 type State = {
-  status: 'success' | 'warn' | 'error';
+  status: Status;
   lastAstroBlockDetails?: AggregatorBlock;
   lastHandledBlockDetails?: AggregatorBlock;
 };
@@ -29,7 +31,7 @@ type State = {
 export const AppHealth: VFC = () => {
   const { socket } = useSocket();
   const { appHealth } = useFlags();
-  const [state, setState] = useState<State>({ status: 'success' });
+  const [state, setState] = useState<State>({ status: null });
 
   useEffect(() => {
     if (socket && appHealth) {
@@ -44,25 +46,21 @@ export const AppHealth: VFC = () => {
             (+lastAstroBlock.timestamp - +lastHandledBlock.timestamp) / 1000000
           );
 
-          if (diff > 20 && state.status !== 'error') {
-            setState({
-              status: 'error',
-              lastAstroBlockDetails: lastAstroBlock,
-              lastHandledBlockDetails: lastHandledBlock,
-            });
-          } else if (diff > 10 && diff <= 20 && state.status !== 'warn') {
-            setState({
-              status: 'warn',
-              lastAstroBlockDetails: lastAstroBlock,
-              lastHandledBlockDetails: lastHandledBlock,
-            });
-          } else if (diff <= 10 && state.status !== 'success') {
-            setState({
-              status: 'success',
-              lastAstroBlockDetails: lastAstroBlock,
-              lastHandledBlockDetails: lastHandledBlock,
-            });
+          let status: Status = null;
+
+          if (diff > 20) {
+            status = 'error';
+          } else if (diff > 10 && diff <= 20) {
+            status = 'warn';
+          } else if (diff <= 10) {
+            status = 'success';
           }
+
+          setState({
+            status,
+            lastAstroBlockDetails: lastAstroBlock,
+            lastHandledBlockDetails: lastHandledBlock,
+          });
         }
       );
     }
