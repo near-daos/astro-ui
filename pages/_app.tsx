@@ -21,7 +21,6 @@ import { DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 import { AppMonitoring } from 'astro_2.0/features/AppMonitoring/AppMonitoring';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 import { useAppInitialize } from 'hooks/useAppInitialize';
-import { AppHealth } from 'astro_2.0/features/AppHealth';
 import { FeatureFlagsProvider } from 'astro_2.0/features/FeatureFlagsProvider/FeatureFlagsProvider';
 
 import 'styles/globals.scss';
@@ -47,7 +46,6 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
         <FeatureFlagsProvider>
           <ModalProvider>
             <SocketProvider>
-              <AppHealth />
               <SearchResults>
                 <Head>
                   <title>Astro</title>

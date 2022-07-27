@@ -1,0 +1,39 @@
+@import 'styles/mixins';
+
+.root {
+  @include centralize;
+  margin-right: 24px;
+}
+.indicator {
+  border-radius: 50%;
+  height: 12px;
+  width: 12px;
+
+  &.success {
+    background-color: var(--color-success-50);
+  }
+
+  &.error {
+    background-color: var(--color-error-50);
+  }
+}
+
+.tooltipWrapper {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: flex-start;
+}
+
+.tooltipRow {
+  text-align: left;
+
+  &:not(:last-of-type) {
+    margin-bottom: 4px;
+  }
+
+  h3 {
+    margin: 0 0 4px;
+  }
+}
