@@ -37,6 +37,8 @@ import {
 } from 'near-api-js/lib/providers/provider';
 import { httpService } from 'services/HttpService';
 
+import { NEAR_WALLET_METADATA } from './constants';
+
 export class SputnikWalletService implements WalletService {
   private readonly near: Near;
 
@@ -47,13 +49,6 @@ export class SputnikWalletService implements WalletService {
   private readonly config: NearConfig;
 
   private keyStore: BrowserLocalStorageKeyStore;
-
-  private walletInfo: WalletMeta = {
-    name: 'NEAR',
-    type: 'web',
-    url: 'wallet.near.org',
-    id: WalletType.NEAR,
-  };
 
   public readonly successUrl: string = `${window.origin}/callback/auth`;
 
@@ -81,23 +76,26 @@ export class SputnikWalletService implements WalletService {
     return this.keyStore;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   walletMeta(): WalletMeta {
-    return this.walletInfo;
+    return NEAR_WALLET_METADATA;
   }
 
   async getAvailableAccounts(): Promise<string[]> {
     return this.keyStore.getAccounts(this.config.networkId);
   }
 
-  isSignedIn(): boolean {
-    return !!this.walletConnection && this.getAccountId() !== '';
+  async isSignedIn(): Promise<boolean> {
+    const accountId = await this.getAccountId();
+
+    return !!this.walletConnection && accountId !== '';
   }
 
   async functionCall(
     props: FunctionCallOptions
   ): Promise<FinalExecutionOutcome[]> {
     const directCallsList = ['act_proposal'];
-    const accountId = this.getAccountId();
+    const accountId = await this.getAccountId();
     const { accessKeys } = this;
 
     const accessKeyForDao = accessKeys
@@ -176,21 +174,25 @@ export class SputnikWalletService implements WalletService {
     return Promise.resolve(true);
   }
 
-  public logout(): void {
-    this.walletConnection.signOut();
+  public logout(): Promise<void> {
+    return Promise.resolve(this.walletConnection.signOut());
   }
 
   public getAccount(): ConnectedWalletAccount {
     return this.walletConnection.account();
   }
 
-  public getAccountId(): string {
-    return this.walletConnection.getAccountId();
+  public getAccountId(): Promise<string> {
+    const accountId = this.walletConnection.getAccountId();
+
+    return Promise.resolve(accountId);
   }
 
   public async getPublicKey(): Promise<string | null> {
+    const accountId = await this.getAccountId();
+
     const keyPair = this.config
-      ? await this.keyStore?.getKey(this.config.networkId, this.getAccountId())
+      ? await this.keyStore?.getKey(this.config.networkId, accountId)
       : null;
 
     const publicKey = keyPair?.getPublicKey();
@@ -204,11 +206,10 @@ export class SputnikWalletService implements WalletService {
 
   async getSignature(): Promise<string | null> {
     try {
+      const accountId = await this.getAccountId();
+
       const keyPair = this.config
-        ? await this.keyStore?.getKey(
-            this.config.networkId,
-            this.getAccountId()
-          )
+        ? await this.keyStore?.getKey(this.config.networkId, accountId)
         : null;
 
       if (!keyPair) {
@@ -230,7 +231,7 @@ export class SputnikWalletService implements WalletService {
   public async sendTransactions(
     transactionsConf: Transaction[]
   ): Promise<FinalExecutionOutcome[]> {
-    const accountId = this.getAccountId();
+    const accountId = await this.getAccountId();
     const publicKey = await this.getPublicKey();
 
     const accessKey = ((await this.near.connection.provider.query(
@@ -262,7 +263,7 @@ export class SputnikWalletService implements WalletService {
     nonce: number,
     actions: transactions.Action[]
   ) {
-    const accountId = this.getAccountId();
+    const accountId = await this.getAccountId();
     const block = await this.near.connection.provider.block({
       finality: 'final',
     });
@@ -270,7 +271,7 @@ export class SputnikWalletService implements WalletService {
 
     const keyPair = await this.keyStore.getKey(
       this.config.networkId,
-      this.getAccountId()
+      accountId
     );
 
     const publicKey = keyPair.getPublicKey();

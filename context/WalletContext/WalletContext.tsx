@@ -1,6 +1,15 @@
+import {
+  FC,
+  useMemo,
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+  createContext,
+} from 'react';
+import get from 'lodash/get';
 import { useBoolean } from 'react-use';
 import { useRouter } from 'next/router';
-import { createContext, FC, useCallback, useContext, useMemo } from 'react';
 
 import { WalletType } from 'types/config';
 import {
@@ -13,13 +22,21 @@ import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikNearService } from 'services/sputnik';
 import { ConnectingWalletModal } from 'astro_2.0/features/Auth/components/ConnectingWalletModal';
+
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
+import { isSelectorWalletType } from 'utils/isSelectorWalletType';
+
+import {
+  NEAR_WALLET_METADATA,
+  SENDER_WALLET_METADATA,
+} from 'services/sputnik/SputnikNearService/walletServices/constants';
 
 import { PkAndSignature } from './types';
 
 import { useWallet } from './hooks/useWallet';
-import { useAvailableAccounts } from './hooks/useAvailableAccounts';
 import { usePkAndSignature } from './hooks/usePkAndSignature';
+import { useAvailableAccounts } from './hooks/useAvailableAccounts';
+import { useSelectorLsAccount } from './hooks/walletSelector/useSelectorLsAccount';
 
 export interface WalletContext {
   availableWallets: WalletMeta[];
@@ -39,65 +56,93 @@ export interface WalletContext {
 const WalletContext = createContext<WalletContext>({} as WalletContext);
 
 export const WrappedWalletContext: FC = ({ children }) => {
-  const [
-    currentWallet,
-    availableWallets,
-    getWallet,
-    setWallet,
-    removePersistedWallet,
-  ] = useWallet();
-  const availableAccounts = useAvailableAccounts(currentWallet);
-  const pkAndSignature = usePkAndSignature(currentWallet);
   const { nearConfig } = configService.get();
-
-  const [connectingToWallet, toggleConnection] = useBoolean(false);
 
   const router = useRouter();
 
+  const [, , removeSelectorLsAccount] = useSelectorLsAccount();
+  const [connectingToWallet, setConnectingToWallet] = useBoolean(false);
+
+  const {
+    getWallet,
+    setWallet,
+    currentWallet,
+    removePersistedWallet,
+    initiateSignInSelectorWallets,
+  } = useWallet({ setConnectingToWallet });
+
+  const pkAndSignature = usePkAndSignature(currentWallet);
+  const availableAccounts = useAvailableAccounts(currentWallet);
+  const [currentAccount, setCurrentAccount] = useState('');
+
+  useEffect(() => {
+    async function updateAccountId() {
+      if (currentWallet) {
+        const account = await currentWallet.getAccountId();
+
+        setCurrentAccount(account);
+      }
+    }
+
+    updateAccountId();
+  }, [currentWallet]);
+
   const signIn = useCallback(
     async (wallet: WalletService, contractName: string) => {
-      toggleConnection(true);
+      setConnectingToWallet(true);
 
-      if (!wallet.isSignedIn()) {
+      const isSignedIn = await wallet.isSignedIn();
+
+      if (!isSignedIn) {
         await wallet.signIn(contractName);
       }
 
       setWallet(wallet);
 
-      toggleConnection(false);
+      setConnectingToWallet(false);
+
+      const accountId = await wallet.getAccountId();
 
       sendGAEvent({
         name: GA_EVENTS.SIGN_IN,
-        accountId: wallet.getAccountId(),
+        accountId,
       });
     },
-    [setWallet, toggleConnection]
+    [setWallet, setConnectingToWallet]
   );
 
   const login = useCallback(
     async (walletType: WalletType) => {
-      const wallet = getWallet(walletType);
+      if (isSelectorWalletType(walletType)) {
+        await initiateSignInSelectorWallets(walletType);
+      } else {
+        const wallet = await getWallet(walletType);
 
-      if (!wallet) {
-        return;
+        if (!wallet) {
+          return;
+        }
+
+        await signIn(wallet, nearConfig.contractName);
       }
-
-      await signIn(wallet, nearConfig.contractName);
     },
-    [getWallet, nearConfig.contractName, signIn]
+    [signIn, getWallet, nearConfig.contractName, initiateSignInSelectorWallets]
   );
 
   const logout = useCallback(async () => {
+    const accountId = (await currentWallet?.getAccountId()) ?? '';
+
     sendGAEvent({
       name: GA_EVENTS.SIGN_OUT,
-      accountId: currentWallet?.getAccountId() ?? '',
+      accountId,
     });
 
     CookieService.remove(ACCOUNT_COOKIE);
     removePersistedWallet();
-    availableWallets.forEach(wallet => wallet.logout());
+
+    await currentWallet?.logout();
+
     router.reload();
-  }, [availableWallets, currentWallet, removePersistedWallet, router]);
+  }, [currentWallet, removePersistedWallet, router]);
 
   const switchAccount = useCallback(
     async (walletType: WalletType, accountId: string) => {
@@ -106,7 +151,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
         return;
       }
 
-      const nearWallet = getWallet(WalletType.NEAR);
+      const nearWallet = await getWallet(WalletType.NEAR);
 
       if (!nearWallet) {
         return;
@@ -148,7 +193,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
   const switchWallet = useCallback(
     async (walletType: WalletType) => {
-      const selectedWallet = getWallet(walletType);
+      const selectedWallet = await getWallet(walletType);
 
       if (!selectedWallet || !currentWallet) {
         return;
@@ -156,8 +201,8 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
       await signIn(selectedWallet, nearConfig.contractName);
 
-      const currentWalletAccountId = currentWallet.getAccountId();
-      const selectedWalletAccountId = selectedWallet.getAccountId();
+      const currentWalletAccountId = await currentWallet.getAccountId();
+      const selectedWalletAccountId = await selectedWallet.getAccountId();
 
       sendGAEvent({
         name: GA_EVENTS.SWITCH_WALLET,
@@ -169,38 +214,55 @@ export const WrappedWalletContext: FC = ({ children }) => {
       });
 
       if (currentWalletAccountId !== selectedWalletAccountId) {
+        if (isSelectorWalletType(currentWallet.getWalletType())) {
+          removeSelectorLsAccount();
+        }
+
         router.reload();
       }
     },
-    [currentWallet, getWallet, nearConfig.contractName, router, signIn]
+    [
+      router,
+      signIn,
+      getWallet,
+      currentWallet,
+      nearConfig.contractName,
+      removeSelectorLsAccount,
+    ]
   );
 
   const walletContext = useMemo(() => {
+    const availableWallets = [NEAR_WALLET_METADATA];
+
+    const senderWalletAvailable = get(window, 'near.isSender') || false;
+
+    if (senderWalletAvailable) {
+      availableWallets.push(SENDER_WALLET_METADATA);
+    }
+
     return {
-      nearService: currentWallet ? new SputnikNearService(currentWallet) : null,
-      availableWallets: availableWallets.map(availableWallet =>
-        availableWallet.walletMeta()
-      ),
-      accountId: currentWallet?.getAccountId() ?? '',
-      currentWallet: currentWallet?.getWalletType() ?? null,
-      connectingToWallet,
-      availableAccounts,
-      pkAndSignature,
       login,
       logout,
-      switchAccount,
       switchWallet,
+      switchAccount,
+      pkAndSignature,
+      availableWallets,
+      availableAccounts,
+      connectingToWallet,
+      accountId: currentAccount,
+      currentWallet: currentWallet?.getWalletType() ?? null,
+      nearService: currentWallet ? new SputnikNearService(currentWallet) : null,
     };
   }, [
-    availableAccounts,
-    availableWallets,
-    connectingToWallet,
-    currentWallet,
     login,
     logout,
-    pkAndSignature,
-    switchAccount,
     switchWallet,
+    switchAccount,
+    currentWallet,
+    pkAndSignature,
+    currentAccount,
+    availableAccounts,
+    connectingToWallet,
   ]);
 
   return (
@@ -209,7 +271,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
       {connectingToWallet && (
         <ConnectingWalletModal
           isOpen
-          onClose={() => toggleConnection(false)}
+          onClose={() => setConnectingToWallet(false)}
           walletType={walletContext?.currentWallet ?? WalletType.NEAR}
         />
       )}

@@ -47,7 +47,7 @@ export class NearService extends BaseService {
     return this.walletService.getWalletType();
   }
 
-  isSignedIn(): boolean {
+  isSignedIn(): Promise<boolean> {
     return this.walletService.isSignedIn();
   }
 
@@ -60,7 +60,9 @@ export class NearService extends BaseService {
   }
 
   async getPublicKey(): Promise<string | null> {
-    if (!this.isSignedIn()) {
+    const isSignedIn = await this.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -68,7 +70,9 @@ export class NearService extends BaseService {
   }
 
   async getSignature(): Promise<string | null> {
-    if (!this.isSignedIn()) {
+    const isSignedIn = await this.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -83,14 +87,16 @@ export class NearService extends BaseService {
     return this.walletService.signIn(contractId);
   }
 
-  public getAccountId(): string {
+  public getAccountId(): Promise<string> {
     return this.walletService.getAccountId();
   }
 
   public async createDao(
     params: CreateDaoInput | CreateDaoCustomInput
   ): Promise<void> {
-    if (!this.isSignedIn()) {
+    const isSignedIn = await this.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -123,7 +129,9 @@ export class NearService extends BaseService {
   public async addProposal(
     params: CreateProposalParams
   ): Promise<FinalExecutionOutcome[]> {
-    if (!this.isSignedIn()) {
+    const isSignedIn = await this.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -159,11 +167,13 @@ export class NearService extends BaseService {
       tokenId?: string;
     }
   ): Promise<FinalExecutionOutcome[]> {
-    if (!this.isSignedIn()) {
+    const isSignedIn = await this.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
-    const accountId = this.getAccountId();
+    const accountId = await this.getAccountId();
     const { bountyId: id, deadline, bountyBond, gas, tokenId } = args;
 
     let storageDepositTransactionAction;
@@ -249,7 +259,9 @@ export class NearService extends BaseService {
     bountyId: number,
     gas?: string | number
   ): Promise<FinalExecutionOutcome[]> {
-    if (!this.isSignedIn()) {
+    const isSignedIn = await this.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -267,7 +279,9 @@ export class NearService extends BaseService {
     contractId: string,
     proposalId: number
   ): Promise<FinalExecutionOutcome[]> {
-    if (!this.isSignedIn()) {
+    const isSignedIn = await this.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -329,9 +343,11 @@ export class NearService extends BaseService {
       new BN(parseNearAmount(allowance) ?? 0)
     );
 
+    const receiverId = await this.getAccountId();
+
     const result = await this.sendTransactions([
       {
-        receiverId: this.getAccountId(),
+        receiverId,
         actions: [
           transactions.addKey(
             PublicKey.from(accessKey.getPublicKey()),
@@ -343,7 +359,7 @@ export class NearService extends BaseService {
 
     await this.walletService
       .getKeyStore()
-      .setKey(this.nearConfig.networkId, this.getAccountId(), accessKey);
+      .setKey(this.nearConfig.networkId, receiverId, accessKey);
 
     return result;
   }
@@ -354,7 +370,9 @@ export class NearService extends BaseService {
     action: VoteAction,
     gas?: string | number
   ): Promise<FinalExecutionOutcome[]> {
-    if (!this.isSignedIn()) {
+    const isSignedIn = await this.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -421,7 +439,9 @@ export class NearService extends BaseService {
     action: VoteAction,
     params: { daoId: string; proposalId: string }[]
   ): Promise<FinalExecutionOutcome[]> {
-    if (!this.isSignedIn()) {
+    const isSignedIn = await this.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -527,7 +547,9 @@ export class NearService extends BaseService {
   public async createTokensTransferProposal(
     proposalsData: CreateProposalParams[]
   ): Promise<FinalExecutionOutcome[]> {
-    if (!this.isSignedIn()) {
+    const isSignedIn = await this.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -541,7 +563,9 @@ export class NearService extends BaseService {
   public async createTokenTransferProposal(
     proposal: CreateProposalParams
   ): Promise<FinalExecutionOutcome[]> {
-    if (!this.isSignedIn()) {
+    const isSignedIn = await this.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 

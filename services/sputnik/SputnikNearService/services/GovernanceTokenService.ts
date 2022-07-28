@@ -109,10 +109,9 @@ export class GovernanceTokenService extends BaseService {
     const currentAccountPublicKey = await this.walletService.getPublicKey();
 
     if (!currentAccountPublicKey) {
-      console.error(
-        'no public key found for account',
-        this.walletService.getAccountId()
-      );
+      const accountId = await this.walletService.getAccountId();
+
+      console.error('no public key found for account', accountId);
 
       return [];
     }
@@ -312,13 +311,17 @@ export class GovernanceTokenService extends BaseService {
     stakingContract,
     amount,
   }: StakeTokensParams): Promise<FinalExecutionOutcome[]> {
-    if (!this.walletService.isSignedIn()) {
+    const isSignedIn = await this.walletService.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
     let userStorageDepositTransactionAction;
     let storageDepositTransactionAction;
     let transferTransaction;
+
+    const accountId = await this.walletService.getAccountId();
 
     switch (this.walletService.getWalletType()) {
       case WalletType.SENDER: {
@@ -328,7 +331,7 @@ export class GovernanceTokenService extends BaseService {
             {
               methodName: 'storage_deposit',
               args: {
-                account_id: this.walletService.getAccountId(),
+                account_id: accountId,
               },
               gas: GAS_VALUE.toString(),
               deposit: new Decimal(0.003).mul(10 ** 24).toFixed(),
@@ -376,7 +379,7 @@ export class GovernanceTokenService extends BaseService {
             transactions.functionCall(
               'storage_deposit',
               {
-                account_id: this.walletService.getAccountId(),
+                account_id: accountId,
               },
               GAS_VALUE,
               new BN(new Decimal(0.003).mul(10 ** 24).toFixed())
@@ -428,7 +431,9 @@ export class GovernanceTokenService extends BaseService {
     stakingContract,
     amount,
   }: StakeTokensParams): Promise<FinalExecutionOutcome[]> {
-    if (!this.walletService.isSignedIn()) {
+    const isSignedIn = await this.walletService.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -560,7 +565,9 @@ export class GovernanceTokenService extends BaseService {
     stakingContract: string,
     params: DelegateVotingParams[]
   ): Promise<FinalExecutionOutcome[]> {
-    if (!this.walletService.isSignedIn()) {
+    const isSignedIn = await this.walletService.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -575,7 +582,9 @@ export class GovernanceTokenService extends BaseService {
     stakingContract: string,
     params: DelegateVotingParams[]
   ): Promise<FinalExecutionOutcome[]> {
-    if (!this.walletService.isSignedIn()) {
+    const isSignedIn = await this.walletService.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 

@@ -25,4 +25,6 @@ export type Config = {
 export enum WalletType {
   NEAR,
   SENDER,
+  SELECTOR_NEAR = 'near-wallet',
+  SELECTOR_SENDER = 'sender',
 }
