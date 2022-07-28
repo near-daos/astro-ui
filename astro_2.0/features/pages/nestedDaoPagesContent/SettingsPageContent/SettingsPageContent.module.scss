@@ -17,11 +17,12 @@
   display: grid;
   grid-area: content;
   grid-gap: 12px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   width: 100%;
 
   @include tablet-landscape {
     flex-direction: row;
+    grid-template-columns: 1fr 1fr;
   }
 }
 

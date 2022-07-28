@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import Head from 'next/head';
 
 import { SettingsFilterToggle } from 'astro_2.0/features/DaoGovernance/components/SettingsFilterToggle';
 import { DaoSetting, SettingsCard } from 'astro_2.0/features/DaoGovernance';
@@ -58,6 +59,10 @@ export const DaoPolicyPageContent: FC<Props> = ({
 
   return (
     <div className={styles.root}>
+      <Head>
+        <title>Astro - DAO Policy {daoFilter ? `- ${daoFilter}` : ''}</title>
+        <meta name="viewport" content="width=device-width, minimum-scale=1" />
+      </Head>
       <Button
         variant="transparent"
         className={styles.navigation}

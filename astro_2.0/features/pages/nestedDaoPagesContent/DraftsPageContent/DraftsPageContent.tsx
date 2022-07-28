@@ -2,6 +2,8 @@ import React, { FC, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
+import useQuery from 'hooks/useQuery';
 
 import { DaoContext } from 'types/context';
 
@@ -37,6 +39,8 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
   const { t } = useTranslation();
   const { dao } = daoContext;
   const { accountId } = useWalletContext();
+  const { query } = useQuery<{ category: string; view: string }>();
+  const { view, category } = query;
 
   const {
     data,
@@ -57,6 +61,13 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
 
   return (
     <div className={styles.root}>
+      <Head>
+        <title>
+          Astro - Drafts {view ? `- ${view}` : ''}{' '}
+          {category ? `- ${category}` : ''}
+        </title>
+        <meta name="viewport" content="width=device-width, minimum-scale=1" />
+      </Head>
       <DraftsPageHeader
         className={styles.header}
         loading={loading}

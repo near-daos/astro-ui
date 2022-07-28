@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { NextPage } from 'next';
-import Head from 'next/head';
 
 import { ProposalVariant } from 'types/proposal';
 import { DaoContext } from 'types/context';
@@ -35,9 +34,6 @@ const DraftsPage: NextPage<DraftsPageProps> = ({ daoContext }) => {
       breadcrumbs={breadcrumbs}
       defaultProposalType={ProposalVariant.ProposePoll}
     >
-      <Head>
-        <title>Drafts</title>
-      </Head>
       <DraftsDataProvider>
         <DraftsPageContent daoContext={daoContext} />
       </DraftsDataProvider>
