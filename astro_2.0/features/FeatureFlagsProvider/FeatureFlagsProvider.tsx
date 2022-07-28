@@ -21,9 +21,5 @@ export const FeatureFlagsProvider: FC = ({ children }) => {
     };
   }, [accountId]);
 
-  return (
-    <LDProvider {...ldProps} key={accountId}>
-      {children}
-    </LDProvider>
-  );
+  return <LDProvider {...ldProps}>{children}</LDProvider>;
 };
