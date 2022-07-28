@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next';
 
 import { DebouncedInput, Input } from 'components/inputs/Input';
 import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
-import { Icon } from 'components/Icon';
+import { TokenIcon } from 'astro_2.0/components/TokenIcon';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { formatCurrency } from 'utils/formatCurrency';
@@ -36,18 +36,11 @@ export const TransferContent: FC = () => {
     value: token.symbol,
     label: (
       <div className={styles.row}>
-        <div className={styles.iconWrapper}>
-          {token.symbol === 'NEAR' ? (
-            <Icon name="tokenNearBig" />
-          ) : (
-            <div
-              className={styles.icon}
-              style={{
-                backgroundImage: `url(${token.icon})`,
-              }}
-            />
-          )}
-        </div>
+        <TokenIcon
+          symbol={token?.symbol}
+          icon={token?.icon}
+          className={styles.iconWrapper}
+        />
         <div className={styles.symbol}>{token.symbol}</div>
         <div className={styles.balance}>
           <span
