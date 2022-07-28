@@ -441,8 +441,8 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
               quorum: string;
             };
 
-            threshold = votePolicy.threshold;
-            quorum = votePolicy.quorum;
+            threshold = votePolicy?.threshold;
+            quorum = votePolicy?.quorum;
           }
 
           content = (
