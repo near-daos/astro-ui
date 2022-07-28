@@ -1,5 +1,6 @@
 import { useEffect, useState, VFC } from 'react';
 import cn from 'classnames';
+import { useMountedState } from 'react-use';
 import { format, millisecondsToSeconds } from 'date-fns';
 import { useSocket } from 'context/SocketContext';
 import { useFlags } from 'launchdarkly-react-client-sdk';
@@ -31,6 +32,7 @@ type State = {
 export const AppHealth: VFC = () => {
   const { socket } = useSocket();
   const { appHealth } = useFlags();
+  const isMounted = useMountedState();
   const [state, setState] = useState<State>({ status: null });
 
   useEffect(() => {
@@ -56,15 +58,17 @@ export const AppHealth: VFC = () => {
             status = 'success';
           }
 
-          setState({
-            status,
-            lastAstroBlockDetails: lastAstroBlock,
-            lastHandledBlockDetails: lastHandledBlock,
-          });
+          if (isMounted()) {
+            setState({
+              status,
+              lastAstroBlockDetails: lastAstroBlock,
+              lastHandledBlockDetails: lastHandledBlock,
+            });
+          }
         }
       );
     }
-  }, [appHealth, socket, state.status]);
+  }, [appHealth, isMounted, socket, state.status]);
 
   function renderTooltipRow(title: string, data?: AggregatorBlock) {
     return (

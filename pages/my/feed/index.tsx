@@ -6,7 +6,7 @@ import { ProposalsFeedStatuses } from 'types/proposal';
 import { Feed } from 'astro_2.0/features/Feed';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import { CookieService } from 'services/CookieService';
-import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { ACCOUNT_COOKIE, FEED_STATUS_COOKIE } from 'constants/cookies';
 import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ALL_FEED_URL } from 'constants/routing';
@@ -26,9 +26,10 @@ const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   typeof Feed
 >> = async ({ query, locale = 'en' }) => {
+  const lastFeedStatus = CookieService.get(FEED_STATUS_COOKIE);
   const {
     category,
-    status = ProposalsFeedStatuses.All,
+    status = lastFeedStatus || ProposalsFeedStatuses.All,
   } = query as ProposalsQueries;
   const accountId = CookieService.get(ACCOUNT_COOKIE);
 

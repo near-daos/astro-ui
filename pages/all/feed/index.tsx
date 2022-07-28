@@ -11,7 +11,7 @@ import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 
 import { Feed } from 'astro_2.0/features/Feed';
 import { CookieService } from 'services/CookieService';
-import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { ACCOUNT_COOKIE, FEED_STATUS_COOKIE } from 'constants/cookies';
 import Head from 'next/head';
 
 const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
@@ -27,9 +27,12 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   typeof Feed
 >> = async ({ query, locale = 'en' }) => {
   const accountId = CookieService.get(ACCOUNT_COOKIE);
+  const lastFeedStatus = CookieService.get(FEED_STATUS_COOKIE);
   const {
     category,
-    status = ProposalsFeedStatuses.Active,
+    status = !lastFeedStatus || lastFeedStatus === 'voteNeeded'
+      ? ProposalsFeedStatuses.Active
+      : lastFeedStatus,
   } = query as ProposalsQueries;
   const res = await SputnikHttpService.getProposalsList({
     category,
