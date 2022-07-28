@@ -269,19 +269,15 @@ export function useVotingPolicyDetails(
     };
   }
 
+  const policy = holdersRole.votePolicy?.vote || holdersRole.votePolicy['*.*'];
+
   return {
-    threshold: formatYoktoValue(
-      holdersRole.votePolicy.vote.weight ?? '0',
-      tokenDetails?.decimals
-    ),
+    threshold: formatYoktoValue(policy?.weight ?? '0', tokenDetails?.decimals),
     balance: formatYoktoValue(
       holdersRole.balance ?? '0',
       tokenDetails?.decimals
     ),
-    quorum: formatYoktoValue(
-      holdersRole.votePolicy.vote.quorum ?? '0',
-      tokenDetails?.decimals
-    ),
+    quorum: formatYoktoValue(policy?.quorum ?? '0', tokenDetails?.decimals),
   };
 }
 
