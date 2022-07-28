@@ -118,10 +118,13 @@ export class WalletSelectorService implements WalletService {
     return Promise.resolve([]);
   }
 
-  signIn(contractId: string, signInOptions?: SignInOptions): Promise<boolean> {
+  async signIn(
+    contractId: string,
+    signInOptions?: SignInOptions
+  ): Promise<boolean> {
     const wallet = this.wallet as BrowserWallet;
 
-    wallet.signIn({ contractId, ...signInOptions });
+    await wallet.signIn({ contractId, ...signInOptions });
 
     return Promise.resolve(true);
   }
