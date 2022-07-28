@@ -5,8 +5,8 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: Environment to run on. Valid choices are develop, test, production.
-        default: develop
+        description: Environment to run on. Valid choices are test, production.
+        default: test
         required: false
       tags:
         description: Tags of test suites to run (as described in [test docs](https://github.com/near-daos/astro-test-framework#tags-test-suites)). Valid choices are all, smoke.
