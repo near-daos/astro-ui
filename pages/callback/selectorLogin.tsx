@@ -4,6 +4,8 @@ import { GetServerSideProps, NextPage } from 'next';
 import nextI18NextConfig from 'next-i18next.config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
+import { WalletType } from 'types/config';
+
 import { useWallet } from 'context/WalletContext/hooks/useWallet';
 
 import { configService } from 'services/ConfigService';
@@ -32,7 +34,11 @@ const SelectorLogin: NextPage = () => {
         } else {
           const { nearConfig } = configService.get();
 
-          currentWallet.signIn(nearConfig.contractName).then(router.reload);
+          currentWallet.signIn(nearConfig.contractName).then(() => {
+            if (router.query.wallet !== WalletType.SELECTOR_NEAR) {
+              router.reload();
+            }
+          });
         }
       }
     }

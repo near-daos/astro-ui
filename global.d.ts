@@ -9,16 +9,25 @@ type SputnikRequestSignInCompleted = (result: {
   publicKey?: string;
 }) => Promise<void>;
 
-type SputnikRequestSignTransactionCompleted = (result: {
+export type TransactionCompleted = {
   transactionHashes?: string;
   errorCode?: SputnikWalletErrorCodes;
-}) => void;
+};
+
+export type SelectorTransactionCompleted = TransactionCompleted & {
+  accountId: string;
+};
+
+type SputnikRequestSignTransactionCompleted = (
+  result: TransactionCompleted
+) => void;
 
 declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fabric: any;
     onLogin?: () => Promise<unknown>;
+    onTransaction?: (data: SelectorTransactionCompleted) => Promise<void>;
     sputnikRequestSignInCompleted?: SputnikRequestSignInCompleted;
     sputnikRequestSignTransactionCompleted?: SputnikRequestSignTransactionCompleted;
     opener: {
