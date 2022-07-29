@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { NextPage } from 'next';
 import TextTruncate from 'react-text-truncate';
 import dynamic from 'next/dynamic';
 import cn from 'classnames';
@@ -34,6 +33,8 @@ import { copyToClipboard } from 'utils/copyToClipboard';
 
 import { DaoFeedItem } from 'types/dao';
 
+import { Page } from 'pages/_app';
+
 import styles from './SharedTemplatePage.module.scss';
 
 const CustomFcTemplateCard = dynamic(
@@ -51,7 +52,7 @@ interface Props {
   accountDaos: DaoFeedItem[];
 }
 
-const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
+const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
   const {
     data,
     loading,

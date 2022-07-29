@@ -1,0 +1,39 @@
+@import 'styles/typography';
+
+.root {
+  @extend %subtitle5;
+  align-items: center;
+  display: flex;
+
+  min-width: 90px;
+}
+
+.dropdownWrapper,
+.dropdown {
+  font-weight: 500;
+  width: 100%;
+}
+
+.controlIcon {
+  margin-left: auto;
+  width: 18px;
+}
+
+.filterLabel {
+  white-space: nowrap;
+}
+
+.filterIcon {
+  margin-left: 12px;
+  width: 20px;
+}
+
+.sortIcon {
+  margin-left: 12px;
+  width: 12px;
+}
+
+.menu {
+  @extend %body2;
+  //right: 0;
+}

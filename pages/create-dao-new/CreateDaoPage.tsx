@@ -1,9 +1,9 @@
-import { NextPage } from 'next';
 import React from 'react';
 
 import { CreateDao } from 'astro_2.0/features/CreateDao';
+import { Page } from 'pages/_app';
 
-const CreateDaoPage: NextPage<{ step: string }> = () => {
+const CreateDaoPage: Page = () => {
   return <CreateDao defaultFlag="/flags/defaultDaoFlag.png" />;
 };
 

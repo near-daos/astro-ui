@@ -2,6 +2,7 @@ import cn from 'classnames';
 import { useSelect } from 'downshift';
 import React, { PropsWithChildren, useEffect } from 'react';
 
+import { IconName } from 'components/Icon';
 import { IconButton } from 'components/button/IconButton';
 import { Title } from 'components/Typography';
 
@@ -23,6 +24,8 @@ export interface DropdownProps<T> {
   defaultValue?: T;
   placeholder?: string;
   disabled?: boolean;
+  controlIconClassName?: string;
+  controlIcon?: IconName;
 }
 
 export const Dropdown = <T,>(
@@ -38,6 +41,8 @@ export const Dropdown = <T,>(
     controlClassName,
     menuClassName,
     disabled: isDisabled,
+    controlIconClassName,
+    controlIcon,
   } = props;
 
   const {
@@ -119,10 +124,14 @@ export const Dropdown = <T,>(
           {selectedItem?.label || placeholder}
         </span>
         <IconButton
-          icon="buttonArrowDown"
-          className={cn(styles.controlIcon, {
-            [styles.open]: isOpen,
-          })}
+          icon={controlIcon || 'buttonArrowDown'}
+          className={cn(
+            styles.controlIcon,
+            {
+              [styles.open]: !controlIcon && isOpen,
+            },
+            controlIconClassName
+          )}
         />
       </Title>
       <ul

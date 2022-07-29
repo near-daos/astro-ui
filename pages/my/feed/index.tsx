@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import { GetServerSideProps } from 'next';
 
@@ -14,14 +14,39 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from 'next-i18next.config';
 import Head from 'next/head';
 
-const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
-  <>
-    <Head>
-      <title>My proposals feed</title>
-    </Head>
-    <Feed {...props} title="My proposals feed" />
-  </>
-);
+import { FeedLayout } from 'astro_3.0/features/FeedLayout';
+import { MainLayout } from 'astro_3.0/features/MainLayout';
+import { getAppVersion, useAppVersion } from 'hooks/useAppVersion';
+import { ProposalsFeed } from 'astro_3.0/features/ProposalsFeed';
+import { Page } from 'pages/_app';
+
+const MyFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
+  const { appVersion } = useAppVersion();
+
+  return (
+    <>
+      <Head>
+        <title>My proposals feed</title>
+      </Head>
+      {appVersion === 3 ? (
+        <ProposalsFeed {...props} />
+      ) : (
+        <Feed {...props} title="My proposals feed" />
+      )}
+    </>
+  );
+};
+
+MyFeedPage.getLayout = function getLayout(page: ReactNode) {
+  const appVersion = getAppVersion();
+
+  return (
+    <>
+      {appVersion === 3 && <FeedLayout />}
+      <MainLayout>{page}</MainLayout>
+    </>
+  );
+};
 
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   typeof Feed
