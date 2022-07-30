@@ -1,9 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 import { useToggle } from 'react-use';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useForm, FormProvider } from 'react-hook-form';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 
 import {
   ProposalCard,
@@ -14,7 +11,7 @@ import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 
 import { ProposalFeedItem } from 'types/proposal';
-import { DraftProposal, Hashtag } from 'types/draftProposal';
+import { DraftProposal } from 'types/draftProposal';
 import { Token } from 'types/token';
 
 import { useWalletContext } from 'context/WalletContext';
@@ -56,7 +53,6 @@ const variants = {
 
 export const ViewProposal: FC<ViewProposalProps> = ({
   isDraft,
-  isEditDraft,
   proposal,
   showFlag,
   tokens,
@@ -68,29 +64,6 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   dao,
   userPermissions,
 }) => {
-  const defaultValues = {
-    title: 'title' in proposal ? proposal?.title : undefined,
-    // hashtags: 'hashtags' in proposal ? proposal?.hashtags : undefined,
-    details: 'description' in proposal ? proposal?.description : undefined,
-    description: 'description' in proposal ? proposal?.description : undefined,
-  };
-
-  const methods = useForm<{
-    title: string;
-    hashtags: Hashtag[];
-    description: string;
-  }>({
-    defaultValues,
-    mode: 'onSubmit',
-    resolver: yupResolver(
-      yup.object().shape({
-        description: yup.string().required('Required'),
-        // hashtags: yup.array().min(1, 'Required'),
-        title: yup.string().required('Required'),
-      })
-    ),
-  });
-
   const { accountId } = useWalletContext();
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
   const [commentsCount, setCommentsCount] = useState(proposal?.commentsCount);
@@ -135,119 +108,115 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   const isClosedDraft = 'state' in proposal && proposal?.state === 'closed';
 
   return (
-    <FormProvider {...methods}>
-      <ProposalCardRenderer
-        nonActionable={
-          selectedList &&
-          selectedList?.length > 0 &&
-          (voted || !canApprove || !canReject)
-        }
-        isDraft={isDraft}
-        isEditDraft={isEditDraft}
-        proposal={proposal}
-        daoFlagNode={
-          showFlag && (
-            <DaoFlagWidget
-              daoName={proposal.daoDetails.displayName || proposal.dao.name}
-              flagUrl={proposal.dao.flagLogo}
-              daoId={proposal.dao.id}
-              fallBack={proposal.dao.logo}
-            />
-          )
-        }
-        optionalActionNode={
-          showOptionalControl && <SaveFcTemplate proposal={proposal} />
-        }
-        letterHeadNode={
-          <LetterHeadWidget
-            className={isClosedDraft ? styles.closedDraft : ''}
-            backgroundClassName={
-              isClosedDraft ? styles.letterHeaderBackgroundClosedDraft : ''
-            }
-            type={proposal.kind.type}
-            coverUrl={proposal.dao.flagCover}
+    <ProposalCardRenderer
+      nonActionable={
+        selectedList &&
+        selectedList?.length > 0 &&
+        (voted || !canApprove || !canReject)
+      }
+      isDraft={isDraft}
+      proposal={proposal}
+      daoFlagNode={
+        showFlag && (
+          <DaoFlagWidget
+            daoName={proposal.daoDetails.displayName || proposal.dao.name}
+            flagUrl={proposal.dao.flagLogo}
+            daoId={proposal.dao.id}
+            fallBack={proposal.dao.logo}
           />
-        }
-        proposalCardNode={
-          <ProposalCard
-            convertToProposal={handleToggleCreateProposal}
-            title={'title' in proposal ? proposal?.title : undefined}
-            // hashtags={'hashtags' in proposal ? proposal?.hashtags : undefined}
-            history={'history' in proposal ? proposal?.history : undefined}
-            isSaved={'isSaved' in proposal ? proposal?.isSaved : undefined}
-            saves={'isSaved' in proposal ? proposal?.saves : undefined}
-            draftState={'state' in proposal ? proposal?.state : undefined}
-            isDraft={isDraft}
-            isEditDraft={isEditDraft}
-            id={proposal.id}
-            proposalId={proposal.proposalId}
-            variant={proposal.proposalVariant}
-            type={proposal.kind.type}
-            status={proposal.status}
-            preventNavigate={preventNavigate}
-            voteStatus={proposal.voteStatus}
-            isFinalized={proposal.isFinalized}
-            proposer={proposal.proposer}
-            description={proposal.description}
-            link={proposal.link}
-            proposalTxHash={proposal.txHash}
-            votePeriodEnd={proposal.votePeriodEndDate}
-            accountId={accountId}
-            daoId={proposal.daoId}
-            dao={dao}
-            permissions={proposal.permissions}
-            likes={proposal.voteYes}
-            dislikes={proposal.voteNo}
-            voteRemove={proposal.voteRemove}
-            liked={proposal.votes[accountId] === 'Yes'}
-            disliked={proposal.votes[accountId] === 'No'}
-            dismissed={proposal.votes[accountId] === 'Dismiss'}
-            updatedAt={proposal.updatedAt}
-            toggleInfoPanel={toggleInfoPanel}
-            commentsCount={commentsCount}
-            optionalPostVoteAction={optionalPostVoteAction}
-            onSelect={onSelect}
-            selectedList={selectedList}
-            voteDetails={
-              proposal.dao.policy.defaultVotePolicy.ratio
-                ? getVoteDetails(
-                    proposal.dao.numberOfMembers,
-                    proposal.dao.policy.defaultVotePolicy,
-                    proposal
-                  ).details
-                : undefined
-            }
-            content={
-              <CustomTokensContext.Provider value={{ tokens }}>
-                <ErrorBoundary>{contentNode}</ErrorBoundary>
-              </CustomTokensContext.Provider>
-            }
-          />
-        }
-        infoPanelNode={
-          <AnimatePresence>
-            {showInfoPanel && (
-              <motion.div
-                key={proposal.proposalId}
-                initial={variants.initial}
-                animate={variants.visible}
-                exit={variants.initial}
-                transition={{
-                  duration: 0.3,
-                }}
-              >
-                <ProposalComments
-                  contextId={proposal.id}
-                  contextType="Proposal"
-                  isCouncilUser={isCouncilUser}
-                  isCommentsAllowed
-                  updateCommentsCount={setCommentsCount}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        }
-      />
-    </FormProvider>
+        )
+      }
+      optionalActionNode={
+        showOptionalControl && <SaveFcTemplate proposal={proposal} />
+      }
+      letterHeadNode={
+        <LetterHeadWidget
+          className={isClosedDraft ? styles.closedDraft : ''}
+          backgroundClassName={
+            isClosedDraft ? styles.letterHeaderBackgroundClosedDraft : ''
+          }
+          type={proposal.kind.type}
+          coverUrl={proposal.dao.flagCover}
+        />
+      }
+      proposalCardNode={
+        <ProposalCard
+          convertToProposal={handleToggleCreateProposal}
+          title={'title' in proposal ? proposal?.title : undefined}
+          // hashtags={'hashtags' in proposal ? proposal?.hashtags : undefined}
+          history={'history' in proposal ? proposal?.history : undefined}
+          isSaved={'isSaved' in proposal ? proposal?.isSaved : undefined}
+          saves={'isSaved' in proposal ? proposal?.saves : undefined}
+          draftState={'state' in proposal ? proposal?.state : undefined}
+          isDraft={isDraft}
+          id={proposal.id}
+          proposalId={proposal.proposalId}
+          variant={proposal.proposalVariant}
+          type={proposal.kind.type}
+          status={proposal.status}
+          preventNavigate={preventNavigate}
+          voteStatus={proposal.voteStatus}
+          isFinalized={proposal.isFinalized}
+          proposer={proposal.proposer}
+          description={proposal.description}
+          link={proposal.link}
+          proposalTxHash={proposal.txHash}
+          votePeriodEnd={proposal.votePeriodEndDate}
+          accountId={accountId}
+          daoId={proposal.daoId}
+          dao={dao}
+          permissions={proposal.permissions}
+          likes={proposal.voteYes}
+          dislikes={proposal.voteNo}
+          voteRemove={proposal.voteRemove}
+          liked={proposal.votes[accountId] === 'Yes'}
+          disliked={proposal.votes[accountId] === 'No'}
+          dismissed={proposal.votes[accountId] === 'Dismiss'}
+          updatedAt={proposal.updatedAt}
+          toggleInfoPanel={toggleInfoPanel}
+          commentsCount={commentsCount}
+          optionalPostVoteAction={optionalPostVoteAction}
+          onSelect={onSelect}
+          selectedList={selectedList}
+          voteDetails={
+            proposal.dao.policy.defaultVotePolicy.ratio
+              ? getVoteDetails(
+                  proposal.dao.numberOfMembers,
+                  proposal.dao.policy.defaultVotePolicy,
+                  proposal
+                ).details
+              : undefined
+          }
+          content={
+            <CustomTokensContext.Provider value={{ tokens }}>
+              <ErrorBoundary>{contentNode}</ErrorBoundary>
+            </CustomTokensContext.Provider>
+          }
+        />
+      }
+      infoPanelNode={
+        <AnimatePresence>
+          {showInfoPanel && (
+            <motion.div
+              key={proposal.proposalId}
+              initial={variants.initial}
+              animate={variants.visible}
+              exit={variants.initial}
+              transition={{
+                duration: 0.3,
+              }}
+            >
+              <ProposalComments
+                contextId={proposal.id}
+                contextType="Proposal"
+                isCouncilUser={isCouncilUser}
+                isCommentsAllowed
+                updateCommentsCount={setCommentsCount}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      }
+    />
   );
 };

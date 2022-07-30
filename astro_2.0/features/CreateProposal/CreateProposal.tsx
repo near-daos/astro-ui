@@ -57,6 +57,7 @@ export interface CreateProposalProps {
   canCreateTokenProposal?: boolean;
   initialValues?: Record<string, unknown>;
   isDraft?: boolean;
+  isEditDraft?: boolean;
 }
 
 export const CreateProposal: FC<CreateProposalProps> = ({
@@ -75,6 +76,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   canCreateTokenProposal = false,
   initialValues,
   isDraft,
+  isEditDraft,
 }) => {
   const { t } = useTranslation();
   const { accountId, nearService } = useWalletContext();
@@ -141,6 +143,8 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     dao,
     bountyId,
     daoTokens,
+    draftId: (initialValues?.id as string) || '',
+    isEditDraft,
   });
 
   const contentNode = getFormContentNode(selectedProposalVariant, dao);
@@ -151,7 +155,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   );
 
   const draftTitle = methods.watch('title');
-  const draftHashtags = methods.watch('hashtags');
+  // const draftHashtags = methods.watch('hashtags');
   const draftDescription = methods.watch('description');
 
   const onTypeSelect = useCallback(
@@ -165,7 +169,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             ? {
                 title: draftTitle,
                 description: draftDescription,
-                hashtags: draftHashtags,
+                // hashtags: draftHashtags,
               }
             : undefined,
           undefined,
@@ -182,7 +186,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     [
       draftTitle,
       draftDescription,
-      draftHashtags,
+      // draftHashtags,
       t,
       accountId,
       isDraft,
@@ -225,7 +229,10 @@ export const CreateProposal: FC<CreateProposalProps> = ({
                 type={selectedProposalVariant}
                 content={contentNode}
                 proposer={accountId}
-                daoId={dao.id}
+                dao={dao}
+                isEditDraft={isEditDraft}
+                draftState={(initialValues?.state as string) || ''}
+                draftId={(initialValues?.id as string) || ''}
               />
             </CustomTokensContext.Provider>
           }
@@ -242,7 +249,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         />
         {isDraft ? (
           <Button
-            disabled={Object.keys(methods.formState.errors).length > 0}
+            disabled={
+              !methods?.formState.isValid ||
+              !methods?.formState.isDirty ||
+              Object.keys(methods.formState.errors).length > 0
+            }
             capitalize
             size="small"
             className={styles.saveDraft}

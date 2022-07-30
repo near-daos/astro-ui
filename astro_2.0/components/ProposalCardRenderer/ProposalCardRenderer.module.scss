@@ -100,12 +100,3 @@
     gap: 12px;
   }
 }
-
-.saveDraftButton {
-  margin-bottom: 16px;
-  margin-top: 16px;
-
-  @include tablet-landscape {
-    margin-bottom: 0;
-  }
-}

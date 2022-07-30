@@ -2,11 +2,8 @@ import React from 'react';
 import cn from 'classnames';
 import isNumber from 'lodash/isNumber';
 import { useTranslation } from 'next-i18next';
-import { useFormContext } from 'react-hook-form';
 
 import { InfoPanel } from 'astro_2.0/components/ProposalCardRenderer/components/InfoPanel';
-import { Button } from 'components/button/Button';
-import { useSubmitPatchDraft } from 'astro_2.0/features/ViewProposal/hooks/useSubmitPatchDraft';
 import { ProposalFeedItem } from 'types/proposal';
 import { DraftProposal } from 'types/draftProposal';
 
@@ -22,7 +19,6 @@ export interface ProposalCardRendererProps {
   showInfo?: boolean;
   optionalActionNode?: React.ReactNode;
   isDraft?: boolean;
-  isEditDraft?: boolean;
   nonActionable?: boolean;
   proposal?: ProposalFeedItem | DraftProposal;
 }
@@ -37,18 +33,10 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   showInfo,
   optionalActionNode,
   isDraft,
-  isEditDraft,
   nonActionable,
   proposal,
 }) => {
   const { t } = useTranslation();
-  const formMethods = useFormContext();
-
-  const { onDraftPatchSubmit } = useSubmitPatchDraft({
-    draftId: proposal?.id || '',
-    daoId: proposal?.dao.id || '',
-    proposal,
-  });
 
   function renderFlag() {
     return daoFlagNode ? (
@@ -104,21 +92,6 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
       )}
       <div className={styles.proposal}>{proposalCardNode}</div>
       {infoPanelNode && <div className={styles.infoPanel}>{infoPanelNode}</div>}
-      {isEditDraft ? (
-        <Button
-          disabled={
-            !formMethods?.formState.isValid ||
-            !formMethods?.formState.isDirty ||
-            Object.keys(formMethods?.formState?.errors).length > 0
-          }
-          capitalize
-          type="submit"
-          className={styles.saveDraftButton}
-          onClick={formMethods?.handleSubmit(onDraftPatchSubmit)}
-        >
-          Save
-        </Button>
-      ) : null}
     </div>
   );
 };
