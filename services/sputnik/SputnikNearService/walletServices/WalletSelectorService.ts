@@ -172,14 +172,15 @@ export class WalletSelectorService implements WalletService {
         ],
       });
 
-      localStorage.setItem(TRANSACTIONS_KEY, args);
-
       window.onTransaction = this.getOnTransactionsCompleteHandler(
         resolve,
         reject
       );
 
-      window.open(`${window.origin}${SELECTOR_TRANSACTION_PAGE_URL}`, '_blank');
+      window.open(
+        `${window.origin}${SELECTOR_TRANSACTION_PAGE_URL}?${TRANSACTIONS_KEY}=${args}`,
+        '_blank'
+      );
     });
   }
 

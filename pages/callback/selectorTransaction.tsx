@@ -6,6 +6,7 @@ import nextI18NextConfig from 'next-i18next.config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { TRANSACTIONS_KEY } from 'constants/localStorage';
+import { SELECTOR_TRANSACTION_PAGE_URL } from 'constants/routing';
 
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 
@@ -24,7 +25,7 @@ const SelectorTransaction: NextPage = () => {
   useEffect(() => {
     async function handleMount() {
       if (accountId) {
-        const lsData = localStorage.getItem(TRANSACTIONS_KEY);
+        const lsData = query[TRANSACTIONS_KEY];
 
         if (lsData) {
           try {
@@ -33,15 +34,13 @@ const SelectorTransaction: NextPage = () => {
               ? parsedData
               : [parsedData];
 
-            localStorage.removeItem(TRANSACTIONS_KEY);
-
             const wallet = await selector?.wallet();
 
             wallet?.signAndSendTransactions({
               transactions,
+              callbackUrl: `${window.origin}${SELECTOR_TRANSACTION_PAGE_URL}`,
             });
           } catch (e) {
-            localStorage.removeItem(TRANSACTIONS_KEY);
             console.error(e);
           }
         } else {
