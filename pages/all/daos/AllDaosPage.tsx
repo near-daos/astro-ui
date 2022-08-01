@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useRouter } from 'next/router';
 import { TFunction, useTranslation } from 'next-i18next';
@@ -17,6 +17,8 @@ import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { Icon } from 'components/Icon';
 
 import { useRouterLoading } from 'hooks/useRouterLoading';
+
+import { Page } from 'pages/_app';
 
 import styles from './AllDaosPage.module.scss';
 
@@ -50,7 +52,7 @@ interface BrowseAllDaosProps {
   total: number;
 }
 
-const AllDaosPage: FC<BrowseAllDaosProps> = ({
+const AllDaosPage: Page<BrowseAllDaosProps> = ({
   data: initialData = [],
   total: totalItemsAvailable,
 }) => {

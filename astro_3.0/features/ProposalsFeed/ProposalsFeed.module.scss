@@ -1,0 +1,68 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    flex-direction: column;
+    padding: 0;
+  }
+}
+
+/* stylelint-disable-next-line */
+.container :global(.infinite-scroll-component__outerdiv) {
+  flex-grow: 1;
+
+  @media screen and (max-width: #{breakpoints.$screen-sm}px) {
+    flex-grow: 1;
+    max-width: 100%;
+  }
+}
+
+.listWrapper {
+  flex-grow: 1;
+  max-width: 100%;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    margin: 0;
+  }
+}
+
+.loader {
+  width: 100%;
+}
+
+.loading {
+  margin: 32px 0;
+  text-align: center;
+}
+
+.filtersContainer {
+  margin-bottom: 12px;
+}
+
+.itemRoot {
+  margin-bottom: 60px;
+}
+
+.proposalCardWrapper {
+  margin-bottom: 60px;
+
+  &:not(:first-of-type) {
+    margin-top: 32px;
+  }
+}
+
+.categoriesListTitle {
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    display: none;
+  }
+}

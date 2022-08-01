@@ -1,0 +1,22 @@
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.tabLink {
+  @extend %heading5;
+  border-bottom: 2px solid transparent;
+  font-family: Inter, sans-serif;
+  margin-right: 24px;
+  padding: 24px 0 12px;
+
+  transition: color 0.2s ease-out, border-color 0.2s ease-out;
+
+  &.active {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+}

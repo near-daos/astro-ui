@@ -1,0 +1,40 @@
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  padding: 12px 0;
+}
+
+.filter,
+.sort {
+  @extend %subtitle5;
+  align-items: center;
+  display: flex;
+}
+
+.filterLabel {
+  white-space: nowrap;
+}
+
+.filterIcon {
+  margin-left: 12px;
+  width: 20px;
+}
+
+.sortIcon {
+  margin-left: 12px;
+  width: 12px;
+}
+
+.separator {
+  background-color: var(--color-neutral-40);
+  height: 40px;
+  margin: 0 12px;
+  width: 1px;
+
+  &.last {
+    margin-left: auto;
+  }
+}

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
 import isEmpty from 'lodash/isEmpty';
@@ -11,13 +11,15 @@ import { DaosList } from 'astro_2.0/components/DaosList';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 
+import { Page } from 'pages/_app';
+
 import styles from './MyDaosPage.module.scss';
 
 interface MyDaosPageProps {
   accountDaos: DaoFeedItem[];
 }
 
-const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
+const MyDaosPage: Page<MyDaosPageProps> = ({ accountDaos }) => {
   function renderDaos() {
     if (isEmpty(accountDaos)) {
       return (

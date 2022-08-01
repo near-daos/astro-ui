@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import Head from 'next/head';
 
 import { DaoContext } from 'types/context';
@@ -14,13 +14,17 @@ import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsP
 
 import { DRAFTS_PAGE_URL } from 'constants/routing';
 
+import { getAppVersion } from 'hooks/useAppVersion';
+import { MainLayout } from 'astro_3.0/features/MainLayout';
+import { Page } from 'pages/_app';
+
 import styles from './CreateDraftPage.module.scss';
 
 export type CreateDraftPageProps = {
   daoContext: DaoContext;
 };
 
-export const CreateDraftPage: FC<CreateDraftPageProps> = ({ daoContext }) => {
+export const CreateDraftPage: Page<CreateDraftPageProps> = ({ daoContext }) => {
   const { dao } = daoContext;
   const { tokens } = useDaoCustomTokens();
   const breadcrumbsConfig = useGetBreadcrumbsConfig(dao.id, dao.displayName);
@@ -71,6 +75,20 @@ export const CreateDraftPage: FC<CreateDraftPageProps> = ({ daoContext }) => {
       </NestedDaoPageWrapper>
     </>
   );
+};
+
+CreateDraftPage.getLayout = function getLayout(page: ReactNode) {
+  const appVersion = getAppVersion();
+
+  if (appVersion === 3) {
+    return (
+      <>
+        <MainLayout>{page}</MainLayout>
+      </>
+    );
+  }
+
+  return page;
 };
 
 export default CreateDraftPage;

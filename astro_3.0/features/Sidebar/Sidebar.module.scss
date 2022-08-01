@@ -1,0 +1,127 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  background: var(--color-white);
+  display: none;
+  filter: drop-shadow(3px 4px 8px rgba(0, 0, 0, 0.05));
+  flex-direction: column;
+  height: 100vh;
+  left: 0;
+  min-height: 100vh;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  z-index: 1100;
+
+  @include desktop {
+    display: flex;
+  }
+}
+
+.content {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: width 0.2s ease-out;
+  width: 64px;
+  will-change: width;
+
+  &.expanded {
+    width: 250px;
+  }
+
+  &.expanded [data-expanded='hidden'] {
+    opacity: 1;
+  }
+
+  [data-expanded='hidden'] {
+    opacity: 0;
+  }
+
+  //&.expanded [data-expanded='false'] {
+  //  display: block;
+  //}
+  //
+  //[data-expanded='false'] {
+  //  display: none;
+  //}
+}
+
+.top {
+  padding: 20px;
+
+  .topIcon {
+    color: var(--color-black);
+    width: 24px;
+  }
+}
+
+.nav,
+.daos {
+  padding: 0 12px;
+  position: relative;
+  width: 100%;
+}
+
+.daos {
+  height: calc(100vh - 400px);
+  overflow: auto;
+
+  /* Turn on custom 4px wide scrollbar */
+  &::-webkit-scrollbar {
+    background: transparent;
+    border-radius: 0;
+    width: 2px;
+  }
+
+  /* hover effect for both scrollbar area, and scrollbar 'thumb' */
+  &::-webkit-scrollbar:hover {
+    background-color: rgba(232, 224, 255, 0.09);
+  }
+
+  /* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+  &::-webkit-scrollbar-thumb:vertical {
+    background-color: rgba(232, 224, 255, 1);
+    border-radius: 0;
+  }
+
+  &::-webkit-scrollbar-thumb:vertical:active {
+    /* Some darker color when you click it */
+    background: rgba(232, 224, 255, 0.61);
+    border-radius: 0;
+  }
+}
+
+.separator {
+  background-color: var(--color-neutral-40);
+  height: 1px;
+  margin: 12px 0;
+  width: 100%;
+}
+
+.footer {
+  bottom: 0;
+  padding: 0 24px;
+  //position: absolute;
+  width: 100%;
+
+  .icon {
+    margin-left: 24px;
+    width: 24px;
+  }
+
+  .row {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+
+  .copyright {
+    @extend %caption2;
+    font-size: 10px;
+    margin: 12px 0 24px;
+  }
+}

@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react';
-import { NextPage } from 'next';
 import { TFunction, useTranslation } from 'next-i18next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -17,6 +16,8 @@ import { DaoFeedItem } from 'types/dao';
 
 import { CfcLibraryContext } from 'astro_2.0/features/pages/cfcLibrary';
 import { useWalletContext } from 'context/WalletContext';
+
+import { Page } from 'pages/_app';
 
 import styles from './CfcLibraryPage.module.scss';
 
@@ -37,7 +38,7 @@ function getSortOptions(t: TFunction) {
   ];
 }
 
-const CfcLibraryPage: NextPage<Props> = ({ accountDaos }) => {
+const CfcLibraryPage: Page<Props> = ({ accountDaos }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const sortOptions = useMemo(() => getSortOptions(t), [t]);

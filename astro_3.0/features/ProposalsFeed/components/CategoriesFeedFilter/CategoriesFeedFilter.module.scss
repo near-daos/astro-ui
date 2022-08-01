@@ -1,0 +1,34 @@
+@import 'styles/typography';
+
+.root {
+  width: 100%;
+}
+
+.items {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  margin-right: 8px;
+}
+
+.itemLink {
+  @extend %subtitle5;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  padding: 8px 12px;
+
+  transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+}
+
+.itemLink.active {
+  background-color: var(--color-primary-10);
+  border-color: var(--color-primary);
+
+  color: var(--color-primary);
+}

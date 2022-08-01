@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import Head from 'next/head';
 import { appWithTranslation } from 'next-i18next';
 import type { AppContext, AppProps } from 'next/app';
+import type { NextPage } from 'next';
 
 import nextI18NextConfig from 'next-i18next.config';
 
@@ -22,12 +23,30 @@ import { AppMonitoring } from 'astro_2.0/features/AppMonitoring/AppMonitoring';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 import { useAppInitialize } from 'hooks/useAppInitialize';
 import { FeatureFlagsProvider } from 'astro_2.0/features/FeatureFlagsProvider/FeatureFlagsProvider';
+import { MainLayout } from 'astro_3.0/features/MainLayout';
 
 import 'styles/globals.scss';
 
-function App({ Component, pageProps }: AppProps): JSX.Element | null {
+type GetLayout = (page: ReactNode) => ReactNode;
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type Page<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: GetLayout;
+};
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+type MyAppProps<P = {}> = AppProps<P> & {
+  Component: Page<P>;
+};
+
+const defaultGetLayout: GetLayout = (page: ReactNode): ReactNode => (
+  <MainLayout>{page}</MainLayout>
+);
+
+function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
   const router = useRouter();
   const initialized = useAppInitialize();
+  const getLayout = Component.getLayout ?? defaultGetLayout;
 
   useEffect(() => {
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
@@ -50,13 +69,11 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
                 <Head>
                   <title>Astro</title>
                 </Head>
-
                 <PageLayout>
                   <ErrorBoundary>
-                    <Component {...pageProps} />
+                    {getLayout(<Component {...pageProps} />)}
                   </ErrorBoundary>
                 </PageLayout>
-
                 <MobileNav />
               </SearchResults>
             </SocketProvider>
