@@ -220,7 +220,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
   }
 
   function renderCreateGovTokenButton() {
-    if (flags.governanceToken && !daoHasGovernanceTokenConfigured) {
+    if (flags.governanceToken && settings && !daoHasGovernanceTokenConfigured) {
       return (
         <Button
           capitalize
