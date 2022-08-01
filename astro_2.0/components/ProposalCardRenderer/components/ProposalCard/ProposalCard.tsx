@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback } from 'react';
 import { useAsyncFn } from 'react-use';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useTranslation } from 'next-i18next';
@@ -23,7 +23,6 @@ import {
   ProposalVariant,
   VoteAction,
 } from 'types/proposal';
-// import { Hashtag } from 'types/draftProposal';
 import { VoteDetail } from 'features/types';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { ProposalActions } from 'features/proposal/components/ProposalActions';
@@ -50,8 +49,6 @@ import { DraftDescription } from 'astro_2.0/components/ProposalCardRenderer/comp
 // import { Badge } from 'components/Badge';
 import { DraftInfo } from 'astro_2.0/components/ProposalCardRenderer/components/DraftInfo';
 import { DraftManagement } from 'astro_2.0/components/ProposalCardRenderer/components/DraftManagement';
-import { EditableContent } from 'astro_2.0/components/EditableContent';
-import { DeleteDraftButton } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/DeleteDraftButton';
 import { ProposalControlPanel } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/ProposalControlPanel';
 import { DAO } from 'types/dao';
 
@@ -94,7 +91,6 @@ export interface ProposalCardProps {
     isCouncil: boolean;
   };
   isDraft?: boolean;
-  isEditDraft?: boolean;
   title?: string;
   // hashtags?: Hashtag[];
   isSaved?: boolean;
@@ -215,7 +211,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   commentsCount,
   optionalPostVoteAction,
   isDraft,
-  isEditDraft,
   title,
   // hashtags,
   isSaved,
@@ -230,10 +225,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
   const router = useRouter();
-  const draftMethods = useFormContext();
 
-  const draftTitle = draftMethods.watch('title');
-  const draftDescription = draftMethods.watch('description');
   // const draftHashtags = draftMethods.watch('hashtags');
 
   const isDraftClosed = draftState === 'closed';
@@ -419,38 +411,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     }
   }
 
-  const handlerChangeTitle = useCallback(
-    titleValue => {
-      draftMethods.setValue('title', titleValue, { shouldDirty: true });
-      draftMethods.trigger('title');
-    },
-    [draftMethods]
-  );
-
-  // const handlerChangeHashtags = useCallback(
-  //   hashtagsValue => {
-  //     draftMethods.setValue('hashtags', hashtagsValue);
-  //     draftMethods.trigger('hashtags');
-  //   },
-  //   [draftMethods]
-  // );
-
-  const handlerChangeDescription = useCallback(
-    html => {
-      let value = html;
-
-      if (value === '<p><br></p>') {
-        value = '';
-      }
-
-      draftMethods.setValue('description', value, { shouldDirty: true });
-      draftMethods.setValue('details', value, { shouldDirty: true });
-      draftMethods.trigger('description');
-      draftMethods.trigger('details');
-    },
-    [draftMethods]
-  );
-
   const handleEditDraft = useCallback(() => {
     router.push({
       pathname: EDIT_DRAFT_PAGE_URL,
@@ -492,27 +452,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   }
 
   function renderCardContent() {
-    if (isEditDraft) {
-      return (
-        <>
-          {renderProposer()}
-          <EditableContent
-            errors={draftMethods.formState.errors}
-            placeholder="Describe your draft..."
-            titlePlaceholder="Add draft name"
-            title={draftTitle}
-            setTitle={handlerChangeTitle}
-            // hashtags={draftHashtags}
-            // setHashtags={handlerChangeHashtags}
-            className={styles.editable}
-            html={draftDescription}
-            setHTML={handlerChangeDescription}
-          />
-          <div className={styles.contentCell}>{content}</div>
-        </>
-      );
-    }
-
     if (isDraft) {
       return (
         <>
@@ -593,10 +532,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   };
 
   const renderBottomContent = () => {
-    if (isEditDraft) {
-      return null;
-    }
-
     if (isDraft) {
       return (
         <div className={styles.draftFooter}>
@@ -720,17 +655,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
             </Button>
           )}
         </div>
-      );
-    }
-
-    if (isEditDraft) {
-      return (
-        <DeleteDraftButton
-          proposer={proposer}
-          state={draftState}
-          draftId={id || ''}
-          dao={dao}
-        />
       );
     }
 

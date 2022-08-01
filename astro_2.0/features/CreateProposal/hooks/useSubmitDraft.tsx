@@ -7,7 +7,6 @@ import { useWalletContext } from 'context/WalletContext';
 import { ProposalType, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
 import { Token } from 'types/token';
-import { Hashtag } from 'types/draftProposal';
 import { getNewProposalObject } from 'astro_2.0/features/CreateProposal/helpers/newProposalObject';
 import { keysToCamelCase } from 'utils/keysToCamelCase';
 import { DRAFT_PAGE_URL } from 'constants/routing';
@@ -19,6 +18,8 @@ type UseSubmitDraftProps = {
   dao: DAO;
   daoTokens: Record<string, Token>;
   bountyId?: number;
+  draftId?: string;
+  isEditDraft?: boolean;
 };
 
 export const useSubmitDraft = ({
@@ -27,6 +28,8 @@ export const useSubmitDraft = ({
   proposalVariant,
   daoTokens,
   bountyId,
+  draftId,
+  isEditDraft,
 }: UseSubmitDraftProps): {
   onDraftSubmit: (formValues: Record<string, unknown>) => Promise<void>;
 } => {
@@ -55,29 +58,48 @@ export const useSubmitDraft = ({
             kind = keysToCamelCase(newProposal.data);
           }
 
-          const newDraftResponse = await draftsService.createDraft({
-            daoId: dao.id,
-            title: data.title as string,
-            description: data.description as string,
-            hashtags: (data.hashtags as Hashtag[]).map(
-              hashtag => hashtag.value
-            ),
-            type: proposalType,
-            kind: {
+          let response;
+
+          if (isEditDraft) {
+            response = await draftsService.patchDraft({
+              id: draftId || '',
+              daoId: dao.id,
+              title: data.title as string,
+              description: data.description as string,
+              hashtags: [],
               type: proposalType,
-              proposalVariant,
-              ...kind,
-            },
-            accountId,
-            publicKey: pkAndSignature.publicKey || '',
-            signature: pkAndSignature.signature || '',
-          });
+              kind: {
+                type: proposalType,
+                proposalVariant,
+                ...kind,
+              },
+              accountId,
+              publicKey: pkAndSignature.publicKey || '',
+              signature: pkAndSignature.signature || '',
+            });
+          } else {
+            response = await draftsService.createDraft({
+              daoId: dao.id,
+              title: data.title as string,
+              description: data.description as string,
+              hashtags: [],
+              type: proposalType,
+              kind: {
+                type: proposalType,
+                proposalVariant,
+                ...kind,
+              },
+              accountId,
+              publicKey: pkAndSignature.publicKey || '',
+              signature: pkAndSignature.signature || '',
+            });
+          }
 
           router.push({
             pathname: DRAFT_PAGE_URL,
             query: {
               dao: dao.id,
-              draft: newDraftResponse.data,
+              draft: response.data,
             },
           });
         } catch (e) {
@@ -95,6 +117,8 @@ export const useSubmitDraft = ({
       dao,
       daoTokens,
       draftsService,
+      draftId,
+      isEditDraft,
       pkAndSignature,
       proposalType,
       proposalVariant,

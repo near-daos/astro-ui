@@ -1,5 +1,6 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import Head from 'next/head';
+import { useMount } from 'react-use';
 
 import { DaoContext } from 'types/context';
 import { DAO } from 'types/dao';
@@ -9,9 +10,11 @@ import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 import { BackButton } from 'astro_2.0/features/ViewProposal/components/BackButton';
-import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { DraftProposal } from 'types/draftProposal';
 import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+import { getInitialFormValuesFromDraft } from 'astro_2.0/features/ViewProposal/helpers';
+import { useWalletContext } from 'context/WalletContext';
 
 import { DRAFTS_PAGE_URL } from 'constants/routing';
 
@@ -28,7 +31,9 @@ export const EditDraftPage: FC<CreateDraftPageProps> = ({
   dao,
   draft,
 }) => {
+  const [initialValues, setInitialValues] = useState({});
   const { tokens } = useDaoCustomTokens();
+  const { accountId } = useWalletContext();
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     daoContext.dao.id,
     daoContext.dao.displayName,
@@ -48,6 +53,25 @@ export const EditDraftPage: FC<CreateDraftPageProps> = ({
     ];
   }, [breadcrumbsConfig]);
 
+  useMount(async () => {
+    const createdInitialValues = await getInitialFormValuesFromDraft(
+      draft?.proposalVariant,
+      (draft as unknown) as Record<string, unknown>,
+      tokens,
+      accountId || ''
+    );
+
+    setInitialValues({
+      ...createdInitialValues,
+      id: draft.id,
+      state: draft.state,
+      externalUrl: 'https://test.net',
+      title: draft.title,
+      description: draft.description,
+      details: draft.description,
+    });
+  });
+
   return (
     <>
       <Head>
@@ -65,15 +89,21 @@ export const EditDraftPage: FC<CreateDraftPageProps> = ({
                 },
               }}
             />
-            <ViewProposal
-              preventNavigate
-              isDraft
-              isEditDraft
-              proposal={draft}
-              showFlag={false}
-              tokens={tokens}
-              dao={dao}
-            />
+            {initialValues ? (
+              <CreateProposal
+                proposalVariant={draft.proposalVariant}
+                showInfo={false}
+                showClose={false}
+                showFlag={false}
+                dao={dao}
+                daoTokens={tokens}
+                onClose={() => undefined}
+                initialValues={initialValues}
+                userPermissions={daoContext.userPermissions}
+                isDraft
+                isEditDraft
+              />
+            ) : null}
           </div>
         </DraftsDataProvider>
       </NestedDaoPageWrapper>

@@ -1,6 +1,7 @@
 import { render } from 'jest/testUtils';
 
 import { ProposalType, ProposalVariant } from 'types/proposal';
+import { DAO } from 'types/dao';
 import { IconButtonProps } from 'components/button/IconButton';
 
 import { CreateProposalCard } from 'astro_2.0/features/CreateProposal/components/CreateProposalCard';
@@ -88,6 +89,8 @@ const userPermissions = {
 };
 
 describe('CreateGroupContent', () => {
+  const dao = ({} as unknown) as DAO;
+
   it.each`
     type                                                | content
     ${'Unknown'}                                        | ${'proposalCard.proposalOwner'}
@@ -99,7 +102,7 @@ describe('CreateGroupContent', () => {
     ({ type, content }) => {
       const { getByText } = render(
         <CreateProposalCard
-          daoId="test-dao"
+          dao={{ ...dao, id: 'test-dao' }}
           type={type}
           showClose={false}
           proposer="proposer"
@@ -117,7 +120,7 @@ describe('CreateGroupContent', () => {
   it('Should render close button', () => {
     const { getByText } = render(
       <CreateProposalCard
-        daoId="test-dao"
+        dao={{ ...dao, id: 'test-dao' }}
         showClose
         type={ProposalVariant.ProposeCreateToken}
         proposer="proposer"

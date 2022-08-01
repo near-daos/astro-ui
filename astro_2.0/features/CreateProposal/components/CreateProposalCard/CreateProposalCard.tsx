@@ -27,6 +27,8 @@ import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTo
 import { useDaoSettings } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/hooks';
 import { useWalletContext } from 'context/WalletContext';
 import { getCustomTemplatesDefaults } from 'astro_2.0/features/CreateProposal/components/CreateProposalCard/helpers';
+import { DAO } from 'types/dao';
+import { DeleteDraftButton } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/DeleteDraftButton';
 
 import styles from './CreateProposalCard.module.scss';
 
@@ -39,9 +41,11 @@ export interface CreateProposalCardProps {
   userPermissions: UserPermissions;
   showClose: boolean;
   canCreateTokenProposal: boolean;
-  daoId: string;
+  dao: DAO;
   isDraft?: boolean;
   isEditDraft?: boolean;
+  draftState?: string;
+  draftId?: string;
 }
 
 export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
@@ -53,8 +57,11 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   onClose,
   userPermissions,
   canCreateTokenProposal,
-  daoId,
+  dao,
   isDraft,
+  isEditDraft,
+  draftState,
+  draftId,
 }) => {
   const {
     register,
@@ -73,16 +80,16 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   const fcType = watch('functionCallType');
 
   const proposalTypesOptions = useProposalTypeOptions(
-    daoId,
+    dao.id,
     userPermissions,
     canCreateTokenProposal,
     isDraft
   );
 
   const { accountId } = useWalletContext();
-  const { templates } = useProposalTemplates(daoId);
+  const { templates } = useProposalTemplates(dao.id);
   const { tokens } = useCustomTokensContext();
-  const { settings } = useDaoSettings(daoId);
+  const { settings } = useDaoSettings(dao.id);
 
   function renderCloseButton() {
     if (showClose) {
@@ -304,19 +311,19 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
 
   const handlerChangeTitle = useCallback(
     titleValue => {
-      setValue('title', titleValue);
+      setValue('title', titleValue, { shouldDirty: true });
       trigger('title');
     },
     [setValue, trigger]
   );
 
-  const handlerChangeHashtags = useCallback(
-    hashtagsValue => {
-      setValue('hashtags', hashtagsValue);
-      trigger('hashtags');
-    },
-    [setValue, trigger]
-  );
+  // const handlerChangeHashtags = useCallback(
+  //   hashtagsValue => {
+  //     setValue('hashtags', hashtagsValue);
+  //     trigger('hashtags');
+  //   },
+  //   [setValue, trigger]
+  // );
 
   const handlerChangeDescription = useCallback(
     html => {
@@ -326,10 +333,9 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
         value = '';
       }
 
-      setValue('description', value);
-      setValue('details', value);
-      trigger('description');
-      trigger('details');
+      setValue('description', value, { shouldDirty: true });
+      setValue('details', value, { shouldDirty: true });
+      trigger(['description', 'details']);
     },
     [setValue, trigger]
   );
@@ -343,8 +349,8 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
           titlePlaceholder="Add draft name"
           title={title}
           setTitle={handlerChangeTitle}
-          hashtags={hashtags}
-          setHashtags={handlerChangeHashtags}
+          // hashtags={hashtags}
+          // setHashtags={handlerChangeHashtags}
           className={styles.editable}
           html={description}
           setHTML={handlerChangeDescription}
@@ -489,12 +495,29 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     }
   }
 
-  return (
-    <div className={styles.root}>
-      <div className={styles.proposalCell}>{renderProposalCell()}</div>
+  function renderTimestampCell() {
+    if (isEditDraft) {
+      return (
+        <DeleteDraftButton
+          proposer={proposer}
+          state={draftState}
+          draftId={draftId || ''}
+          dao={dao}
+        />
+      );
+    }
+
+    return (
       <div className={styles.countdownCell}>
         {t('createProposal.countdown')}
       </div>
+    );
+  }
+
+  return (
+    <div className={styles.root}>
+      <div className={styles.proposalCell}>{renderProposalCell()}</div>
+      {renderTimestampCell()}
       {renderCardContent()}
       {renderVoteControl()}
       {renderCloseButton()}
