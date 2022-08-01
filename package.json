@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "rm -rf .next && NODE_OPTIONS='--inspect' next dev -p 8080",
+    "dev": "NODE_ENV=development && rm -rf .next && NODE_OPTIONS='--inspect' next dev -p 8080",
     "build": "rm -rf .next && next build",
     "start": "next start",
     "lint": "next lint",

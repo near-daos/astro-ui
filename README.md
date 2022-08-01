@@ -45,15 +45,6 @@ git clone git@github.com:near-daos/astro-ui.git
 yarn install
 ```
 
-###### Prepare local configuration
-
-Rename `.env.example` file in project folder to `.env.local`. It should have following content:
-
-```bash
-API_URL=https://api.dev.app.astrodao.com
-LOCAL_WALLET_REDIRECT=true
-```
-
 ###### Run development server
 
 ```bash
