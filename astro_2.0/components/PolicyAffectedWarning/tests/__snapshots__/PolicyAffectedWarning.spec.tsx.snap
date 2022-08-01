@@ -39,7 +39,7 @@ exports[`policy affected warning Should render component 1`] = `
         class="control"
       >
         <button
-          class="btn primary sizeMedium"
+          class="btn primary sizeMedium capitalize"
           type="button"
         >
           viewProposal

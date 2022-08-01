@@ -62,8 +62,8 @@ export const PolicyAffectedWarning: FC<PolicyAffectedWarningProps> = ({
         </>
       }
       control={
-        data.length === 1 ? (
-          <Button variant="primary" onClick={goToProposalPage}>
+        data.length !== 0 ? (
+          <Button variant="primary" onClick={goToProposalPage} capitalize>
             {t('viewProposal')}
           </Button>
         ) : null
