@@ -14,6 +14,7 @@
   @include centralize;
   background-color: var(--color-neutral-20);
   background-position: center;
+  background-size: contain;
   border: 1px solid transparent;
   border-radius: 8px;
   height: 40px;

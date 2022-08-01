@@ -49,9 +49,9 @@ export const SidebarDaos: FC = () => {
                 data-offset="{ 'right': 10 }"
                 data-delay-show="700"
                 className={cn(styles.avatar)}
-                // style={{
-                //   backgroundImage: `url(${dao.flagLogo || dao.logo})`,
-                // }}
+                style={{
+                  backgroundImage: `url(${dao.flagLogo || dao.logo})`,
+                }}
               />
 
               <div
