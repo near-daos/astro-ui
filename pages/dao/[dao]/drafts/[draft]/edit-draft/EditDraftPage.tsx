@@ -1,6 +1,6 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState, useEffect } from 'react';
 import Head from 'next/head';
-import { useMount } from 'react-use';
+import isEmpty from 'lodash/isEmpty';
 
 import { DaoContext } from 'types/context';
 import { DAO } from 'types/dao';
@@ -53,24 +53,30 @@ export const EditDraftPage: FC<CreateDraftPageProps> = ({
     ];
   }, [breadcrumbsConfig]);
 
-  useMount(async () => {
-    const createdInitialValues = await getInitialFormValuesFromDraft(
-      draft?.proposalVariant,
-      (draft as unknown) as Record<string, unknown>,
-      tokens,
-      accountId || ''
-    );
+  useEffect(() => {
+    const getInitialValues = async () => {
+      if (tokens) {
+        const createdInitialValues = await getInitialFormValuesFromDraft(
+          draft?.proposalVariant,
+          (draft as unknown) as Record<string, unknown>,
+          tokens,
+          accountId || ''
+        );
 
-    setInitialValues({
-      ...createdInitialValues,
-      id: draft.id,
-      state: draft.state,
-      externalUrl: 'https://test.net',
-      title: draft.title,
-      description: draft.description,
-      details: draft.description,
-    });
-  });
+        setInitialValues({
+          ...createdInitialValues,
+          id: draft.id,
+          state: draft.state,
+          externalUrl: '',
+          title: draft.title,
+          description: draft.description,
+          details: draft.description,
+        });
+      }
+    };
+
+    getInitialValues();
+  }, [accountId, draft, tokens]);
 
   return (
     <>
@@ -89,7 +95,7 @@ export const EditDraftPage: FC<CreateDraftPageProps> = ({
                 },
               }}
             />
-            {initialValues ? (
+            {!isEmpty(initialValues) ? (
               <CreateProposal
                 proposalVariant={draft.proposalVariant}
                 showInfo={false}
