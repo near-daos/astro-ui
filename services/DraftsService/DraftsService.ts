@@ -13,7 +13,6 @@ import {
   DraftParams,
   DraftCommentParams,
   DraftComment,
-  DraftBaseParams,
   CreateDraftCommentData,
   EditDraftCommentData,
   CreateDraftParams,
@@ -252,12 +251,5 @@ export class DraftsService {
         },
       }
     );
-  }
-
-  // Drafts hashtags
-  public async getDraftHashtags(
-    params: DraftBaseParams
-  ): Promise<AxiosResponse<string>> {
-    return this.httpService.get('/draft-hashtags', { params });
   }
 }

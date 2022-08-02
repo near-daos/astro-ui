@@ -72,7 +72,6 @@ export type CreateDraftParams = {
   daoId: string;
   title: string;
   description: string;
-  hashtags: string[];
   type: ProposalType;
   kind?: DraftKind | ProposalKind;
 } & Authorization;
