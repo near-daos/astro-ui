@@ -10,7 +10,7 @@ import styles from './SidebarNavItem.module.scss';
 interface Props {
   icon: IconName;
   label: string;
-  href: string;
+  href: string | string[];
   externalLink?: boolean;
 }
 
@@ -21,21 +21,22 @@ export const SidebarNavItem: FC<Props> = ({
   externalLink,
 }) => {
   const router = useRouter();
+  const link = Array.isArray(href) ? href[0] : href;
 
   const anchorProps = useMemo(() => {
     return externalLink
       ? {
-          href,
+          link,
           target: '_blank',
           rel: 'noreferrer noopener',
         }
       : {};
-  }, [externalLink, href]);
+  }, [externalLink, link]);
 
   const content = (
     <a
       className={cn(styles.root, {
-        [styles.active]: router.asPath.indexOf(href) !== -1,
+        [styles.active]: router.asPath.indexOf(link) !== -1,
       })}
       {...anchorProps}
     >
@@ -57,7 +58,7 @@ export const SidebarNavItem: FC<Props> = ({
   }
 
   return (
-    <Link href={{ pathname: href }} shallow>
+    <Link href={{ pathname: link }} shallow>
       {content}
     </Link>
   );

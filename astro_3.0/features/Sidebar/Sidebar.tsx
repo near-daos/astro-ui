@@ -33,7 +33,7 @@ export const Sidebar: FC = () => {
       {
         icon: 'sidebarHome',
         label: 'Home',
-        href: MY_FEED_URL,
+        href: [MY_FEED_URL, ALL_FEED_URL],
       },
       {
         icon: 'sidebarDaosAndUsers',
@@ -43,7 +43,7 @@ export const Sidebar: FC = () => {
       {
         icon: 'sidebarBounties',
         label: 'Bounties area',
-        href: ALL_FEED_URL,
+        href: 'none',
       },
       {
         icon: 'sidebarActionsLibrary',
