@@ -39,7 +39,7 @@ export const useSubmitDraft = ({
 
   const onDraftSubmit = useCallback(
     async (data: Record<string, unknown>) => {
-      const proposalData = omit(data, ['title', 'description', 'hashtags']);
+      const proposalData = omit(data, ['title', 'description']);
 
       if (pkAndSignature && accountId) {
         try {
@@ -66,7 +66,6 @@ export const useSubmitDraft = ({
               daoId: dao.id,
               title: data.title as string,
               description: data.description as string,
-              hashtags: [],
               type: proposalType,
               kind: {
                 type: proposalType,
@@ -82,7 +81,6 @@ export const useSubmitDraft = ({
               daoId: dao.id,
               title: data.title as string,
               description: data.description as string,
-              hashtags: [],
               type: proposalType,
               kind: {
                 type: proposalType,

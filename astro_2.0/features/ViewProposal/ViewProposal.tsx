@@ -143,7 +143,6 @@ export const ViewProposal: FC<ViewProposalProps> = ({
         <ProposalCard
           convertToProposal={handleToggleCreateProposal}
           title={'title' in proposal ? proposal?.title : undefined}
-          // hashtags={'hashtags' in proposal ? proposal?.hashtags : undefined}
           history={'history' in proposal ? proposal?.history : undefined}
           isSaved={'isSaved' in proposal ? proposal?.isSaved : undefined}
           saves={'isSaved' in proposal ? proposal?.saves : undefined}
