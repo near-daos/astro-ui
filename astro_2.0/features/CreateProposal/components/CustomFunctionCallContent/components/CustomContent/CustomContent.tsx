@@ -26,8 +26,9 @@ import styles from './CustomContent.module.scss';
 
 export const CustomContent: FC = () => {
   const { nearService } = useWalletContext();
-  const { register, setValue, getValues } = useFormContext();
+  const { register, setValue, getValues, watch } = useFormContext();
   const depositWidth = useDepositWidth();
+  const methodName = watch('methodName');
   const { tokenOptions, selectedTokenData } = useTokenOptions();
   const [availableMethods, setAvailableMethods] = useState<
     | {
@@ -52,6 +53,7 @@ export const CustomContent: FC = () => {
 
   const [{ loading }, handleSmartContractAddressChange] = useAsyncFn(
     async val => {
+      setValue('methodName', '', { shouldValidate: true });
       setValue('smartContractAddress', val, { shouldValidate: true });
 
       if (!nearService || !val) {
@@ -94,9 +96,10 @@ export const CustomContent: FC = () => {
           onChange={v => {
             setValue('methodName', v, {
               shouldDirty: true,
+              shouldValidate: true,
             });
           }}
-          defaultValue={getValues().methodName}
+          defaultValue={methodName}
           placeholder="Select contract method"
         />
       );

@@ -108,7 +108,6 @@ export const DraftsPageHeader: FC<Props> = ({
         <SearchInput
           onSubmit={onSearch}
           loading={loading}
-          // placeholder="Search by name or hashtags"
           placeholder="Search by name"
           onClose={handleReset}
           showResults={false}

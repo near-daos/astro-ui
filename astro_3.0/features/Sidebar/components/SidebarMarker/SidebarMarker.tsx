@@ -13,8 +13,12 @@ export const SidebarMarker: FC<Props> = ({ items }) => {
   const router = useRouter();
   const HEIGHT = 56;
 
-  const activeItemIndex = items.findIndex(item => {
-    return router.asPath.indexOf(item.href) !== -1;
+  const activeItemIndex = items.findIndex(({ href }) => {
+    if (Array.isArray(href)) {
+      return href.some(link => router.asPath.indexOf(link) !== -1);
+    }
+
+    return router.asPath.indexOf(href) !== -1;
   });
 
   const transform = `translateY(${

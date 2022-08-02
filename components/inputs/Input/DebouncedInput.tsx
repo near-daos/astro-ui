@@ -1,6 +1,7 @@
 import React from 'react';
-import { useDebounce } from 'react-use';
 import { InputProps } from 'components/inputs/Input/types';
+import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
+
 import { Input } from './Input';
 
 interface Props extends InputProps {
@@ -13,9 +14,13 @@ export const DebouncedInput = React.forwardRef<HTMLInputElement, Props>(
   ({ onValueChange, defaultValue = '', ...rest }, ref) => {
     const [val, setVal] = React.useState(defaultValue ?? '');
 
-    useDebounce(
-      () => {
-        if (val !== defaultValue) {
+    useDebounceEffect(
+      ({ isInitialCall }) => {
+        if (isInitialCall) {
+          return;
+        }
+
+        if (val !== defaultValue || val === '') {
           onValueChange(val);
         }
       },

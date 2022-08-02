@@ -21,16 +21,7 @@ interface Props {
 
 export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
   const router = useRouter();
-  const {
-    id,
-    title,
-    views,
-    replies,
-    updatedAt,
-    // hashtags,
-    state,
-    proposalId,
-  } = data;
+  const { id, title, views, replies, updatedAt, state, proposalId } = data;
 
   const { handleView } = useDraftsPageActions();
 
@@ -96,13 +87,6 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
       <div className={styles.date}>
         {formatDistanceToNow(parseISO(updatedAt))} ago
       </div>
-      {/* <div className={styles.tags}> */}
-      {/*  {hashtags?.map(tag => ( */}
-      {/*    <Badge key={tag} size="small" className={styles.tag}> */}
-      {/*      {tag} */}
-      {/*    </Badge> */}
-      {/*  ))} */}
-      {/* </div> */}
     </div>
   );
 };

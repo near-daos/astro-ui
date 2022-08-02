@@ -92,7 +92,6 @@ export interface ProposalCardProps {
   };
   isDraft?: boolean;
   title?: string;
-  // hashtags?: Hashtag[];
   isSaved?: boolean;
   history?: ProposalFeedItem[];
   onSelect?: (p: string) => void;
@@ -212,7 +211,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   optionalPostVoteAction,
   isDraft,
   title,
-  // hashtags,
   isSaved,
   history,
   onSelect,
@@ -225,8 +223,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
   const router = useRouter();
-
-  // const draftHashtags = draftMethods.watch('hashtags');
 
   const isDraftClosed = draftState === 'closed';
 
@@ -459,18 +455,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           {renderLinkToProposal()}
           <div className={styles.draftContent}>
             <div className={styles.draftTitle}>{title}</div>
-            {/* <div className={styles.draftHashTags}> */}
-            {/*  {hashtags?.map(tag => ( */}
-            {/*    <Badge */}
-            {/*      key={tag.id} */}
-            {/*      size="small" */}
-            {/*      className={styles.tag} */}
-            {/*      variant="lightgray" */}
-            {/*    > */}
-            {/*      {tag.value} */}
-            {/*    </Badge> */}
-            {/*  ))} */}
-            {/* </div> */}
             <DraftDescription description={description} />
           </div>
           <div className={styles.contentCell}>{content}</div>
