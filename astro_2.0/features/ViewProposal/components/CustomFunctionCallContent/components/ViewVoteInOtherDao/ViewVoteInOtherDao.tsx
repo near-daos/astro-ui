@@ -38,33 +38,35 @@ export const ViewVoteInOtherDao: VFC<ViewVoteInOtherDaoProps> = ({
         <FieldValue value={receiverId} />
       </FieldWrapper>
 
-      <FieldWrapper label={getLabel('proposal')}>
-        <FieldValue
-          value={
-            <Link
-              href={{
-                pathname: SINGLE_PROPOSAL_PAGE_URL,
-                query: {
-                  dao: receiverId,
-                  proposal: `${receiverId}-${id}`,
-                },
-              }}
-            >
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.proposalLink}
+      <div className={styles.row}>
+        <FieldWrapper label={getLabel('proposal')}>
+          <FieldValue
+            value={
+              <Link
+                href={{
+                  pathname: SINGLE_PROPOSAL_PAGE_URL,
+                  query: {
+                    dao: receiverId,
+                    proposal: `${receiverId}-${id}`,
+                  },
+                }}
               >
-                ID: {id}
-              </a>
-            </Link>
-          }
-        />
-      </FieldWrapper>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.proposalLink}
+                >
+                  ID: {id}
+                </a>
+              </Link>
+            }
+          />
+        </FieldWrapper>
 
-      <FieldWrapper label={getLabel('vote')}>
-        <FieldValue value={action} />
-      </FieldWrapper>
+        <FieldWrapper label={getLabel('vote')} className={styles.second}>
+          <FieldValue value={action} />
+        </FieldWrapper>
+      </div>
     </div>
   );
 };

@@ -649,12 +649,14 @@ export async function getVoteInOtherDaoProposal(
   dao: DAO,
   data: Record<string, string>
 ): Promise<CreateProposalParams> {
-  const { gas, vote, details, proposal, targetDao } = data;
+  const { gas, vote, details, proposal, targetDao, externalUrl } = data;
+
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const proposalObj = {
     variant: ProposalVariant.VoteInAnotherDao,
     daoId: dao.id,
-    description: details,
+    description: proposalDescription,
     kind: 'FunctionCall' as const,
     data: {
       receiver_id: targetDao,

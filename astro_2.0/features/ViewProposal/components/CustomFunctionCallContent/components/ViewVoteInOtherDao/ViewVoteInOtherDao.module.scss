@@ -10,3 +10,12 @@
     text-decoration: underline;
   }
 }
+
+.row {
+  align-items: flex-start;
+  display: flex;
+}
+
+.second {
+  margin-left: 24px;
+}
