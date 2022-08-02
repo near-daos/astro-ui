@@ -917,7 +917,11 @@ export class HttpService {
             if (accountId) {
               request.url = `/proposals/account-proposals/${accountId}?${
                 queryString.queryString
-              }${query.accountId ? `&accountId=${query.accountId}` : ''}`;
+              }${query.accountId ? `&accountId=${query.accountId}` : ''}${
+                query?.status === ProposalsFeedStatuses.VoteNeeded
+                  ? '&filter=permissions.canApprove||$eq||true&filter=permissions.canReject||$eq||true&voted=false'
+                  : ''
+              }`;
             } else {
               request.url = `/proposals?${queryString.queryString}${
                 query.accountId ? `&accountId=${query.accountId}` : ''
