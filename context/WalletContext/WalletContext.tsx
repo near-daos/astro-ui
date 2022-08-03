@@ -91,22 +91,26 @@ export const WrappedWalletContext: FC = ({ children }) => {
     async (wallet: WalletService, contractName: string) => {
       setConnectingToWallet(true);
 
-      const isSignedIn = await wallet.isSignedIn();
+      try {
+        const isSignedIn = await wallet.isSignedIn();
 
-      if (!isSignedIn) {
-        await wallet.signIn(contractName);
+        if (!isSignedIn) {
+          await wallet.signIn(contractName);
+        }
+
+        setWallet(wallet);
+
+        setConnectingToWallet(false);
+
+        const accountId = await wallet.getAccountId();
+
+        sendGAEvent({
+          name: GA_EVENTS.SIGN_IN,
+          accountId,
+        });
+      } catch (e) {
+        setConnectingToWallet(false);
       }
-
-      setWallet(wallet);
-
-      setConnectingToWallet(false);
-
-      const accountId = await wallet.getAccountId();
-
-      sendGAEvent({
-        name: GA_EVENTS.SIGN_IN,
-        accountId,
-      });
     },
     [setWallet, setConnectingToWallet]
   );
