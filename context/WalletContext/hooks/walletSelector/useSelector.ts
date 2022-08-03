@@ -11,7 +11,7 @@ import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet';
 
 import { WalletType } from 'types/config';
 
-import { LOGIN_PAGE } from 'constants/routing';
+import { LOGIN_PAGE, SELECTOR_TRANSACTION_PAGE_URL } from 'constants/routing';
 
 import { configService } from 'services/ConfigService';
 import { WalletService } from 'services/sputnik/SputnikNearService/walletServices/types';
@@ -60,7 +60,9 @@ export function useSelector(props: InputProps): ReturnType {
   const [selector, setSelector] = useState<WalletSelector>();
   const [selectorAccountId] = useSelectorLsAccount();
   const [canCreateSelector, setCanCreateSelector] = useState(
-    !!selectorAccountId || pathname === LOGIN_PAGE
+    !!selectorAccountId ||
+      pathname === LOGIN_PAGE ||
+      pathname === SELECTOR_TRANSACTION_PAGE_URL
   );
 
   useTrackSelectorAccount(selector);

@@ -1,16 +1,29 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
+import BN from 'bn.js';
 import map from 'lodash/map';
 import first from 'lodash/first';
-import { BrowserWallet, WalletSelector } from '@near-wallet-selector/core';
-
-import { ConnectedWalletAccount } from 'near-api-js';
 import { KeyStore } from 'near-api-js/lib/key_stores';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
-import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
+import { parseNearAmount } from 'near-api-js/lib/utils/format';
+import { ConnectedWalletAccount, providers } from 'near-api-js';
+import { BrowserWallet, WalletSelector } from '@near-wallet-selector/core';
+import { FinalExecutionOutcome, Provider } from 'near-api-js/lib/providers';
 import { Wallet } from '@near-wallet-selector/core/lib/wallet/wallet.types';
 
 import { WalletType } from 'types/config';
+import { TransactionCompleted } from 'global';
+
+import {
+  SputnikWalletError,
+  SputnikWalletErrorCodes,
+} from 'errors/SputnikWalletError';
+
+import { TRANSACTIONS_KEY } from 'constants/localStorage';
+import { SELECTOR_TRANSACTION_PAGE_URL } from 'constants/routing';
+
+import { configService } from 'services/ConfigService';
+
 import { Transaction, SignInOptions, WalletMeta, WalletService } from './types';
 
 export class WalletSelectorService implements WalletService {
@@ -18,10 +31,17 @@ export class WalletSelectorService implements WalletService {
 
   private selector: WalletSelector;
 
+  private provider: Provider;
+
   private walletInfo: WalletMeta;
 
   constructor(wallet: Wallet, selector: WalletSelector) {
+    const { nearConfig } = configService.get();
+
+    this.provider = new providers.JsonRpcProvider(nearConfig.nodeUrl);
+
     this.selector = selector;
+
     this.wallet = wallet;
 
     this.walletInfo =
@@ -38,6 +58,38 @@ export class WalletSelectorService implements WalletService {
             url: 'senderwallet.io',
             id: WalletType.SELECTOR_SENDER,
           };
+  }
+
+  private getOnTransactionsCompleteHandler(
+    resolve: (data: FinalExecutionOutcome[]) => void,
+    reject: (error: unknown) => void
+  ) {
+    async function handler(
+      result: TransactionCompleted & { accountId: string }
+    ) {
+      const { accountId, transactionHashes, errorCode } = result;
+
+      if (transactionHashes || errorCode) {
+        if (errorCode) {
+          reject(
+            new SputnikWalletError({
+              errorCode: errorCode || SputnikWalletErrorCodes.unknownError,
+            })
+          );
+        }
+
+        const hashes = transactionHashes?.split(',') || [];
+
+        const statuses = await Promise.all<FinalExecutionOutcome>(
+          // @ts-ignore
+          hashes.map(hash => this.provider.txStatus(hash, accountId))
+        );
+
+        resolve(statuses);
+      }
+    }
+
+    return handler.bind(this);
   }
 
   // TODO TBD
@@ -98,15 +150,38 @@ export class WalletSelectorService implements WalletService {
     return this.wallet.signOut();
   }
 
-  // TODO TBD
   // eslint-disable-next-line class-methods-use-this
   sendMoney(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     receiverId: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     amount: number
   ): Promise<FinalExecutionOutcome[]> {
-    return Promise.resolve([]);
+    return new Promise((resolve, reject) => {
+      const parsedNear = parseNearAmount(amount.toString());
+
+      const nearAsBn = new BN(parsedNear ?? 0);
+
+      const args = JSON.stringify({
+        receiverId,
+        actions: [
+          {
+            type: 'Transfer',
+            params: {
+              deposit: nearAsBn.toString(),
+            },
+          },
+        ],
+      });
+
+      window.onTransaction = this.getOnTransactionsCompleteHandler(
+        resolve,
+        reject
+      );
+
+      window.open(
+        `${window.origin}${SELECTOR_TRANSACTION_PAGE_URL}?${TRANSACTIONS_KEY}=${args}`,
+        '_blank'
+      );
+    });
   }
 
   // TODO TBD
@@ -118,10 +193,13 @@ export class WalletSelectorService implements WalletService {
     return Promise.resolve([]);
   }
 
-  signIn(contractId: string, signInOptions?: SignInOptions): Promise<boolean> {
+  async signIn(
+    contractId: string,
+    signInOptions?: SignInOptions
+  ): Promise<boolean> {
     const wallet = this.wallet as BrowserWallet;
 
-    wallet.signIn({ contractId, ...signInOptions });
+    await wallet.signIn({ contractId, ...signInOptions });
 
     return Promise.resolve(true);
   }
