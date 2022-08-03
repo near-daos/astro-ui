@@ -76,7 +76,8 @@
     padding: 12px 0;
   }
 
-  > div {
+  > div,
+  a {
     @include tablet-landscape {
       margin-right: 4px;
     }
