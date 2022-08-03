@@ -39,6 +39,7 @@ export const WalletWithAccounts: React.FC<WalletAccountsProps> = ({
           className={cn(styles.toggle, styles.notInteractive)}
         />
       }
+      isOpen
       className={styles.root}
       headerClassName={styles.header}
       contentContainerClassName={styles.content}
