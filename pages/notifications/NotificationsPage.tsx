@@ -4,15 +4,22 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
 
+import { UserContacts } from 'services/NotificationsService/types';
+
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { Notifications } from 'astro_2.0/features/Notifications/components/Notifications';
 import { useNotificationsList } from 'astro_2.0/features/Notifications/hooks';
 
+import Link from 'next/link';
 import styles from './NotificationsPage.module.scss';
 
-const NotificationsPage: VFC = () => {
+export interface NotificationsPageProps {
+  config: UserContacts;
+}
+
+const NotificationsPage: VFC<NotificationsPageProps> = ({ config }) => {
   const router = useRouter();
   const showArchived = router.query.notyType === 'archived';
 
@@ -44,6 +51,13 @@ const NotificationsPage: VFC = () => {
 
       <div className={styles.headerContainer}>
         <h1 className={styles.header}>{t('notificationsHub')}</h1>
+
+        {config.accountId &&
+          (!config.isPhoneVerified || !config.isEmailVerified) && (
+            <div className={styles.headerCTA}>
+              <Link href="/my-account">Connect Email/Phone</Link>
+            </div>
+          )}
       </div>
 
       <div className={styles.controls}>

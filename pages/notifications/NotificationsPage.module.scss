@@ -21,6 +21,16 @@
   @include tablet-landscape {
     padding: 56px 0 24px;
   }
+
+  @include mobile-only {
+    flex-wrap: wrap;
+  }
+}
+
+.headerCTA {
+  a {
+    color: var(--color-primary);
+  }
 }
 
 .settingButton {
