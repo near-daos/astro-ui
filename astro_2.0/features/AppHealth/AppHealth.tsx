@@ -77,7 +77,7 @@ export const AppHealth: VFC = () => {
         <div>
           <b>Height:</b> {data?.height ?? 'n/a'}
         </div>
-        <div>
+        <div className={styles.value}>
           <b>Date:</b>{' '}
           {data?.timestamp
             ? format(new Date(+data.timestamp / 1000000), DATE_TIME_FORMAT)
@@ -87,9 +87,84 @@ export const AppHealth: VFC = () => {
     );
   }
 
+  function renderTooltipOverlay(color: string, percent: number) {
+    return (
+      <div
+        className={styles.overlay}
+        // style={{ boxShadow: `0 0 8px 0 ${color}` }}
+      >
+        <div
+          className={styles.handledMin}
+          style={{
+            backgroundColor: color,
+          }}
+        />
+        <div
+          className={styles.handled}
+          style={{
+            width: `${percent}%`,
+            backgroundColor: color,
+          }}
+        />
+        <div className={styles.astro} />
+      </div>
+    );
+  }
+
+  function calculateIndicatorParams() {
+    const { lastAstroBlockDetails, lastHandledBlockDetails } = state;
+
+    if (
+      !lastAstroBlockDetails?.timestamp ||
+      !lastHandledBlockDetails?.timestamp
+    ) {
+      return {
+        color: 'transparent',
+        percent: 0,
+      };
+    }
+
+    const astro = +lastAstroBlockDetails.timestamp / 1000000;
+    // const handled = +lastHandledBlockDetails.timestamp / 1000000;
+    const handled = astro - 7000;
+
+    let zeroPoint = astro - 60000;
+
+    if (zeroPoint > handled) {
+      zeroPoint = handled;
+    }
+
+    const astroVal = astro - zeroPoint;
+    const handledVal = handled - zeroPoint;
+    const percent = (handledVal * 100) / astroVal;
+
+    const from = {
+      r: 255,
+      g: 94,
+      b: 3,
+    };
+
+    const to = {
+      r: 25,
+      g: 217,
+      b: 146,
+    };
+
+    const red = from.r + (percent / 100) * (to.r - from.r);
+    const green = from.g + (percent / 100) * (to.g - from.g);
+    const blue = from.b + (percent / 100) * (to.b - from.b);
+
+    return {
+      color: `rgb(${red}, ${green}, ${blue})`,
+      percent,
+    };
+  }
+
   if (!appHealth) {
     return null;
   }
+
+  const { color, percent } = calculateIndicatorParams();
 
   return (
     <Tooltip
@@ -99,11 +174,14 @@ export const AppHealth: VFC = () => {
           <h3 className={styles.tooltipStatus}>
             Application Health: <b>{state.status}</b>
           </h3>
-          {renderTooltipRow(
-            'Last handled block',
-            state.lastHandledBlockDetails
-          )}
-          {renderTooltipRow('Last Astro block', state.lastAstroBlockDetails)}
+          {renderTooltipOverlay(color, percent)}
+          <div className={styles.row}>
+            {renderTooltipRow(
+              'Last handled block',
+              state.lastHandledBlockDetails
+            )}
+            {renderTooltipRow('Last Astro block', state.lastAstroBlockDetails)}
+          </div>
         </div>
       }
     >
@@ -113,6 +191,9 @@ export const AppHealth: VFC = () => {
           [styles.error]: state.status === 'error',
           [styles.warn]: state.status === 'warn',
         })}
+        style={{
+          backgroundColor: color,
+        }}
       />
     </Tooltip>
   );
