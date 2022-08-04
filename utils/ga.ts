@@ -1,4 +1,5 @@
 export enum GA_EVENTS {
+  CREATE_DRAFT_PROPOSAL = 'create_draft_proposal',
   CREATE_PROPOSAL = 'create_proposal',
   ACT_PROPOSAL = 'act_proposal',
   CREATE_DAO = 'create_dao',
