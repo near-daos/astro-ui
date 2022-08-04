@@ -1125,3 +1125,37 @@ export async function getInitialFormValuesFromDraft(
     }
   }
 }
+
+export function getProposalUpdatedDate(
+  proposal: ProposalFeedItem
+): string | null {
+  try {
+    if (!proposal.actions?.length) {
+      return proposal.updatedAt;
+    }
+
+    const sortedActions = proposal.actions.sort((a, b) => {
+      if (+a.timestamp > +b.timestamp) {
+        return 1;
+      }
+
+      if (+a.timestamp < +b.timestamp) {
+        return -1;
+      }
+
+      return 0;
+    });
+
+    const lastTimestamp = sortedActions[sortedActions.length - 1]?.timestamp;
+
+    if (!lastTimestamp) {
+      return proposal.updatedAt;
+    }
+
+    return new Date(+lastTimestamp / 1000000).toISOString();
+  } catch (e) {
+    console.error(`Failed to extract proposal updated date: ${proposal.id}`, e);
+
+    return proposal.updatedAt;
+  }
+}
