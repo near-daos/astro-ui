@@ -11,6 +11,7 @@ import { getNewProposalObject } from 'astro_2.0/features/CreateProposal/helpers/
 import { keysToCamelCase } from 'utils/keysToCamelCase';
 import { DRAFT_PAGE_URL } from 'constants/routing';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 
 type UseSubmitDraftProps = {
   proposalType: ProposalType;
@@ -90,6 +91,16 @@ export const useSubmitDraft = ({
               accountId,
               publicKey: pkAndSignature.publicKey || '',
               signature: pkAndSignature.signature || '',
+            });
+
+            sendGAEvent({
+              name: GA_EVENTS.CREATE_DRAFT_PROPOSAL,
+              daoId: dao.id,
+              accountId,
+              params: {
+                variant: proposalVariant,
+                draftId: response.data,
+              },
             });
           }
 
