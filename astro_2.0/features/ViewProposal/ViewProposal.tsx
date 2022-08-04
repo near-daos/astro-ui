@@ -19,6 +19,7 @@ import { getVoteDetails } from 'features/vote-policy/helpers';
 import {
   getContentNode,
   getInitialFormValuesFromDraft,
+  getProposalUpdatedDate,
   isSaveTemplateActionAvailable,
 } from 'astro_2.0/features/ViewProposal/helpers';
 
@@ -171,7 +172,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
           liked={proposal.votes[accountId] === 'Yes'}
           disliked={proposal.votes[accountId] === 'No'}
           dismissed={proposal.votes[accountId] === 'Dismiss'}
-          updatedAt={proposal.updatedAt}
+          updatedAt={getProposalUpdatedDate(proposal)}
           toggleInfoPanel={toggleInfoPanel}
           commentsCount={commentsCount}
           optionalPostVoteAction={optionalPostVoteAction}

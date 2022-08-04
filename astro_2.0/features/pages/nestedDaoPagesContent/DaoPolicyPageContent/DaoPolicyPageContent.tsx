@@ -145,7 +145,9 @@ export const DaoPolicyPageContent: FC<Props> = ({
                 settingName={t('daoPolicy.settings.proposals.title')}
                 settings={[
                   {
-                    label: t('daoPolicy.settings.bondToCreateProposal'),
+                    label: t(
+                      'daoPolicy.settings.proposals.bondToCreateProposal'
+                    ),
                     value: (
                       <InfoValue
                         value={formatYoktoValue(dao.policy.proposalBond, 24)}
@@ -154,7 +156,9 @@ export const DaoPolicyPageContent: FC<Props> = ({
                     ),
                   },
                   {
-                    label: t('daoPolicy.settings.timeBeforeProposalExpires'),
+                    label: t(
+                      'daoPolicy.settings.proposals.timeBeforeProposalExpires'
+                    ),
                     value: (
                       <InfoValue value={proposalPeriod.join(' ')} label="" />
                     ),
