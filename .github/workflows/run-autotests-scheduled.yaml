@@ -1,0 +1,21 @@
+name: Run Autotests
+on:
+  schedule:
+  - cron: '0 * * * *'
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+jobs:
+  call-workflow:
+    uses: near-daos/astro-ui/.github/workflows/run-autotests.yaml@develop
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      TEST_REPO_TOKEN: ${{ secrets.TEST_REPO_TOKEN }}
+      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+    with:
+      environment: test
+      tags: smoke
+      browser: chrome
