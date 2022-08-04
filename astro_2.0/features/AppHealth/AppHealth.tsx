@@ -125,8 +125,7 @@ export const AppHealth: VFC = () => {
     }
 
     const astro = +lastAstroBlockDetails.timestamp / 1000000;
-    // const handled = +lastHandledBlockDetails.timestamp / 1000000;
-    const handled = astro - 7000;
+    const handled = +lastHandledBlockDetails.timestamp / 1000000;
 
     let zeroPoint = astro - 60000;
 
