@@ -124,6 +124,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     context: schemaContext,
     shouldUnregister: false,
     mode: 'onSubmit',
+    reValidateMode: 'onChange',
     resolver: resolver(dao, nearService, t, isDraft),
   });
 
@@ -240,7 +241,6 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         {isDraft ? (
           <Button
             disabled={
-              !methods?.formState.isValid ||
               !methods?.formState.isDirty ||
               Object.keys(methods.formState.errors).length > 0
             }
