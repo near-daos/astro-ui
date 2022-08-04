@@ -68,14 +68,10 @@ jobs:
           echo "Environment ${{ github.event.inputs.environment }} was provided manually"
           echo "ENVIRONMENT=${{ github.event.inputs.environment }}" >>$GITHUB_ENV
           export ENVIRONMENT=${{ github.event.inputs.environment }}
-        elif [[ "${{ inputs.environment }}" != '' ]]
+        else [[ "${{ inputs.environment }}" != '' ]]
           echo "Environment ${{ inputs.environment }} was provided by parent workflow"
           echo "ENVIRONMENT=${{ inputs.environment }}" >>$GITHUB_ENV
           export ENVIRONMENT=${{ inputs.environment }}
-        else
-          echo "Environment was not provided. Falling back to default."
-          echo "ENVIRONMENT=test" >>$GITHUB_ENV
-          export ENVIRONMENT=test
         fi
         cat ".github/env.common" | grep -E -v '^\ *#' >>$GITHUB_ENV
         cat ".github/env.$ENVIRONMENT" | grep -E -v '^\ *#' >>$GITHUB_ENV
