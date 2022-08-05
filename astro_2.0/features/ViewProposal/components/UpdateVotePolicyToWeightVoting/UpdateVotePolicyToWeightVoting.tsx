@@ -9,7 +9,7 @@ import { useAsync } from 'react-use';
 import { CustomContract } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
 import { formatYoktoValue } from 'utils/format';
 import { useWalletContext } from 'context/WalletContext';
-import { useDaoSettings } from 'context/DaoSettingsContext';
+import { useDaoSettingsData } from 'context/DaoSettingsContext';
 
 import styles from './UpdateVotePolicyToWeightVoting.module.scss';
 
@@ -27,7 +27,7 @@ export const UpdateVotePolicyToWeightVoting: FC<Props> = ({
   daoId,
 }) => {
   const { nearService } = useWalletContext();
-  const { settings } = useDaoSettings();
+  const { settings } = useDaoSettingsData(daoId);
 
   const { value: tokenDetails } = useAsync(async () => {
     if (!nearService) {

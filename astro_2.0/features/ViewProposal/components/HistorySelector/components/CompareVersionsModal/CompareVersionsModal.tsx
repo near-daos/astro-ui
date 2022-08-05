@@ -7,7 +7,6 @@ import { CompareProposal } from 'astro_2.0/features/ViewProposal/components/Hist
 import { IconButton } from 'components/button/IconButton';
 
 import { ProposalFeedItem } from 'types/proposal';
-import { Token } from 'types/token';
 
 import styles from './CompareVersionsModal.module.scss';
 
@@ -15,14 +14,12 @@ export interface Props {
   isOpen: boolean;
   onClose: (val?: boolean) => void;
   index: number;
-  tokens: Record<string, Token>;
   data: ProposalFeedItem[];
 }
 
 export const CompareVersionsModal: FC<Props> = ({
   isOpen,
   onClose,
-  tokens,
   data,
   index,
 }) => {
@@ -75,7 +72,6 @@ export const CompareVersionsModal: FC<Props> = ({
             <div className={cn(styles.column, styles.left)}>
               <CompareProposal
                 current={prevVersion}
-                tokens={tokens}
                 view="prev"
                 content={content.left}
               />
@@ -85,7 +81,6 @@ export const CompareVersionsModal: FC<Props> = ({
             <div className={cn(styles.column, styles.right)}>
               <CompareProposal
                 current={currentVersion}
-                tokens={tokens}
                 view="current"
                 content={content.right}
               />
@@ -94,17 +89,11 @@ export const CompareVersionsModal: FC<Props> = ({
         </div>
         <div className={styles.prerenderContainer}>
           <div className={styles.hidden}>
-            <CompareProposal
-              current={prevVersion}
-              tokens={tokens}
-              view="prev"
-              ref={leftRef}
-            />
+            <CompareProposal current={prevVersion} view="prev" ref={leftRef} />
           </div>
           <div className={styles.hidden}>
             <CompareProposal
               current={currentVersion}
-              tokens={tokens}
               view="current"
               ref={rightRef}
             />

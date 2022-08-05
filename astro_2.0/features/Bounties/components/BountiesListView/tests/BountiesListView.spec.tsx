@@ -3,7 +3,7 @@ import { render } from 'jest/testUtils';
 
 import { DAO } from 'types/dao';
 import { BountyContext } from 'types/bounties';
-import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { Tokens } from 'types/token';
 
 import { BountiesListView } from 'astro_2.0/features/Bounties/components/BountiesListView';
 

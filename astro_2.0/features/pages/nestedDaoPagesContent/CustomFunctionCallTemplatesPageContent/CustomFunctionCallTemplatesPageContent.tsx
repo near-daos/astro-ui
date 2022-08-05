@@ -12,9 +12,8 @@ import { DaoContext } from 'types/context';
 import { DaoFeedItem } from 'types/dao';
 
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
-import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import {
   useProposalTemplates,
   useSaveTemplates,
@@ -88,7 +87,7 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
         {loading || isEmpty(tokens) ? (
           <Loader />
         ) : (
-          <CustomTokensContext.Provider value={{ tokens }}>
+          <>
             {!templates.length && (
               <NoResultsView title="No templates saved yet" />
             )}
@@ -123,7 +122,7 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
                   isEnabled={item.isEnabled}
                 />
               ))}
-          </CustomTokensContext.Provider>
+          </>
         )}
       </div>
     </div>

@@ -34,7 +34,7 @@ import { useDaoSettings } from 'context/DaoSettingsContext';
 import { CREATE_GOV_TOKEN_PAGE_URL } from 'constants/routing';
 
 import { useDaoDashboardData } from 'astro_2.0/features/DaoDashboard/hooks';
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
 import styles from './TokensPageContent.module.scss';
 

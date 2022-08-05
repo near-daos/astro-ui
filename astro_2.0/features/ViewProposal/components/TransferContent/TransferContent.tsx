@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Icon } from 'components/Icon';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
-import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { useAllCustomTokens } from 'context/AllTokensContext';
 import {
   FieldValue,
   FieldWrapper,
@@ -25,7 +25,7 @@ export const TransferContent: FC<TransferContentProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const { tokens } = useCustomTokensContext();
+  const { tokens } = useAllCustomTokens();
 
   const tokenData = token ? tokens[token] : tokens.NEAR;
 

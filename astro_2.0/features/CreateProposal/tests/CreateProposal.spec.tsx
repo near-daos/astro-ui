@@ -26,6 +26,12 @@ jest.mock('context/DaoSettingsContext', () => {
   };
 });
 
+jest.mock('context/DaoTokensContext', () => {
+  return {
+    useDaoCustomTokens: jest.fn().mockReturnValue({ tokens: {} }),
+  };
+});
+
 jest.mock('react-use', () => {
   return {
     ...jest.requireActual('react-use'),

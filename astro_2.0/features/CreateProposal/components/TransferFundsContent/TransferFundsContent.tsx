@@ -8,14 +8,14 @@ import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/Input
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 
-import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
 import styles from './TransferFundsContent.module.scss';
 
 export const TransferFundsContent: FC = () => {
   const { t } = useTranslation();
   const { register, setValue } = useFormContext();
-  const { tokens } = useCustomTokensContext();
+  const { tokens } = useDaoCustomTokens();
   const tokensOptions = Object.values(tokens);
 
   return (

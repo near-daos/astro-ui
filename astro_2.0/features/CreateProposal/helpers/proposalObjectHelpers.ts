@@ -13,7 +13,7 @@ import {
   ProposalVariant,
 } from 'types/proposal';
 import { CreateTokenInput } from 'astro_2.0/features/CreateProposal/types';
-import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { Tokens } from 'types/token';
 import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
 
 import { formatGasValue, formatValueToYokto } from 'utils/format';

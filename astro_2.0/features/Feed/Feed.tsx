@@ -38,7 +38,6 @@ import { Loader } from 'components/loader';
 
 // Hooks
 import { useWalletContext } from 'context/WalletContext';
-import { useAllCustomTokens } from 'hooks/useCustomTokens';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 import { getStatusFilterOptions } from 'astro_2.0/features/Proposals/helpers/getStatusFilterOptions';
 
@@ -75,7 +74,6 @@ export const Feed = ({
 }: FeedProps): JSX.Element => {
   const neighbourRef = useRef(null);
   const { query, replace, pathname } = useRouter();
-  const { tokens: allTokens } = useAllCustomTokens();
   const { t } = useTranslation();
   const isMounted = useMountedState();
 
@@ -295,7 +293,6 @@ export const Feed = ({
                     <ViewProposal
                       proposal={proposal}
                       showFlag={showFlag}
-                      tokens={allTokens}
                       onSelect={onSelect}
                       selectedList={selectedList}
                     />

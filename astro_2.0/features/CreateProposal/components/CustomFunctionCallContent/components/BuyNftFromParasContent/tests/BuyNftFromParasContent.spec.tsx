@@ -13,6 +13,12 @@ const formContextMock = {
   getValues: () => ({}),
 };
 
+jest.mock('context/DaoTokensContext', () => {
+  return {
+    useDaoCustomTokens: jest.fn().mockReturnValue({ tokens: {} }),
+  };
+});
+
 jest.mock('react-hook-form', () => {
   return {
     useFormContext: jest.fn(() => formContextMock),
