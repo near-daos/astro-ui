@@ -9,8 +9,7 @@ import { Settings } from 'types/settings';
 
 import { IconName } from 'components/Icon';
 
-import { useWalletContext } from 'context/WalletContext';
-import { SputnikHttpService } from 'services/sputnik';
+import { useDaoSettings } from 'context/DaoSettingsContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import { Button } from 'components/button/Button';
@@ -34,27 +33,23 @@ export const DaoFeatureInfo: FC<Props> = ({
   description,
   control,
 }) => {
-  const { accountId, nearService } = useWalletContext();
   const isMounted = useMountedState();
   const [showInfo, setShowInfo] = useState(false);
+  const { settings, update: updateSettings } = useDaoSettings();
 
   useEffect(() => {
-    (async () => {
-      const res = await SputnikHttpService.getDaoSettings(dao.id);
-
-      if (res && !get(res, `features.${featureKey}`) && isMounted()) {
-        setShowInfo(true);
-      }
-    })();
-  }, [dao.id, featureKey, isMounted]);
+    if (settings && !get(settings, `features.${featureKey}`) && isMounted()) {
+      setShowInfo(true);
+    }
+  }, [dao.id, featureKey, isMounted, settings]);
 
   const [, handleDismiss] = useAsyncFn(async () => {
     try {
-      const settings =
-        (await SputnikHttpService.getDaoSettings(dao.id)) ?? ({} as Settings);
+      if (!settings) {
+        return;
+      }
 
       const newSettings: Settings = {
-        ...settings,
         features: settings.features
           ? {
               ...settings.features,
@@ -65,19 +60,9 @@ export const DaoFeatureInfo: FC<Props> = ({
             },
       };
 
-      const publicKey = await nearService?.getPublicKey();
-      const signature = await nearService?.getSignature();
+      await updateSettings(newSettings);
 
-      if (publicKey && signature && accountId) {
-        await SputnikHttpService.updateDaoSettings(dao.id, {
-          accountId,
-          publicKey,
-          signature,
-          settings: newSettings,
-        });
-
-        setShowInfo(false);
-      }
+      setShowInfo(false);
     } catch (err) {
       const { message } = err;
 
@@ -87,7 +72,7 @@ export const DaoFeatureInfo: FC<Props> = ({
         description: message,
       });
     }
-  }, [dao.id, nearService]);
+  }, [dao.id, settings, updateSettings]);
 
   if (!showInfo) {
     return null;

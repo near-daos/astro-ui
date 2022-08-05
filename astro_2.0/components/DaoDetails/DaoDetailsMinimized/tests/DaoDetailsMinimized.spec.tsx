@@ -34,6 +34,14 @@ jest.mock('context/WalletContext', () => {
   };
 });
 
+jest.mock('context/DaoSettingsContext', () => {
+  return {
+    useDaoSettings: jest
+      .fn()
+      .mockReturnValue({ settings: {}, update: jest.fn(), loading: false }),
+  };
+});
+
 describe('dao details minimized', () => {
   const permissions = {
     isCanCreateProposals: true,

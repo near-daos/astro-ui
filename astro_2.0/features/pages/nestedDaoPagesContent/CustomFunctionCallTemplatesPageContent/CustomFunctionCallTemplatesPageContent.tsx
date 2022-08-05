@@ -2,6 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import isEmpty from 'lodash/isEmpty';
 import dynamic from 'next/dynamic';
+import { useTranslation } from 'next-i18next';
 
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { Loader } from 'components/loader';
@@ -44,6 +45,7 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
   accountDaos,
 }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { stateFilter } = router.query;
   const { tokens } = useDaoCustomTokens();
   const availableDaos = useMemo(
@@ -78,7 +80,7 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
         <SideFilter
           queryName="stateFilter"
           list={filterOptions}
-          title="Custom Function Call templates"
+          title={t('customFunctionCallTemplates')}
           className={styles.daoConfigFilter}
         />
       </div>

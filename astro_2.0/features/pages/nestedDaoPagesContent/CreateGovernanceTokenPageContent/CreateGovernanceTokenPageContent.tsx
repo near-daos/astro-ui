@@ -27,9 +27,7 @@ interface CreateGovernanceTokenPageContentProps {
 export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageContentProps> = props => {
   const { daoContext } = props;
   const { t } = useTranslation();
-  const { status, update, loading } = useCreateGovernanceTokenStatus(
-    daoContext.dao.id
-  );
+  const { status, update, loading } = useCreateGovernanceTokenStatus();
   const { accountId } = useWalletContext();
   const { daoVersion } = daoContext.dao;
   const isSupportedVersion = daoVersion?.version[0] > 2;

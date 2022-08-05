@@ -12,13 +12,13 @@ import { DAO } from 'types/dao';
 import { ActionButton } from 'astro_2.0/components/ActionButton';
 import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 import { DaoAction } from 'astro_2.0/components/DaoDetails/DaoDetailsMinimized/components/DaoAction';
+import { ExplorerLink } from 'components/ExplorerLink';
+import { CopyButton } from 'astro_2.0/components/CopyButton';
 
 import { UserPermissions } from 'types/context';
 import { shortenString } from 'utils/format';
-import { CopyButton } from 'astro_2.0/components/CopyButton';
-import { ExplorerLink } from 'components/ExplorerLink';
 
-import { useDaoSettings } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/hooks';
+import { useDaoSettings } from 'context/DaoSettingsContext';
 
 import styles from './DaoDetailsMinimized.module.scss';
 
@@ -39,7 +39,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   onCreateProposalClick,
   userPermissions,
 }) => {
-  const { settings } = useDaoSettings(dao.id);
+  const { settings } = useDaoSettings();
   const isXsMobile = useMedia('(max-width: 600px)');
   const flags = useFlags();
   const router = useRouter();

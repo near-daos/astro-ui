@@ -19,6 +19,7 @@
   "groups": "Groups",
   "activeProposals": "active proposals",
   "function calls": "Function Calls",
+  "customFunctionCallTemplates": "Custom Function Calls Templates",
   "cfcLibrary": "Function Call Library",
   "cfcLibraryDesc": "Add new functionality and power up your workflow with these templates",
   "proposalsInTotal": "proposals in total",

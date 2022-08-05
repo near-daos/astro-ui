@@ -1,12 +1,12 @@
 import { useTranslation } from 'next-i18next';
 import { useProposalTemplates } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/hooks';
-import { useDaoSettings } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/hooks';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 import { UserPermissions } from 'types/context';
 import { ProposalType, ProposalVariant } from 'types/proposal';
 import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
 import { useCallback, useMemo } from 'react';
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
+import { useDaoSettings } from 'context/DaoSettingsContext';
 
 type DropdownOption = {
   title: string;
@@ -37,7 +37,7 @@ export function useProposalTypeOptions(
   const fcLabel = getLabel('groupFunctionCall');
 
   const { templates } = useProposalTemplates(daoId);
-  const { settings } = useDaoSettings(daoId);
+  const { settings } = useDaoSettings();
 
   const { roketoStreaming } = useFlags();
 

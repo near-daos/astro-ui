@@ -6,10 +6,10 @@ import {
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 
 import { useAsync } from 'react-use';
-import { SputnikHttpService } from 'services/sputnik';
 import { CustomContract } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
 import { formatYoktoValue } from 'utils/format';
 import { useWalletContext } from 'context/WalletContext';
+import { useDaoSettings } from 'context/DaoSettingsContext';
 
 import styles from './UpdateVotePolicyToWeightVoting.module.scss';
 
@@ -27,13 +27,12 @@ export const UpdateVotePolicyToWeightVoting: FC<Props> = ({
   daoId,
 }) => {
   const { nearService } = useWalletContext();
+  const { settings } = useDaoSettings();
 
   const { value: tokenDetails } = useAsync(async () => {
     if (!nearService) {
       return undefined;
     }
-
-    const settings = await SputnikHttpService.getDaoSettings(daoId);
 
     const contractAddress = settings?.createGovernanceToken?.contractAddress;
 
@@ -52,7 +51,7 @@ export const UpdateVotePolicyToWeightVoting: FC<Props> = ({
       decimals: meta.decimals,
       contractAddress,
     };
-  }, [nearService, daoId]);
+  }, [nearService, daoId, settings]);
 
   const balance = formatYoktoValue(rawBalance, tokenDetails?.decimals);
   const threshold = formatYoktoValue(rawThreshold, tokenDetails?.decimals);

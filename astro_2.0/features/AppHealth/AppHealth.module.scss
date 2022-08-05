@@ -2,7 +2,11 @@
 
 .root {
   @include centralize;
-  margin-right: 24px;
+  margin: 0 12px;
+
+  @include tablet-landscape {
+    margin-right: 24px;
+  }
 }
 .indicator {
   border-radius: 50%;

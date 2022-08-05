@@ -24,6 +24,8 @@ import { CreateExternalProposal } from 'astro_2.0/features/CreateExternalProposa
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 
+import { DaoSettingsProvider } from 'context/DaoSettingsContext';
+
 import styles from './NestedDaoPageWrapper.module.scss';
 
 interface NestedDaoPageWrapperProps {
@@ -39,13 +41,14 @@ interface NestedDaoPageWrapperProps {
 
 export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
   const {
-    daoContext: { dao, userPermissions, policyAffectsProposals },
+    daoContext,
     defaultProposalType = ProposalVariant.ProposeTransfer,
     breadcrumbs,
     children,
     className,
     header,
   } = props;
+  const { dao, userPermissions, policyAffectsProposals } = daoContext;
   const router = useRouter();
   const { tokens } = useDaoCustomTokens();
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
@@ -69,7 +72,7 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
   function renderChildren() {
     return Children.map(children, child => {
       if (isValidElement(child)) {
-        return cloneElement(child, { toggleCreateProposal });
+        return cloneElement(child, { toggleCreateProposal, daoContext });
       }
 
       return null;
@@ -109,7 +112,7 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
   }, [router, toggleCreateProposal]);
 
   return (
-    <>
+    <DaoSettingsProvider>
       {header && header(onCreateProposal)}
       <div className={cn(styles.root, className)}>
         {renderBreadcrumbs()}
@@ -152,6 +155,6 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
         />
         {renderChildren()}
       </div>
-    </>
+    </DaoSettingsProvider>
   );
 };

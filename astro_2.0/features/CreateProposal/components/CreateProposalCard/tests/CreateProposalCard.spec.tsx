@@ -22,6 +22,14 @@ jest.mock('react-use', () => {
   };
 });
 
+jest.mock('context/DaoSettingsContext', () => {
+  return {
+    useDaoSettings: jest
+      .fn()
+      .mockReturnValue({ settings: {}, update: jest.fn(), loading: false }),
+  };
+});
+
 jest.mock('react-hook-form', () => {
   return {
     useFormContext: jest.fn(() => formContextMock),
