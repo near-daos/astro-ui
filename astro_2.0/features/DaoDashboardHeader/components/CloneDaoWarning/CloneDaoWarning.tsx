@@ -13,8 +13,7 @@ import { SputnikHttpService } from 'services/sputnik';
 import { useWalletContext } from 'context/WalletContext';
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 import { configService } from 'services/ConfigService';
-
-import { useDaoSettings } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/hooks';
+import { useDaoSettings } from 'context/DaoSettingsContext';
 
 import {
   extractNewDaoName,
@@ -59,7 +58,7 @@ export const CloneDaoWarning: FC<Props> = ({
   const { accountId } = useWalletContext();
   const { tokens } = useDaoCustomTokens();
   const { nearConfig } = configService.get();
-  const { settings, update, loading } = useDaoSettings(dao.id);
+  const { settings, update, loading } = useDaoSettings();
   const cloneState = settings ? settings.cloneState : null;
   const cloningProposalId = cloneState?.proposalId;
 

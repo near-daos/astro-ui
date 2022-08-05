@@ -7,6 +7,7 @@ import { Settings, UpgradeStatus, UpgradeSteps } from 'types/settings';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { configService } from 'services/ConfigService';
 import { useWalletContext } from 'context/WalletContext';
+import { useDaoSettings } from 'context/DaoSettingsContext';
 
 type RawMeta = [string, DaoVersion];
 
@@ -121,21 +122,25 @@ export function useUpgradeStatus(
   const [upgradeStatus, setUpgradeStatus] = useState<UpgradeStatus | null>(
     null
   );
+  const { loading, settings } = useDaoSettings();
 
-  const [{ loading }, getSettings] = useAsyncFn(async () => {
-    const settings = await SputnikHttpService.getDaoSettings(daoId);
+  useEffect(() => {
+    if (!settings) {
+      return;
+    }
 
     if (settings?.daoUpgrade) {
       setUpgradeStatus(settings.daoUpgrade);
     }
-  }, [daoId]);
+  }, [settings]);
 
   const [{ loading: updatingStatus }, update] = useAsyncFn(
     async ({ upgradeStep, proposalId, versionHash }) => {
-      try {
-        const settings =
-          (await SputnikHttpService.getDaoSettings(daoId)) ?? ({} as Settings);
+      if (!settings) {
+        return;
+      }
 
+      try {
         const newSettings: Settings = {
           ...settings,
           daoUpgrade: {
@@ -172,12 +177,6 @@ export function useUpgradeStatus(
     },
     [daoId, nearService]
   );
-
-  useEffect(() => {
-    (async () => {
-      await getSettings();
-    })();
-  }, [getSettings]);
 
   return {
     loading: loading || updatingStatus,

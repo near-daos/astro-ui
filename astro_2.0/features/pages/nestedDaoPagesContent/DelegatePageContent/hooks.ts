@@ -12,6 +12,7 @@ import {
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
 import { objectKeys } from 'utils/objects';
 import { useFlags } from 'launchdarkly-react-client-sdk';
+import { useDaoSettings } from 'context/DaoSettingsContext';
 
 export function useDelegatePageData(
   dao: DAO
@@ -36,6 +37,7 @@ export function useDelegatePageData(
   const { governanceToken } = useFlags();
   const router = useRouter();
   const { nearService, accountId } = useWalletContext();
+  const { settings } = useDaoSettings();
 
   const daoId = router.query.dao as string;
   const ts = router.query.ts as string;
@@ -50,8 +52,6 @@ export function useDelegatePageData(
     if (!nearService) {
       return undefined;
     }
-
-    const settings = await SputnikHttpService.getDaoSettings(daoId);
 
     const contractAddress = settings?.createGovernanceToken?.contractAddress;
 
@@ -75,7 +75,7 @@ export function useDelegatePageData(
       decimals: meta.decimals,
       contractAddress,
     };
-  }, [nearService, ts]);
+  }, [nearService, ts, settings]);
 
   const {
     loading: loadingTotalSupply,
@@ -222,14 +222,13 @@ export function useVotingPolicyDetails(
   quorum: string;
 } {
   const { nearService, accountId } = useWalletContext();
+  const { settings } = useDaoSettings();
   const { value: tokenDetails } = useAsync(async () => {
     if (!nearService) {
       return undefined;
     }
 
     try {
-      const settings = await SputnikHttpService.getDaoSettings(dao.id);
-
       const contractAddress = settings?.createGovernanceToken?.contractAddress;
 
       if (!contractAddress) {
@@ -255,7 +254,7 @@ export function useVotingPolicyDetails(
     } catch (e) {
       return undefined;
     }
-  }, [nearService]);
+  }, [nearService, settings]);
 
   const holdersRole = dao.policy.roles.find(
     role => role.kind === 'Member' && role.name === 'TokenHolders'

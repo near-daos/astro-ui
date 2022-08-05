@@ -24,11 +24,11 @@ import { useProposalTypeOptions } from 'astro_2.0/features/CreateProposal/compon
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 import { useProposalTemplates } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/hooks';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
-import { useDaoSettings } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/hooks';
 import { useWalletContext } from 'context/WalletContext';
 import { getCustomTemplatesDefaults } from 'astro_2.0/features/CreateProposal/components/CreateProposalCard/helpers';
 import { DAO } from 'types/dao';
 import { DeleteDraftButton } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/DeleteDraftButton';
+import { useDaoSettings } from 'context/DaoSettingsContext';
 
 import styles from './CreateProposalCard.module.scss';
 
@@ -88,7 +88,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   const { accountId } = useWalletContext();
   const { templates } = useProposalTemplates(dao.id);
   const { tokens } = useCustomTokensContext();
-  const { settings } = useDaoSettings(dao.id);
+  const { settings } = useDaoSettings();
 
   function renderCloseButton() {
     if (showClose) {
