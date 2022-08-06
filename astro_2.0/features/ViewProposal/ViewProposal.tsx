@@ -178,6 +178,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
           optionalPostVoteAction={optionalPostVoteAction}
           onSelect={onSelect}
           selectedList={selectedList}
+          userPermissions={userPermissions}
           voteDetails={
             proposal.dao.policy.defaultVotePolicy.ratio
               ? getVoteDetails(
