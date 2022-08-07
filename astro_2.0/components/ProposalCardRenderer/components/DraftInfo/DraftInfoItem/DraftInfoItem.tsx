@@ -23,15 +23,17 @@ export const DraftInfoItem: FC<DraftInfoItemProps> = ({
   disabled,
   tooltipText,
 }) => {
+  const icon = <Icon name={iconName} className={styles.icon} />;
+
   const infoItem = (
     <>
       <div className={styles.count}>{count}</div>
       {tooltipText ? (
         <Tooltip placement="top" overlay={<span>Save Draft</span>}>
-          <Icon name={iconName} className={styles.icon} />
+          {icon}
         </Tooltip>
       ) : (
-        <Icon name={iconName} className={styles.icon} />
+        icon
       )}
     </>
   );
