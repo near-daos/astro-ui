@@ -206,7 +206,7 @@ export function useGetBreadcrumbsConfig(
         },
       },
       CREATE_DRAFT_PAGE_URL: {
-        label: 'Create draft',
+        label: t('drafts.breadcrumbs.createDraft'),
         href: {
           pathname: CREATE_DRAFT_PAGE_URL,
           query: {
@@ -215,7 +215,7 @@ export function useGetBreadcrumbsConfig(
         },
       },
       EDIT_DRAFT_PAGE_URL: {
-        label: 'Edit draft',
+        label: t('drafts.breadcrumbs.editDraft'),
         href: {
           pathname: EDIT_DRAFT_PAGE_URL,
           query: {

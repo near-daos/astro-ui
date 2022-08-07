@@ -271,6 +271,16 @@
     "delegatedToken": "Delegated {{token}}",
     "policyDescription": "A DAO member can only cast a vote if they hold an amount of tokens equal or greater to the minimum balance. When a vote is cast the total token weight in that direction compares against the threshold. If that token weight is greater than the threshold, the proposal finalizes with a pass or fail."
   },
+  "daoDetailsCreateButton": {
+    "draft": {
+      "label": "Draft a Proposal",
+      "description": "for preliminary discussion"
+    },
+    "proposal": {
+      "label": "Proposal",
+      "description": "for a general vote for a decision"
+    }
+  },
   "daoDetailsMinimized": {
     "delegates": "Delegate",
     "drafts": "Drafts",
@@ -283,7 +293,8 @@
     "polls": "Polls",
     "createProposal": "Create Proposal",
     "treasury": "Treasury",
-    "createGovernanceToken": "Create Governance Token"
+    "createGovernanceToken": "Create Governance Token",
+    "createDraft": "Create Draft"
   },
   "feed": {
     "filters": {
@@ -712,7 +723,19 @@
     "lettersNumbersHyphensSpaces": "Only letters and numbers with hyphens and spaces in the middle"
   },
   "drafts": {
-    "noDrafts": "No drafts",
+    "breadcrumbs": {
+      "createDraft": "Create Draft",
+      "editOraft": "Edit Draft"
+    },
+    "feed": {
+      "noDrafts": {
+        "title": "No drafts",
+        "createDraftButton": "Create Draft"
+      },
+      "card": {
+        "minutesAgo": "ago"
+      }
+    },
     "topic": "Topic",
     "views": "Views",
     "replies": "Replies",

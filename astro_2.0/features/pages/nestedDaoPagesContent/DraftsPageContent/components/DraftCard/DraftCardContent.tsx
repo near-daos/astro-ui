@@ -4,6 +4,7 @@ import { formatDistanceToNow, parseISO } from 'date-fns';
 import { useRouter } from 'next/router';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import Link from 'next/link';
+import { useTranslation } from 'next-i18next';
 
 // import { Badge } from 'components/Badge';
 import { Icon } from 'components/Icon';
@@ -22,7 +23,7 @@ interface Props {
 export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
   const router = useRouter();
   const { id, title, views, replies, updatedAt, state, proposalId } = data;
-
+  const { t } = useTranslation();
   const { handleView } = useDraftsPageActions();
 
   const handleCardClick = useCallback(async () => {
@@ -85,7 +86,8 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
       </div>
 
       <div className={styles.date}>
-        {formatDistanceToNow(parseISO(updatedAt))} ago
+        {formatDistanceToNow(parseISO(updatedAt))}{' '}
+        {t('drafts.feed.card.minutesAgo')}
       </div>
     </div>
   );
