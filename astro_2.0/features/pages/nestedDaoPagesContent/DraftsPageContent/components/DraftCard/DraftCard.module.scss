@@ -64,21 +64,20 @@
   background-color: var(--color-white);
   border-radius: 0 8px 8px 0;
   display: grid;
-  gap: 28px;
-  grid-row-gap: 0;
+  grid-row-gap: 10px;
   grid-template-areas:
+    'status - saveFlag'
     'title title title'
-    'tags tags tags'
     'views replies date';
-  grid-template-columns: 30px 30px 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   padding: 16px;
   width: 100%;
   @include tablet-landscape {
-    gap: 12px;
+    grid-row-gap: 10px;
     grid-template-areas:
-      'title views replies date'
-      'tags tags tags tags';
-    grid-template-columns: 1fr 60px 60px 120px;
+      'title title title title status'
+      'views replies date - saveFlag';
+    grid-template-columns: 73px 78px 1fr 1fr 150px;
   }
 }
 
@@ -96,44 +95,35 @@
 }
 
 .date {
+  align-items: center;
+  display: flex;
   grid-area: date;
-  justify-content: flex-end;
+}
+
+.dateText {
+  @extend %title5;
+  display: block;
+}
+
+.activityText {
+  @extend %caption1;
+  display: block;
+  margin-right: 4px;
 }
 
 .views,
-.replies,
-.date {
-  @extend %caption1;
+.replies {
+  @extend %title5;
   align-items: center;
   display: flex;
 }
 
 .icon {
-  color: var(--color-neutral-50);
+  color: var(--color-neutral-80);
   display: flex;
+  height: 24px;
   margin-right: 4px;
-  width: 18px;
-}
-
-.tags {
-  @include ellipse-text;
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  grid-area: tags;
-  margin-bottom: 16px;
-  @include tablet-landscape {
-    margin-bottom: 0;
-  }
-}
-
-.tag {
-  @extend %subtitle5;
-  background: none !important;
-  border: 1px solid var(--color-neutral-40);
-  border-radius: 100px;
-  margin-right: 8px;
+  width: 24px;
 }
 
 .linkToProposal {
@@ -148,15 +138,6 @@
   }
 }
 
-.letterClosed,
-.letterBgClosed {
-  background-image: linear-gradient(
-    0deg,
-    var(--color-neutral-50),
-    var(--color-neutral-50)
-  ) !important;
-}
-
 .inputWrapper {
   align-items: center;
   display: flex;
@@ -164,4 +145,49 @@
   grid-area: title;
   justify-content: flex-start;
   overflow: hidden;
+}
+
+.status {
+  align-items: center;
+  color: var(--color-brand-black);
+  display: flex;
+  font-family: var(--font-family-primary);
+  font-size: 12px;
+  font-weight: 500;
+  grid-area: status;
+  justify-content: flex-start;
+  line-height: 28px;
+  @include tablet-landscape {
+    justify-content: flex-end;
+  }
+  &::before {
+    border: 2px solid;
+    border-radius: 50%;
+    content: '';
+    display: block;
+    height: 8px;
+    margin-right: 6px;
+    width: 8px;
+  }
+}
+
+.openStatus {
+  &::before {
+    border-color: var(--color-primary-50);
+  }
+}
+
+.closedStatus {
+  &::before {
+    border-color: var(--color-success-60);
+  }
+}
+
+.saveFlag {
+  display: flex;
+  grid-area: saveFlag;
+  justify-content: flex-end;
+  .icon {
+    margin: 0;
+  }
 }

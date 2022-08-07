@@ -1,11 +1,11 @@
 import React, { FC, useCallback } from 'react';
-import { DraftProposalFeedItem } from 'types/draftProposal';
+import cn from 'classnames';
+import { DraftProposalFeedItem, DraftStatus } from 'types/draftProposal';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { useRouter } from 'next/router';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import Link from 'next/link';
 
-// import { Badge } from 'components/Badge';
 import { Icon } from 'components/Icon';
 
 import { DRAFT_PAGE_URL, SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
@@ -21,7 +21,19 @@ interface Props {
 
 export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
   const router = useRouter();
-  const { id, title, views, replies, updatedAt, state, proposalId } = data;
+  const {
+    id,
+    title,
+    views,
+    replies,
+    updatedAt,
+    state,
+    proposalId,
+    isSaved,
+  } = data;
+
+  const isOpenStatus = DraftStatus.Open === state;
+  const isClosedStatus = DraftStatus.Closed === state;
 
   const { handleView } = useDraftsPageActions();
 
@@ -40,7 +52,7 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
   }, [daoId, handleView, id, router]);
 
   const renderDraftTitle = () => {
-    if (state === 'open') {
+    if (isOpenStatus) {
       return <div className={styles.title}>{title}</div>;
     }
 
@@ -76,16 +88,32 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
     >
       <div className={styles.inputWrapper}>{renderDraftTitle()}</div>
       <div className={styles.views}>
-        <Icon name="eyeOpen" className={styles.icon} />
+        <Icon name="draftEye" className={styles.icon} />
         {views}
       </div>
       <div className={styles.replies}>
-        <Icon name="chat" className={styles.icon} />
+        <Icon name="draftChat" className={styles.icon} />
         {replies}
       </div>
-
       <div className={styles.date}>
-        {formatDistanceToNow(parseISO(updatedAt))} ago
+        <span className={styles.activityText}>Last activity:</span>{' '}
+        <span className={styles.dateText}>
+          {formatDistanceToNow(parseISO(updatedAt))} ago
+        </span>
+      </div>
+      <div
+        className={cn(styles.status, {
+          [styles.openStatus]: isOpenStatus,
+          [styles.closedStatus]: isClosedStatus,
+        })}
+      >
+        {isOpenStatus ? 'On discussion' : 'Converted to proposal'}
+      </div>
+      <div className={styles.saveFlag}>
+        <Icon
+          name={isSaved ? 'draftBookmarkFulfill' : 'draftBookmark'}
+          className={styles.icon}
+        />
       </div>
     </div>
   );
