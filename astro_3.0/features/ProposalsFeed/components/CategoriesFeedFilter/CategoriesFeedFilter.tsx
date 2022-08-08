@@ -1,15 +1,17 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
-import Link from 'next/link';
-import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+
+import { Button } from 'components/button/Button';
+import { Icon, IconName } from 'components/Icon';
 
 import styles from './CategoriesFeedFilter.module.scss';
 
 export type ListItem = {
-  value?: string;
+  value: string;
   label: string;
   disabled?: boolean;
+  icon?: IconName;
 };
 
 interface Props {
@@ -28,25 +30,18 @@ export const CategoriesFeedFilter: FC<Props> = ({
   queryName,
   className,
   itemClassName,
-  hideAllOption = false,
   shallowUpdate = false,
 }) => {
-  const { t } = useTranslation();
-  const { query } = useRouter();
+  const { query, replace } = useRouter();
   const { [queryName]: value } = query;
 
-  const ITEM_ALL = {
-    value: undefined,
-    label: t('feed.filters.all'),
-  };
-
   function renderFilterItem(item: ListItem) {
-    const { value: itemVal, label, disabled: disabledItem } = item;
+    const { value: itemVal, label, disabled: disabledItem, icon } = item;
 
     const href = {
       query: {
         ...query,
-        [queryName]: itemVal,
+        [queryName]: value === itemVal ? '' : itemVal,
       },
     };
 
@@ -60,22 +55,27 @@ export const CategoriesFeedFilter: FC<Props> = ({
     );
 
     return (
-      <li className={styles.item} key={label}>
-        <Link href={href} replace scroll={false} shallow={shallowUpdate}>
-          <a className={hrefClassName} tabIndex={disabled ? -1 : 0}>
-            {label}
-          </a>
-        </Link>
-      </li>
+      <Button
+        key={item.label}
+        className={hrefClassName}
+        variant="transparent"
+        size="small"
+        onClick={async () => {
+          await replace(href, undefined, {
+            shallow: shallowUpdate,
+            scroll: false,
+          });
+        }}
+      >
+        {icon && <Icon name={icon} className={styles.icon} />}
+        {label}
+      </Button>
     );
   }
 
   return (
     <div className={cn(styles.root, className)}>
-      <ul className={styles.items}>
-        {!hideAllOption && renderFilterItem(ITEM_ALL)}
-        {list?.map(renderFilterItem)}
-      </ul>
+      <ul className={styles.items}>{list?.map(renderFilterItem)}</ul>
     </div>
   );
 };

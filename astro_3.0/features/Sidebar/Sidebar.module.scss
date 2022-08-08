@@ -4,15 +4,14 @@
 .root {
   background: var(--color-white);
   display: none;
-  filter: drop-shadow(3px 4px 8px rgba(0, 0, 0, 0.05));
+  //filter: drop-shadow(3px 4px 8px rgba(0, 0, 0, 0.05));
   flex-direction: column;
-  height: 100vh;
   left: 0;
-  min-height: 100vh;
+  min-height: calc(100vh - var(--app-header-height));
   overflow-y: auto;
   position: fixed;
-  top: 0;
-  z-index: 1100;
+  top: var(--app-header-height);
+  z-index: 900;
 
   @include desktop {
     display: flex;
@@ -22,6 +21,7 @@
 .content {
   align-items: flex-start;
   display: flex;
+  flex: 1;
   flex-direction: column;
   overflow: hidden;
   transition: width 0.2s ease-out;
@@ -39,17 +39,10 @@
   [data-expanded='hidden'] {
     opacity: 0;
   }
-
-  //&.expanded [data-expanded='false'] {
-  //  display: block;
-  //}
-  //
-  //[data-expanded='false'] {
-  //  display: none;
-  //}
 }
 
 .top {
+  display: none;
   padding: 20px;
 
   .topIcon {
@@ -66,7 +59,7 @@
 }
 
 .daos {
-  height: calc(100vh - 400px);
+  max-height: calc(100vh - 462px);
   overflow: auto;
 
   /* Turn on custom 4px wide scrollbar */
@@ -101,11 +94,17 @@
   width: 100%;
 }
 
+.last {
+  margin-bottom: 12px;
+  margin-top: auto;
+}
+
 .footer {
   bottom: 0;
   padding: 0 24px;
+  position: absolute;
   //position: absolute;
-  width: 100%;
+  width: 250px;
 
   .icon {
     margin-left: 24px;

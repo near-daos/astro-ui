@@ -1,52 +1,54 @@
-import React, { ComponentProps, FC } from 'react';
+import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 
-import { SidebarNavItem } from 'astro_3.0/features/Sidebar/components/SidebarNavItem';
+import { DaoFeedItem } from 'types/dao';
 
 import styles from './SidebarMarker.module.scss';
 
 interface Props {
-  items: ComponentProps<typeof SidebarNavItem>[];
+  items: DaoFeedItem[];
 }
 
 export const SidebarMarker: FC<Props> = ({ items }) => {
   const router = useRouter();
   const HEIGHT = 56;
 
-  const activeItemIndex = items.findIndex(({ href }) => {
-    if (Array.isArray(href)) {
-      return href.some(link => router.asPath.indexOf(link) !== -1);
+  const activeItemIndex = items.findIndex(({ id }) => {
+    if (Array.isArray(id)) {
+      return id.some(link => router.asPath.indexOf(link) !== -1);
     }
 
-    return router.asPath.indexOf(href) !== -1;
+    return router.asPath.indexOf(id) !== -1;
   });
 
   const transform = `translateY(${
     activeItemIndex === -1 ? 0 : activeItemIndex * HEIGHT
   }px)`;
 
+  const display = activeItemIndex === -1 ? 'none' : 'block';
+
   return (
     <svg
       className={styles.root}
-      style={{ transform }}
-      width="14"
+      style={{ transform, display }}
+      width="19"
       height="56"
-      viewBox="0 0 14 56"
+      viewBox="0 0 19 56"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g filter="url(#filter0_d_579_16313)">
+      <g filter="url(#filter0_d_787_29577)">
         <path
-          d="M0.539212 48C0.241413 48 0 47.7586 0 47.4608L0 8.54401C0 8.24356 0.243564 8 0.544014 8C0.758394 8 0.954718 8.12993 1.04177 8.32584C7.71336 23.3405 7.59342 32.075 1.03704 47.6667C0.953111 47.8663 0.75572 48 0.539212 48Z"
+          d="M9 48C10.1046 48 11 47.1046 11 46L11 10C11 8.89543 10.1046 8 9 8H8C8 30 8 30 8 48H9Z"
           fill="#6038D0"
         />
       </g>
       <defs>
         <filter
-          id="filter0_d_579_16313"
-          x="-8"
+          id="filter0_d_787_29577"
+          x="0"
           y="0"
-          width="22"
+          width="19"
           height="56"
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
@@ -62,7 +64,7 @@ export const SidebarMarker: FC<Props> = ({ items }) => {
             radius="2"
             operator="dilate"
             in="SourceAlpha"
-            result="effect1_dropShadow_579_16313"
+            result="effect1_dropShadow_787_29577"
           />
           <feOffset />
           <feGaussianBlur stdDeviation="3" />
@@ -74,12 +76,12 @@ export const SidebarMarker: FC<Props> = ({ items }) => {
           <feBlend
             mode="normal"
             in2="BackgroundImageFix"
-            result="effect1_dropShadow_579_16313"
+            result="effect1_dropShadow_787_29577"
           />
           <feBlend
             mode="normal"
             in="SourceGraphic"
-            in2="effect1_dropShadow_579_16313"
+            in2="effect1_dropShadow_787_29577"
             result="shape"
           />
         </filter>
@@ -87,5 +89,3 @@ export const SidebarMarker: FC<Props> = ({ items }) => {
     </svg>
   );
 };
-
-export default SidebarMarker;

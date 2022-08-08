@@ -2,7 +2,7 @@ import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { useAsyncFn, useMountedState } from 'react-use';
 import { useRouter } from 'next/router';
-import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
 
@@ -32,10 +32,11 @@ import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 
 // Services
 import { SputnikHttpService } from 'services/sputnik';
-import { CookieService } from 'services/CookieService';
 
 // Constants
-import { FEED_STATUS_COOKIE } from 'constants/cookies';
+
+import { MainLayout } from 'astro_3.0/features/MainLayout';
+import { FeedControlsLayout } from 'astro_3.0/features/FeedLayout';
 
 import styles from './ProposalsFeed.module.scss';
 
@@ -58,12 +59,11 @@ export const ProposalsFeed = ({
   initialProposals,
   initialProposalsStatusFilterValue,
 }: Props): JSX.Element => {
-  const { query, replace, pathname } = useRouter();
+  const { query, pathname } = useRouter();
   const { t } = useTranslation();
   const isMounted = useMountedState();
 
   const queries = query as ProposalsQueries;
-  const lastFeedStatus = CookieService.get(FEED_STATUS_COOKIE);
 
   const status =
     (query.status as ProposalsFeedStatuses) ||
@@ -152,47 +152,6 @@ export const ProposalsFeed = ({
     }
   };
 
-  const onProposalFilterChange = useCallback(
-    async (value: string) => {
-      const nextQuery = {
-        ...queries,
-        status: value as ProposalsFeedStatuses,
-      } as ProposalsQueries;
-
-      // We use custom loading flag here and not the existing proposalsDataIsLoading because
-      // we want loader to be visible immediately once we click on radio button
-      // which is not possible using existing proposalsDataIsLoading flag
-      if (isMounted()) {
-        setLoading(true);
-      }
-
-      CookieService.set(
-        FEED_STATUS_COOKIE,
-        Object.values(ProposalsFeedStatuses).includes(
-          value as ProposalsFeedStatuses
-        )
-          ? value
-          : ProposalsFeedStatuses.All,
-        { path: '/' }
-      );
-
-      await replace(
-        {
-          query: nextQuery,
-        },
-        undefined,
-        { shallow: false, scroll: false }
-      );
-    },
-    [isMounted, queries, replace]
-  );
-
-  useEffect(() => {
-    if (status !== lastFeedStatus) {
-      onProposalFilterChange(lastFeedStatus);
-    }
-  }, [lastFeedStatus, onProposalFilterChange, status]);
-
   return (
     <main className={cn(styles.root, className)}>
       <Head>
@@ -201,46 +160,50 @@ export const ProposalsFeed = ({
         </title>
       </Head>
 
-      <ProposalsFeedFilters className={styles.filtersContainer} />
+      <FeedControlsLayout>
+        <ProposalsFeedFilters className={styles.filtersContainer} />
+      </FeedControlsLayout>
 
-      <div className={styles.container}>
-        {loading ? (
-          <Loader className={styles.loader} />
-        ) : (
-          proposalsData && (
-            <FeedList
-              data={proposalsData}
-              loadMore={loadMore}
-              loader={<p className={styles.loading}>{t('loading')}...</p>}
-              noResults={
-                <div className={styles.loading}>
-                  <NoResultsView
-                    title={
-                      isEmpty(proposalsData?.data)
-                        ? t('noProposalsHere')
-                        : t('noMoreResults')
-                    }
-                  />
-                </div>
-              }
-              renderItem={(proposal, onSelect, selectedList) => (
-                <div
-                  key={`${proposal.id}_${proposal.updatedAt}`}
-                  className={styles.proposalCardWrapper}
-                >
-                  <ViewProposal
-                    proposal={proposal}
-                    showFlag={showFlag}
-                    onSelect={onSelect}
-                    selectedList={selectedList}
-                  />
-                </div>
-              )}
-              className={styles.listWrapper}
-            />
-          )
-        )}
-      </div>
+      <MainLayout>
+        <div className={styles.container}>
+          {loading ? (
+            <Loader className={styles.loader} />
+          ) : (
+            proposalsData && (
+              <FeedList
+                data={proposalsData}
+                loadMore={loadMore}
+                loader={<p className={styles.loading}>{t('loading')}...</p>}
+                noResults={
+                  <div className={styles.loading}>
+                    <NoResultsView
+                      title={
+                        isEmpty(proposalsData?.data)
+                          ? t('noProposalsHere')
+                          : t('noMoreResults')
+                      }
+                    />
+                  </div>
+                }
+                renderItem={(proposal, onSelect, selectedList) => (
+                  <div
+                    key={`${proposal.id}_${proposal.updatedAt}`}
+                    className={styles.proposalCardWrapper}
+                  >
+                    <ViewProposal
+                      proposal={proposal}
+                      showFlag={showFlag}
+                      onSelect={onSelect}
+                      selectedList={selectedList}
+                    />
+                  </div>
+                )}
+                className={styles.listWrapper}
+              />
+            )
+          )}
+        </div>
+      </MainLayout>
     </main>
   );
 };

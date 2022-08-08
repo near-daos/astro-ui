@@ -5,6 +5,10 @@
   display: flex;
   position: relative;
   width: 100%;
+
+  &.whiteBackground {
+    background-color: var(--color-white);
+  }
 }
 
 .main {
@@ -32,6 +36,10 @@
 
 .content {
   width: 100%;
+
+  &.withFixedHeader {
+    padding-top: var(--app-header-height);
+  }
 }
 
 .createDao.root {

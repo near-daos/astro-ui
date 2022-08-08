@@ -8,6 +8,7 @@ import { CREATE_DAO_URL } from 'constants/routing';
 import { Sidebar as SidebarNext } from 'astro_3.0/features/Sidebar';
 import { Sidebar } from 'components/Sidebar';
 import { AppHeader } from 'astro_2.0/components/AppHeader';
+import { AppHeader as AppHeaderNext } from 'astro_3.0/features/AppHeader';
 import { LinkToTop } from 'astro_2.0/components/LinkToTop';
 import { NotificationContainer } from 'features/notifications';
 
@@ -24,13 +25,18 @@ export const PageLayout: FC = ({ children }) => {
 
   const rootClassName = cn(styles.root, {
     [styles.createDao]: isCreateDaoPage,
+    [styles.whiteBackground]: appVersion === 3,
   });
 
   return (
     <div className={rootClassName}>
       {appVersion === 3 ? <SidebarNext /> : <Sidebar />}
-      <div className={styles.content}>
-        <AppHeader />
+      <div
+        className={cn(styles.content, {
+          [styles.withFixedHeader]: appVersion === 3,
+        })}
+      >
+        {appVersion === 3 ? <AppHeaderNext /> : <AppHeader />}
         {children}
         <LinkToTop />
       </div>

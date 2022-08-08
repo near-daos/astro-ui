@@ -338,6 +338,7 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
             );
             break;
           } catch (e) {
+            content = null;
             break;
           }
         }
@@ -566,6 +567,7 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
             );
             break;
           } catch (e) {
+            content = null;
             break;
           }
         }
