@@ -119,7 +119,7 @@ export class WalletSelectorService implements WalletService {
               methodName,
               args,
               gas: gas?.toString(),
-              deposit: attachedDeposit || new BN(0),
+              deposit: attachedDeposit?.toString() || '0',
             },
           },
         ],
