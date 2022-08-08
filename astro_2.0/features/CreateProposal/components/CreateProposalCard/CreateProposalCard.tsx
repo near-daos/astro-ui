@@ -81,8 +81,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   const proposalTypesOptions = useProposalTypeOptions(
     dao.id,
     userPermissions,
-    canCreateTokenProposal,
-    isDraft
+    canCreateTokenProposal
   );
 
   const { accountId } = useWalletContext();

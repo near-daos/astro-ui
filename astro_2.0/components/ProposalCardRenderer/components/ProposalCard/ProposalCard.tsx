@@ -46,11 +46,11 @@ import { getGasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCountdown } from 'hooks/useCountdown';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { DraftDescription } from 'astro_2.0/components/ProposalCardRenderer/components/DraftDescription';
-// import { Badge } from 'components/Badge';
 import { DraftInfo } from 'astro_2.0/components/ProposalCardRenderer/components/DraftInfo';
 import { DraftManagement } from 'astro_2.0/components/ProposalCardRenderer/components/DraftManagement';
 import { ProposalControlPanel } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/ProposalControlPanel';
 import { DAO } from 'types/dao';
+import { UserPermissions } from 'types/context';
 
 import { formatISODate } from 'utils/format';
 
@@ -100,6 +100,7 @@ export interface ProposalCardProps {
   saves?: number;
   dao?: DAO;
   draftState?: string;
+  userPermissions?: UserPermissions;
 }
 
 function getTimestampLabel(
@@ -219,6 +220,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   saves,
   dao,
   draftState,
+  userPermissions,
 }) => {
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
@@ -526,6 +528,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
             convertToProposal={convertToProposal}
             onEditDraft={handleEditDraft}
             dao={dao}
+            userPermissions={userPermissions}
+            proposalType={type}
           />
           <DraftInfo dao={dao} saves={saves || 0} isSaved={Boolean(isSaved)} />
         </div>

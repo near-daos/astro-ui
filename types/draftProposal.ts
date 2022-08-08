@@ -1,5 +1,10 @@
 import { ProposalFeedItem, ProposalType } from 'types/proposal';
 
+export enum DraftStatus {
+  Open = 'open',
+  Closed = 'closed',
+}
+
 export type DraftComment = {
   id: string;
   likes: number;

@@ -95,7 +95,9 @@ export const DraftInfo: FC<DraftInfoProps> = ({
           count={amountComments}
           className={styles.draftInfoItem}
         />
+
         <DraftInfoItem
+          tooltipText="Save Draft"
           onClick={() => handlerSaveDraft()}
           iconName={isSavedDraft ? 'draftBookmarkFulfill' : 'draftBookmark'}
           count={savesCount}
