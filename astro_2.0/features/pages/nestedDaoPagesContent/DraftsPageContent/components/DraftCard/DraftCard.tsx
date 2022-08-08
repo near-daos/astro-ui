@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import cn from 'classnames';
 import {
   LetterHeadWidget,
   ProposalCardRenderer,
@@ -17,8 +16,6 @@ interface Props {
 }
 
 export const DraftCard: FC<Props> = ({ data, flag, daoId }) => {
-  const isClosedDraft = data.state === 'closed';
-
   return (
     <div className={styles.root}>
       <ProposalCardRenderer
@@ -31,14 +28,10 @@ export const DraftCard: FC<Props> = ({ data, flag, daoId }) => {
           <LetterHeadWidget
             type={data.type}
             coverUrl={flag}
-            className={cn(styles.letterhead, {
-              [styles.letterClosed]: isClosedDraft,
-            })}
+            className={styles.letterhead}
             iconClassName={styles.letterheadIcon}
             iconWrapperClassName={styles.letterheadIconWrapper}
-            backgroundClassName={cn(styles.letterBackground, {
-              [styles.letterBgClosed]: isClosedDraft,
-            })}
+            backgroundClassName={styles.letterBackground}
           />
         }
       />

@@ -11,7 +11,6 @@ import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { FEED_CATEGORIES } from 'constants/proposals';
 
 import { Button } from 'components/button/Button';
-import { DraftsListHeader } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftsListHeader';
 import { StateFilter } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/StateFilter';
 import { DraftCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftCard';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
@@ -93,7 +92,6 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
           <>
             {data ? (
               <div className={styles.listWrapper}>
-                <DraftsListHeader />
                 <FeedList
                   data={data}
                   loadMore={loadMore}
