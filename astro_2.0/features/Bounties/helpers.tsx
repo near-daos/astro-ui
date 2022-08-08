@@ -11,7 +11,7 @@ import { DAO } from 'types/dao';
 import { SectionItem } from 'astro_2.0/features/Bounties/components/BountiesListView/types';
 import { AmountContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/AmountContent';
 import { ProposalVariant } from 'types/proposal';
-import { Tokens } from 'context/CustomTokensContext';
+import { Tokens } from 'types/token';
 
 export const BOUNTIES_PAGE_SORT_OPTIONS = [
   {

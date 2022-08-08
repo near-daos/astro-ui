@@ -12,7 +12,7 @@ import {
   BOUNTIES_PAGE_SORT_OPTIONS,
 } from 'astro_2.0/features/Bounties/helpers';
 
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
 import styles from './BountiesPageContent.module.scss';
 

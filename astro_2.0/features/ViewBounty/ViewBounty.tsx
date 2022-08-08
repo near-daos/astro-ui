@@ -8,10 +8,8 @@ import { BountyCard } from 'astro_2.0/features/ViewBounty/components/BountyCard'
 
 import { ProposalType, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
-import { Token } from 'types/token';
 import { Bounty, BountyProposal } from 'types/bounties';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
-import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { InfoPanel } from 'astro_2.0/features/ViewBounty/components/InfoPanel/InfoPanel';
 import { ClaimsInfo } from 'astro_2.0/features/ViewBounty/components/ClaimsInfo';
@@ -22,7 +20,6 @@ export interface ViewBountyProps {
   commentsCount: number;
   dao: DAO | null;
   bounty: Bounty;
-  tokens: Record<string, Token>;
   proposal: BountyProposal;
   className?: string;
   toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
@@ -39,7 +36,6 @@ export const ViewBounty: FC<ViewBountyProps> = ({
   commentsCount,
   dao,
   bounty,
-  tokens,
   proposal,
   className,
   toggleCreateProposal,
@@ -83,11 +79,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
               }
             }}
             activeInfoView={showInfoPanel}
-            content={
-              <CustomTokensContext.Provider value={{ tokens }}>
-                <ErrorBoundary>{contentNode}</ErrorBoundary>
-              </CustomTokensContext.Provider>
-            }
+            content={<ErrorBoundary>{contentNode}</ErrorBoundary>}
             commentsCount={commentsNum}
             toggleInfoPanel={setShowInfoPanel}
           />

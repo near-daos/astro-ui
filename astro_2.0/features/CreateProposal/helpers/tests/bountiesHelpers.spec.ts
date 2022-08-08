@@ -11,7 +11,7 @@ import {
   CreateBountyInput,
   BondsAndDeadlinesData,
 } from 'astro_2.0/features/CreateProposal/types';
-import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { Tokens } from 'types/token';
 
 describe('bountiesHelpers', () => {
   describe('getCompleteBountyProposal', () => {

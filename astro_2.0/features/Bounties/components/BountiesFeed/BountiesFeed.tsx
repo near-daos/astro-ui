@@ -19,7 +19,7 @@ import { Loader } from 'components/loader';
 import { ViewBounty } from 'astro_2.0/features/ViewBounty';
 import { SearchInput } from 'astro_2.0/components/SearchInput';
 
-import { Tokens } from 'context/CustomTokensContext';
+import { Tokens } from 'types/token';
 import { useWalletContext } from 'context/WalletContext';
 import { HideBountyContextProvider } from 'astro_2.0/features/Bounties/components/HideBountyContext';
 
@@ -53,11 +53,7 @@ const FEED_OPTIONS = [
   },
 ];
 
-export const BountiesFeed: FC<BountiesFeedProps> = ({
-  initialData,
-  dao,
-  tokens,
-}) => {
+export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
   const { accountId } = useWalletContext();
   const { t } = useTranslation();
   const isMounted = useMountedState();
@@ -201,13 +197,12 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({
                       key={bountyContext.id}
                       className={styles.bountyCardWrapper}
                     >
-                      {dao && tokens && (
+                      {dao && (
                         <ViewBounty
                           contextId={bountyContext.id}
                           commentsCount={bountyContext.commentsCount}
                           dao={dao}
                           bounty={bountyContext.bounty}
-                          tokens={tokens}
                           proposal={bountyContext.proposal}
                           initialInfoPanelView={null}
                         />

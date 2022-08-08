@@ -13,7 +13,6 @@ import { ViewBounty } from 'astro_2.0/features/ViewBounty/ViewBounty';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import styles from './BountyPage.module.scss';
 
@@ -33,7 +32,6 @@ const BountyPage: NextPage<BountyPageProps> = ({
   dao,
 }) => {
   const router = useRouter();
-  const { tokens } = useDaoCustomTokens();
   const { bounty, commentsCount } = bountyContext; // prepareBountyObject(bountyContext);
 
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
@@ -74,17 +72,12 @@ const BountyPage: NextPage<BountyPageProps> = ({
           dao={dao}
           bounty={bounty}
           proposal={proposal}
-          tokens={tokens}
           commentsCount={commentsCount}
           className={styles.bountyInfo}
           initialInfoPanelView="claims"
         />
         {bountyDoneProposal && (
-          <ViewProposal
-            proposal={bountyDoneProposal}
-            showFlag={false}
-            tokens={tokens}
-          />
+          <ViewProposal proposal={bountyDoneProposal} showFlag={false} />
         )}
       </NestedDaoPageWrapper>
     </>

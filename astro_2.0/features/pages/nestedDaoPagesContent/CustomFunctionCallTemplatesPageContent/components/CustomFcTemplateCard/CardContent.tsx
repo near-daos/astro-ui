@@ -20,8 +20,8 @@ import {
 } from 'services/sputnik/constants';
 
 import {
+  useAllTokenOptions,
   useDepositWidth,
-  useTokenOptions,
 } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/hooks';
 
 import styles from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/CustomFcTemplateCard.module.scss';
@@ -53,7 +53,7 @@ export const CardContent: FC<Props> = ({
   const [expanded, setExpanded] = useState(defaultExpanded);
   const [showModal] = useModal(ConfirmModal);
   const depositWidth = useDepositWidth('deposit');
-  const { tokenOptions, selectedTokenData } = useTokenOptions();
+  const { tokenOptions, selectedTokenData } = useAllTokenOptions();
 
   const handleDelete = useCallback(async () => {
     const res = await showModal();

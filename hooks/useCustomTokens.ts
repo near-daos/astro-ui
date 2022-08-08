@@ -4,7 +4,7 @@ import { SputnikHttpService } from 'services/sputnik';
 import { useRouter } from 'next/router';
 import { Token } from 'types/token';
 import reduce from 'lodash/reduce';
-import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { Tokens } from 'context/types';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 function normalizeTokens(tkns: Token[]): Tokens {

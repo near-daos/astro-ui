@@ -4,7 +4,7 @@ import {
 } from 'services/sputnik/constants';
 import { formatYoktoValue } from 'utils/format';
 import { ProposalTemplate } from 'types/proposalTemplate';
-import { Tokens } from 'context/CustomTokensContext';
+import { Tokens } from 'types/token';
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 import { getFormInitialValues } from 'astro_2.0/features/CreateProposal/helpers/initialValues';
 import { ProposalVariant } from 'types/proposal';

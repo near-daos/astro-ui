@@ -6,7 +6,7 @@ import { DaoContext } from 'types/context';
 import { DAO } from 'types/dao';
 
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 import { BackButton } from 'astro_2.0/features/ViewProposal/components/BackButton';

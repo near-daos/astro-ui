@@ -11,7 +11,7 @@ import { UpgradeSteps } from 'types/settings';
 import { DaoContext } from 'types/context';
 import { ProposalType } from 'types/proposal';
 
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 import { useWalletContext } from 'context/WalletContext';

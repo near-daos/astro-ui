@@ -12,8 +12,6 @@ import {
   getContentNode,
   getProposalVariantLabel,
 } from 'astro_2.0/features/ViewProposal/helpers';
-import { Tokens } from 'context/CustomTokensContext';
-import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { CompareProposalContext } from 'astro_2.0/features/ViewProposal/components/HistorySelector/components/CompareProposalContext';
 
 import { formatISODate } from 'utils/format';
@@ -23,12 +21,11 @@ import styles from './CompareProposal.module.scss';
 interface Props {
   current: ProposalFeedItem;
   content?: string;
-  tokens: Tokens;
   view: 'prev' | 'current' | null;
 }
 
 export const CompareProposal = React.forwardRef<HTMLDivElement, Props>(
-  ({ current, tokens, view, content }, ref) => {
+  ({ current, view, content }, ref) => {
     const {
       proposalVariant,
       kind: { type },
@@ -92,11 +89,7 @@ export const CompareProposal = React.forwardRef<HTMLDivElement, Props>(
                 </div>
               </div>
 
-              <div className={styles.contentCell}>
-                <CustomTokensContext.Provider value={{ tokens }}>
-                  {contentNode}
-                </CustomTokensContext.Provider>
-              </div>
+              <div className={styles.contentCell}>{contentNode}</div>
             </div>
           )}
         </CompareProposalContext.Provider>

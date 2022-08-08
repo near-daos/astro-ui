@@ -7,7 +7,7 @@ import {
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { Icon } from 'components/Icon';
 
-import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { useAllCustomTokens } from 'context/AllTokensContext';
 
 import { formatYoktoValue } from 'utils/format';
 
@@ -33,7 +33,7 @@ export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
   json,
   deposit,
 }) => {
-  const { tokens } = useCustomTokensContext();
+  const { tokens } = useAllCustomTokens();
   const { t } = useTranslation();
   const isStream = useRoketoStreamCheck(json);
 

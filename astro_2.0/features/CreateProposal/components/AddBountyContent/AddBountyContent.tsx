@@ -7,7 +7,7 @@ import { Input } from 'components/inputs/Input';
 import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
 import { Icon } from 'components/Icon';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
-import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 
 import { getAmountFieldWidth } from './utils';
@@ -17,7 +17,7 @@ import styles from './AddBountyContent.module.scss';
 export const AddBountyContent: FC = () => {
   const { t } = useTranslation();
   const { register, setValue, getValues, watch } = useFormContext();
-  const { tokens } = useCustomTokensContext();
+  const { tokens } = useDaoCustomTokens();
   const amount = watch('amount');
 
   const tokenOptions = Object.values(tokens).map(token => ({

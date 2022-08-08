@@ -1,0 +1,14 @@
+@import 'styles/typography';
+
+.warningWrapper {
+  margin-top: 32px;
+}
+
+.title {
+  @extend %title3;
+  margin-bottom: 4px;
+}
+
+.text {
+  @extend %caption1;
+}

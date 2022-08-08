@@ -19,7 +19,9 @@ export const useDaoSettings = (): IDaoSettingContext => {
   const context = useContext(DaoSettingsContext);
 
   if (context === undefined) {
-    throw new Error('useDaoSettings was used outside of its Provider');
+    throw new Error(
+      'useDaoSettings was used outside of its DaoSettingsContext provider'
+    );
   }
 
   return context;

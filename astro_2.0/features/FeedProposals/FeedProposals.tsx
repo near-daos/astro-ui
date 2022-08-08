@@ -33,7 +33,6 @@ import { Chip } from 'astro_2.0/components/Chip';
 
 // Hooks
 import { useWalletContext } from 'context/WalletContext';
-import { useAllCustomTokens } from 'hooks/useCustomTokens';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 import { getStatusFilterOptions } from 'astro_2.0/features/Proposals/helpers/getStatusFilterOptions';
 
@@ -69,7 +68,6 @@ export const FeedProposals = ({
   const [chips, setChips] = useState<string[]>([]);
   const neighbourRef = useRef(null);
   const { query, replace, pathname } = useRouter();
-  const { tokens: allTokens } = useAllCustomTokens();
   const { t } = useTranslation();
   const isMounted = useMountedState();
 
@@ -360,7 +358,6 @@ export const FeedProposals = ({
                       <ViewProposal
                         proposal={proposal}
                         showFlag={showFlag}
-                        tokens={allTokens}
                         onSelect={onSelect}
                         selectedList={selectedList}
                       />

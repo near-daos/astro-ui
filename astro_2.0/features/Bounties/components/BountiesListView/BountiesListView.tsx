@@ -7,7 +7,7 @@ import { prepareBountiesPageContent } from 'astro_2.0/features/Bounties/helpers'
 import { MobileListView } from 'astro_2.0/features/Bounties/components/BountiesListView/components/MobileListView';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
-import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { Tokens } from 'types/token';
 import { HideBountyContextProvider } from 'astro_2.0/features/Bounties/components/HideBountyContext/HideBountyContext';
 
 import { DAO } from 'types/dao';

@@ -6,8 +6,6 @@ import { Button } from 'components/button/Button';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 import { CompareVersionsModal } from 'astro_2.0/features/ViewProposal/components/HistorySelector/components/CompareVersionsModal';
 
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
-
 import { ProposalFeedItem } from 'types/proposal';
 
 import { formatISODate } from 'utils/format';
@@ -19,7 +17,6 @@ interface Props {
 }
 
 export const HistorySelector: FC<Props> = ({ data }) => {
-  const { tokens } = useDaoCustomTokens();
   const currentVersion = data[data.length - 1];
   const [open, setOpen] = useState(false);
 
@@ -27,9 +24,9 @@ export const HistorySelector: FC<Props> = ({ data }) => {
 
   const handleCompare = useCallback(
     async prevVersionInd => {
-      await showModal({ data, index: prevVersionInd, tokens });
+      await showModal({ data, index: prevVersionInd });
     },
-    [data, showModal, tokens]
+    [data, showModal]
   );
 
   return (

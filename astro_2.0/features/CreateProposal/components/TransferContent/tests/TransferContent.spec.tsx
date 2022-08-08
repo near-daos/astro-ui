@@ -4,7 +4,7 @@ import { render } from 'jest/testUtils';
 import { fireEvent } from '@testing-library/dom';
 import { useFormContext } from 'react-hook-form';
 
-import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
 import { TransferContent } from 'astro_2.0/features/CreateProposal/components/TransferContent';
 
@@ -26,9 +26,9 @@ jest.mock('react-hook-form', () => {
   };
 });
 
-jest.mock('astro_2.0/features/CustomTokens/CustomTokensContext', () => {
+jest.mock('context/DaoTokensContext', () => {
   return {
-    useCustomTokensContext: jest.fn(),
+    useDaoCustomTokens: jest.fn(),
   };
 });
 
@@ -52,7 +52,7 @@ describe('TransferContent', () => {
 
   it('Should render component', () => {
     // @ts-ignore
-    useCustomTokensContext.mockImplementation(() => ({ tokens }));
+    useDaoCustomTokens.mockImplementation(() => ({ tokens }));
 
     const { getByText } = render(<TransferContent />);
 
@@ -61,7 +61,7 @@ describe('TransferContent', () => {
 
   it('Should render loader if no tokens', () => {
     // @ts-ignore
-    useCustomTokensContext.mockImplementation(() => ({
+    useDaoCustomTokens.mockImplementation(() => ({
       tokens: {},
     }));
 
@@ -80,7 +80,7 @@ describe('TransferContent', () => {
     }));
 
     // @ts-ignore
-    useCustomTokensContext.mockImplementation(() => ({ tokens }));
+    useDaoCustomTokens.mockImplementation(() => ({ tokens }));
 
     const { getByText } = render(<TransferContent />);
 

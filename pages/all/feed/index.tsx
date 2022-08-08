@@ -20,6 +20,7 @@ import { FeedLayout } from 'astro_3.0/features/FeedLayout';
 import { MainLayout } from 'astro_3.0/features/MainLayout';
 import { ProposalsFeed } from 'astro_3.0/features/ProposalsFeed';
 import { Page } from 'pages/_app';
+import { AllTokensProvider } from 'context/AllTokensContext';
 
 const GlobalFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
   const { appVersion } = useAppVersion();
@@ -29,11 +30,13 @@ const GlobalFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
       <Head>
         <title>My proposals feed</title>
       </Head>
-      {appVersion === 3 ? (
-        <ProposalsFeed {...props} />
-      ) : (
-        <Feed {...props} title="Global Feed" />
-      )}
+      <AllTokensProvider>
+        {appVersion === 3 ? (
+          <ProposalsFeed {...props} />
+        ) : (
+          <Feed {...props} title="Global Feed" />
+        )}
+      </AllTokensProvider>
     </>
   );
 };
