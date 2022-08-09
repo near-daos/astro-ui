@@ -29,7 +29,11 @@ export const DraftInfoItem: FC<DraftInfoItemProps> = ({
     <>
       <div className={styles.count}>{count}</div>
       {tooltipText ? (
-        <Tooltip placement="top" overlay={<span>Save Draft</span>}>
+        <Tooltip
+          placement="top"
+          overlay={<span>Save Draft</span>}
+          popupClassName={styles.tooltip}
+        >
           {icon}
         </Tooltip>
       ) : (
