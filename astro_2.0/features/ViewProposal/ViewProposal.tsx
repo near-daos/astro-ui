@@ -98,6 +98,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   const contentNode = getContentNode(proposal);
 
   const { canApprove, canReject } = proposal.permissions;
+
   const voted =
     proposal.votes[accountId] === 'Yes' ||
     proposal.votes[accountId] === 'No' ||
