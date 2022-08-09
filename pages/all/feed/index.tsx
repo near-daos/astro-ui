@@ -60,12 +60,9 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   typeof Feed
 >> = async ({ query, locale = 'en' }) => {
   const accountId = CookieService.get(ACCOUNT_COOKIE);
-  const lastFeedStatus = ''; // CookieService.get(FEED_STATUS_COOKIE);
   const {
     category,
-    status = !lastFeedStatus || lastFeedStatus === 'voteNeeded'
-      ? ProposalsFeedStatuses.Active
-      : lastFeedStatus,
+    status = ProposalsFeedStatuses.Active,
   } = query as ProposalsQueries;
   const res = await SputnikHttpService.getProposalsList({
     category,
