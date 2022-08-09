@@ -323,6 +323,7 @@ export function getFormInitialValues(
     result.title = initialValues.title || '';
     result.details = initialValues.description || '';
     result.description = initialValues.description || '';
+    result.gas = DEFAULT_PROPOSAL_GAS;
   }
 
   return result;
