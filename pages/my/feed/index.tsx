@@ -60,10 +60,9 @@ MyFeedPage.getLayout = function getLayout(page: ReactNode) {
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   typeof Feed
 >> = async ({ query, locale = 'en' }) => {
-  const lastFeedStatus = ''; // CookieService.get(FEED_STATUS_COOKIE);
   const {
     category,
-    status = lastFeedStatus || ProposalsFeedStatuses.All,
+    status = ProposalsFeedStatuses.VoteNeeded,
   } = query as ProposalsQueries;
   const accountId = CookieService.get(ACCOUNT_COOKIE);
 
