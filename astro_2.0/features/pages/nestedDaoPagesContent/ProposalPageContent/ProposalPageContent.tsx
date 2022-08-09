@@ -49,7 +49,11 @@ export const ProposalPageContent: FC<Props> = ({
   return (
     <>
       <div className={styles.proposalInfo}>
-        <ViewProposal proposal={proposal} showFlag={false} />
+        <ViewProposal
+          proposal={proposal}
+          showFlag={false}
+          userPermissions={daoContext.userPermissions}
+        />
       </div>
       <div className={styles.votes}>
         <div className={styles.voteTitle}>{t('proposalVotes.title')}</div>

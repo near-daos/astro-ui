@@ -193,6 +193,48 @@ export function getAllowedProposalsToVote(
             result[ProposalType.AddMemberToRole] = true;
             break;
           }
+          case 'config:VoteApprove':
+          case 'config:VoteReject':
+          case 'config:VoteRemove': {
+            result[ProposalType.ChangeConfig] = true;
+            break;
+          }
+
+          case 'bounty_done:VoteApprove':
+          case 'bounty_done:VoteReject':
+          case 'bounty_done:VoteRemove': {
+            result[ProposalType.BountyDone] = true;
+            break;
+          }
+
+          case 'call:VoteApprove':
+          case 'call:VoteReject':
+          case 'call:VoteRemove': {
+            result[ProposalType.FunctionCall] = true;
+            break;
+          }
+
+          case 'set_vote_token:VoteApprove':
+          case 'set_vote_token:VoteReject':
+          case 'set_vote_token:VoteRemove': {
+            result[ProposalType.SetStakingContract] = true;
+            break;
+          }
+
+          case 'upgrade_remote:VoteApprove':
+          case 'upgrade_remote:VoteReject':
+          case 'upgrade_remote:VoteRemove': {
+            result[ProposalType.UpgradeRemote] = true;
+            break;
+          }
+
+          case 'upgrade_self:VoteApprove':
+          case 'upgrade_self:VoteReject':
+          case 'upgrade_self:VoteRemove': {
+            result[ProposalType.UpgradeSelf] = true;
+            break;
+          }
+
           case 'policy:VoteApprove':
           case 'policy:VoteReject':
           case 'policy:VoteRemove': {
