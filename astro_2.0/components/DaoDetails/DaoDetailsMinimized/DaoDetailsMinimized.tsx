@@ -95,17 +95,20 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
               <div className={styles.flagWrapper}>
                 <DaoLogo size="md" src={dao.flagLogo} className={styles.logo} />
               </div>
+
               <div>
                 <div className={styles.displayName}>
                   <div className={styles.name}>
                     {shortenString(dao.displayName, isXsMobile ? 25 : 40)}
                   </div>
+
                   <ExplorerLink
                     linkData={dao.id}
                     linkType="member"
                     className={styles.explorerLink}
                   />
                 </div>
+
                 <div className={styles.daoId}>
                   <CopyButton
                     text={dao.id}
@@ -121,9 +124,11 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
             </section>
           </a>
         </Link>
+
         <section className={styles.controls}>
           {flags.delegateVoting && daoHasGovernanceTokenConfigured && (
             <ActionButton
+              href={url.delegates}
               iconName="delegate"
               onClick={() => handleChapterClick(url.delegates)}
               className={generateChapterStyle('delegates')}
@@ -133,6 +138,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           )}
           {flags.draftProposals && (
             <ActionButton
+              href={url.drafts}
               iconName="sheet"
               onClick={() => handleChapterClick(url.drafts)}
               className={generateChapterStyle('drafts')}
@@ -140,49 +146,63 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
               {t('daoDetailsMinimized.drafts')}
             </ActionButton>
           )}
+
           <ActionButton
+            href={url.proposals}
             iconName="pencil"
             onClick={() => handleChapterClick(url.proposals)}
             className={generateChapterStyle('proposals')}
           >
             {t('daoDetailsMinimized.proposals')}
           </ActionButton>
+
           <ActionButton
+            href={url.funds}
             iconName="funds"
             onClick={() => handleChapterClick(url.funds)}
             className={generateChapterStyle('tokens')}
           >
             {t('daoDetailsMinimized.funds')}
           </ActionButton>
+
           <ActionButton
+            href={url.members}
             iconName="groups"
             onClick={() => handleChapterClick(url.members)}
             className={generateChapterStyle('groups')}
           >
             {t('daoDetailsMinimized.members')}
           </ActionButton>
+
           <ActionButton
+            href={url.settings}
             iconName="settings"
             onClick={() => handleChapterClick(url.settings)}
             className={generateChapterStyle('settings')}
           >
             {t('daoDetailsMinimized.settings')}
           </ActionButton>
+
           <ActionButton
+            href={url.nfts}
             iconName="nfts"
             onClick={() => handleChapterClick(url.nfts)}
             className={generateChapterStyle('nfts')}
           >
             {t('daoDetailsMinimized.nfts')}
           </ActionButton>
+
           <ActionButton
+            href={url.bounties}
             iconName="proposalBounty"
             onClick={() => handleChapterClick(url.bounties)}
             className={generateChapterStyle('bounties')}
           >
             {t('daoDetailsMinimized.bounties')}
           </ActionButton>
+
           <ActionButton
+            href={url.polls}
             iconName="proposalPoll"
             onClick={() => handleChapterClick(url.polls)}
             className={generateChapterStyle('polls')}
