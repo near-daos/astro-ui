@@ -23,7 +23,6 @@ import { AppMonitoring } from 'astro_2.0/features/AppMonitoring/AppMonitoring';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 import { useAppInitialize } from 'hooks/useAppInitialize';
 import { FeatureFlagsProvider } from 'astro_2.0/features/FeatureFlagsProvider/FeatureFlagsProvider';
-import { MainLayout } from 'astro_3.0/features/MainLayout';
 
 import 'styles/globals.scss';
 
@@ -39,9 +38,7 @@ type MyAppProps<P = {}> = AppProps<P> & {
   Component: Page<P>;
 };
 
-const defaultGetLayout: GetLayout = (page: ReactNode): ReactNode => (
-  <MainLayout>{page}</MainLayout>
-);
+const defaultGetLayout: GetLayout = (page: ReactNode): ReactNode => page;
 
 function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
   const router = useRouter();

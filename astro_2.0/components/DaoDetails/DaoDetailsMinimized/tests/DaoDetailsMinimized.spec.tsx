@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { render, screen } from '@testing-library/react';
-import { useRouter } from 'next/router';
-import { fireEvent } from '@testing-library/dom';
 
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails/DaoDetailsMinimized';
 
@@ -101,58 +99,6 @@ describe('dao details minimized', () => {
 
     expect(screen.getByTestId('createProposal')).toBeInTheDocument();
     expect(screen.getByTestId('createProposal')).toBeVisible();
-  });
-
-  it.each`
-    button          | url
-    ${'.proposals'} | ${`/dao/${daoMock.id}/proposals`}
-    ${'.funds'}     | ${`/dao/${daoMock.id}/treasury/tokens`}
-    ${'.members'}   | ${`/dao/${daoMock.id}/groups/all`}
-    ${'.settings'}  | ${`/dao/${daoMock.id}/governance/settings`}
-    ${'.nfts'}      | ${`/dao/${daoMock.id}/treasury/nfts`}
-    ${'.bounties'}  | ${`/dao/${daoMock.id}/tasks/bounties/list`}
-    ${'.polls'}     | ${`/dao/${daoMock.id}/tasks/polls`}
-  `(
-    'Should navigate to proper url when user click "$button" action button',
-    ({ button, url }) => {
-      const router = {
-        push: jest.fn(),
-        asPath: '',
-      };
-
-      // @ts-ignore
-      useRouter.mockImplementation(() => router);
-
-      const { getByText } = render(
-        <DaoDetailsMinimized dao={daoMock} userPermissions={permissions} />
-      );
-
-      const actionButton = getByText(button, { exact: false });
-
-      fireEvent.click(actionButton);
-
-      expect(router.push).toBeCalledWith(url);
-    }
-  );
-
-  it('Should not redirect user if he is on the page where action button redirects', () => {
-    const router = {
-      push: jest.fn(),
-      asPath: `/dao/${daoMock.id}/proposals`,
-    };
-
-    // @ts-ignore
-    useRouter.mockImplementation(() => router);
-
-    const { getByText } = render(
-      <DaoDetailsMinimized dao={daoMock} userPermissions={permissions} />
-    );
-
-    const actionButton = getByText('.proposals', { exact: false });
-
-    fireEvent.click(actionButton);
-
-    expect(router.push).not.toBeCalled();
   });
 });
 

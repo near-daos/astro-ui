@@ -11,12 +11,16 @@ interface ExternalLinkProps {
   to: string;
   icon?: IconName;
   linkClassName?: string;
+  iconClassName?: string;
+  hideLinkLable?: boolean;
 }
 
 export const ExternalLink: FC<ExternalLinkProps> = ({
   to,
   icon,
   linkClassName,
+  hideLinkLable,
+  iconClassName,
 }) => {
   const [linkTitle, setLinkTitle] = useState('');
 
@@ -51,12 +55,13 @@ export const ExternalLink: FC<ExternalLinkProps> = ({
       <Icon
         name={icon || 'buttonExternal'}
         width={20}
-        className={styles.icon}
+        className={cn(styles.icon, iconClassName)}
       />
-      &nbsp;
-      <span className={cn('body2', styles.text, linkClassName)}>
-        {linkTitle}
-      </span>
+      {!hideLinkLable && (
+        <span className={cn('body2', styles.text, linkClassName)}>
+          {linkTitle}
+        </span>
+      )}
     </a>
   );
 };

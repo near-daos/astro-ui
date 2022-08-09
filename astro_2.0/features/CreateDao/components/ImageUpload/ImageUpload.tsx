@@ -3,7 +3,14 @@ import classNames from 'classnames';
 import { useMount, useToggle } from 'react-use';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
-import React, { PropsWithRef, ReactNode, RefObject, useState } from 'react';
+import React, {
+  PropsWithRef,
+  ReactNode,
+  RefObject,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 
 import { DaoImageType } from 'astro_2.0/features/CreateDao/components/types';
 
@@ -20,7 +27,7 @@ export interface ImageUploadProps<T extends Element> {
   showPreview?: boolean;
   control?: ReactNode;
   className?: string;
-  onSelect?: (value: FileList) => void;
+  onSelect?: (value: FileList, isDrop?: boolean) => void;
 }
 
 export const ImageUpload = <T extends Element>(
@@ -59,19 +66,50 @@ export const ImageUpload = <T extends Element>(
     ? t('common.clickToChangeImage')
     : t('common.clickToUploadImage');
 
+  const previewStyles = useMemo(() => {
+    return {
+      backgroundImage: `url(${getImageFromImageFileList(imageFileList)})`,
+    };
+  }, [imageFileList]);
+
+  const handleDragOver = useCallback(e => {
+    e.stopPropagation();
+    e.preventDefault();
+  }, []);
+
+  const handleChange = useCallback(
+    e => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      onChange(e);
+
+      if (onSelect && e.target.files) {
+        onSelect(e.target.files);
+      }
+    },
+    [onChange, onSelect]
+  );
+
+  const handleDrop = useCallback(
+    e => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      if (onSelect && e.dataTransfer.files) {
+        onSelect(e.dataTransfer.files, true);
+      }
+    },
+    [onSelect]
+  );
+
   function renderInput() {
     const inputEl = (
       <input
         id={id}
         type="file"
         {...inputProps}
-        onChange={e => {
-          onChange(e);
-
-          if (onSelect && e.target.files) {
-            onSelect(e.target.files);
-          }
-        }}
+        onChange={handleChange}
         className={styles.uploadInput}
         accept="image/gif, image/jpeg, image/png"
       />
@@ -95,6 +133,8 @@ export const ImageUpload = <T extends Element>(
       className={classNames(styles.root, className)}
       onMouseEnter={toggleShow}
       onMouseLeave={toggleShow}
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
     >
       {renderInput()}
       {showPreview && (
@@ -102,9 +142,7 @@ export const ImageUpload = <T extends Element>(
           className={classNames(styles.image, {
             [styles.logo]: fieldName === 'flagLogo',
           })}
-          style={{
-            backgroundImage: `url(${getImageFromImageFileList(imageFileList)})`,
-          }}
+          style={previewStyles}
         />
       )}
 

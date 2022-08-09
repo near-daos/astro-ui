@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import isEmpty from 'lodash/isEmpty';
 import { GetServerSideProps } from 'next';
 
 import { ProposalsFeedStatuses } from 'types/proposal';
@@ -75,7 +74,7 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
     };
   }
 
-  const res = await SputnikHttpService.getProposalsListByAccountId(
+  let res = await SputnikHttpService.getProposalsListByAccountId(
     {
       category,
       status,
@@ -87,13 +86,26 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   );
 
   // If no proposals found and it is not because of filter -> redirect to global feed
-  if (isEmpty(query) && res?.data?.length === 0) {
-    return {
-      redirect: {
-        destination: ALL_FEED_URL,
-        permanent: true,
+  if (res?.data?.length === 0) {
+    res = await SputnikHttpService.getProposalsListByAccountId(
+      {
+        category,
+        status: ProposalsFeedStatuses.All,
+        limit: LIST_LIMIT_DEFAULT,
+        daoFilter: 'All DAOs',
+        accountId,
       },
-    };
+      accountId
+    );
+
+    if (res?.data?.length === 0) {
+      return {
+        redirect: {
+          destination: ALL_FEED_URL,
+          permanent: true,
+        },
+      };
+    }
   }
 
   return {

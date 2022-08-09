@@ -3,14 +3,15 @@ import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import { useMedia } from 'react-use';
 import { useFlags } from 'launchdarkly-react-client-sdk';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import { DAO } from 'types/dao';
+import { ProposalVariant } from 'types/proposal';
 
 import { JoinDaoButton } from 'astro_2.0/features/DaoDashboardHeader/components/JoinDaoButton';
 import { FollowButton } from 'astro_2.0/features/DaoDashboardHeader/components/FollowButton';
-import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 import { ShowMoreLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks/components/ShowMoreLinks';
-import { CopyButton } from 'astro_2.0/components/CopyButton';
+import { DaoLetterHeadSection } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLetterHeadSection';
 
 import { useWalletContext } from 'context/WalletContext';
 import { UserPermissions } from 'types/context';
@@ -22,12 +23,18 @@ import { CloneDaoWarning } from 'astro_2.0/features/DaoDashboardHeader/component
 
 import { useJoinDao } from 'astro_2.0/features/DaoDashboardHeader/components/hooks';
 
+import { DaoHeaderContent } from 'astro_2.0/features/DaoDashboardHeader/components/DaoHeaderContent';
+import { useAppVersion } from 'hooks/useAppVersion';
+
 import styles from './DaoDashboardHeader.module.scss';
 
 interface DaoDashboardHeaderProps {
   dao: DAO;
   className?: string;
-  onCreateProposal: () => void;
+  onCreateProposal: (
+    variant: ProposalVariant,
+    initialValues: Record<string, unknown>
+  ) => void;
   userPermissions: UserPermissions;
 }
 
@@ -42,17 +49,24 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
     displayName,
     legal,
     daoMembersList,
-    flagCover,
-    flagLogo,
     members,
     description,
     links,
-    daoVersion,
   } = dao;
   const flags = useFlags();
   const { accountId } = useWalletContext();
   const { t } = useTranslation();
+  const { appVersion } = useAppVersion();
+  const isNextVersion = appVersion === 3;
   const isMobileOrTablet = useMedia('(max-width: 767px)');
+
+  const methods = useForm<{
+    flagCover: FileList;
+    flagLogo: FileList;
+    defaultFlag: string;
+  }>({
+    mode: 'onChange',
+  });
 
   const { showButton: showJoinButton, showWarning } = useJoinDao(
     id,
@@ -62,94 +76,93 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
   const showFollowButton = !daoMembersList.includes(accountId);
 
   return (
-    <div
-      className={cn(styles.root, className, {
-        [styles.hideFollow]: !showFollowButton,
-      })}
-    >
-      <section
-        className={styles.letterHeadSection}
-        style={{
-          backgroundImage: `url(${flagCover || '/flags/defaultDaoFlag.png'})`,
-        }}
-      >
-        <DaoLogo src={flagLogo} className={styles.logo} />
-        {daoVersion && (
-          <div className={styles.currentDaoVersion}>
-            DAO Version:&nbsp;<b>{daoVersion?.version.join('.')}</b>
-            <CopyButton
-              defaultTooltip="Copy hash"
-              text={daoVersion.hash}
-              className={styles.copyHash}
-              iconClassName={styles.copyIcon}
-            />
-          </div>
-        )}
-      </section>
+    <FormProvider {...methods}>
+      <DaoLetterHeadSection
+        dao={dao}
+        onCreateProposal={onCreateProposal}
+        userPermissions={userPermissions}
+      />
+      {isNextVersion ? (
+        <DaoHeaderContent
+          dao={dao}
+          onCreateProposal={onCreateProposal}
+          userPermissions={userPermissions}
+          className={className}
+        />
+      ) : (
+        <div
+          className={cn(styles.root, className, {
+            [styles.hideFollow]: !showFollowButton,
+          })}
+        >
+          <section className={styles.usersSection}>
+            <div className={styles.label}>{t('members')}</div>
+            <div className={styles.value}>{members}</div>
+          </section>
 
-      <section className={styles.usersSection}>
-        <div className={styles.label}>{t('members')}</div>
-        <div className={styles.value}>{members}</div>
-      </section>
+          {(showFollowButton || showJoinButton || !isMobileOrTablet) && (
+            <section className={styles.followSection}>
+              {showJoinButton && (
+                <JoinDaoButton
+                  onClick={onCreateProposal}
+                  className={styles.joinDao}
+                />
+              )}
+              {showFollowButton && (
+                <FollowButton daoId={id} daoName={displayName} />
+              )}
+              {!isMobileOrTablet && (
+                <div className={styles.link}>
+                  <ShowMoreLinks links={links} />
+                </div>
+              )}
+            </section>
+          )}
 
-      {(showFollowButton || showJoinButton || !isMobileOrTablet) && (
-        <section className={styles.followSection}>
-          {showJoinButton && (
-            <JoinDaoButton
-              onClick={onCreateProposal}
-              className={styles.joinDao}
-            />
-          )}
-          {showFollowButton && (
-            <FollowButton daoId={id} daoName={displayName} />
-          )}
-          {!isMobileOrTablet && (
+          {isMobileOrTablet && (
             <div className={styles.link}>
-              <ShowMoreLinks links={links} />
+              <DaoLinks links={links} legal={legal} />
             </div>
           )}
-        </section>
-      )}
 
-      {isMobileOrTablet && (
-        <div className={styles.link}>
-          <DaoLinks links={links} legal={legal} />
+          <section className={styles.depositSection}>
+            <DepositToDaoForm daoId={id} />
+          </section>
+
+          {description && (
+            <section className={styles.descriptionSection}>
+              {description}
+            </section>
+          )}
+
+          <div className={styles.warningWrapper}>
+            {showWarning && (
+              <DaoWarning
+                content={
+                  <>
+                    <div className={styles.title}>
+                      Your request to join is pending
+                    </div>
+                    <div className={styles.text}>
+                      If your membership request is approved, you will be
+                      notified.
+                    </div>
+                  </>
+                }
+                className={styles.warning}
+              />
+            )}
+
+            {flags.cloneDaoFlow && (
+              <CloneDaoWarning
+                dao={dao}
+                className={styles.warning}
+                onCreateProposal={onCreateProposal}
+              />
+            )}
+          </div>
         </div>
       )}
-
-      <section className={styles.depositSection}>
-        <DepositToDaoForm daoId={id} />
-      </section>
-
-      {description && (
-        <section className={styles.descriptionSection}>{description}</section>
-      )}
-
-      <div className={styles.warningWrapper}>
-        {showWarning && (
-          <DaoWarning
-            content={
-              <>
-                <div className={styles.title}>
-                  Your request to join is pending
-                </div>
-                <div className={styles.text}>
-                  If your membership request is approved, you will be notified.
-                </div>
-              </>
-            }
-            className={styles.warning}
-          />
-        )}
-
-        {flags.cloneDaoFlow && (
-          <CloneDaoWarning
-            dao={dao}
-            className={styles.warning}
-            onCreateProposal={onCreateProposal}
-          />
-        )}
-      </div>
-    </div>
+    </FormProvider>
   );
 };

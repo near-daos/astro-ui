@@ -4,7 +4,7 @@
 .root {
   background: var(--color-white);
   display: none;
-  //filter: drop-shadow(3px 4px 8px rgba(0, 0, 0, 0.05));
+  filter: drop-shadow(3px 4px 8px rgba(0, 0, 0, 0.05));
   flex-direction: column;
   left: 0;
   min-height: calc(100vh - var(--app-header-height));

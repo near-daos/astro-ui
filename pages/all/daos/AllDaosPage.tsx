@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useRouter } from 'next/router';
 import { TFunction, useTranslation } from 'next-i18next';
@@ -19,6 +19,7 @@ import { Icon } from 'components/Icon';
 import { useRouterLoading } from 'hooks/useRouterLoading';
 
 import { Page } from 'pages/_app';
+import { MainLayout } from 'astro_3.0/features/MainLayout';
 
 import styles from './AllDaosPage.module.scss';
 
@@ -219,6 +220,10 @@ const AllDaosPage: Page<BrowseAllDaosProps> = ({
       </InfiniteScroll>
     </DaosList>
   );
+};
+
+AllDaosPage.getLayout = function getLayout(page: ReactNode) {
+  return <MainLayout>{page}</MainLayout>;
 };
 
 export default AllDaosPage;

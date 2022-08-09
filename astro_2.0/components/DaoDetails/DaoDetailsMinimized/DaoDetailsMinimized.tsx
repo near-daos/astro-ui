@@ -64,12 +64,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
 
   const activeLinkPresent = includes(url, currentPath);
 
-  const handleChapterClick = (newUrl: string) => {
-    if (newUrl !== currentPath) {
-      router.push(newUrl);
-    }
-  };
-
   const generateChapterStyle = (chapter: string) => {
     return cn(styles.controlIcon, {
       [styles.active]: currentPath.indexOf(chapter) !== -1,
@@ -130,7 +124,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
             <ActionButton
               href={url.delegates}
               iconName="delegate"
-              onClick={() => handleChapterClick(url.delegates)}
               className={generateChapterStyle('delegates')}
             >
               {t('daoDetailsMinimized.delegates')}
@@ -140,7 +133,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
             <ActionButton
               href={url.drafts}
               iconName="sheet"
-              onClick={() => handleChapterClick(url.drafts)}
               className={generateChapterStyle('drafts')}
             >
               {t('daoDetailsMinimized.drafts')}
@@ -150,7 +142,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           <ActionButton
             href={url.proposals}
             iconName="pencil"
-            onClick={() => handleChapterClick(url.proposals)}
             className={generateChapterStyle('proposals')}
           >
             {t('daoDetailsMinimized.proposals')}
@@ -159,7 +150,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           <ActionButton
             href={url.funds}
             iconName="funds"
-            onClick={() => handleChapterClick(url.funds)}
             className={generateChapterStyle('tokens')}
           >
             {t('daoDetailsMinimized.funds')}
@@ -168,7 +158,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           <ActionButton
             href={url.members}
             iconName="groups"
-            onClick={() => handleChapterClick(url.members)}
             className={generateChapterStyle('groups')}
           >
             {t('daoDetailsMinimized.members')}
@@ -177,7 +166,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           <ActionButton
             href={url.settings}
             iconName="settings"
-            onClick={() => handleChapterClick(url.settings)}
             className={generateChapterStyle('settings')}
           >
             {t('daoDetailsMinimized.settings')}
@@ -186,7 +174,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           <ActionButton
             href={url.nfts}
             iconName="nfts"
-            onClick={() => handleChapterClick(url.nfts)}
             className={generateChapterStyle('nfts')}
           >
             {t('daoDetailsMinimized.nfts')}
@@ -195,7 +182,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           <ActionButton
             href={url.bounties}
             iconName="proposalBounty"
-            onClick={() => handleChapterClick(url.bounties)}
             className={generateChapterStyle('bounties')}
           >
             {t('daoDetailsMinimized.bounties')}
@@ -204,7 +190,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           <ActionButton
             href={url.polls}
             iconName="proposalPoll"
-            onClick={() => handleChapterClick(url.polls)}
             className={generateChapterStyle('polls')}
           >
             {t('daoDetailsMinimized.polls')}

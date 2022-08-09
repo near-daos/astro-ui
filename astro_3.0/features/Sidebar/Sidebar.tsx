@@ -13,10 +13,10 @@ import { useWalletContext } from 'context/WalletContext';
 import { WalletType } from 'types/config';
 
 import {
+  ALL_DAOS_URL,
   ALL_FEED_URL,
   CFC_LIBRARY,
   CREATE_DAO_URL,
-  DISCOVER,
   MY_FEED_URL,
 } from 'constants/routing';
 
@@ -56,8 +56,8 @@ export const Sidebar: FC = () => {
       },
       {
         icon: 'sidebarDaosAndUsers',
-        label: 'DAOs and Users',
-        href: DISCOVER,
+        label: 'DAOs',
+        href: ALL_DAOS_URL,
       },
     ];
   }, [proposalActionsCount]);
