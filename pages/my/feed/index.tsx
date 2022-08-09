@@ -6,7 +6,7 @@ import { ProposalsFeedStatuses } from 'types/proposal';
 import { Feed } from 'astro_2.0/features/Feed';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import { CookieService } from 'services/CookieService';
-import { ACCOUNT_COOKIE, FEED_STATUS_COOKIE } from 'constants/cookies';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ALL_FEED_URL } from 'constants/routing';
@@ -21,6 +21,8 @@ import { ProposalsFeed } from 'astro_3.0/features/ProposalsFeed';
 import { Page } from 'pages/_app';
 import { AllTokensProvider } from 'context/AllTokensContext';
 
+import styles from './MyFeedPage.module.scss';
+
 const MyFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
   const { appVersion } = useAppVersion();
 
@@ -30,11 +32,15 @@ const MyFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
         <title>My proposals feed</title>
       </Head>
       <AllTokensProvider>
-        {appVersion === 3 ? (
-          <ProposalsFeed {...props} />
-        ) : (
-          <Feed {...props} title="My proposals feed" />
-        )}
+        <AllTokensProvider>
+          {appVersion === 3 ? (
+            <ProposalsFeed {...props} className={styles.root} />
+          ) : (
+            <MainLayout>
+              <Feed {...props} title="My proposals feed" />
+            </MainLayout>
+          )}
+        </AllTokensProvider>
       </AllTokensProvider>
     </>
   );
@@ -46,7 +52,7 @@ MyFeedPage.getLayout = function getLayout(page: ReactNode) {
   return (
     <>
       {appVersion === 3 && <FeedLayout />}
-      <MainLayout>{page}</MainLayout>
+      {page}
     </>
   );
 };
@@ -54,7 +60,7 @@ MyFeedPage.getLayout = function getLayout(page: ReactNode) {
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   typeof Feed
 >> = async ({ query, locale = 'en' }) => {
-  const lastFeedStatus = CookieService.get(FEED_STATUS_COOKIE);
+  const lastFeedStatus = ''; // CookieService.get(FEED_STATUS_COOKIE);
   const {
     category,
     status = lastFeedStatus || ProposalsFeedStatuses.All,

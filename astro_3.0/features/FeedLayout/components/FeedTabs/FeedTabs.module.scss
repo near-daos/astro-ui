@@ -8,10 +8,13 @@
 
 .tabLink {
   @extend %heading5;
+  align-items: center;
   border-bottom: 2px solid transparent;
+  display: flex;
   font-family: Inter, sans-serif;
   margin-right: 24px;
-  padding: 24px 0 12px;
+  padding: 22px 0 8px;
+  position: relative;
 
   transition: color 0.2s ease-out, border-color 0.2s ease-out;
 
@@ -19,4 +22,14 @@
     border-color: var(--color-primary);
     color: var(--color-primary);
   }
+}
+
+.actionsCount {
+  @extend %subtitle6;
+  background-color: var(--color-error-60);
+  border-radius: 10px;
+  color: var(--color-white);
+  margin-left: 4px;
+  padding: 0 4px;
+  position: relative;
 }

@@ -2,7 +2,10 @@ import React, { FC, useMemo } from 'react';
 import cn from 'classnames';
 import { useTranslation } from 'next-i18next';
 
-import { CategoriesFeedFilter } from 'astro_3.0/features/ProposalsFeed/components/CategoriesFeedFilter';
+import {
+  CategoriesFeedFilter,
+  ListItem,
+} from 'astro_3.0/features/ProposalsFeed/components/CategoriesFeedFilter';
 
 import { FEED_CATEGORIES } from 'constants/proposals';
 
@@ -18,12 +21,15 @@ interface Props {
 export const ProposalsFeedFilters: FC<Props> = ({ className }) => {
   const { t } = useTranslation();
 
-  const feedCategoriesOptions = useMemo(
+  const feedCategoriesOptions = useMemo<ListItem[]>(
     () =>
-      FEED_CATEGORIES.map(item => ({
-        ...item,
-        label: t(item.label.toLowerCase()),
-      })),
+      FEED_CATEGORIES.map(
+        item =>
+          ({
+            ...item,
+            label: t(item.label.toLowerCase()),
+          } as ListItem)
+      ),
     [t]
   );
 
@@ -31,17 +37,16 @@ export const ProposalsFeedFilters: FC<Props> = ({ className }) => {
     <div className={cn(styles.root, className)}>
       <StatusFeedFilter />
 
-      <span className={styles.separator} />
-
       <CategoriesFeedFilter
         queryName="category"
         list={feedCategoriesOptions}
         disabled={false}
+        hideAllOption
       />
 
-      <span className={cn(styles.separator, styles.last)} />
-
-      <ProposalsFeedSort />
+      <span className={styles.last}>
+        <ProposalsFeedSort />
+      </span>
     </div>
   );
 };

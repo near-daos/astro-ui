@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 
 import { Icon, IconName } from 'components/Icon';
 
+import { kFormatter } from 'utils/format';
+
 import styles from './SidebarNavItem.module.scss';
 
 interface Props {
@@ -12,6 +14,7 @@ interface Props {
   label: string;
   href: string | string[];
   externalLink?: boolean;
+  actionsCount?: number;
 }
 
 export const SidebarNavItem: FC<Props> = ({
@@ -19,9 +22,20 @@ export const SidebarNavItem: FC<Props> = ({
   label,
   href,
   externalLink,
+  actionsCount,
 }) => {
   const router = useRouter();
+  const links = Array.isArray(href) ? href : [href];
   const link = Array.isArray(href) ? href[0] : href;
+  const isActive =
+    links.reduce<string[]>((res, item) => {
+      if (router.asPath.indexOf(item) !== -1) {
+        res.push(item);
+      }
+
+      return res;
+    }, []).length > 0;
+  const iconName = (isActive ? `${icon}Filled` : icon) as IconName;
 
   const anchorProps = useMemo(() => {
     return externalLink
@@ -36,7 +50,7 @@ export const SidebarNavItem: FC<Props> = ({
   const content = (
     <a
       className={cn(styles.root, {
-        [styles.active]: router.asPath.indexOf(link) !== -1,
+        [styles.active]: isActive,
       })}
       {...anchorProps}
     >
@@ -47,7 +61,12 @@ export const SidebarNavItem: FC<Props> = ({
         data-offset="{ 'right': 10 }"
         data-delay-show="700"
       >
-        <Icon name={icon} className={cn(styles.icon)} />
+        <Icon name={iconName} className={cn(styles.icon)} />
+        {!!actionsCount && (
+          <div className={styles.actionsCount}>
+            {kFormatter(actionsCount ?? 0)}
+          </div>
+        )}
       </div>
       <div className={styles.label} data-expanded="hidden" data-value={label} />
     </a>
