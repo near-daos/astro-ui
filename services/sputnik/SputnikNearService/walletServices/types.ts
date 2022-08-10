@@ -5,6 +5,7 @@ import { ConnectedWalletAccount, transactions } from 'near-api-js';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { WalletType } from 'types/config';
 import { KeyStore } from 'near-api-js/lib/key_stores';
+import { Action } from '@near-wallet-selector/core/lib/wallet/transactions.types';
 
 export interface DaoService {
   createDao(params: CreateDaoParams): Promise<void>;
@@ -76,7 +77,7 @@ export type SignInOptions = {
 
 export type Transaction = {
   receiverId: string;
-  actions: transactions.Action[] | SenderAction[];
+  actions: transactions.Action[] | SenderAction[] | Action[];
 };
 
 export type FinalExecutionError = {
