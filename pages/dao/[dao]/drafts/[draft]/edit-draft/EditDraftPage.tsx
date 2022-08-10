@@ -1,39 +1,25 @@
-import React, { FC, useMemo, useState, useEffect } from 'react';
+import React, { FC, useMemo } from 'react';
 import Head from 'next/head';
-import isEmpty from 'lodash/isEmpty';
 
 import { DaoContext } from 'types/context';
-import { DAO } from 'types/dao';
 
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
-import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
-import { BackButton } from 'astro_2.0/features/ViewProposal/components/BackButton';
 import { DraftProposal } from 'types/draftProposal';
 import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
-import { CreateProposal } from 'astro_2.0/features/CreateProposal';
-import { getInitialFormValuesFromDraft } from 'astro_2.0/features/ViewProposal/helpers';
-import { useWalletContext } from 'context/WalletContext';
 
-import { DRAFTS_PAGE_URL } from 'constants/routing';
-
-import styles from './EditDraftPage.module.scss';
+import { EditDraftPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/EditDraftPageContent';
 
 export type CreateDraftPageProps = {
   daoContext: DaoContext;
-  dao: DAO;
   draft: DraftProposal;
 };
 
 export const EditDraftPage: FC<CreateDraftPageProps> = ({
   daoContext,
-  dao,
   draft,
 }) => {
-  const [initialValues, setInitialValues] = useState({});
-  const { tokens } = useDaoCustomTokens();
-  const { accountId } = useWalletContext();
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     daoContext.dao.id,
     daoContext.dao.displayName,
@@ -53,31 +39,6 @@ export const EditDraftPage: FC<CreateDraftPageProps> = ({
     ];
   }, [breadcrumbsConfig]);
 
-  useEffect(() => {
-    const getInitialValues = async () => {
-      if (tokens) {
-        const createdInitialValues = await getInitialFormValuesFromDraft(
-          draft?.proposalVariant,
-          (draft as unknown) as Record<string, unknown>,
-          tokens,
-          accountId || ''
-        );
-
-        setInitialValues({
-          ...createdInitialValues,
-          id: draft.id,
-          state: draft.state,
-          externalUrl: '',
-          title: draft.title,
-          description: draft.description,
-          details: draft.description,
-        });
-      }
-    };
-
-    getInitialValues();
-  }, [accountId, draft, tokens]);
-
   return (
     <>
       <Head>
@@ -85,32 +46,7 @@ export const EditDraftPage: FC<CreateDraftPageProps> = ({
       </Head>
       <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
         <DraftsDataProvider>
-          <div className={styles.draftInfo}>
-            <BackButton
-              name="Back to Draft Feed"
-              href={{
-                pathname: DRAFTS_PAGE_URL,
-                query: {
-                  dao: dao.id,
-                },
-              }}
-            />
-            {!isEmpty(initialValues) ? (
-              <CreateProposal
-                proposalVariant={draft.proposalVariant}
-                showInfo={false}
-                showClose={false}
-                showFlag={false}
-                dao={dao}
-                daoTokens={tokens}
-                onClose={() => undefined}
-                initialValues={initialValues}
-                userPermissions={daoContext.userPermissions}
-                isDraft
-                isEditDraft
-              />
-            ) : null}
-          </div>
+          <EditDraftPageContent daoContext={daoContext} draft={draft} />
         </DraftsDataProvider>
       </NestedDaoPageWrapper>
     </>

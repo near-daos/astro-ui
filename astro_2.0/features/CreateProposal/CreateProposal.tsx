@@ -237,10 +237,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         />
         {isDraft ? (
           <Button
-            disabled={
-              !methods?.formState.isDirty ||
-              Object.keys(methods.formState.errors).length > 0
-            }
+            disabled={Object.keys(methods.formState.errors).length > 0}
             capitalize
             size="small"
             className={styles.saveDraft}
