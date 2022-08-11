@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { ReactNode, useCallback, useMemo } from 'react';
 import { TFunction, useTranslation } from 'next-i18next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -18,6 +18,7 @@ import { CfcLibraryContext } from 'astro_2.0/features/pages/cfcLibrary';
 import { useWalletContext } from 'context/WalletContext';
 
 import { Page } from 'pages/_app';
+import { MainLayout } from 'astro_3.0/features/MainLayout';
 
 import styles from './CfcLibraryPage.module.scss';
 
@@ -137,6 +138,10 @@ const CfcLibraryPage: Page<Props> = ({ accountDaos }) => {
       </div>
     </div>
   );
+};
+
+CfcLibraryPage.getLayout = function getLayout(page: ReactNode) {
+  return <MainLayout>{page}</MainLayout>;
 };
 
 export default CfcLibraryPage;

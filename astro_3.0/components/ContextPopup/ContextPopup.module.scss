@@ -1,0 +1,10 @@
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-white);
+  box-shadow: 0 4px 24px var(--color-black-opacity-1);
+
+  max-width: 260px;
+
+  padding: 16px;
+}

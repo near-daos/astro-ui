@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import cn from 'classnames';
+import Link from 'next/link';
 
 import { Popup } from 'components/Popup';
 import { IconButton } from 'components/button/IconButton';
@@ -36,15 +37,16 @@ const Wrapper = ({
 }) =>
   link ? (
     // eslint-disable-next-line jsx-a11y/control-has-associated-label
-    <a
-      href={link}
-      ref={addRef}
-      className={className}
-      {...rest}
-      style={{ display: 'inline-block' }}
-    >
-      {children}
-    </a>
+    <Link href={link}>
+      <a
+        ref={addRef}
+        className={className}
+        {...rest}
+        style={{ display: 'inline-block' }}
+      >
+        {children}
+      </a>
+    </Link>
   ) : (
     <div ref={addRef} className={className} {...rest}>
       {children}

@@ -1,4 +1,5 @@
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .root {
   @include centralize;
@@ -7,6 +8,7 @@
   border-radius: 50%;
   height: 144px;
   overflow: hidden;
+  position: relative;
   width: 144px;
 
   &.md {
@@ -16,6 +18,11 @@
     min-height: $logo-size;
     min-width: $logo-size;
     width: $logo-size;
+  }
+
+  &.square {
+    border: 2px solid var(--color-neutral-30);
+    border-radius: 16px;
   }
 }
 
@@ -30,4 +37,48 @@
 .defaultLogo {
   height: 50px;
   width: 50px;
+}
+
+.logoControl {
+  @include centralize;
+  background-color: transparent;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  &:hover .logoOverlay {
+    opacity: 1;
+  }
+}
+
+.overlayIcon {
+  width: 24px;
+}
+
+.overlayText {
+  @extend %title3;
+  color: var(--color-white);
+}
+
+.logoOverlay {
+  @include centralize;
+  background-color: var(--color-black-opacity-50);
+  bottom: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: opacity 0.1s ease-out;
+}
+
+.popup {
+  max-width: 100vw;
 }
