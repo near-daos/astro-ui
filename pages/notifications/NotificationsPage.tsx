@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { VFC, useMemo } from 'react';
+import React, { useMemo, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
@@ -13,13 +13,18 @@ import { Notifications } from 'astro_2.0/features/Notifications/components/Notif
 import { useNotificationsList } from 'astro_2.0/features/Notifications/hooks';
 
 import Link from 'next/link';
+
+import { MainLayout } from 'astro_3.0/features/MainLayout';
+
+import { Page } from 'pages/_app';
+
 import styles from './NotificationsPage.module.scss';
 
 export interface NotificationsPageProps {
   config: UserContacts;
 }
 
-const NotificationsPage: VFC<NotificationsPageProps> = ({ config }) => {
+const NotificationsPage: Page<NotificationsPageProps> = ({ config }) => {
   const router = useRouter();
   const showArchived = router.query.notyType === 'archived';
 
@@ -106,6 +111,10 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({ config }) => {
       </div>
     </div>
   );
+};
+
+NotificationsPage.getLayout = function getLayout(page: ReactNode) {
+  return <MainLayout>{page}</MainLayout>;
 };
 
 export default NotificationsPage;
