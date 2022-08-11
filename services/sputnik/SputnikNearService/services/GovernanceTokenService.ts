@@ -8,7 +8,7 @@ import { formatGasValue } from 'utils/format';
 
 import { WalletType } from 'types/config';
 
-import { GAS_VALUE } from 'services/sputnik/SputnikNearService/services/NearService';
+import { GAS_VALUE } from 'services/sputnik/SputnikNearService/services/constants';
 import { STAKING_CONTRACT_PREFIX } from 'constants/proposals';
 
 import { BaseService } from './BaseService';

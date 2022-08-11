@@ -29,10 +29,12 @@ import { parseNearAmount } from 'near-api-js/lib/utils/format';
 import { FunctionCallPermissionView } from 'near-api-js/lib/providers/provider';
 import { AllowanceKey } from 'services/sputnik/SputnikNearService/types';
 
+import { FINALIZE_PROPOSAL_GAS_VALUE, GAS_VALUE } from './constants';
+import { getPlainFunctionCallTransaction } from './utils/getPlainFunctionCallTransaction';
+import { getWalletSelectorStorageDepositTransaction } from './utils/getWalletSelectorStorageDepositTransaction';
+
 import { BaseService } from './BaseService';
 
-export const GAS_VALUE = new BN('300000000000000');
-export const FINALIZE_PROPOSAL_GAS_VALUE = new BN('150000000000000');
 const USN_TOKEN_CONTRACTS = ['usn', 'usdn.testnet'];
 
 export class NearService extends BaseService {
@@ -210,6 +212,26 @@ export class NearService extends BaseService {
             },
           ],
         };
+        break;
+      }
+      case WalletType.SELECTOR_NEAR:
+      case WalletType.SELECTOR_SENDER: {
+        storageDepositTransactionAction = getWalletSelectorStorageDepositTransaction(
+          tokenId ?? '',
+          accountId
+        );
+
+        claimAction = getPlainFunctionCallTransaction({
+          receiverId: daoId,
+          methodName: 'bounty_claim',
+          args: {
+            id,
+            deadline,
+          },
+          gas,
+          deposit: bountyBond,
+        });
+
         break;
       }
       case WalletType.NEAR:
@@ -413,6 +435,19 @@ export class NearService extends BaseService {
 
         break;
       }
+      case WalletType.SELECTOR_NEAR:
+      case WalletType.SELECTOR_SENDER: {
+        transaction = getPlainFunctionCallTransaction({
+          receiverId: daoId,
+          methodName: 'act_proposal',
+          args: {
+            id: Number(proposalId),
+            action,
+          },
+        });
+
+        break;
+      }
       case WalletType.NEAR:
       default: {
         transaction = {
@@ -498,6 +533,29 @@ export class NearService extends BaseService {
             },
           ],
         };
+        break;
+      }
+      case WalletType.SELECTOR_NEAR:
+      case WalletType.SELECTOR_SENDER: {
+        storageDepositTransactionAction = getWalletSelectorStorageDepositTransaction(
+          tokenContract,
+          recipient
+        );
+
+        transferTransaction = getPlainFunctionCallTransaction({
+          receiverId: daoId,
+          methodName: 'add_proposal',
+          args: {
+            proposal: {
+              description,
+              kind: {
+                [kind]: data,
+              },
+            },
+          },
+          deposit: bond,
+        });
+
         break;
       }
       case WalletType.NEAR:

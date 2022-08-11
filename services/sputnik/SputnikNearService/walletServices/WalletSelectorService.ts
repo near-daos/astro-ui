@@ -175,6 +175,7 @@ export class WalletSelectorService implements WalletService {
     return this.wallet.signOut();
   }
 
+  // TODO works only for NEAR wallet. Has to be updated for Sender wallet
   sendMoney(
     receiverId: string,
     amount: number
@@ -203,12 +204,17 @@ export class WalletSelectorService implements WalletService {
     });
   }
 
-  // TODO TBD
   sendTransactions(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     transactions: Transaction[]
   ): Promise<FinalExecutionOutcome[]> {
-    return Promise.resolve([]);
+    return new Promise((resolve, reject) => {
+      window.onTransaction = this.getOnTransactionsCompleteHandler(
+        resolve,
+        reject
+      );
+
+      this.sendTransaction(transactions);
+    });
   }
 
   async signIn(
