@@ -91,7 +91,7 @@ export const DraftInfo: FC<DraftInfoProps> = ({
       <div className={styles.draftInfoWrapper}>
         <DraftInfoItem
           disabled={disabled}
-          iconName="draftComments"
+          iconName="draftChat"
           count={amountComments}
           className={styles.draftInfoItem}
         />
