@@ -1,4 +1,4 @@
-import React, { VFC, useState } from 'react';
+import React, { useState, ReactNode } from 'react';
 import Head from 'next/head';
 
 import { useTranslation } from 'next-i18next';
@@ -13,6 +13,9 @@ import { NotificationCard } from 'astro_2.0/features/pages/myAccount/cards/Notif
 import { AllowanceKeysCard } from 'astro_2.0/features/pages/myAccount/cards/AllowanceKeysCard';
 import { AppVersion } from 'astro_3.0/features/AppVersion';
 
+import { MainLayout } from 'astro_3.0/features/MainLayout';
+import { Page } from 'pages/_app';
+
 import styles from './MyAccountPage.module.scss';
 
 export interface MyAccountPageProps {
@@ -20,7 +23,7 @@ export interface MyAccountPageProps {
   notyConfig: NotificationSettingDTO;
 }
 
-const MyAccountPage: VFC<MyAccountPageProps> = ({
+const MyAccountPage: Page<MyAccountPageProps> = ({
   notyConfig,
   contactsConfig,
 }) => {
@@ -52,6 +55,10 @@ const MyAccountPage: VFC<MyAccountPageProps> = ({
       </div>
     </div>
   );
+};
+
+MyAccountPage.getLayout = function getLayout(page: ReactNode) {
+  return <MainLayout>{page}</MainLayout>;
 };
 
 export default MyAccountPage;
