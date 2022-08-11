@@ -735,7 +735,9 @@
         "createDraftButton": "Create Draft"
       },
       "card": {
-        "minutesAgo": "ago"
+        "minutesAgo": "ago",
+        "onDiscussionStatus": "On discussion",
+        "convertedToProposalStatus":"Converted to proposal"
       }
     },
     "editDraftPage": {

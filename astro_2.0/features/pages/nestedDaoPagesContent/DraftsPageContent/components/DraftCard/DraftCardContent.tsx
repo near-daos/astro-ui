@@ -110,7 +110,9 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
           [styles.closedStatus]: isClosedStatus,
         })}
       >
-        {isOpenStatus ? 'On discussion' : 'Converted to proposal'}
+        {isOpenStatus
+          ? t('drafts.feed.card.onDiscussionStatus')
+          : t('drafts.feed.card.convertedToProposalStatus')}
       </div>
       <div className={styles.saveFlag}>
         <Icon
