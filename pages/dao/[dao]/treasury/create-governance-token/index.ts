@@ -1,11 +1,11 @@
 import { GetServerSideProps } from 'next';
-import nextI18NextConfig from 'next-i18next.config';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getDaoContext } from 'features/daos/helpers';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { CookieService } from 'services/CookieService';
+
+import { getTranslations } from 'utils/getTranslations';
 
 import CreateGovernanceToken, {
   GovernanceTokenProps,
@@ -34,11 +34,7 @@ export const getServerSideProps: GetServerSideProps<GovernanceTokenProps> = asyn
 
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
       daoContext,
     },
   };

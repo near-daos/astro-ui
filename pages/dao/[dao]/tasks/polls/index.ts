@@ -5,9 +5,8 @@ import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ProposalCategories, ProposalsFeedStatuses } from 'types/proposal';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from 'next-i18next.config';
 import { getDaoContext } from 'features/daos/helpers';
+import { getTranslations } from 'utils/getTranslations';
 
 export default Polls;
 
@@ -45,11 +44,7 @@ export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
 
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
       daoContext,
       initialPollsData,
       initialProposalsStatusFilterValue: status,

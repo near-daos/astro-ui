@@ -9,8 +9,6 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ALL_FEED_URL } from 'constants/routing';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from 'next-i18next.config';
 import Head from 'next/head';
 
 import { FeedLayout } from 'astro_3.0/features/FeedLayout';
@@ -19,6 +17,8 @@ import { getAppVersion, useAppVersion } from 'hooks/useAppVersion';
 import { ProposalsFeed } from 'astro_3.0/features/ProposalsFeed';
 import { Page } from 'pages/_app';
 import { AllTokensProvider } from 'context/AllTokensContext';
+
+import { getTranslations } from 'utils/getTranslations';
 
 import styles from './MyFeedPage.module.scss';
 
@@ -110,11 +110,7 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
 
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
       initialProposals: res,
       initialProposalsStatusFilterValue: status,
     },
