@@ -12,7 +12,6 @@ import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 
 import { ProposalFeedItem } from 'types/proposal';
 import { DraftProposal } from 'types/draftProposal';
-import { Token } from 'types/token';
 
 import { useWalletContext } from 'context/WalletContext';
 import { getVoteDetails } from 'features/vote-policy/helpers';
@@ -23,12 +22,12 @@ import {
   isSaveTemplateActionAvailable,
 } from 'astro_2.0/features/ViewProposal/helpers';
 
-import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments';
 import { SaveFcTemplate } from 'astro_2.0/features/ViewProposal/components/SaveFcTemplate';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { DAO } from 'types/dao';
 import { UserPermissions } from 'types/context';
+import { useAllCustomTokens } from 'context/AllTokensContext';
 
 import styles from './ViewProposal.module.scss';
 
@@ -37,7 +36,6 @@ export interface ViewProposalProps {
   isDraft?: boolean;
   isEditDraft?: boolean;
   showFlag: boolean;
-  tokens: Record<string, Token>;
   preventNavigate?: boolean;
   optionalPostVoteAction?: () => Promise<void>;
   onSelect?: (p: string) => void;
@@ -56,7 +54,6 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   isDraft,
   proposal,
   showFlag,
-  tokens,
   preventNavigate,
   optionalPostVoteAction,
   onSelect,
@@ -65,6 +62,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   dao,
   userPermissions,
 }) => {
+  const { tokens } = useAllCustomTokens();
   const { accountId } = useWalletContext();
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
   const [commentsCount, setCommentsCount] = useState(proposal?.commentsCount);
@@ -100,6 +98,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   const contentNode = getContentNode(proposal);
 
   const { canApprove, canReject } = proposal.permissions;
+
   const voted =
     proposal.votes[accountId] === 'Yes' ||
     proposal.votes[accountId] === 'No' ||
@@ -178,6 +177,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
           optionalPostVoteAction={optionalPostVoteAction}
           onSelect={onSelect}
           selectedList={selectedList}
+          userPermissions={userPermissions}
           voteDetails={
             proposal.dao.policy.defaultVotePolicy.ratio
               ? getVoteDetails(
@@ -187,11 +187,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
                 ).details
               : undefined
           }
-          content={
-            <CustomTokensContext.Provider value={{ tokens }}>
-              <ErrorBoundary>{contentNode}</ErrorBoundary>
-            </CustomTokensContext.Provider>
-          }
+          content={<ErrorBoundary>{contentNode}</ErrorBoundary>}
         />
       }
       infoPanelNode={

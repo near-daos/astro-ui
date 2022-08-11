@@ -4,7 +4,7 @@ import {
   DaoConfig,
   ProposalVariant,
 } from 'types/proposal';
-import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { Tokens } from 'types/token';
 import {
   getAddBountyProposal,
   getChangeBondDeadlinesProposal,

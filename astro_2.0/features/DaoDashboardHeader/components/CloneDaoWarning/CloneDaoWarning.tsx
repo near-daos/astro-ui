@@ -21,7 +21,7 @@ import {
   isActiveUserCouncil,
 } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/helpers';
 
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
 import styles from './CloneDaoWarning.module.scss';
 

@@ -1,0 +1,42 @@
+.root {
+  align-items: center;
+  background-color: var(--color-white);
+  box-shadow: 0 2px 16px var(--color-black-opacity-005);
+  display: flex;
+
+  height: var(--app-header-height);
+  left: 0;
+  padding: 12px 24px;
+  position: fixed;
+  top: 0;
+
+  width: 100%;
+
+  z-index: 1000;
+}
+
+.main {
+  left: 50%;
+  margin: 0 auto;
+  padding-bottom: 0;
+  position: absolute;
+  transform: translateX(-50%);
+  width: 100%;
+}
+
+.search {
+  left: unset;
+  max-width: unset;
+  position: relative;
+}
+
+.bell {
+  margin-right: 12px;
+}
+
+.rightSection {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+  z-index: 1;
+}

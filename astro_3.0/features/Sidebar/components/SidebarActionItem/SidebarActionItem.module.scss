@@ -1,0 +1,71 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  display: flex;
+
+  height: 56px;
+
+  position: relative;
+}
+
+.iconWrapper {
+  @include centralize;
+  border: 1px solid var(--color-primary-20);
+  border-radius: 8px;
+  height: 40px;
+  width: 40px;
+}
+
+.root:hover {
+  .icon {
+    color: var(--color-primary);
+  }
+
+  .label::after {
+    color: var(--color-primary);
+  }
+}
+
+.iconWrapper:active {
+  background-color: var(--color-neutral-10);
+  border-color: transparent;
+
+  .icon {
+    color: var(--color-primary);
+  }
+}
+
+.icon {
+  color: var(--color-neutral-80);
+  width: 24px;
+}
+
+.label {
+  display: block;
+  position: relative;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 0.2s ease-out;
+
+  &::after {
+    @extend %title4;
+    @include ellipse-text;
+    color: var(--color-black);
+    content: attr(data-value);
+    font-size: 13px;
+    font-weight: 500;
+    left: 12px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.active .iconWrapper {
+  background-color: var(--color-neutral-10);
+
+  .icon {
+    color: var(--color-primary);
+  }
+}

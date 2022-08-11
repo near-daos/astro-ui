@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import React, {
   ReactNode,
   useCallback,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -38,17 +37,14 @@ import { Loader } from 'components/loader';
 
 // Hooks
 import { useWalletContext } from 'context/WalletContext';
-import { useAllCustomTokens } from 'hooks/useCustomTokens';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 import { getStatusFilterOptions } from 'astro_2.0/features/Proposals/helpers/getStatusFilterOptions';
 
 // Services
 import { SputnikHttpService } from 'services/sputnik';
-import { CookieService } from 'services/CookieService';
 
 // Constants
 import { FEED_CATEGORIES } from 'constants/proposals';
-import { FEED_STATUS_COOKIE } from 'constants/cookies';
 
 import styles from './Feed.module.scss';
 
@@ -75,12 +71,10 @@ export const Feed = ({
 }: FeedProps): JSX.Element => {
   const neighbourRef = useRef(null);
   const { query, replace, pathname } = useRouter();
-  const { tokens: allTokens } = useAllCustomTokens();
   const { t } = useTranslation();
   const isMounted = useMountedState();
 
   const queries = query as ProposalsQueries;
-  const lastFeedStatus = CookieService.get(FEED_STATUS_COOKIE);
 
   const status =
     (query.status as ProposalsFeedStatuses) ||
@@ -197,16 +191,6 @@ export const Feed = ({
         setLoading(true);
       }
 
-      CookieService.set(
-        FEED_STATUS_COOKIE,
-        Object.values(ProposalsFeedStatuses).includes(
-          value as ProposalsFeedStatuses
-        )
-          ? value
-          : ProposalsFeedStatuses.All,
-        { path: '/' }
-      );
-
       await replace(
         {
           query: nextQuery,
@@ -217,12 +201,6 @@ export const Feed = ({
     },
     [isMounted, queries, replace]
   );
-
-  useEffect(() => {
-    if (status !== lastFeedStatus) {
-      onProposalFilterChange(lastFeedStatus);
-    }
-  }, [lastFeedStatus, onProposalFilterChange, status]);
 
   function renderTitle() {
     if (isString(title)) {
@@ -295,7 +273,6 @@ export const Feed = ({
                     <ViewProposal
                       proposal={proposal}
                       showFlag={showFlag}
-                      tokens={allTokens}
                       onSelect={onSelect}
                       selectedList={selectedList}
                     />

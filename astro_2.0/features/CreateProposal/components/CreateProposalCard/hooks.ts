@@ -17,8 +17,7 @@ type DropdownOption = {
 export function useProposalTypeOptions(
   daoId: string,
   userPermissions: UserPermissions,
-  canCreateTokenProposal: boolean,
-  isDraft?: boolean
+  canCreateTokenProposal: boolean
 ): DropdownOption[] {
   const { t } = useTranslation();
 
@@ -134,7 +133,6 @@ export function useProposalTypeOptions(
       {
         title: getLabel('groupTransferAddBounty'),
         disabled:
-          !isDraft &&
           !allowedProposalsToCreate[ProposalType.Transfer] &&
           !allowedProposalsToCreate[ProposalType.AddBounty],
         options: [
@@ -142,24 +140,21 @@ export function useProposalTypeOptions(
             label: getLabel('proposeTransfer'),
             value: ProposalVariant.ProposeTransfer,
             group: getLabel('groupTransferAddBounty'),
-            disabled:
-              !isDraft && !allowedProposalsToCreate[ProposalType.Transfer],
+            disabled: !allowedProposalsToCreate[ProposalType.Transfer],
           },
           {
             label: getLabel('proposeBounty'),
             value: ProposalVariant.ProposeCreateBounty,
             group: getLabel('groupTransferAddBounty'),
-            disabled:
-              !isDraft && !allowedProposalsToCreate[ProposalType.AddBounty],
+            disabled: !allowedProposalsToCreate[ProposalType.AddBounty],
           },
         ],
       },
       {
         title: changeConfigTitle,
         disabled:
-          !isDraft &&
-          (!isCanCreatePolicyProposals ||
-            !allowedProposalsToCreate[ProposalType.ChangeConfig]),
+          !isCanCreatePolicyProposals ||
+          !allowedProposalsToCreate[ProposalType.ChangeConfig],
         options: [
           {
             label: getLabel('proposeDAOName'),
@@ -191,9 +186,8 @@ export function useProposalTypeOptions(
       {
         title: getLabel('groupChangePolicy'),
         disabled:
-          !isDraft &&
-          (!allowedProposalsToCreate[ProposalType.ChangePolicy] ||
-            !isCanCreatePolicyProposals),
+          !allowedProposalsToCreate[ProposalType.ChangePolicy] ||
+          !isCanCreatePolicyProposals,
         options: [
           /*  {
             label: getLabel('proposeChangePolicy'),
@@ -215,7 +209,6 @@ export function useProposalTypeOptions(
       {
         title: getLabel('groupChangeMembers'),
         disabled:
-          !isDraft &&
           !allowedProposalsToCreate[ProposalType.AddMemberToRole] &&
           !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole],
         options: [
@@ -223,29 +216,27 @@ export function useProposalTypeOptions(
             label: getLabel('proposeAddMember'),
             value: ProposalVariant.ProposeAddMember,
             group: getLabel('groupChangeMembers'),
-            disabled:
-              !isDraft &&
-              !allowedProposalsToCreate[ProposalType.AddMemberToRole],
+            disabled: !allowedProposalsToCreate[ProposalType.AddMemberToRole],
           },
           {
             label: getLabel('proposeRemoveMember'),
             value: ProposalVariant.ProposeRemoveMember,
             group: getLabel('groupChangeMembers'),
-            disabled:
-              !isDraft &&
-              !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole],
+            disabled: !allowedProposalsToCreate[
+              ProposalType.RemoveMemberFromRole
+            ],
           },
         ],
       },
       {
         title: getLabel('groupVote'),
-        disabled: !isDraft && !allowedProposalsToCreate[ProposalType.Vote],
+        disabled: !allowedProposalsToCreate[ProposalType.Vote],
         options: [
           {
             label: getLabel('proposePoll'),
             value: ProposalVariant.ProposePoll,
             group: getLabel('groupVote'),
-            disabled: !isDraft && !allowedProposalsToCreate[ProposalType.Vote],
+            disabled: !allowedProposalsToCreate[ProposalType.Vote],
           },
         ],
       },
@@ -257,7 +248,6 @@ export function useProposalTypeOptions(
     customFunctionCallsOptions,
     getLabel,
     isCanCreatePolicyProposals,
-    isDraft,
   ]);
 
   if (canCreateTokenProposal) {

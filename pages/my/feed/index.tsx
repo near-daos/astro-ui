@@ -1,12 +1,11 @@
 import React, { ReactNode } from 'react';
-import isEmpty from 'lodash/isEmpty';
 import { GetServerSideProps } from 'next';
 
 import { ProposalsFeedStatuses } from 'types/proposal';
 import { Feed } from 'astro_2.0/features/Feed';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import { CookieService } from 'services/CookieService';
-import { ACCOUNT_COOKIE, FEED_STATUS_COOKIE } from 'constants/cookies';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ALL_FEED_URL } from 'constants/routing';
@@ -19,6 +18,9 @@ import { MainLayout } from 'astro_3.0/features/MainLayout';
 import { getAppVersion, useAppVersion } from 'hooks/useAppVersion';
 import { ProposalsFeed } from 'astro_3.0/features/ProposalsFeed';
 import { Page } from 'pages/_app';
+import { AllTokensProvider } from 'context/AllTokensContext';
+
+import styles from './MyFeedPage.module.scss';
 
 const MyFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
   const { appVersion } = useAppVersion();
@@ -28,11 +30,17 @@ const MyFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
       <Head>
         <title>My proposals feed</title>
       </Head>
-      {appVersion === 3 ? (
-        <ProposalsFeed {...props} />
-      ) : (
-        <Feed {...props} title="My proposals feed" />
-      )}
+      <AllTokensProvider>
+        <AllTokensProvider>
+          {appVersion === 3 ? (
+            <ProposalsFeed {...props} className={styles.root} />
+          ) : (
+            <MainLayout>
+              <Feed {...props} title="My proposals feed" />
+            </MainLayout>
+          )}
+        </AllTokensProvider>
+      </AllTokensProvider>
     </>
   );
 };
@@ -43,7 +51,7 @@ MyFeedPage.getLayout = function getLayout(page: ReactNode) {
   return (
     <>
       {appVersion === 3 && <FeedLayout />}
-      <MainLayout>{page}</MainLayout>
+      {page}
     </>
   );
 };
@@ -51,10 +59,9 @@ MyFeedPage.getLayout = function getLayout(page: ReactNode) {
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   typeof Feed
 >> = async ({ query, locale = 'en' }) => {
-  const lastFeedStatus = CookieService.get(FEED_STATUS_COOKIE);
   const {
     category,
-    status = lastFeedStatus || ProposalsFeedStatuses.All,
+    status = ProposalsFeedStatuses.VoteNeeded,
   } = query as ProposalsQueries;
   const accountId = CookieService.get(ACCOUNT_COOKIE);
 
@@ -67,7 +74,7 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
     };
   }
 
-  const res = await SputnikHttpService.getProposalsListByAccountId(
+  let res = await SputnikHttpService.getProposalsListByAccountId(
     {
       category,
       status,
@@ -79,13 +86,26 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   );
 
   // If no proposals found and it is not because of filter -> redirect to global feed
-  if (isEmpty(query) && res?.data?.length === 0) {
-    return {
-      redirect: {
-        destination: ALL_FEED_URL,
-        permanent: true,
+  if (res?.data?.length === 0) {
+    res = await SputnikHttpService.getProposalsListByAccountId(
+      {
+        category,
+        status: ProposalsFeedStatuses.All,
+        limit: LIST_LIMIT_DEFAULT,
+        daoFilter: 'All DAOs',
+        accountId,
       },
-    };
+      accountId
+    );
+
+    if (res?.data?.length === 0) {
+      return {
+        redirect: {
+          destination: ALL_FEED_URL,
+          permanent: true,
+        },
+      };
+    }
   }
 
   return {

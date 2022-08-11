@@ -4,7 +4,7 @@ import {
 } from 'services/sputnik/constants';
 import { formatYoktoValue } from 'utils/format';
 import { ProposalTemplate } from 'types/proposalTemplate';
-import { Tokens } from 'context/CustomTokensContext';
+import { Tokens } from 'types/token';
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 import { getFormInitialValues } from 'astro_2.0/features/CreateProposal/helpers/initialValues';
 import { ProposalVariant } from 'types/proposal';
@@ -64,11 +64,15 @@ export function getCustomTemplatesDefaults(
   const predefinedTypes = Object.values(FunctionCallType) as string[];
 
   if (!predefinedTypes.includes(fcType)) {
-    initialValues = getCustomTemplatesInitialValues(
+    const customTemplatesInitialValues = getCustomTemplatesInitialValues(
       templates,
       tokens,
       templateId
     );
+
+    initialValues = isDraft
+      ? { ...customTemplatesInitialValues, ...draftValues }
+      : customTemplatesInitialValues;
   }
 
   if (fcType === FunctionCallType.RemoveUpgradeCode) {
@@ -84,11 +88,7 @@ export function getCustomTemplatesDefaults(
     }
   }
 
-  if (isDraft) {
-    initialValues = { ...initialValues, ...draftValues };
-  }
-
-  const defaults = getFormInitialValues(
+  return getFormInitialValues(
     t,
     ProposalVariant.ProposeCustomFunctionCall,
     accountId,
@@ -96,6 +96,4 @@ export function getCustomTemplatesDefaults(
     undefined,
     isDraft
   );
-
-  return defaults;
 }

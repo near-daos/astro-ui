@@ -23,12 +23,12 @@ import { EditableContent } from 'astro_2.0/components/EditableContent';
 import { useProposalTypeOptions } from 'astro_2.0/features/CreateProposal/components/CreateProposalCard/hooks';
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 import { useProposalTemplates } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/hooks';
-import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { useWalletContext } from 'context/WalletContext';
 import { getCustomTemplatesDefaults } from 'astro_2.0/features/CreateProposal/components/CreateProposalCard/helpers';
 import { DAO } from 'types/dao';
 import { DeleteDraftButton } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/DeleteDraftButton';
 import { useDaoSettings } from 'context/DaoSettingsContext';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
 import styles from './CreateProposalCard.module.scss';
 
@@ -81,13 +81,12 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   const proposalTypesOptions = useProposalTypeOptions(
     dao.id,
     userPermissions,
-    canCreateTokenProposal,
-    isDraft
+    canCreateTokenProposal
   );
 
   const { accountId } = useWalletContext();
   const { templates } = useProposalTemplates(dao.id);
-  const { tokens } = useCustomTokensContext();
+  const { tokens } = useDaoCustomTokens();
   const { settings } = useDaoSettings();
 
   function renderCloseButton() {

@@ -1,7 +1,7 @@
 @import 'styles/typography';
 
 .root {
-  width: 100%;
+  //width: 100%;
 }
 
 .items {
@@ -13,17 +13,24 @@
   padding: 0;
 }
 
-.item {
-  margin-right: 8px;
-}
-
 .itemLink {
   @extend %subtitle5;
-  border: 1px solid transparent;
+  align-items: center;
+  border: 1px solid var(--color-neutral-40);
   border-radius: 100px;
+  display: flex;
+
+  margin-right: 8px;
+
   padding: 8px 12px;
 
   transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+}
+
+.icon {
+  color: currentColor;
+  margin-right: 6px;
+  width: 16px;
 }
 
 .itemLink.active {

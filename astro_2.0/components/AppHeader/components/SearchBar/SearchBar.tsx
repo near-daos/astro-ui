@@ -31,7 +31,7 @@ export interface SearchBarProps {
   withSideBar: boolean;
   className?: string;
   placeholder?: string;
-  parentElRef: MutableRefObject<HTMLElement | null>;
+  parentElRef?: MutableRefObject<HTMLElement | null>;
 }
 
 export const SearchBar: FC<SearchBarProps> = ({
@@ -95,7 +95,7 @@ export const SearchBar: FC<SearchBarProps> = ({
       setSearchWidth(isDesktopResolution() ? 420 : '');
     } else {
       const NEIGHBOURS_WIDTH_AND_PADDINGS = 500;
-      const parentEl = parentElRef.current;
+      const parentEl = parentElRef?.current;
 
       if (parentEl && isDesktopResolution()) {
         const width = parentEl.offsetWidth;

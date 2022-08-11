@@ -17,7 +17,7 @@ import { TextArea } from 'components/inputs/TextArea';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { formatCurrency } from 'utils/formatCurrency';
-import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
 import styles from './CreateRoketoStream.module.scss';
 import { useRoketoReceipt, useRoketoStorageDeposit } from './hooks';
@@ -31,7 +31,7 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
   const { t } = useTranslation();
   const { register, setValue, getValues, watch } = useFormContext();
   const depositWidth = useDepositWidth();
-  const { tokens } = useCustomTokensContext();
+  const { tokens } = useDaoCustomTokens();
   const selectedTokenId = watch('tokenId') ?? 'NEAR';
   const selectedToken = useMemo(
     () =>

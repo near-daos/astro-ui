@@ -4,7 +4,7 @@ import { render } from 'jest/testUtils';
 
 import { BuyNftFromMintbaseContent } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/BuyNftFromMintbaseContent';
 
-import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
 import { tokens } from './mock';
 
@@ -25,9 +25,9 @@ jest.mock('react-hook-form', () => {
   };
 });
 
-jest.mock('astro_2.0/features/CustomTokens/CustomTokensContext', () => {
+jest.mock('context/DaoTokensContext', () => {
   return {
-    useCustomTokensContext: jest.fn(),
+    useDaoCustomTokens: jest.fn(),
   };
 });
 
@@ -45,7 +45,7 @@ describe('BuyNftFromMintbaseContent', () => {
 
   it('Should render component', () => {
     // @ts-ignore
-    useCustomTokensContext.mockImplementation(() => ({ tokens }));
+    useDaoCustomTokens.mockImplementation(() => ({ tokens }));
 
     const { getByText } = render(<BuyNftFromMintbaseContent />);
 

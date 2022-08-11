@@ -5,6 +5,7 @@
   display: flex;
   justify-content: flex-start;
   padding: 12px 0;
+  width: 100%;
 }
 
 .filter,
@@ -33,8 +34,8 @@
   height: 40px;
   margin: 0 12px;
   width: 1px;
+}
 
-  &.last {
-    margin-left: auto;
-  }
+.last {
+  margin-left: auto;
 }

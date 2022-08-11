@@ -19,6 +19,7 @@ import { UserPermissions } from 'types/context';
 import { shortenString } from 'utils/format';
 
 import { useDaoSettings } from 'context/DaoSettingsContext';
+import { useWalletContext } from 'context/WalletContext';
 
 import styles from './DaoDetailsMinimized.module.scss';
 
@@ -39,6 +40,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   onCreateProposalClick,
   userPermissions,
 }) => {
+  const { accountId } = useWalletContext();
   const { settings } = useDaoSettings();
   const isXsMobile = useMedia('(max-width: 600px)');
   const flags = useFlags();
@@ -63,12 +65,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   };
 
   const activeLinkPresent = includes(url, currentPath);
-
-  const handleChapterClick = (newUrl: string) => {
-    if (newUrl !== currentPath) {
-      router.push(newUrl);
-    }
-  };
 
   const generateChapterStyle = (chapter: string) => {
     return cn(styles.controlIcon, {
@@ -95,17 +91,20 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
               <div className={styles.flagWrapper}>
                 <DaoLogo size="md" src={dao.flagLogo} className={styles.logo} />
               </div>
+
               <div>
                 <div className={styles.displayName}>
                   <div className={styles.name}>
                     {shortenString(dao.displayName, isXsMobile ? 25 : 40)}
                   </div>
+
                   <ExplorerLink
                     linkData={dao.id}
                     linkType="member"
                     className={styles.explorerLink}
                   />
                 </div>
+
                 <div className={styles.daoId}>
                   <CopyButton
                     text={dao.id}
@@ -121,11 +120,12 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
             </section>
           </a>
         </Link>
+
         <section className={styles.controls}>
           {flags.delegateVoting && daoHasGovernanceTokenConfigured && (
             <ActionButton
+              href={url.delegates}
               iconName="delegate"
-              onClick={() => handleChapterClick(url.delegates)}
               className={generateChapterStyle('delegates')}
             >
               {t('daoDetailsMinimized.delegates')}
@@ -133,67 +133,75 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           )}
           {flags.draftProposals && (
             <ActionButton
+              href={url.drafts}
               iconName="sheet"
-              onClick={() => handleChapterClick(url.drafts)}
               className={generateChapterStyle('drafts')}
             >
               {t('daoDetailsMinimized.drafts')}
             </ActionButton>
           )}
+
           <ActionButton
+            href={url.proposals}
             iconName="pencil"
-            onClick={() => handleChapterClick(url.proposals)}
             className={generateChapterStyle('proposals')}
           >
             {t('daoDetailsMinimized.proposals')}
           </ActionButton>
+
           <ActionButton
+            href={url.funds}
             iconName="funds"
-            onClick={() => handleChapterClick(url.funds)}
             className={generateChapterStyle('tokens')}
           >
             {t('daoDetailsMinimized.funds')}
           </ActionButton>
+
           <ActionButton
+            href={url.members}
             iconName="groups"
-            onClick={() => handleChapterClick(url.members)}
             className={generateChapterStyle('groups')}
           >
             {t('daoDetailsMinimized.members')}
           </ActionButton>
+
           <ActionButton
+            href={url.settings}
             iconName="settings"
-            onClick={() => handleChapterClick(url.settings)}
             className={generateChapterStyle('settings')}
           >
             {t('daoDetailsMinimized.settings')}
           </ActionButton>
+
           <ActionButton
+            href={url.nfts}
             iconName="nfts"
-            onClick={() => handleChapterClick(url.nfts)}
             className={generateChapterStyle('nfts')}
           >
             {t('daoDetailsMinimized.nfts')}
           </ActionButton>
+
           <ActionButton
+            href={url.bounties}
             iconName="proposalBounty"
-            onClick={() => handleChapterClick(url.bounties)}
             className={generateChapterStyle('bounties')}
           >
             {t('daoDetailsMinimized.bounties')}
           </ActionButton>
+
           <ActionButton
+            href={url.polls}
             iconName="proposalPoll"
-            onClick={() => handleChapterClick(url.polls)}
             className={generateChapterStyle('polls')}
           >
             {t('daoDetailsMinimized.polls')}
           </ActionButton>
         </section>
 
-        {onCreateProposalClick && userPermissions.isCanCreateProposals && (
+        {onCreateProposalClick && !!accountId && (
           <section className={styles.proposals}>
             <DaoAction
+              canCreateProposals={userPermissions.isCanCreateProposals}
               onCreateProposalClick={onCreateProposalClick}
               daoId={dao.id}
             />

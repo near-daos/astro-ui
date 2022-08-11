@@ -6,6 +6,7 @@ import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { DaosTabView } from 'features/search/search-results/components/daos-tab-view';
 import { ProposalsTabView } from 'features/search/search-results/components/proposals-tab-view';
 import { MembersTabView } from 'features/search/search-results/components/MembersTabView';
+import { AllTokensProvider } from 'context/AllTokensContext';
 
 import styles from './search-results-renderer.module.scss';
 
@@ -43,12 +44,14 @@ export const SearchResultsRenderer: FC = () => {
         <span>&nbsp;&lsquo;{searchResults?.query}&rsquo;</span>
       </div>
       <div className={styles.content}>
-        <Tabs
-          skipShallow
-          tabs={TABS}
-          tabsWrapperClassName={styles.tabsRoot}
-          tabsListRootClassName={styles.tabsListRoot}
-        />
+        <AllTokensProvider>
+          <Tabs
+            skipShallow
+            tabs={TABS}
+            tabsWrapperClassName={styles.tabsRoot}
+            tabsListRootClassName={styles.tabsListRoot}
+          />
+        </AllTokensProvider>
       </div>
     </div>
   );

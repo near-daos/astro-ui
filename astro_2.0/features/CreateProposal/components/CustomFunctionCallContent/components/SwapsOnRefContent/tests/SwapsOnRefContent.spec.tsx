@@ -19,6 +19,12 @@ jest.mock('react-hook-form', () => {
   };
 });
 
+jest.mock('context/DaoTokensContext', () => {
+  return {
+    useDaoCustomTokens: jest.fn().mockReturnValue({ tokens: {} }),
+  };
+});
+
 jest.mock('next-i18next', () => ({
   // this mock makes sure any components using the translate hook can use it without a warning being shown
   useTranslation: () => {

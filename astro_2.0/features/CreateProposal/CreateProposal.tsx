@@ -23,7 +23,6 @@ import { Token } from 'types/token';
 import { UserPermissions } from 'types/context';
 
 import { useWalletContext } from 'context/WalletContext';
-import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { getInitialProposalVariant } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 
 import { useSubmitProposal } from 'astro_2.0/features/CreateProposal/hooks/useSubmitProposal';
@@ -208,24 +207,22 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             />
           }
           proposalCardNode={
-            <CustomTokensContext.Provider value={{ tokens: daoTokens }}>
-              <CreateProposalCard
-                isDraft={isDraft}
-                showClose={showClose}
-                key={selectedProposalVariant}
-                userPermissions={userPermissions}
-                canCreateTokenProposal={canCreateTokenProposal}
-                onClose={onClose}
-                onTypeSelect={onTypeSelect}
-                type={selectedProposalVariant}
-                content={contentNode}
-                proposer={accountId}
-                dao={dao}
-                isEditDraft={isEditDraft}
-                draftState={(initialValues?.state as string) || ''}
-                draftId={(initialValues?.id as string) || ''}
-              />
-            </CustomTokensContext.Provider>
+            <CreateProposalCard
+              isDraft={isDraft}
+              showClose={showClose}
+              key={selectedProposalVariant}
+              userPermissions={userPermissions}
+              canCreateTokenProposal={canCreateTokenProposal}
+              onClose={onClose}
+              onTypeSelect={onTypeSelect}
+              type={selectedProposalVariant}
+              content={contentNode}
+              proposer={accountId}
+              dao={dao}
+              isEditDraft={isEditDraft}
+              draftState={(initialValues?.state as string) || ''}
+              draftId={(initialValues?.id as string) || ''}
+            />
           }
           infoPanelNode={
             isDraft ? undefined : (
@@ -240,10 +237,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         />
         {isDraft ? (
           <Button
-            disabled={
-              !methods?.formState.isDirty ||
-              Object.keys(methods.formState.errors).length > 0
-            }
+            disabled={Object.keys(methods.formState.errors).length > 0}
             capitalize
             size="small"
             className={styles.saveDraft}

@@ -3,7 +3,7 @@ import { useAsyncFn } from 'react-use';
 import { CreateGovernanceTokenSteps, ProgressStatus } from 'types/settings';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { ProposalType } from 'types/proposal';
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 import { UserPermissions } from 'types/context';
 import { useDaoSettings } from 'context/DaoSettingsContext';
 

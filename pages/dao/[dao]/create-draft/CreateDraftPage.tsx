@@ -5,18 +5,12 @@ import { DaoContext } from 'types/context';
 import { ProposalVariant } from 'types/proposal';
 
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
-import { BackButton } from 'astro_2.0/features/ViewProposal/components/BackButton';
-import { CreateProposal } from 'astro_2.0/features/CreateProposal';
-import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
-
-import { DRAFTS_PAGE_URL } from 'constants/routing';
 
 import { Page } from 'pages/_app';
 
-import styles from './CreateDraftPage.module.scss';
+import { CreateDraftPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateDraftPageContent';
 
 export type CreateDraftPageProps = {
   daoContext: DaoContext;
@@ -24,7 +18,6 @@ export type CreateDraftPageProps = {
 
 export const CreateDraftPage: Page<CreateDraftPageProps> = ({ daoContext }) => {
   const { dao } = daoContext;
-  const { tokens } = useDaoCustomTokens();
   const breadcrumbsConfig = useGetBreadcrumbsConfig(dao.id, dao.displayName);
 
   const breadcrumbs = useMemo(() => {
@@ -45,31 +38,7 @@ export const CreateDraftPage: Page<CreateDraftPageProps> = ({ daoContext }) => {
         breadcrumbs={breadcrumbs}
         defaultProposalType={ProposalVariant.ProposePoll}
       >
-        <>
-          <BackButton
-            name="Back to Draft Feed"
-            href={{
-              pathname: DRAFTS_PAGE_URL,
-              query: {
-                dao: dao.id,
-              },
-            }}
-          />
-
-          <h1 className={styles.title}>Creating draft</h1>
-          <DraftsDataProvider>
-            <CreateProposal
-              isDraft
-              showInfo={false}
-              showClose={false}
-              showFlag={false}
-              dao={dao}
-              daoTokens={tokens}
-              onClose={() => undefined}
-              userPermissions={daoContext.userPermissions}
-            />
-          </DraftsDataProvider>
-        </>
+        <CreateDraftPageContent daoContext={daoContext} />
       </NestedDaoPageWrapper>
     </>
   );

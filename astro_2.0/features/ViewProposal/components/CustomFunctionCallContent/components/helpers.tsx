@@ -13,14 +13,20 @@ export interface StreamInfo {
 export function useRoketoStreamCheck(
   json: string
 ): { create: boolean; stream: StreamInfo } {
-  const parsedJson = useMemo(() => JSON.parse(json), [json]);
+  const parsedJson = useMemo(() => {
+    try {
+      return JSON.parse(json);
+    } catch (e) {
+      return null;
+    }
+  }, [json]);
   const message = useMemo(() => JSON.parse(parsedJson?.msg ?? '{}'), [
     parsedJson,
   ]);
   const config = configService.get();
   const streamingContract = config.appConfig.ROKETO_CONTRACT_NAME;
 
-  const isStreaming = parsedJson.receiver_id === streamingContract;
+  const isStreaming = parsedJson?.receiver_id === streamingContract;
   const request = message?.Create?.request;
 
   return {

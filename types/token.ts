@@ -91,6 +91,8 @@ export type Token = {
   price: string | null;
 };
 
+export type Tokens = Record<string, Token>;
+
 export type GetTokensResponse = {
   data: TokenResponse[];
 };

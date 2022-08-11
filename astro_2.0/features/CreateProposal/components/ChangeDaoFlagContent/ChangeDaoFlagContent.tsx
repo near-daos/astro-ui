@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
 import { useTranslation } from 'next-i18next';
@@ -28,8 +28,12 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
   const coverFileList = watch('flagCover');
   const logoFileList = watch('flagLogo');
 
-  const coverImg = getImageFromImageFileList(coverFileList);
-  const logoImg = getImageFromImageFileList(logoFileList);
+  const coverImg = useMemo(() => getImageFromImageFileList(coverFileList), [
+    coverFileList,
+  ]);
+  const logoImg = useMemo(() => getImageFromImageFileList(logoFileList), [
+    logoFileList,
+  ]);
 
   const handleAssetsPreview = useCallback(async () => {
     await showModal({

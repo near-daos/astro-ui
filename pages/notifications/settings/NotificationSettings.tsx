@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { NavLink } from 'astro_2.0/components/NavLink';
@@ -25,6 +25,10 @@ import { useNotificationsSettings } from 'astro_2.0/features/Notifications/hooks
 import { DaoSettings } from 'astro_2.0/features/Notifications/types';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 
+import { MainLayout } from 'astro_3.0/features/MainLayout';
+
+import { Page } from 'pages/_app';
+
 import styles from './NotificationSettings.module.scss';
 
 interface NotificationSettingsProps {
@@ -35,7 +39,7 @@ interface NotificationSettingsProps {
   platformSettings: NotificationSettingDTO[];
 }
 
-const NotificationSettings: FC<NotificationSettingsProps> = ({
+const NotificationSettings: Page<NotificationSettingsProps> = ({
   myDaos,
   subscribedDaos,
   platformSettings,
@@ -357,6 +361,10 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
       </div>
     </div>
   );
+};
+
+NotificationSettings.getLayout = function getLayout(page: ReactNode) {
+  return <MainLayout>{page}</MainLayout>;
 };
 
 export default NotificationSettings;

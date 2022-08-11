@@ -3,7 +3,7 @@ import { render } from 'jest/testUtils';
 import { fireEvent } from '@testing-library/dom';
 import { useFormContext } from 'react-hook-form';
 
-import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 import { AddBountyContent } from 'astro_2.0/features/CreateProposal/components/AddBountyContent';
 
 import { tokens } from './mock';
@@ -45,9 +45,9 @@ jest.mock('next-i18next', () => ({
   },
 }));
 
-jest.mock('astro_2.0/features/CustomTokens/CustomTokensContext', () => {
+jest.mock('context/DaoTokensContext', () => {
   return {
-    useCustomTokensContext: jest.fn(),
+    useDaoCustomTokens: jest.fn(),
   };
 });
 
@@ -56,7 +56,7 @@ describe('AddBountyContent', () => {
 
   it('Should render component', () => {
     // @ts-ignore
-    useCustomTokensContext.mockImplementation(() => ({ tokens }));
+    useDaoCustomTokens.mockImplementation(() => ({ tokens }));
 
     const { container } = render(<AddBountyContent />);
 
@@ -65,7 +65,7 @@ describe('AddBountyContent', () => {
 
   it('Should render loading indicator if no tokens', () => {
     // @ts-ignore
-    useCustomTokensContext.mockImplementation(() => ({
+    useDaoCustomTokens.mockImplementation(() => ({
       tokens: {},
     }));
 
@@ -84,7 +84,7 @@ describe('AddBountyContent', () => {
     }));
 
     // @ts-ignore
-    useCustomTokensContext.mockImplementation(() => ({ tokens }));
+    useDaoCustomTokens.mockImplementation(() => ({ tokens }));
 
     const { getByText } = render(<AddBountyContent />);
 

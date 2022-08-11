@@ -27,9 +27,9 @@ import { VALID_METHOD_NAME_REGEXP } from 'constants/regexp';
 import { getGasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { CardContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/CardContent';
 import { ApplyToDaos } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/components/ApplyToDaos';
-import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 import { formatGasValue, formatYoktoValue } from 'utils/format';
+import { useAllCustomTokens } from 'context/AllTokensContext';
 
 import styles from './CustomFcTemplateCard.module.scss';
 
@@ -113,7 +113,7 @@ export const CustomFcTemplateCard: FC<Props> = ({
   defaultExpanded,
 }) => {
   const { t } = useTranslation();
-  const { tokens } = useCustomTokensContext();
+  const { tokens } = useAllCustomTokens();
   const tokenData = config.token ? tokens[config.token] : tokens.NEAR;
   const formKeyRef = useRef(uniqid());
 

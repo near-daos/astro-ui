@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import cn from 'classnames';
+import Link from 'next/link';
 
 import { Popup } from 'components/Popup';
 import { IconButton } from 'components/button/IconButton';
@@ -19,7 +20,38 @@ interface ActionButtonProps {
   tooltip?: string;
   tooltipPlacement?: 'right' | 'top' | 'bottom' | 'left' | 'auto';
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  href?: string;
 }
+
+const Wrapper = ({
+  className,
+  addRef,
+  link,
+  children,
+  ...rest
+}: {
+  className?: string;
+  link?: string;
+  addRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+  children: React.ReactElement;
+}) =>
+  link ? (
+    // eslint-disable-next-line jsx-a11y/control-has-associated-label
+    <Link href={link}>
+      <a
+        ref={addRef}
+        className={className}
+        {...rest}
+        style={{ display: 'inline-block' }}
+      >
+        {children}
+      </a>
+    </Link>
+  ) : (
+    <div ref={addRef} className={className} {...rest}>
+      {children}
+    </div>
+  );
 
 export const ActionButton: FC<ActionButtonProps> = ({
   testId,
@@ -33,12 +65,13 @@ export const ActionButton: FC<ActionButtonProps> = ({
   tooltip,
   tooltipPlacement = 'auto',
   children,
+  href,
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
 
   return (
     <>
-      <div ref={setRef} className={className}>
+      <Wrapper addRef={setRef} className={className} link={href}>
         {children ? (
           <IconTextButton
             testId={testId}
@@ -60,7 +93,7 @@ export const ActionButton: FC<ActionButtonProps> = ({
             }}
           />
         )}
-      </div>
+      </Wrapper>
       {tooltip && !disabled && (
         <Popup
           anchor={ref}

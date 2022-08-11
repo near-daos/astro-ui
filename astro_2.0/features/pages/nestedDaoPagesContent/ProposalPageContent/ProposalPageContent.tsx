@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { VoteTimeline } from 'features/proposal/components/VoteTimeline';
 import { VoteCollapsableList } from 'features/proposal/components/VoteCollapsableList';
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { useTranslation } from 'next-i18next';
 import {
   useDelegatePageData,
@@ -31,7 +30,6 @@ export const ProposalPageContent: FC<Props> = ({
   membersStats,
 }) => {
   const { dao } = daoContext;
-  const { tokens } = useDaoCustomTokens();
   const { t } = useTranslation();
 
   const { data: delegations } = useDelegatePageData(dao);
@@ -51,7 +49,11 @@ export const ProposalPageContent: FC<Props> = ({
   return (
     <>
       <div className={styles.proposalInfo}>
-        <ViewProposal proposal={proposal} showFlag={false} tokens={tokens} />
+        <ViewProposal
+          proposal={proposal}
+          showFlag={false}
+          userPermissions={daoContext.userPermissions}
+        />
       </div>
       <div className={styles.votes}>
         <div className={styles.voteTitle}>{t('proposalVotes.title')}</div>

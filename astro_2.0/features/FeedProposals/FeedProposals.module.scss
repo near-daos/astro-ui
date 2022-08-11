@@ -28,7 +28,7 @@
   z-index: 20;
 
   @include tablet-landscape {
-    top: 71px;
+    top: var(--app-header-height);
   }
 
   .categoriesListApprovedInputWrapperChecked {

@@ -11,7 +11,7 @@ import { TokenCard } from 'components/cards/TokenCard';
 import { Button } from 'components/button/Button';
 import { Input } from 'components/inputs/Input';
 
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 import { sorter } from 'features/treasury/helpers';
 import { formatCurrency } from 'utils/formatCurrency';
 

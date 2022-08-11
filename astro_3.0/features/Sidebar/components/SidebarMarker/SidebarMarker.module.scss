@@ -1,6 +1,8 @@
 .root {
-  left: 0;
+  left: -9px;
   position: absolute;
   top: 0;
   transition: transform 0.2s ease-out;
+
+  z-index: 1;
 }

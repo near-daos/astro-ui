@@ -8,8 +8,6 @@ import React, {
 } from 'react';
 import { UrlObject } from 'url';
 import cn from 'classnames';
-import omit from 'lodash/omit';
-import { useRouter } from 'next/router';
 
 import { DaoContext } from 'types/context';
 import { ProposalVariant } from 'types/proposal';
@@ -18,13 +16,18 @@ import { NavLink } from 'astro_2.0/components/NavLink';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
-import { DaoWarning } from 'astro_2.0/components/DaoWarning';
 import { CreateExternalProposal } from 'astro_2.0/features/CreateExternalProposal';
+import { DaoLowBalanceWarning } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper/components/DaoLowBalanceWarning';
+import { DaoCreateProposal } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper/components/DaoCreateProposal';
 
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 
 import { DaoSettingsProvider } from 'context/DaoSettingsContext';
+import { DaoTokensProvider } from 'context/DaoTokensContext';
+import { AllTokensProvider } from 'context/AllTokensContext';
+
+import { MainLayout } from 'astro_3.0/features/MainLayout';
+import { useAppVersion } from 'hooks/useAppVersion';
 
 import styles from './NestedDaoPageWrapper.module.scss';
 
@@ -49,11 +52,8 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
     header,
   } = props;
   const { dao, userPermissions, policyAffectsProposals } = daoContext;
-  const router = useRouter();
-  const { tokens } = useDaoCustomTokens();
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
-  const showLowBalanceWarning =
-    tokens?.NEAR?.balance && Number(tokens?.NEAR?.balance) < 5;
+  const { appVersion } = useAppVersion();
 
   function renderBreadcrumbs() {
     const navItems = breadcrumbs.map(breadcrumb => {
@@ -94,26 +94,8 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
     [toggleCreateProposal, defaultProposalType]
   );
 
-  const handleProposalDone = useCallback(async () => {
-    toggleCreateProposal();
-
-    await router.replace(
-      {
-        pathname: router.pathname,
-        query: {
-          ...omit(router.query, ['action', 'variant', 'params']),
-        },
-      },
-      undefined,
-      {
-        shallow: true,
-      }
-    );
-  }, [router, toggleCreateProposal]);
-
-  return (
-    <DaoSettingsProvider>
-      {header && header(onCreateProposal)}
+  function renderContent() {
+    const content = (
       <div className={cn(styles.root, className)}>
         {renderBreadcrumbs()}
         <DaoDetailsMinimized
@@ -122,39 +104,37 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
           userPermissions={userPermissions}
           onCreateProposalClick={onCreateProposal}
         />
-        <CreateProposal
-          className={styles.createProposal}
-          dao={dao}
-          key={Object.keys(tokens).length}
-          daoTokens={tokens}
-          userPermissions={userPermissions}
-          proposalVariant={defaultProposalType}
-          showFlag={false}
-          onCreate={handleProposalDone}
-          onClose={handleProposalDone}
+        <DaoCreateProposal
+          daoContext={daoContext}
+          defaultProposalType={defaultProposalType}
+          CreateProposal={CreateProposal}
+          toggleCreateProposal={toggleCreateProposal}
         />
         <CreateExternalProposal onCreateProposal={onCreateProposal} />
-        {showLowBalanceWarning && (
-          <DaoWarning
-            content={
-              <>
-                <div className={styles.title}>Error</div>
-                <div className={styles.text}>
-                  Your available balance is too low to perform any actions on
-                  your account. Please send Near to your account and then try
-                  again.
-                </div>
-              </>
-            }
-            className={styles.warningWrapper}
-          />
-        )}
+        <DaoLowBalanceWarning />
         <PolicyAffectedWarning
           data={policyAffectsProposals}
           className={styles.warningWrapper}
         />
         {renderChildren()}
       </div>
+    );
+
+    if (appVersion === 3) {
+      return <MainLayout>{content}</MainLayout>;
+    }
+
+    return content;
+  }
+
+  return (
+    <DaoSettingsProvider>
+      <AllTokensProvider>
+        <DaoTokensProvider>
+          {header && header(onCreateProposal)}
+          {renderContent()}
+        </DaoTokensProvider>
+      </AllTokensProvider>
     </DaoSettingsProvider>
   );
 };

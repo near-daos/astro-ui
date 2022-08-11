@@ -91,8 +91,10 @@ exports[`dao details minimized Should render component 1`] = `
       <section
         class="controls"
       >
-        <div
+        <a
           class="controlIcon noActiveLink"
+          href="/dao/default-flag-test.sputnikv2.testnet/proposals"
+          style="display: inline-block;"
         >
           <button
             class="iconTextButton"
@@ -107,9 +109,11 @@ exports[`dao details minimized Should render component 1`] = `
             </svg>
             daoDetailsMinimized.proposals
           </button>
-        </div>
-        <div
+        </a>
+        <a
           class="controlIcon noActiveLink"
+          href="/dao/default-flag-test.sputnikv2.testnet/treasury/tokens"
+          style="display: inline-block;"
         >
           <button
             class="iconTextButton"
@@ -124,9 +128,11 @@ exports[`dao details minimized Should render component 1`] = `
             </svg>
             daoDetailsMinimized.funds
           </button>
-        </div>
-        <div
+        </a>
+        <a
           class="controlIcon noActiveLink"
+          href="/dao/default-flag-test.sputnikv2.testnet/groups/all"
+          style="display: inline-block;"
         >
           <button
             class="iconTextButton"
@@ -141,9 +147,11 @@ exports[`dao details minimized Should render component 1`] = `
             </svg>
             daoDetailsMinimized.members
           </button>
-        </div>
-        <div
+        </a>
+        <a
           class="controlIcon noActiveLink"
+          href="/dao/default-flag-test.sputnikv2.testnet/governance/settings"
+          style="display: inline-block;"
         >
           <button
             class="iconTextButton"
@@ -158,9 +166,11 @@ exports[`dao details minimized Should render component 1`] = `
             </svg>
             daoDetailsMinimized.settings
           </button>
-        </div>
-        <div
+        </a>
+        <a
           class="controlIcon noActiveLink"
+          href="/dao/default-flag-test.sputnikv2.testnet/treasury/nfts"
+          style="display: inline-block;"
         >
           <button
             class="iconTextButton"
@@ -175,9 +185,11 @@ exports[`dao details minimized Should render component 1`] = `
             </svg>
             daoDetailsMinimized.nfts
           </button>
-        </div>
-        <div
+        </a>
+        <a
           class="controlIcon noActiveLink"
+          href="/dao/default-flag-test.sputnikv2.testnet/tasks/bounties/list"
+          style="display: inline-block;"
         >
           <button
             class="iconTextButton"
@@ -192,9 +204,11 @@ exports[`dao details minimized Should render component 1`] = `
             </svg>
             daoDetailsMinimized.bounties
           </button>
-        </div>
-        <div
+        </a>
+        <a
           class="controlIcon noActiveLink"
+          href="/dao/default-flag-test.sputnikv2.testnet/tasks/polls"
+          style="display: inline-block;"
         >
           <button
             class="iconTextButton"
@@ -209,7 +223,7 @@ exports[`dao details minimized Should render component 1`] = `
             </svg>
             daoDetailsMinimized.polls
           </button>
-        </div>
+        </a>
       </section>
     </div>
   </div>

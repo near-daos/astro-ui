@@ -1,0 +1,9 @@
+@import 'styles/mixins';
+
+.createProposal {
+  margin-top: 56px;
+
+  @include tablet-landscape {
+    margin-top: 32px;
+  }
+}

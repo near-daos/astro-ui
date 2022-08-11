@@ -12,7 +12,6 @@ import { BackButton } from 'astro_2.0/features/ViewProposal/components/BackButto
 import { DRAFTS_PAGE_URL } from 'constants/routing';
 
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { DraftComments } from 'astro_2.0/features/DraftComments';
 
 import { DraftProposal } from 'types/draftProposal';
@@ -30,7 +29,6 @@ interface DraftPageProps {
 
 const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
   const router = useRouter();
-  const { tokens } = useDaoCustomTokens();
 
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     dao.id,
@@ -92,7 +90,6 @@ const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
                   dao={dao}
                   proposal={draft}
                   showFlag={false}
-                  tokens={tokens}
                   userPermissions={daoContext.userPermissions}
                   toggleCreateProposal={toggleCreateProposal}
                 />

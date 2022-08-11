@@ -1,10 +1,15 @@
 @import 'styles/mixins';
 
 .root {
-  background-color: var(--color-neutral-10);
+  --app-background: var(--color-neutral-10);
+  background-color: var(--app-background);
   display: flex;
   position: relative;
   width: 100%;
+
+  &.whiteBackground {
+    --app-background: var(--color-white);
+  }
 }
 
 .main {
@@ -32,6 +37,10 @@
 
 .content {
   width: 100%;
+
+  &.withFixedHeader {
+    padding-top: var(--app-header-height);
+  }
 }
 
 .createDao.root {

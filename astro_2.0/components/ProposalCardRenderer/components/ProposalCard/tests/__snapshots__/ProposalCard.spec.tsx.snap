@@ -120,7 +120,6 @@ exports[`Proposal Card Should render component 1`] = `
           <div>
             buttonExternal
           </div>
-           
           <span
             class="body2 text"
           >

@@ -1,5 +1,4 @@
-import { NextPage } from 'next';
-import React, { useCallback, useEffect } from 'react';
+import React, { ReactNode, useCallback, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -26,9 +25,12 @@ import useQuery from 'hooks/useQuery';
 
 import { WalletType } from 'types/config';
 import { useWalletContext } from 'context/WalletContext';
+import { MainLayout } from 'astro_3.0/features/MainLayout';
+import { Page } from 'pages/_app';
+
 import styles from './DiscoverPage.module.scss';
 
-const DiscoverPage: NextPage = () => {
+const DiscoverPage: Page = () => {
   const { t } = useTranslation();
   const { accountId, login } = useWalletContext();
   const router = useRouter();
@@ -150,6 +152,10 @@ const DiscoverPage: NextPage = () => {
       </div>
     </DaoStatsDataProvider>
   );
+};
+
+DiscoverPage.getLayout = function getLayout(page: ReactNode) {
+  return <MainLayout>{page}</MainLayout>;
 };
 
 export default DiscoverPage;

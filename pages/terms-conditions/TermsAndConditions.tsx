@@ -1,13 +1,17 @@
-import React, { VFC } from 'react';
+import React, { ReactNode } from 'react';
 import Head from 'next/head';
 
 import {
   Paragraph,
   TERMS_CONDITIONS,
 } from 'astro_2.0/features/TermsAndConditions';
+import { MainLayout } from 'astro_3.0/features/MainLayout';
+
+import { Page } from 'pages/_app';
+
 import styles from './TermsAndConditions.module.scss';
 
-const TermsAndConditions: VFC = () => {
+const TermsAndConditions: Page = () => {
   function renderBlock({ title, body }: Paragraph) {
     return (
       <>
@@ -41,6 +45,10 @@ const TermsAndConditions: VFC = () => {
       {TERMS_CONDITIONS.map(renderBlock)}
     </div>
   );
+};
+
+TermsAndConditions.getLayout = function getLayout(page: ReactNode) {
+  return <MainLayout>{page}</MainLayout>;
 };
 
 export default TermsAndConditions;

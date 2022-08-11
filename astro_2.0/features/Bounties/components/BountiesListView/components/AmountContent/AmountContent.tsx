@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 
-import { Tokens } from 'context/CustomTokensContext';
+import { Tokens } from 'types/token';
 import { formatYoktoValue, kFormatter } from 'utils/format';
 
 import { Tooltip } from 'astro_2.0/components/Tooltip';

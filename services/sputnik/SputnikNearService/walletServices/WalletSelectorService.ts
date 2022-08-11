@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/ban-ts-comment, class-methods-use-this */
 
 import BN from 'bn.js';
 import map from 'lodash/map';
@@ -60,6 +60,15 @@ export class WalletSelectorService implements WalletService {
           };
   }
 
+  private sendTransaction(transaction: unknown) {
+    const args = JSON.stringify(transaction);
+
+    window.open(
+      `${window.origin}${SELECTOR_TRANSACTION_PAGE_URL}?${TRANSACTIONS_KEY}=${args}`,
+      '_blank'
+    );
+  }
+
   private getOnTransactionsCompleteHandler(
     resolve: (data: FinalExecutionOutcome[]) => void,
     reject: (error: unknown) => void
@@ -92,14 +101,33 @@ export class WalletSelectorService implements WalletService {
     return handler.bind(this);
   }
 
-  // TODO TBD
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars,class-methods-use-this
   functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome[]> {
-    return Promise.resolve([]);
+    return new Promise((resolve, reject) => {
+      const { args, contractId, gas, methodName, attachedDeposit } = props;
+
+      window.onTransaction = this.getOnTransactionsCompleteHandler(
+        resolve,
+        reject
+      );
+
+      this.sendTransaction({
+        receiverId: contractId,
+        actions: [
+          {
+            type: 'FunctionCall',
+            params: {
+              methodName,
+              args,
+              gas: gas?.toString(),
+              deposit: attachedDeposit?.toString() || '0',
+            },
+          },
+        ],
+      });
+    });
   }
 
   // TODO implement after lib changes
-  // eslint-disable-next-line class-methods-use-this
   getAccount(): ConnectedWalletAccount {
     // @ts-ignore
     return null;
@@ -120,20 +148,17 @@ export class WalletSelectorService implements WalletService {
   }
 
   // TODO implement after lib changes
-  // eslint-disable-next-line class-methods-use-this
   getKeyStore(): KeyStore {
     // @ts-ignore
     return null;
   }
 
   // TODO implement after lib changes
-  // eslint-disable-next-line class-methods-use-this
   getPublicKey(): Promise<string | null> {
     return Promise.resolve(null);
   }
 
   // TODO implement after lib changes
-  // eslint-disable-next-line class-methods-use-this
   getSignature(): Promise<string | null> {
     return Promise.resolve(null);
   }
@@ -150,7 +175,7 @@ export class WalletSelectorService implements WalletService {
     return this.wallet.signOut();
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  // TODO works only for NEAR wallet. Has to be updated for Sender wallet
   sendMoney(
     receiverId: string,
     amount: number
@@ -160,7 +185,12 @@ export class WalletSelectorService implements WalletService {
 
       const nearAsBn = new BN(parsedNear ?? 0);
 
-      const args = JSON.stringify({
+      window.onTransaction = this.getOnTransactionsCompleteHandler(
+        resolve,
+        reject
+      );
+
+      this.sendTransaction({
         receiverId,
         actions: [
           {
@@ -171,26 +201,20 @@ export class WalletSelectorService implements WalletService {
           },
         ],
       });
+    });
+  }
 
+  sendTransactions(
+    transactions: Transaction[]
+  ): Promise<FinalExecutionOutcome[]> {
+    return new Promise((resolve, reject) => {
       window.onTransaction = this.getOnTransactionsCompleteHandler(
         resolve,
         reject
       );
 
-      window.open(
-        `${window.origin}${SELECTOR_TRANSACTION_PAGE_URL}?${TRANSACTIONS_KEY}=${args}`,
-        '_blank'
-      );
+      this.sendTransaction(transactions);
     });
-  }
-
-  // TODO TBD
-  // eslint-disable-next-line class-methods-use-this
-  sendTransactions(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    transactions: Transaction[]
-  ): Promise<FinalExecutionOutcome[]> {
-    return Promise.resolve([]);
   }
 
   async signIn(

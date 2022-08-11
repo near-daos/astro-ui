@@ -23,11 +23,10 @@ import {
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { ApplyToDaos } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/components/ApplyToDaos';
-import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
-import { useAllCustomTokens } from 'hooks/useCustomTokens';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { OptionsList } from 'astro_2.0/features/pages/cfcLibrary/components/OptionsList';
+import { AllTokensProvider } from 'context/AllTokensContext';
 
 import { copyToClipboard } from 'utils/copyToClipboard';
 
@@ -63,8 +62,6 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
   const { cloning, cloneToDao } = useCloneCfcTemplate();
   const { accountId } = useWalletContext();
   const [tooltip, setTooltip] = useState(defaultTooltipText);
-
-  const { tokens } = useAllCustomTokens();
 
   const availableDaos = useMemo(
     () => accountDaos?.filter(item => item.isCouncil),
@@ -241,7 +238,7 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
             />
           </div>
           <div className={styles.card}>
-            <CustomTokensContext.Provider value={{ tokens }}>
+            <AllTokensProvider>
               <CustomFcTemplateCard
                 config={data.config}
                 className={styles.card}
@@ -251,7 +248,7 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
                 isEnabled={false}
                 defaultExpanded
               />
-            </CustomTokensContext.Provider>
+            </AllTokensProvider>
           </div>
         </div>
       </div>

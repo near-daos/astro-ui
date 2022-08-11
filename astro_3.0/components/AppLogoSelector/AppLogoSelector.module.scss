@@ -1,0 +1,56 @@
+@import 'styles/mixins';
+
+.root {
+  flex: 1;
+  width: 100%;
+}
+
+.uploader {
+  background-color: var(--color-primary-10);
+  border: 1px dashed var(--color-primary-40);
+  height: 200px;
+  width: 100%;
+}
+
+.uploadControl {
+  @include centralize;
+  flex-direction: column;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.subtitle {
+  margin: 12px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.uploadIcon {
+  color: var(--color-primary);
+  width: 64px;
+}
+.logoTemplates {
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: repeat(5, 1fr);
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.template {
+  background-position: center center;
+  background-size: contain;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  height: 64px;
+  width: 64px;
+
+  &:hover,
+  &.selected {
+    border-color: var(--color-primary);
+  }
+}

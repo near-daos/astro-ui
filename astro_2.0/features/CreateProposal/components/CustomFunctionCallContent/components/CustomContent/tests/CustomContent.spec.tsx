@@ -2,6 +2,12 @@ import { render } from 'jest/testUtils';
 
 import { CustomContent } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/CustomContent';
 
+jest.mock('context/DaoTokensContext', () => {
+  return {
+    useDaoCustomTokens: jest.fn().mockReturnValue({ tokens: {} }),
+  };
+});
+
 const formContextMock = {
   formState: {
     errors: {},

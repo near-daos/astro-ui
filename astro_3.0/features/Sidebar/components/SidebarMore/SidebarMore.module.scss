@@ -1,0 +1,64 @@
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-white);
+  box-shadow: 0 4px 24px var(--color-black-opacity-1);
+
+  max-width: 260px;
+
+  padding: 16px;
+}
+
+.icon {
+  margin-right: 8px;
+  width: 24px;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.controlIcon {
+  transform: rotate(90deg);
+}
+
+.moreButton {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+
+  padding: 12px 8px;
+
+  width: 100%;
+
+  &:hover {
+    background-color: var(--color-neutral-10);
+    color: var(--color-primary);
+  }
+
+  a {
+    align-items: center;
+    display: flex;
+  }
+}
+
+.anchor {
+  position: absolute;
+  right: 0;
+}
+
+.row {
+  align-items: center;
+  color: var(--color-neutral-80);
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  padding: 0 8px;
+}
+
+.copyright {
+  @extend %body3;
+  color: var(--color-neutral-80);
+  line-height: 16px;
+  padding: 8px;
+}

@@ -1,0 +1,203 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-gap: 12px 0;
+  grid-template-areas:
+    'letterHeadSection letterHeadSection letterHeadSection'
+    '. usersSection linksSection'
+    'followSection followSection followSection'
+    'depositSection depositSection depositSection'
+    'descriptionSection descriptionSection descriptionSection'
+    'warningSection warningSection warningSection';
+  grid-template-columns: 160px 80px 1fr;
+
+  @include tablet-landscape {
+    grid-gap: 12px 0;
+    grid-template-areas:
+      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
+      '. depositSection depositSection depositSection'
+      '. usersSection followSection followSection'
+      'descriptionSection descriptionSection descriptionSection descriptionSection'
+      'warningSection warningSection warningSection warningSection';
+    grid-template-columns: 200px 60px 1fr minmax(230px, 280px);
+    padding-top: 24px;
+  }
+
+  @include desktop {
+    grid-gap: 12px 0;
+    grid-template-areas:
+      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
+      '. usersSection followSection depositSection'
+      'descriptionSection descriptionSection descriptionSection descriptionSection'
+      'warningSection warningSection warningSection warningSection';
+    grid-template-columns: 200px 60px 1fr minmax(220px, 280px);
+
+    //grid-template-rows: 1fr 40px 1px auto;
+
+    padding-top: 24px;
+  }
+
+  @include large-desktop {
+    grid-gap: 12px 0;
+    grid-template-areas:
+      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
+      '. usersSection followSection depositSection'
+      'descriptionSection descriptionSection descriptionSection descriptionSection'
+      'warningSection warningSection warningSection warningSection';
+    grid-template-columns: 200px 80px 1fr max(320px);
+  }
+}
+
+.letterHeadSection {
+  background: var(--color-neutral-30);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  grid-area: letterHeadSection;
+  height: 134px;
+  margin: 0 -24px;
+  position: relative;
+
+  @include tablet-landscape {
+    border-radius: 8px;
+    margin: 0;
+  }
+
+  &.fullWidth {
+    border-radius: 0;
+  }
+
+  .logo {
+    left: 0;
+    transform: translate(36px, 60px);
+  }
+}
+
+.contentLayout {
+  padding-bottom: 0;
+}
+
+.joinDao {
+  margin-right: 8px;
+  position: relative;
+  right: 0;
+}
+
+.depositSection {
+  display: flex;
+  grid-area: depositSection;
+}
+
+.followSection {
+  align-items: center;
+  display: flex;
+  grid-area: followSection;
+  justify-content: center;
+  margin-top: 24px;
+  width: 100%;
+
+  @include tablet-landscape {
+    justify-content: flex-start;
+    margin-top: 0;
+    padding-left: 12px;
+    padding-right: 12px;
+    width: unset;
+  }
+}
+
+.usersSection {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  grid-area: usersSection;
+  justify-content: center;
+  padding: 0 0 0 12px;
+
+  @include tablet-landscape {
+    padding: 0;
+  }
+}
+
+.versionSection {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  grid-area: followSection;
+  justify-content: center;
+  padding: 0 0 0 12px;
+
+  @include tablet-landscape {
+    padding: 0;
+  }
+}
+
+.label {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
+}
+
+.value {
+  @extend %title4;
+  align-items: center;
+  display: flex;
+}
+
+.copyHash {
+  margin-left: 8px;
+}
+
+.descriptionSection {
+  @extend %body1;
+  background-color: var(--color-white);
+  color: var(--color-black);
+  grid-area: descriptionSection;
+  margin-top: 20px;
+  padding: 12px 0;
+  text-align: left;
+
+  @include tablet-landscape {
+    background-color: var(--color-white);
+    border-radius: 8px;
+  }
+}
+
+.link {
+  display: flex;
+  grid-area: linksSection;
+  justify-content: flex-end;
+  @include tablet-landscape {
+    grid-area: unset;
+  }
+}
+
+.warningWrapper {
+  grid-area: warningSection;
+}
+
+.warning {
+  margin: 24px 0;
+}
+
+.title {
+  @extend %title3;
+  margin-bottom: 4px;
+}
+
+.text {
+  @extend %caption1;
+}
+
+.proposeButton {
+  min-width: 60px;
+  padding: 4px 8px;
+
+  &:not(:last-of-type) {
+    margin-right: 12px;
+  }
+}
