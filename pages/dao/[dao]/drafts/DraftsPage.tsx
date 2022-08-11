@@ -29,15 +29,15 @@ const DraftsPage: NextPage<DraftsPageProps> = ({ daoContext }) => {
   }, [breadcrumbsConfig]);
 
   return (
-    <NestedDaoPageWrapper
-      daoContext={daoContext}
-      breadcrumbs={breadcrumbs}
-      defaultProposalType={ProposalVariant.ProposePoll}
-    >
-      <DraftsDataProvider>
+    <DraftsDataProvider>
+      <NestedDaoPageWrapper
+        daoContext={daoContext}
+        breadcrumbs={breadcrumbs}
+        defaultProposalType={ProposalVariant.ProposePoll}
+      >
         <DraftsPageContent daoContext={daoContext} />
-      </DraftsDataProvider>
-    </NestedDaoPageWrapper>
+      </NestedDaoPageWrapper>
+    </DraftsDataProvider>
   );
 };
 

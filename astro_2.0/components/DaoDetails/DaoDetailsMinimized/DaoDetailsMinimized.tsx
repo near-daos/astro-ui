@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useMedia } from 'react-use';
 import includes from 'lodash/includes';
 import { useRouter } from 'next/router';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 
@@ -19,6 +19,7 @@ import { UserPermissions } from 'types/context';
 import { shortenString } from 'utils/format';
 
 import { useDaoSettings } from 'context/DaoSettingsContext';
+import { useDraft } from 'hooks/useDraft';
 import { useWalletContext } from 'context/WalletContext';
 
 import styles from './DaoDetailsMinimized.module.scss';
@@ -48,6 +49,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   const { t } = useTranslation();
   const { asPath } = router;
   const currentPath = asPath.split('?')[0];
+  const draftData = useDraft(dao.id);
 
   const daoHasGovernanceTokenConfigured =
     settings?.createGovernanceToken?.wizardCompleted;
@@ -72,6 +74,10 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
       [styles.noActiveLink]: !activeLinkPresent,
     });
   };
+
+  const draftsCount = useMemo(() => {
+    return draftData?.data.filter(item => !item.isRead).length;
+  }, [draftData?.data]);
 
   return (
     <div className={cn(styles.root, className)}>
@@ -133,6 +139,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           )}
           {flags.draftProposals && (
             <ActionButton
+              notifications={draftsCount}
               href={url.drafts}
               iconName="sheet"
               className={generateChapterStyle('drafts')}

@@ -2,7 +2,6 @@ import { PaginationResponse } from 'types/api';
 import { DraftProposalFeedItem } from 'types/draftProposal';
 import { useRouter } from 'next/router';
 import { useAsyncFn, useMount, useMountedState } from 'react-use';
-import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { useCallback, useState } from 'react';
 import { useWalletContext } from 'context/WalletContext';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
@@ -40,7 +39,7 @@ export function useDraftsPageData(
 
       const res = await draftsService.getDrafts({
         offset: accumulatedListData?.data.length || 0,
-        limit: LIST_LIMIT_DEFAULT,
+        limit: 1000,
         orderBy,
         order: order === 'ASC' || order === 'DESC' ? order : undefined,
         daoId,
@@ -48,7 +47,6 @@ export function useDraftsPageData(
         accountId,
         search,
         state: state === 'open' || state === 'closed' ? state : undefined,
-        isRead: view === 'unread' ? 'false' : undefined,
         isSaved: view === 'saved' ? 'true' : undefined,
       });
 
