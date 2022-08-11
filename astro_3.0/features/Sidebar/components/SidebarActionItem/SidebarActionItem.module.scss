@@ -18,8 +18,12 @@
   width: 40px;
 }
 
-.iconWrapper:hover {
+.root:hover {
   .icon {
+    color: var(--color-primary);
+  }
+
+  .label::after {
     color: var(--color-primary);
   }
 }

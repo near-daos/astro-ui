@@ -10,9 +10,15 @@ interface Props {
   icon: IconName;
   label: string;
   onClick: () => void;
+  iconClassName?: string;
 }
 
-export const SidebarActionItem: FC<Props> = ({ icon, label, onClick }) => {
+export const SidebarActionItem: FC<Props> = ({
+  icon,
+  label,
+  onClick,
+  iconClassName,
+}) => {
   return (
     <Button
       variant="transparent"
@@ -27,7 +33,7 @@ export const SidebarActionItem: FC<Props> = ({ icon, label, onClick }) => {
         data-offset="{ 'right': 10 }"
         data-delay-show="700"
       >
-        <Icon name={icon} className={cn(styles.icon)} />
+        <Icon name={icon} className={cn(styles.icon, iconClassName)} />
       </div>
       <div className={styles.label} data-expanded="hidden" data-value={label} />
     </Button>

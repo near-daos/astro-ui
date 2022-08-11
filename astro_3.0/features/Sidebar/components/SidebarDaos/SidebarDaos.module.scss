@@ -62,6 +62,10 @@
   .marker {
     display: block;
   }
+
+  .label::after {
+    color: var(--color-primary);
+  }
 }
 
 .separator {

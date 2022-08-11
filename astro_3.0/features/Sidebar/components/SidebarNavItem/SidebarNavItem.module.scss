@@ -3,25 +3,34 @@
 
 .root {
   align-items: center;
+
+  border: 1px solid transparent;
+
+  border-radius: 8px;
+
   display: flex;
 
-  height: 56px;
+  height: 40px;
+
+  margin: 12px 0;
 
   position: relative;
 }
 
 .iconWrapper {
   @include centralize;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  //padding: 12px;
+
   height: 40px;
   position: relative;
   width: 40px;
 }
 
-.iconWrapper:hover {
+.root:hover {
   border-color: var(--color-primary-20);
+
+  .label::after {
+    color: var(--color-primary);
+  }
 
   .icon {
     color: var(--color-primary);
@@ -73,7 +82,7 @@
   }
 }
 
-.active .iconWrapper {
+.active {
   background-color: var(--color-neutral-10);
 
   .icon {

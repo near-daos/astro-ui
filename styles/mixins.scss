@@ -149,7 +149,7 @@
 
 @mixin wide-background {
   &::before {
-    background-color: var(--color-neutral-10);
+    background-color: var(--app-background);
     content: '';
     height: 100%;
     left: 50%;

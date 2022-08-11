@@ -69,10 +69,6 @@
     border-radius: 0;
   }
 
-  &.editable:hover .backgroundFilter {
-    opacity: 0.2;
-  }
-
   &.editable:hover .uploader {
     opacity: 1;
   }
@@ -84,6 +80,10 @@
   .logo {
     left: 0;
     transform: translate(36px, 60px);
+  }
+
+  .logo.leftAligned {
+    transform: translate(0, 68px);
   }
 }
 

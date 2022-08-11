@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
 import isEmpty from 'lodash/isEmpty';
@@ -12,6 +12,8 @@ import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 
 import { Page } from 'pages/_app';
+
+import { MainLayout } from 'astro_3.0/features/MainLayout';
 
 import styles from './MyDaosPage.module.scss';
 
@@ -67,6 +69,10 @@ const MyDaosPage: Page<MyDaosPageProps> = ({ accountDaos }) => {
       {renderDaos()}
     </DaosList>
   );
+};
+
+MyDaosPage.getLayout = function getLayout(page: ReactNode) {
+  return <MainLayout>{page}</MainLayout>;
 };
 
 export default MyDaosPage;
