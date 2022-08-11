@@ -63,7 +63,9 @@ export const DaoLetterHeadSection: FC<Props> = ({
       <div className={styles.assetsWrapper}>
         <DaoDashboardLogo
           src={flagLogo}
-          className={cn(styles.logo)}
+          className={cn(styles.logo, {
+            [styles.leftAligned]: isNextVersion,
+          })}
           isEditable={
             userPermissions.allowedProposalsToCreate[ProposalType.ChangeConfig]
           }

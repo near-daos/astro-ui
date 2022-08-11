@@ -18,6 +18,10 @@
   }
 }
 
+.controlIcon {
+  transform: rotate(90deg);
+}
+
 .moreButton {
   align-items: center;
   display: flex;
@@ -36,6 +40,11 @@
     align-items: center;
     display: flex;
   }
+}
+
+.anchor {
+  position: absolute;
+  right: 0;
 }
 
 .row {

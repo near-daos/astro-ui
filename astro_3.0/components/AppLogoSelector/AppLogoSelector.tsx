@@ -13,11 +13,13 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import styles from './AppLogoSelector.module.scss';
 
 const avatars = new Array(15).fill(0).map((item, i) => {
-  const path = `/avatars/avatar${i + 1}.png`;
+  const name = `avatar${i + 1}.png`;
+  const path = `/avatars/${name}`;
 
   return {
     key: path,
     path,
+    name,
     styles: {
       backgroundImage: `url(${path}`,
     },
@@ -25,7 +27,8 @@ const avatars = new Array(15).fill(0).map((item, i) => {
 });
 
 export const AppLogoSelector: FC = () => {
-  const { setValue } = useFormContext();
+  const { setValue, watch } = useFormContext();
+  const logo = watch('flagLogo');
 
   return (
     <div className={styles.root}>
@@ -69,7 +72,7 @@ export const AppLogoSelector: FC = () => {
               variant="transparent"
               size="block"
               onClick={async () => {
-                const fileName = 'avatar.png';
+                const fileName = item.name;
 
                 fetch(item.path).then(async response => {
                   const contentType = response.headers.get('content-type');
@@ -83,14 +86,16 @@ export const AppLogoSelector: FC = () => {
                 });
               }}
             >
-              <div className={styles.template} style={item.styles} />
+              <div
+                className={cn(styles.template, {
+                  [styles.selected]: logo && logo[0]?.name === item.name,
+                })}
+                style={item.styles}
+              />
             </Button>
           );
         })}
       </div>
-      <Button size="block" variant="green" capitalize>
-        Propose new logo
-      </Button>
     </div>
   );
 };

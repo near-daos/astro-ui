@@ -1,6 +1,14 @@
-import React, { ComponentProps, FC, useCallback, useMemo } from 'react';
+import React, {
+  ComponentProps,
+  FC,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import cn from 'classnames';
 import { useRouter } from 'next/router';
+import { useClickAway } from 'react-use';
 
 import { SidebarNavItem } from 'astro_3.0/features/Sidebar/components/SidebarNavItem';
 import { SidebarActionItem } from 'astro_3.0/features/Sidebar/components/SidebarActionItem';
@@ -20,9 +28,14 @@ import {
   MY_FEED_URL,
 } from 'constants/routing';
 
+import { Button } from 'components/button/Button';
+import { Icon } from 'components/Icon';
+
 import styles from './Sidebar.module.scss';
 
 export const Sidebar: FC = () => {
+  const [expanded, setExpanded] = useState(false);
+  const rootRef = useRef(null);
   const router = useRouter();
 
   const { accountId, login } = useWalletContext();
@@ -35,6 +48,16 @@ export const Sidebar: FC = () => {
       ? router.push(url)
       : login(WalletType.NEAR).then(() => router.push(url));
   }, [login, router, accountId]);
+
+  useClickAway(rootRef, e => {
+    const rootResElement = (e.target as HTMLElement).closest(
+      '#astro_sidebar-more'
+    );
+
+    if (!rootResElement) {
+      setExpanded(false);
+    }
+  });
 
   const navItems: ComponentProps<typeof SidebarNavItem>[] = useMemo(() => {
     return [
@@ -63,14 +86,31 @@ export const Sidebar: FC = () => {
   }, [proposalActionsCount]);
 
   return (
-    <div className={styles.root}>
-      <div className={cn(styles.content)}>
+    <div className={styles.root} ref={rootRef}>
+      <div
+        className={cn(styles.content, {
+          [styles.expanded]: expanded,
+        })}
+      >
         <div className={styles.nav}>
           {navItems.map(item => (
             <SidebarNavItem key={item.label} {...item} />
           ))}
         </div>
-        <div className={styles.separator} />
+        <div className={styles.separator}>
+          <div className={styles.toggle}>
+            <Button
+              size="block"
+              variant="transparent"
+              className={styles.toggleButton}
+              onClick={() => {
+                setExpanded(!expanded);
+              }}
+            >
+              <Icon name="buttonArrowRight" className={styles.toggleIcon} />
+            </Button>
+          </div>
+        </div>
         <div className={styles.daos}>
           <SidebarDaos />
         </div>

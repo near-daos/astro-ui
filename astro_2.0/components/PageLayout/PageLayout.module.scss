@@ -1,13 +1,14 @@
 @import 'styles/mixins';
 
 .root {
-  background-color: var(--color-neutral-10);
+  --app-background: var(--color-neutral-10);
+  background-color: var(--app-background);
   display: flex;
   position: relative;
   width: 100%;
 
   &.whiteBackground {
-    //background-color: var(--color-white);
+    --app-background: var(--color-white);
   }
 }
 

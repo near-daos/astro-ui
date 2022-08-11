@@ -38,7 +38,7 @@ export const SidebarMore: FC = () => {
         {
           name: 'offset',
           options: {
-            offset: [64, 23],
+            offset: [24, 24],
           },
         },
         {
@@ -175,6 +175,7 @@ export const SidebarMore: FC = () => {
       <SidebarActionItem
         label="More"
         icon="buttonMore"
+        iconClassName={styles.controlIcon}
         onClick={() => {
           setOpen(!open);
         }}
