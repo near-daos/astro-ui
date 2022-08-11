@@ -738,9 +738,39 @@
         "minutesAgo": "ago"
       }
     },
-    "topic": "Topic",
-    "views": "Views",
-    "replies": "Replies",
-    "lastActivity": "Last activity"
+    "editDraftPage": {
+      "title": "Edit Draft",
+      "comment": "Comment",
+      "saveDraftTooltip": "Save Draft",
+      "convertToProposalButton": "Convert to proposal",
+      "editButton": "Edit",
+      "deleteButton": "Delete"
+    },
+    "draftPage": {
+      "title": "DAO Draft"
+    },
+    "createDraftPage": {
+      "title": "Creating Draft",
+      "headTitle": "Create Draft",
+      "saveButton": "Save",
+      "placeholder": "Describe your draft...",
+      "titlePlaceholder": "Add draft name"
+    },
+    "comments": {
+      "placeholder": "Write a comment...",
+      "writeCommentButton": "Write a comment...",
+      "comments": "comments",
+      "comment": "comment",
+      "reply": "Reply",
+      "replyPlaceholder": "Reply...",
+      "edited": "Edited",
+      "editButton": "Edit",
+      "deleteButton": "Delete"
+    },
+    "backToFeed": "Back to Draft Feed",
+    "editableContent": {
+      "sendButton": "Send",
+      "cancelButton": "Cancel"
+    }
   }
 }

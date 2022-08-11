@@ -1,5 +1,6 @@
 import React, { FC, useCallback } from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
@@ -27,6 +28,7 @@ export const DeleteDraftButton: FC<DeleteDraftButtonProps> = ({
   state,
   proposer,
 }) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { draftsService } = useDraftsContext();
   const { accountId, pkAndSignature } = useWalletContext();
@@ -94,7 +96,7 @@ export const DeleteDraftButton: FC<DeleteDraftButtonProps> = ({
       onClick={handleDeleteDraft}
     >
       <Icon name="buttonDelete" className={styles.deleteButtonIcon} />
-      Delete
+      {t('drafts.editDraftPage.deleteButton')}
     </Button>
   );
 };

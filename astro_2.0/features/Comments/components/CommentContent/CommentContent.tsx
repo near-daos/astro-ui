@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import DOMPurify from 'dompurify';
+import { useTranslation } from 'next-i18next';
 
 import { Icon } from 'components/Icon';
 
@@ -23,11 +24,15 @@ export const CommentContent: FC<Props> = ({
   text,
   className,
 }) => {
+  const { t } = useTranslation();
   const clean = DOMPurify.sanitize(text);
 
   const renderDateTime = () => {
     if (updatedAt && updatedAt !== createdAt) {
-      return `Edited ${formatISODate(updatedAt, 'dd MMMM yyyy, HH:mm')}`;
+      return `${t('drafts.comments.edited')} ${formatISODate(
+        updatedAt,
+        'dd MMMM yyyy, HH:mm'
+      )}`;
     }
 
     return formatISODate(createdAt, 'dd MMMM yyyy, HH:mm');

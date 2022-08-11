@@ -1,8 +1,11 @@
 import React, { FC, useCallback, useState } from 'react';
+import { useTranslation } from 'next-i18next';
+
 import { EditableContent } from 'astro_2.0/components/EditableContent';
-import styles from 'astro_2.0/features/DraftComments/DraftComments.module.scss';
 import { useWalletContext } from 'context/WalletContext';
 import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+
+import styles from 'astro_2.0/features/DraftComments/DraftComments.module.scss';
 
 interface Props {
   onSubmit: (va: string) => void;
@@ -12,6 +15,7 @@ export const NewComment: FC<Props> = ({ onSubmit }) => {
   const [html, setHTML] = useState('');
   const { accountId } = useWalletContext();
   const { toggleWriteComment, setToggleWriteComment } = useDraftsContext();
+  const { t } = useTranslation();
 
   const handleSend = useCallback(
     async msg => {
@@ -34,6 +38,7 @@ export const NewComment: FC<Props> = ({ onSubmit }) => {
           html={html}
           setHTML={setHTML}
           handleSend={handleSend}
+          placeholder={t('drafts.comments.placeholder')}
           handleCancel={() => setToggleWriteComment()}
         />
       ) : (
@@ -42,7 +47,7 @@ export const NewComment: FC<Props> = ({ onSubmit }) => {
           type="button"
           onClick={() => setToggleWriteComment()}
         >
-          Write a comment...
+          {t('drafts.comments.writeCommentButton')}
         </button>
       )}
     </div>

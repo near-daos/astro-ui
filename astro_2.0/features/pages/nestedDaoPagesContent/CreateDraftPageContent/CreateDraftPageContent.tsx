@@ -7,6 +7,7 @@ import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 import { DaoContext } from 'types/context';
 import { useDaoCustomTokens } from 'context/DaoTokensContext';
 import { getMockPermissions } from 'features/daos/helpers';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   daoContext: DaoContext;
@@ -14,7 +15,7 @@ interface Props {
 
 export const CreateDraftPageContent: FC<Props> = ({ daoContext }) => {
   const { dao } = daoContext;
-
+  const { t } = useTranslation();
   const { tokens } = useDaoCustomTokens();
 
   const draftProposalPermissions = useMemo(() => getMockPermissions(), []);
@@ -22,7 +23,7 @@ export const CreateDraftPageContent: FC<Props> = ({ daoContext }) => {
   return (
     <>
       <BackButton
-        name="Back to Draft Feed"
+        name={t('drafts.backToFeed')}
         href={{
           pathname: DRAFTS_PAGE_URL,
           query: {
@@ -31,7 +32,7 @@ export const CreateDraftPageContent: FC<Props> = ({ daoContext }) => {
         }}
       />
 
-      <h1 className={styles.title}>Creating draft</h1>
+      <h1 className={styles.title}>{t('drafts.createDraftPage.title')}</h1>
       <DraftsDataProvider>
         <CreateProposal
           isDraft

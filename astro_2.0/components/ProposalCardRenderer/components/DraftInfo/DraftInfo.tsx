@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useState } from 'react';
 import cn from 'classnames';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 import { ReplyButton } from 'astro_2.0/components/ReplyButton';
 import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
@@ -32,6 +33,7 @@ export const DraftInfo: FC<DraftInfoProps> = ({
   const draftId = draft as string;
   const { accountId, pkAndSignature } = useWalletContext();
   const { setToggleWriteComment } = useDraftsContext();
+  const { t } = useTranslation();
 
   const handlerSaveDraft = useCallback(async () => {
     if (!pkAndSignature) {
@@ -97,7 +99,7 @@ export const DraftInfo: FC<DraftInfoProps> = ({
         />
 
         <DraftInfoItem
-          tooltipText="Save Draft"
+          tooltipText={t('drafts.editDraftPage.saveDraftTooltip')}
           onClick={() => handlerSaveDraft()}
           iconName={isSavedDraft ? 'draftBookmarkFulfill' : 'draftBookmark'}
           count={savesCount}
@@ -106,6 +108,7 @@ export const DraftInfo: FC<DraftInfoProps> = ({
       </div>
 
       <ReplyButton
+        title={t('drafts.editDraftPage.comment')}
         disabled={disabled}
         onClick={() => setToggleWriteComment(true)}
       />

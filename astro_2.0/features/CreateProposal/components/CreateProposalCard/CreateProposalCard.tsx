@@ -334,8 +334,8 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       return (
         <EditableContent
           errors={errors}
-          placeholder="Describe your draft..."
-          titlePlaceholder="Add draft name"
+          placeholder={t('drafts.createDraftPage.placeholder')}
+          titlePlaceholder={t('drafts.createDraftPage.titlePlaceholder')}
           title={title}
           setTitle={handlerChangeTitle}
           className={styles.editable}

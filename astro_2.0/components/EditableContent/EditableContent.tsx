@@ -1,6 +1,7 @@
 import React, { FC, useMemo, useRef } from 'react';
 import cn from 'classnames';
 import { FieldError } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 
 import 'react-quill/dist/quill.snow.css';
 import { Icon } from 'components/Icon';
@@ -70,7 +71,7 @@ export const EditableContent: FC<EditableContentProps> = ({
   id = 'toolbar',
   html,
   setHTML,
-  placeholder = 'Write a comment...',
+  placeholder,
   handleSend,
   handleCancel,
   title,
@@ -82,6 +83,7 @@ export const EditableContent: FC<EditableContentProps> = ({
   // eslint-disable-next-line
   const quillRef = useRef<any>();
   const { uploadImage } = useImageUpload();
+  const { t } = useTranslation();
 
   const modules = useMemo(
     () => ({
@@ -170,7 +172,7 @@ export const EditableContent: FC<EditableContentProps> = ({
             size="small"
             onClick={handleCancel}
           >
-            Cancel
+            {t('drafts.editableContent.cancelButton')}
           </Button>
           <Button
             disabled={html === '' || html === '<p><br></p>'}
@@ -179,7 +181,7 @@ export const EditableContent: FC<EditableContentProps> = ({
             className={styles.send}
             onClick={send}
           >
-            Send
+            {t('drafts.editableContent.sendButton')}
           </Button>
         </div>
       ) : null}

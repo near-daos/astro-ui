@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import Head from 'next/head';
+import { useTranslation } from 'next-i18next';
 
 import { DaoContext } from 'types/context';
 import { ProposalVariant } from 'types/proposal';
@@ -19,6 +20,7 @@ export type CreateDraftPageProps = {
 export const CreateDraftPage: Page<CreateDraftPageProps> = ({ daoContext }) => {
   const { dao } = daoContext;
   const breadcrumbsConfig = useGetBreadcrumbsConfig(dao.id, dao.displayName);
+  const { t } = useTranslation();
 
   const breadcrumbs = useMemo(() => {
     return [
@@ -31,7 +33,7 @@ export const CreateDraftPage: Page<CreateDraftPageProps> = ({ daoContext }) => {
   return (
     <>
       <Head>
-        <title>Create Draft</title>
+        <title>{t('drafts.createDraftPage.headTitle')}</title>
       </Head>
       <NestedDaoPageWrapper
         daoContext={daoContext}

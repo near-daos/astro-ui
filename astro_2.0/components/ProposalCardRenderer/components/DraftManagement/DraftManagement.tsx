@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { Button } from 'components/button/Button';
 import { isCouncilUser } from 'astro_2.0/features/DraftComments/helpers';
@@ -29,6 +30,7 @@ export const DraftManagement: FC<DraftManagementProps> = ({
   userPermissions,
   proposalType,
 }) => {
+  const { t } = useTranslation();
   let isCouncil = false;
 
   if (dao) {
@@ -53,7 +55,7 @@ export const DraftManagement: FC<DraftManagementProps> = ({
           }
         }}
       >
-        Convert to proposal
+        {t('drafts.editDraftPage.convertToProposalButton')}
       </Button>
     );
   };
@@ -69,7 +71,7 @@ export const DraftManagement: FC<DraftManagementProps> = ({
             className={styles.button}
             onClick={onEditDraft}
           >
-            Edit
+            {t('drafts.editDraftPage.editButton')}
           </Button>
           {renderConvertToProposalButton()}
         </>

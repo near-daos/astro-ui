@@ -1,4 +1,5 @@
 import React, { FC, useCallback } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { useModal } from 'components/modal';
 import { ConfirmModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/ConfirmModal';
@@ -19,6 +20,7 @@ export const CommentActions: FC<Props> = ({
   id,
   isEditable,
 }) => {
+  const { t } = useTranslation();
   const [showModal] = useModal(ConfirmModal);
 
   const handleDelete = useCallback(async () => {
@@ -39,11 +41,15 @@ export const CommentActions: FC<Props> = ({
   return (
     <div className={styles.root}>
       <CommentAction
-        overlayText="Delete"
+        overlayText={t('drafts.comments.deleteButton')}
         icon="buttonDelete"
         onClick={handleDelete}
       />
-      <CommentAction overlayText="Edit" icon="buttonEdit" onClick={onEdit} />
+      <CommentAction
+        overlayText={t('drafts.comments.editButton')}
+        icon="buttonEdit"
+        onClick={onEdit}
+      />
     </div>
   );
 };
