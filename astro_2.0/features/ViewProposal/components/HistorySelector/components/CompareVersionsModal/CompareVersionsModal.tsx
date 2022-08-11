@@ -7,6 +7,7 @@ import { CompareProposal } from 'astro_2.0/features/ViewProposal/components/Hist
 import { IconButton } from 'components/button/IconButton';
 
 import { ProposalFeedItem } from 'types/proposal';
+import { AllTokensProvider } from 'context/AllTokensContext';
 
 import styles from './CompareVersionsModal.module.scss';
 
@@ -65,70 +66,76 @@ export const CompareVersionsModal: FC<Props> = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xxxl">
-      <div className={styles.root}>
-        <div className={styles.title}>Draft history</div>
-        <div className={styles.body}>
-          {content.left && (
-            <div className={cn(styles.column, styles.left)}>
+      <AllTokensProvider>
+        <div className={styles.root}>
+          <div className={styles.title}>Draft history</div>
+          <div className={styles.body}>
+            {content.left && (
+              <div className={cn(styles.column, styles.left)}>
+                <CompareProposal
+                  current={prevVersion}
+                  view="prev"
+                  content={content.left}
+                />
+              </div>
+            )}
+            {content.right && (
+              <div className={cn(styles.column, styles.right)}>
+                <CompareProposal
+                  current={currentVersion}
+                  view="current"
+                  content={content.right}
+                />
+              </div>
+            )}
+          </div>
+          <div className={styles.prerenderContainer}>
+            <div className={styles.hidden}>
               <CompareProposal
                 current={prevVersion}
                 view="prev"
-                content={content.left}
+                ref={leftRef}
               />
             </div>
-          )}
-          {content.right && (
-            <div className={cn(styles.column, styles.right)}>
+            <div className={styles.hidden}>
               <CompareProposal
                 current={currentVersion}
                 view="current"
-                content={content.right}
+                ref={rightRef}
               />
             </div>
-          )}
-        </div>
-        <div className={styles.prerenderContainer}>
-          <div className={styles.hidden}>
-            <CompareProposal current={prevVersion} view="prev" ref={leftRef} />
           </div>
-          <div className={styles.hidden}>
-            <CompareProposal
-              current={currentVersion}
-              view="current"
-              ref={rightRef}
+          <div className={styles.footer}>
+            <IconButton
+              icon="buttonArrowLeft"
+              className={styles.arrow}
+              disabled={selection.prevVersionInd === 0}
+              onClick={() =>
+                setSelection(prev => ({
+                  prevVersionInd: prev.prevVersionInd - 1,
+                  currentVersionInd: prev.currentVersionInd - 1,
+                }))
+              }
+            />
+            <span>{selection.prevVersionInd + 1}</span>
+            <span>&nbsp;-&nbsp;</span>
+            <span>{selection.currentVersionInd + 1}</span>
+            <span className={styles.secondary}>/</span>
+            <span className={styles.secondary}>{data.length}</span>
+            <IconButton
+              icon="buttonArrowRight"
+              className={styles.arrow}
+              disabled={selection.currentVersionInd === data.length - 1}
+              onClick={() =>
+                setSelection(prev => ({
+                  prevVersionInd: prev.prevVersionInd + 1,
+                  currentVersionInd: prev.currentVersionInd + 1,
+                }))
+              }
             />
           </div>
         </div>
-        <div className={styles.footer}>
-          <IconButton
-            icon="buttonArrowLeft"
-            className={styles.arrow}
-            disabled={selection.prevVersionInd === 0}
-            onClick={() =>
-              setSelection(prev => ({
-                prevVersionInd: prev.prevVersionInd - 1,
-                currentVersionInd: prev.currentVersionInd - 1,
-              }))
-            }
-          />
-          <span>{selection.prevVersionInd + 1}</span>
-          <span>&nbsp;-&nbsp;</span>
-          <span>{selection.currentVersionInd + 1}</span>
-          <span className={styles.secondary}>/</span>
-          <span className={styles.secondary}>{data.length}</span>
-          <IconButton
-            icon="buttonArrowRight"
-            className={styles.arrow}
-            disabled={selection.currentVersionInd === data.length - 1}
-            onClick={() =>
-              setSelection(prev => ({
-                prevVersionInd: prev.prevVersionInd + 1,
-                currentVersionInd: prev.currentVersionInd + 1,
-              }))
-            }
-          />
-        </div>
-      </div>
+      </AllTokensProvider>
     </Modal>
   );
 };

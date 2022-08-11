@@ -28,7 +28,9 @@ jest.mock('react-use', () => {
 
 jest.mock('context/WalletContext', () => {
   return {
-    useWalletContext: jest.fn(() => ({})),
+    useWalletContext: jest.fn(() => ({
+      accountId: 'jasonborn.near',
+    })),
   };
 });
 

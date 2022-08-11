@@ -19,6 +19,7 @@ import { UserPermissions } from 'types/context';
 import { shortenString } from 'utils/format';
 
 import { useDaoSettings } from 'context/DaoSettingsContext';
+import { useWalletContext } from 'context/WalletContext';
 
 import styles from './DaoDetailsMinimized.module.scss';
 
@@ -39,6 +40,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   onCreateProposalClick,
   userPermissions,
 }) => {
+  const { accountId } = useWalletContext();
   const { settings } = useDaoSettings();
   const isXsMobile = useMedia('(max-width: 600px)');
   const flags = useFlags();
@@ -196,9 +198,10 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           </ActionButton>
         </section>
 
-        {onCreateProposalClick && userPermissions.isCanCreateProposals && (
+        {onCreateProposalClick && !!accountId && (
           <section className={styles.proposals}>
             <DaoAction
+              canCreateProposals={userPermissions.isCanCreateProposals}
               onCreateProposalClick={onCreateProposalClick}
               daoId={dao.id}
             />

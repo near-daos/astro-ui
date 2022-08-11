@@ -19,9 +19,14 @@ import styles from './DaoAction.module.scss';
 interface Props {
   onCreateProposalClick?: () => void;
   daoId: string;
+  canCreateProposals: boolean;
 }
 
-export const DaoAction: FC<Props> = ({ onCreateProposalClick, daoId }) => {
+export const DaoAction: FC<Props> = ({
+  onCreateProposalClick,
+  daoId,
+  canCreateProposals,
+}) => {
   const router = useRouter();
   const flags = useFlags();
   const { accountId, login } = useWalletContext();
@@ -79,7 +84,49 @@ export const DaoAction: FC<Props> = ({ onCreateProposalClick, daoId }) => {
     );
   }
 
-  if (!flags.draftProposals) {
+  if (flags.draftProposals && canCreateProposals) {
+    return (
+      <GenericDropdown
+        isOpen={open}
+        onOpenUpdate={setOpen}
+        parent={
+          <div className={styles.root}>
+            <Button
+              data-testid="createProposal"
+              size="block"
+              onClick={() => {
+                setOpen(true);
+              }}
+              className={styles.addProposalButton}
+              variant="tertiary"
+            >
+              <Icon width={32} name="buttonAdd" className={styles.createIcon} />
+            </Button>
+          </div>
+        }
+        options={{
+          placement: 'bottom-end',
+        }}
+      >
+        <div className={styles.menu}>
+          {renderAction(
+            'sheet',
+            'Draft a Proposal',
+            'for preliminary discussion',
+            handleCreateDraft
+          )}
+          {renderAction(
+            'buttonEdit',
+            'Proposal',
+            'for a general vote for a decision',
+            handleCreateProposal
+          )}
+        </div>
+      </GenericDropdown>
+    );
+  }
+
+  if (!flags.draftProposals && canCreateProposals) {
     return (
       <Button
         data-testid="createProposal"
@@ -93,43 +140,19 @@ export const DaoAction: FC<Props> = ({ onCreateProposalClick, daoId }) => {
     );
   }
 
-  return (
-    <GenericDropdown
-      isOpen={open}
-      onOpenUpdate={setOpen}
-      parent={
-        <div className={styles.root}>
-          <Button
-            data-testid="createProposal"
-            size="block"
-            onClick={() => {
-              setOpen(true);
-            }}
-            className={styles.addProposalButton}
-            variant="tertiary"
-          >
-            <Icon width={32} name="buttonAdd" className={styles.createIcon} />
-          </Button>
-        </div>
-      }
-      options={{
-        placement: 'bottom-end',
-      }}
-    >
-      <div className={styles.menu}>
-        {renderAction(
-          'sheet',
-          'Draft a Proposal',
-          'for preliminary discussion',
-          handleCreateDraft
-        )}
-        {renderAction(
-          'buttonEdit',
-          'Proposal',
-          'for a general vote for a decision',
-          handleCreateProposal
-        )}
-      </div>
-    </GenericDropdown>
-  );
+  if (flags.draftProposals && !canCreateProposals) {
+    return (
+      <Button
+        data-testid="createDraft"
+        size="block"
+        onClick={handleCreateDraft}
+        className={styles.addProposalButton}
+        variant="tertiary"
+      >
+        <Icon width={32} name="buttonAdd" className={styles.createIcon} />
+      </Button>
+    );
+  }
+
+  return null;
 };

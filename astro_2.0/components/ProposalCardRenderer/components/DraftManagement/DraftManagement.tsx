@@ -44,7 +44,7 @@ export const DraftManagement: FC<DraftManagementProps> = ({
 
     return (
       <Button
-        disabled={disabled}
+        disabled={!isCouncil}
         capitalize
         className={styles.button}
         onClick={() => {
