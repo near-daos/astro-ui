@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const daoContext = await getDaoContext(accountId, daoId as string);
 
-  if (!daoContext) {
+  if (!daoContext || !accountId) {
     return {
       notFound: true,
     };

@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const daoContext = await getDaoContext(accountId, daoId as string);
 
-  if (!daoContext || !daoContext.userPermissions.isCanCreateProposals) {
+  if (!daoContext || !accountId) {
     return {
       notFound: true,
     };

@@ -1,6 +1,6 @@
 import { SputnikHttpService } from 'services/sputnik';
 import { DaoFeedItem } from 'types/dao';
-import { DaoContext } from 'types/context';
+import { DaoContext, UserPermissions } from 'types/context';
 import {
   getAllowedProposalsToCreate,
   getAllowedProposalsToVote,
@@ -46,6 +46,41 @@ export async function getDaosList({
       isCouncil: rec.isCouncil || false,
     })),
     total: dao.total,
+  };
+}
+
+export function getMockPermissions(): UserPermissions {
+  return {
+    isCanCreateProposals: true,
+    allowedProposalsToCreate: {
+      [ProposalType.ChangeConfig]: true,
+      [ProposalType.ChangePolicy]: true,
+      [ProposalType.AddBounty]: true,
+      [ProposalType.BountyDone]: true,
+      [ProposalType.FunctionCall]: true,
+      [ProposalType.Transfer]: true,
+      [ProposalType.Vote]: true,
+      [ProposalType.RemoveMemberFromRole]: true,
+      [ProposalType.AddMemberToRole]: true,
+      [ProposalType.UpgradeRemote]: true,
+      [ProposalType.UpgradeSelf]: true,
+      [ProposalType.SetStakingContract]: true,
+    },
+    allowedProposalsToVote: {
+      [ProposalType.ChangeConfig]: false,
+      [ProposalType.ChangePolicy]: false,
+      [ProposalType.AddBounty]: false,
+      [ProposalType.BountyDone]: false,
+      [ProposalType.FunctionCall]: false,
+      [ProposalType.Transfer]: false,
+      [ProposalType.Vote]: false,
+      [ProposalType.RemoveMemberFromRole]: false,
+      [ProposalType.AddMemberToRole]: false,
+      [ProposalType.UpgradeRemote]: false,
+      [ProposalType.UpgradeSelf]: false,
+      [ProposalType.SetStakingContract]: false,
+    },
+    isCanCreatePolicyProposals: true,
   };
 }
 
