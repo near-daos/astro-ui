@@ -212,18 +212,6 @@ exports[`Proposal Card Should render component 1`] = `
             type="button"
           >
             <div>
-              buttonMore
-            </div>
-          </button>
-        </div>
-        <div
-          class="root"
-        >
-          <button
-            class="iconButton small rootIcon"
-            type="button"
-          >
-            <div>
               reply
             </div>
           </button>

@@ -103,7 +103,8 @@ export const ViewProposal: FC<ViewProposalProps> = ({
     proposal.votes[accountId] === 'Yes' ||
     proposal.votes[accountId] === 'No' ||
     proposal.votes[accountId] === 'Dismiss' ||
-    (proposal.status && proposal.status !== 'InProgress');
+    (proposal.status && proposal.status !== 'InProgress') ||
+    (proposal.voteStatus && proposal.voteStatus !== 'Active');
 
   const isClosedDraft = 'state' in proposal && proposal?.state === 'closed';
 

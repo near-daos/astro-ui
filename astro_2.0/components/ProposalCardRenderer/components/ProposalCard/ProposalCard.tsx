@@ -581,6 +581,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           <ProposalActions
             allowSelect={
               status === 'InProgress' &&
+              voteStatus === 'Active' &&
               !liked &&
               !disliked &&
               canApprove &&
