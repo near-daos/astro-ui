@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { ReactNode, useMemo, useState } from 'react';
 import TextTruncate from 'react-text-truncate';
 import dynamic from 'next/dynamic';
 import cn from 'classnames';
@@ -33,6 +33,8 @@ import { copyToClipboard } from 'utils/copyToClipboard';
 import { DaoFeedItem } from 'types/dao';
 
 import { Page } from 'pages/_app';
+
+import { MainLayout } from 'astro_3.0/features/MainLayout';
 
 import styles from './SharedTemplatePage.module.scss';
 
@@ -268,6 +270,10 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
       {renderContent()}
     </div>
   );
+};
+
+SharedTemplatePage.getLayout = function getLayout(page: ReactNode) {
+  return <MainLayout>{page}</MainLayout>;
 };
 
 export default SharedTemplatePage;
