@@ -14,6 +14,7 @@ import { useWalletContext } from 'context/WalletContext';
 
 import { DaoContext } from 'types/context';
 import { DraftProposal } from 'types/draftProposal';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   daoContext: DaoContext;
@@ -25,6 +26,7 @@ export const EditDraftPageContent: FC<Props> = ({ daoContext, draft }) => {
   const [initialValues, setInitialValues] = useState({});
   const { tokens } = useDaoCustomTokens();
   const { accountId } = useWalletContext();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const getInitialValues = async () => {
@@ -54,7 +56,7 @@ export const EditDraftPageContent: FC<Props> = ({ daoContext, draft }) => {
   return (
     <div className={styles.draftInfo}>
       <BackButton
-        name="Back to Draft Feed"
+        name={t('drafts.backToFeed')}
         href={{
           pathname: DRAFTS_PAGE_URL,
           query: {

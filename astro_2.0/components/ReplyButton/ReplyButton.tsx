@@ -10,12 +10,14 @@ interface ReplyButtonProps {
   className?: string;
   onClick: () => void;
   disabled?: boolean;
+  title: string;
 }
 
 export const ReplyButton: FC<ReplyButtonProps> = ({
   className,
   onClick,
   disabled,
+  title,
 }) => {
   return (
     <Button
@@ -26,7 +28,7 @@ export const ReplyButton: FC<ReplyButtonProps> = ({
       className={cn(styles.replyButton, className)}
       onClick={onClick}
     >
-      Reply <Icon className={styles.icon} name="reply" />
+      {title} <Icon className={styles.icon} name="reply" />
     </Button>
   );
 };

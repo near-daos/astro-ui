@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import { useTranslation } from 'next-i18next';
 
 import { Comment } from 'astro_2.0/features/Comments/components/Comment';
 
@@ -34,10 +35,15 @@ export const Comments: FC<Props> = ({
   className,
   disabled,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={cn(styles.root, className)}>
       <div className={styles.header}>
-        {countComments} {countComments > 1 ? 'replies' : 'reply'}
+        {countComments}{' '}
+        {countComments > 1
+          ? t('drafts.comments.comments')
+          : t('drafts.comments.comment')}
       </div>
       <div className={styles.list}>
         {data.map(comment => {

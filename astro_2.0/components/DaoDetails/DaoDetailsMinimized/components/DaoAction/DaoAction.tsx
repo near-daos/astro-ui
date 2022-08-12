@@ -7,6 +7,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk';
 import { WalletType } from 'types/config';
 
 import { useWalletContext } from 'context/WalletContext';
+import { useTranslation } from 'next-i18next';
 
 import { CREATE_DRAFT_PAGE_URL } from 'constants/routing';
 
@@ -29,6 +30,7 @@ export const DaoAction: FC<Props> = ({
 }) => {
   const router = useRouter();
   const flags = useFlags();
+  const { t } = useTranslation();
   const { accountId, login } = useWalletContext();
   const [open, setOpen] = useState(false);
 
@@ -111,14 +113,14 @@ export const DaoAction: FC<Props> = ({
         <div className={styles.menu}>
           {renderAction(
             'sheet',
-            'Draft a Proposal',
-            'for preliminary discussion',
+            t('daoDetailsCreateButton.draft.label'),
+            t('daoDetailsCreateButton.draft.description'),
             handleCreateDraft
           )}
           {renderAction(
             'buttonEdit',
-            'Proposal',
-            'for a general vote for a decision',
+            t('daoDetailsCreateButton.proposal.label'),
+            t('daoDetailsCreateButton.proposal.description'),
             handleCreateProposal
           )}
         </div>

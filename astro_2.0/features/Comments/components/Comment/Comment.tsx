@@ -1,4 +1,5 @@
 import React, { FC, useState, useCallback } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { DraftComment } from 'services/DraftsService/types';
 
@@ -45,7 +46,7 @@ export const Comment: FC<CommentProps> = ({
     dislikeAccounts = [],
     id,
   } = data;
-
+  const { t } = useTranslation();
   const [edit, setEdit] = useState(false);
   const [contentHtml, setContentHtml] = useState(message);
 
@@ -92,7 +93,7 @@ export const Comment: FC<CommentProps> = ({
           setHTML={setContentHtml}
           handleSend={handlerEdit}
           handleCancel={() => setEdit(!edit)}
-          placeholder="Type your comment..."
+          placeholder={t('drafts.comments.placeholder')}
         />
       ) : (
         <CommentContent
@@ -112,7 +113,10 @@ export const Comment: FC<CommentProps> = ({
               variant="tertiary"
               onClick={() => setShowReplies(!showReplies)}
             >
-              {replies?.length} {replies?.length === 1 ? 'reply' : 'replies'}{' '}
+              {replies?.length}{' '}
+              {replies?.length === 1
+                ? t('drafts.comments.comment')
+                : t('drafts.comments.comments')}{' '}
               <Icon
                 name={showReplies ? 'buttonArrowUp' : 'buttonArrowDown'}
                 className={styles.toggleIcon}
@@ -136,6 +140,7 @@ export const Comment: FC<CommentProps> = ({
           />
           {accountId && (
             <ReplyButton
+              title={t('drafts.comments.reply')}
               disabled={disabled}
               className={styles.replyButton}
               onClick={() => setShowReplyInput(!showReplyInput)}
@@ -165,7 +170,7 @@ export const Comment: FC<CommentProps> = ({
             setHTML={setHTML}
             handleSend={handlerReply}
             handleCancel={() => setShowReplyInput(!showReplyInput)}
-            placeholder="Reply..."
+            placeholder={t('drafts.comments.replyPlaceholder')}
           />
         </div>
       )}

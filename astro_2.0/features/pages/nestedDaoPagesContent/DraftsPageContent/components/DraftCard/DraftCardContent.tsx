@@ -5,6 +5,7 @@ import { formatDistanceToNow, parseISO, differenceInMinutes } from 'date-fns';
 import { useRouter } from 'next/router';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import Link from 'next/link';
+import { useTranslation } from 'next-i18next';
 
 import { Icon } from 'components/Icon';
 
@@ -21,6 +22,7 @@ interface Props {
 
 export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const {
     id,
     title,
@@ -99,11 +101,15 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
         {replies}
       </div>
       <div className={styles.date}>
-        <span className={styles.activityText}>Last activity:</span>{' '}
+        <span className={styles.activityText}>
+          {t('drafts.feed.card.lastActivity')}:
+        </span>{' '}
         <span className={styles.dateText}>
           {differenceInMinutes(new Date(), updateDate) > 1
-            ? `${formatDistanceToNow(updateDate)} ago`
-            : 'just now'}
+            ? `${formatDistanceToNow(updateDate)} ${t(
+                'drafts.feed.card.minutesAgo'
+              )}`
+            : t('drafts.feed.card.justNow')}
         </span>
       </div>
       <div
@@ -112,7 +118,9 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
           [styles.closedStatus]: isClosedStatus,
         })}
       >
-        {isOpenStatus ? 'On discussion' : 'Converted to proposal'}
+        {isOpenStatus
+          ? t('drafts.feed.card.onDiscussionStatus')
+          : t('drafts.feed.card.convertedToProposalStatus')}
       </div>
       <div className={styles.saveFlag}>
         <Icon

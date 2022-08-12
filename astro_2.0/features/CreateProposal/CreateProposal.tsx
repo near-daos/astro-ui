@@ -243,7 +243,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             className={styles.saveDraft}
             onClick={methods.handleSubmit(onDraftSubmit)}
           >
-            Save
+            {t('drafts.createDraftPage.saveButton')}
           </Button>
         ) : null}
       </div>

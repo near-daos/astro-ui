@@ -146,7 +146,7 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
                       className={styles.noResults}
                       title={
                         isEmpty(data?.data)
-                          ? t('drafts.noDrafts')
+                          ? t('drafts.feed.noDrafts.title')
                           : t('noMoreResults')
                       }
                     >
@@ -164,7 +164,7 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
                               });
                             }}
                           >
-                            Create Draft
+                            {t('drafts.feed.noDrafts.createDraftButton')}
                           </Button>
                         )}
                     </NoResultsView>

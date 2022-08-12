@@ -10,6 +10,7 @@ import { DraftProposal } from 'types/draftProposal';
 import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 
 import { EditDraftPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/EditDraftPageContent';
+import { useTranslation } from 'next-i18next';
 
 export type CreateDraftPageProps = {
   daoContext: DaoContext;
@@ -28,6 +29,7 @@ export const EditDraftPage: FC<CreateDraftPageProps> = ({
     undefined,
     draft
   );
+  const { t } = useTranslation();
 
   const breadcrumbs = useMemo(() => {
     return [
@@ -42,7 +44,7 @@ export const EditDraftPage: FC<CreateDraftPageProps> = ({
   return (
     <>
       <Head>
-        <title>Edit Draft</title>
+        <title>{t('drafts.editDraftPage.title')}</title>
       </Head>
       <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
         <DraftsDataProvider>

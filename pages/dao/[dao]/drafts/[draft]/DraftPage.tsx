@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { DAO } from 'types/dao';
 import { DaoContext } from 'types/context';
@@ -29,7 +30,7 @@ interface DraftPageProps {
 
 const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
   const router = useRouter();
-
+  const { t } = useTranslation();
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     dao.id,
     dao.displayName,
@@ -54,7 +55,7 @@ const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
           {toggleCreateProposal => (
             <>
               <Head>
-                <title>DAO Proposal</title>
+                <title>{t('drafts.draftPage.title')}</title>
                 <meta property="og:url" content={router.asPath} />
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="Astro" />
@@ -75,7 +76,7 @@ const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
               </Head>
               <div className={styles.draftInfo}>
                 <BackButton
-                  name="Back to Draft Feed"
+                  name={t('drafts.backToFeed')}
                   href={{
                     pathname: DRAFTS_PAGE_URL,
                     query: {
