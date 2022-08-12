@@ -748,7 +748,9 @@
       "saveDraftTooltip": "Save Draft",
       "convertToProposalButton": "Convert to proposal",
       "editButton": "Edit",
-      "deleteButton": "Delete"
+      "deleteButton": "Delete",
+      "modalDeleteTitle": "Delete draft",
+      "modalDeleteMessage": "Are you sure you want to delete selected draft?"
     },
     "draftPage": {
       "title": "DAO Draft"
