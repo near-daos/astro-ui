@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import cn from 'classnames';
 import { DraftProposalFeedItem, DraftStatus } from 'types/draftProposal';
-import { formatDistanceToNow, parseISO } from 'date-fns';
+import { formatDistanceToNow, parseISO, differenceInMinutes } from 'date-fns';
 import { useRouter } from 'next/router';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import Link from 'next/link';
@@ -81,6 +81,8 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
     );
   };
 
+  const updateDate = parseISO(updatedAt);
+
   return (
     <div
       tabIndex={0}
@@ -88,6 +90,7 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
       className={styles.content}
       onMouseDown={handleCardClick}
     >
+      <div className={styles.divider} />
       <div className={styles.inputWrapper}>{renderDraftTitle()}</div>
       <div className={styles.views}>
         <Icon name="draftEye" className={styles.icon} />
@@ -100,8 +103,11 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
       <div className={styles.date}>
         <span className={styles.activityText}>Last activity:</span>{' '}
         <span className={styles.dateText}>
-          {formatDistanceToNow(parseISO(updatedAt))}{' '}
-          {t('drafts.feed.card.minutesAgo')}
+          {differenceInMinutes(new Date(), updateDate) > 1
+            ? `${formatDistanceToNow(updateDate)} ${t(
+                'drafts.feed.card.minutesAgo'
+              )}`
+            : 'just now'}
         </span>
       </div>
       <div

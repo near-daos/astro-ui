@@ -1,9 +1,9 @@
 import { GetServerSideProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from 'next-i18next.config';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
+
+import { getTranslations } from 'utils/getTranslations';
 
 import { DraftsPageProps } from './DraftsPage';
 
@@ -28,11 +28,7 @@ export const getServerSideProps: GetServerSideProps<DraftsPageProps> = async ({
 
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
       daoContext,
     },
   };

@@ -1,4 +1,5 @@
-@import '../../../styles/mixins';
+@import 'styles/mixins';
+@import 'styles/typography';
 
 .btn {
   color: var(--color-neutral-50);
@@ -14,4 +15,19 @@
   @include non-touch-devices {
     display: block;
   }
+}
+
+.notification {
+  @extend %subtitle6;
+  align-items: center;
+  background: var(--color-error-60);
+  border-radius: 50%;
+  color: var(--color-white);
+  display: flex;
+  height: 16px;
+  justify-content: center;
+  position: absolute;
+  right: -2px;
+  top: -5px;
+  width: 16px;
 }

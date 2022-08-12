@@ -1,7 +1,7 @@
-import { GetServerSideProps, NextPage } from 'next';
 import { Loader } from 'components/loader';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from 'next-i18next.config';
+import { GetServerSideProps, NextPage } from 'next';
+
+import { getTranslations } from 'utils/getTranslations';
 
 const Pending: NextPage = () => {
   return <Loader title="Connecting to the wallet" />;
@@ -14,11 +14,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
     },
   };
 };

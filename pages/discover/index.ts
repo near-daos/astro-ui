@@ -1,8 +1,9 @@
 import { GetServerSideProps } from 'next';
 import { CookieService } from 'services/CookieService';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from 'next-i18next.config';
+
 import DiscoverPage from 'pages/discover/DiscoverPage';
+
+import { getTranslations } from 'utils/getTranslations';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -12,11 +13,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
     },
   };
 };

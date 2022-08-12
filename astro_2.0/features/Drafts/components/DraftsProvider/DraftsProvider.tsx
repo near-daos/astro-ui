@@ -1,8 +1,9 @@
-import { DraftsService } from 'services/DraftsService';
-import { createContext, FC, useContext, useEffect, useState } from 'react';
-import { HttpService } from 'services/HttpService';
-import { appConfig } from 'config';
+import { createContext, FC, useContext, useState } from 'react';
 import { useToggle } from 'react-use';
+
+import { DraftsService } from 'services/DraftsService';
+
+import { useDraftService } from 'hooks/useDraftService';
 
 interface IDraftsContext {
   draftsService: DraftsService;
@@ -25,25 +26,9 @@ const DraftsContext = createContext<IDraftsContext>({
 export const useDraftsContext = (): IDraftsContext => useContext(DraftsContext);
 
 export const DraftsDataProvider: FC = ({ children }) => {
-  const [draftsService, setDraftsService] = useState<
-    DraftsService | undefined
-  >();
   const [amountComments, setAmountComments] = useState(0);
   const [toggleWriteComment, setToggleWriteComment] = useToggle(false);
-
-  useEffect(() => {
-    setTimeout(() => {
-      const httpService = new HttpService({
-        baseURL: `${
-          process.browser
-            ? window.APP_CONFIG.DRAFTS_API_URL
-            : appConfig.DRAFTS_API_URL
-        }/api/v1/`,
-      });
-
-      setDraftsService(new DraftsService(httpService));
-    }, 500);
-  }, []);
+  const draftsService = useDraftService();
 
   if (!draftsService) {
     return null;

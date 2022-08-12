@@ -13,29 +13,39 @@
 }
 
 .card {
-  grid-template-columns: 1fr;
-  @include tablet-landscape {
-    grid-template-columns: 30px 1fr;
+  grid-template-areas:
+    'header header'
+    'letterHead proposal'
+    'infoPanel infoPanel';
+  grid-template-columns: 30px 1fr;
+  position: relative;
+  &::before {
+    background: var(--color-neutral-30);
+    content: '';
+    height: 1px;
+    left: 0;
+    position: absolute;
+    top: 36px;
+    width: 100%;
+    z-index: 1;
+    @include tablet-landscape {
+      content: none;
+    }
   }
 }
 
 .letterhead {
-  height: 30px;
-  padding-left: 20px;
-  width: 100%;
-  @include tablet-landscape {
-    height: 100%;
-    padding-left: 0;
-    width: 30px;
-  }
+  align-items: flex-start;
+  border-radius: 8px 0 0 8px;
+  height: 100%;
+  justify-content: center;
+  padding-left: 0;
+  width: 30px;
 }
 
 .letterBackground {
-  height: 30px;
-  @include tablet-landscape {
-    height: 100%;
-    width: 30px;
-  }
+  height: 100%;
+  width: 30px;
 }
 
 .letterheadIcon {
@@ -43,21 +53,12 @@
   height: 14px;
   margin: 0;
   width: 14px;
-  @include tablet-landscape {
-    height: 14px;
-    width: 14px;
-  }
 }
 
 .letterheadIconWrapper {
   height: 14px;
-  padding-top: 0;
+  padding-top: 22px;
   width: 14px;
-  @include tablet-landscape {
-    height: 14px;
-    padding-top: 22px;
-    width: 14px;
-  }
 }
 
 .content {
@@ -69,21 +70,24 @@
     'status - saveFlag'
     'title title title'
     'views replies date';
-  grid-template-columns: 1fr 1fr 1fr;
-  padding: 16px;
-  width: 100%;
+  grid-template-columns: 50px 50px 1fr;
+  padding: 8px 8px 15px 12px;
   @include tablet-landscape {
     grid-row-gap: 10px;
     grid-template-areas:
       'title title title title status'
       'views replies date - saveFlag';
     grid-template-columns: 73px 78px 1fr 1fr 150px;
+    padding: 16px;
   }
 }
 
 .title {
   @extend %subtitle3;
-  @include ellipse-text;
+
+  @include tablet-landscape {
+    @include ellipse-text;
+  }
 }
 
 .views {
@@ -98,6 +102,11 @@
   align-items: center;
   display: flex;
   grid-area: date;
+  justify-content: flex-end;
+
+  @include tablet-landscape {
+    justify-content: flex-start;
+  }
 }
 
 .dateText {
@@ -107,8 +116,11 @@
 
 .activityText {
   @extend %caption1;
-  display: block;
+  display: none;
   margin-right: 4px;
+  @include tablet-landscape {
+    display: block;
+  }
 }
 
 .views,
@@ -116,11 +128,13 @@
   @extend %title5;
   align-items: center;
   display: flex;
+  white-space: nowrap;
 }
 
 .icon {
   color: var(--color-neutral-80);
   display: flex;
+  flex-shrink: 0;
   height: 24px;
   margin-right: 4px;
   width: 24px;
@@ -156,15 +170,18 @@
   font-weight: 500;
   grid-area: status;
   justify-content: flex-start;
-  line-height: 28px;
+  line-height: 12px;
+  white-space: nowrap;
   @include tablet-landscape {
     justify-content: flex-end;
+    line-height: 28px;
   }
   &::before {
     border: 2px solid;
     border-radius: 50%;
     content: '';
     display: block;
+    flex-shrink: 0;
     height: 8px;
     margin-right: 6px;
     width: 8px;

@@ -1,8 +1,6 @@
+import Head from 'next/head';
 import React, { ReactNode } from 'react';
 import { GetServerSideProps } from 'next';
-import nextI18NextConfig from 'next-i18next.config';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Head from 'next/head';
 
 import { ProposalsFeedStatuses } from 'types/proposal';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
@@ -21,6 +19,8 @@ import { MainLayout } from 'astro_3.0/features/MainLayout';
 import { ProposalsFeed } from 'astro_3.0/features/ProposalsFeed';
 import { Page } from 'pages/_app';
 import { AllTokensProvider } from 'context/AllTokensContext';
+
+import { getTranslations } from 'utils/getTranslations';
 
 import styles from './GlobalFeedPage.module.scss';
 
@@ -74,11 +74,7 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
 
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
       initialProposals: res,
       initialProposalsStatusFilterValue: status,
     },

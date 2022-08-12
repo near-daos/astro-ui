@@ -21,6 +21,7 @@ interface ActionButtonProps {
   tooltipPlacement?: 'right' | 'top' | 'bottom' | 'left' | 'auto';
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   href?: string;
+  notifications?: number;
 }
 
 const Wrapper = ({
@@ -66,33 +67,39 @@ export const ActionButton: FC<ActionButtonProps> = ({
   tooltipPlacement = 'auto',
   children,
   href,
+  notifications,
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
 
   return (
     <>
       <Wrapper addRef={setRef} className={className} link={href}>
-        {children ? (
-          <IconTextButton
-            testId={testId}
-            onClick={onClick}
-            icon={iconName as IconName}
-          >
-            {children}
-          </IconTextButton>
-        ) : (
-          <IconButton
-            testId={testId}
-            disabled={disabled}
-            icon={iconName as IconName}
-            onClick={onClick}
-            className={cn(styles.btn, buttonClassName)}
-            size={size}
-            iconProps={{
-              className: iconClassName,
-            }}
-          />
-        )}
+        <>
+          {notifications ? (
+            <div className={styles.notification}>{notifications}</div>
+          ) : null}
+          {children ? (
+            <IconTextButton
+              testId={testId}
+              onClick={onClick}
+              icon={iconName as IconName}
+            >
+              {children}
+            </IconTextButton>
+          ) : (
+            <IconButton
+              testId={testId}
+              disabled={disabled}
+              icon={iconName as IconName}
+              onClick={onClick}
+              className={cn(styles.btn, buttonClassName)}
+              size={size}
+              iconProps={{
+                className: iconClassName,
+              }}
+            />
+          )}
+        </>
       </Wrapper>
       {tooltip && !disabled && (
         <Popup

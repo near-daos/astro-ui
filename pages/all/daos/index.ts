@@ -1,7 +1,7 @@
 import { DaoFeedItem } from 'types/dao';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getDaosList } from 'features/daos/helpers';
-import nextI18NextConfig from 'next-i18next.config.js';
+
+import { getTranslations } from 'utils/getTranslations';
 
 import AllDaosPage from './AllDaosPage';
 
@@ -35,11 +35,7 @@ export async function getServerSideProps({
 
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
       data,
       total,
     },

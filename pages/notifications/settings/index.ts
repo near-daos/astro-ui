@@ -1,11 +1,10 @@
 import { GetServerSideProps } from 'next';
-import nextI18NextConfig from 'next-i18next.config';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikHttpService } from 'services/sputnik';
 import { ALL_FEED_URL } from 'constants/routing';
 import { NotificationsService } from 'services/NotificationsService';
+import { getTranslations } from 'utils/getTranslations';
 
 export const getServerSideProps: GetServerSideProps = async ({
   locale = 'en',
@@ -45,11 +44,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
       myDaos: accountDaos.map(item => {
         return {
           dao: item,

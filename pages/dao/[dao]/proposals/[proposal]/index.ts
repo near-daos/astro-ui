@@ -1,11 +1,10 @@
 import { GetServerSideProps } from 'next';
-import nextI18NextConfig from 'next-i18next.config';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { SputnikHttpService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
+import { getTranslations } from 'utils/getTranslations';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -30,11 +29,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (!daoContext || !proposal) {
     return {
       props: {
-        ...(await serverSideTranslations(
-          locale,
-          ['common', 'notificationsPage'],
-          nextI18NextConfig
-        )),
+        ...(await getTranslations(locale)),
       },
       redirect: {
         permanent: true,
@@ -45,11 +40,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
       dao,
       proposal,
       membersStats,

@@ -47,15 +47,11 @@ export class DraftsService {
   public async createDraft(
     params: CreateDraftParams
   ): Promise<AxiosResponse<string>> {
-    return this.httpService.post(
-      '/draft-proposals',
-      { ...params, hashtags: [] },
-      {
-        queryRequest: {
-          name: API_QUERIES.ADD_AUTHORIZATION,
-        },
-      }
-    );
+    return this.httpService.post('/draft-proposals', params, {
+      queryRequest: {
+        name: API_QUERIES.ADD_AUTHORIZATION,
+      },
+    });
   }
 
   public async getDraft(
@@ -87,15 +83,11 @@ export class DraftsService {
   public async patchDraft(
     params: { id: string } & CreateDraftParams
   ): Promise<AxiosResponse<string>> {
-    return this.httpService.patch(
-      `/draft-proposals/${params.id}`,
-      { ...params, hashtags: [] },
-      {
-        queryRequest: {
-          name: API_QUERIES.ADD_AUTHORIZATION,
-        },
-      }
-    );
+    return this.httpService.patch(`/draft-proposals/${params.id}`, params, {
+      queryRequest: {
+        name: API_QUERIES.ADD_AUTHORIZATION,
+      },
+    });
   }
 
   public async deleteDraft(

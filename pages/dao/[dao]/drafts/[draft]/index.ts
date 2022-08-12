@@ -1,11 +1,10 @@
 import { GetServerSideProps } from 'next';
-import nextI18NextConfig from 'next-i18next.config';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { CookieService } from 'services/CookieService';
 import { DraftsService } from 'services/DraftsService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
+import { getTranslations } from 'utils/getTranslations';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -30,11 +29,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (!draft || !daoContext) {
     return {
       props: {
-        ...(await serverSideTranslations(
-          locale,
-          ['common', 'notificationsPage'],
-          nextI18NextConfig
-        )),
+        ...(await getTranslations(locale)),
       },
       redirect: {
         permanent: true,
@@ -45,11 +40,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
       dao,
       draft,
       daoContext,

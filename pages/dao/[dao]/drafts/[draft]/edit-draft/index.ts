@@ -1,11 +1,10 @@
 import { GetServerSideProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from 'next-i18next.config';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
 import { DraftsService } from 'services/DraftsService';
 import { isCouncilUser } from 'astro_2.0/features/DraftComments/helpers';
+import { getTranslations } from 'utils/getTranslations';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -38,11 +37,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (!draft || !daoContext || (draft.proposer !== accountId && !isCouncil)) {
     return {
       props: {
-        ...(await serverSideTranslations(
-          locale,
-          ['common', 'notificationsPage'],
-          nextI18NextConfig
-        )),
+        ...(await getTranslations(locale)),
       },
       redirect: {
         permanent: true,
@@ -53,11 +48,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
       dao,
       daoContext,
       draft,
