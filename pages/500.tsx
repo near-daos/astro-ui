@@ -1,8 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { GetStaticProps, NextPage } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from 'next-i18next.config';
+import { getTranslations } from 'utils/getTranslations';
 
 const Custom500Page: NextPage = () => {
   return (
@@ -20,11 +19,7 @@ export default Custom500Page;
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
     },
   };
 };

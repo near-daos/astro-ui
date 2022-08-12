@@ -1,13 +1,12 @@
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
 
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from 'next-i18next.config';
-
 import { getDaoContext } from 'features/daos/helpers';
 import { CookieService } from 'services/CookieService';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
+
+import { getTranslations } from 'utils/getTranslations';
 
 import { BountiesFeedPageProps } from './BountiesFeedPage';
 
@@ -41,11 +40,7 @@ export const getServerSideProps: GetServerSideProps<BountiesFeedPageProps> = asy
 
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
       daoContext,
       bountiesContext,
     },

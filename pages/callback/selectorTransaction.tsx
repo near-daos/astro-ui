@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import isArray from 'lodash/isArray';
 import { useRouter } from 'next/router';
 import { GetServerSideProps, NextPage } from 'next';
-import nextI18NextConfig from 'next-i18next.config';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { TRANSACTIONS_KEY } from 'constants/localStorage';
 import { SELECTOR_TRANSACTION_PAGE_URL } from 'constants/routing';
@@ -12,6 +10,8 @@ import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 
 import { useWalletContext } from 'context/WalletContext';
 import { useSelector } from 'context/WalletContext/hooks/walletSelector/useSelector';
+
+import { getTranslations } from 'utils/getTranslations';
 
 const SelectorTransaction: NextPage = () => {
   const { query } = useRouter();
@@ -72,11 +72,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
     },
   };
 };

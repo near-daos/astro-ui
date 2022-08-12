@@ -2,8 +2,8 @@ import { GetServerSideProps, NextPage } from 'next';
 import { useEffect } from 'react';
 
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from 'next-i18next.config';
+
+import { getTranslations } from 'utils/getTranslations';
 
 const Transaction: NextPage = () => {
   useEffect(() => {
@@ -36,11 +36,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
     },
   };
 };

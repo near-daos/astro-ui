@@ -2,8 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { App404 } from 'astro_2.0/features/App404';
 import { GetStaticProps, NextPage } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from 'next-i18next.config';
+import { getTranslations } from 'utils/getTranslations';
 
 const Custom404Page: NextPage = () => {
   return (
@@ -24,11 +23,7 @@ export default Custom404Page;
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
     },
   };
 };

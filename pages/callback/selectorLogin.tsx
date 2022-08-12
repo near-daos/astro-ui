@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { GetServerSideProps, NextPage } from 'next';
-import nextI18NextConfig from 'next-i18next.config';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { WalletType } from 'types/config';
 
 import { useWallet } from 'context/WalletContext/hooks/useWallet';
 
 import { configService } from 'services/ConfigService';
+
+import { getTranslations } from 'utils/getTranslations';
 
 const SelectorLogin: NextPage = () => {
   const router = useRouter();
@@ -56,11 +56,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
+      ...(await getTranslations(locale)),
     },
   };
 };
