@@ -735,9 +735,11 @@
         "createDraftButton": "Create Draft"
       },
       "card": {
+        "lastActivity": "Last activity",
+        "justNow": "just now",
         "minutesAgo": "ago",
         "onDiscussionStatus": "On discussion",
-        "convertedToProposalStatus":"Converted to proposal"
+        "convertedToProposalStatus": "Converted to proposal"
       }
     },
     "editDraftPage": {

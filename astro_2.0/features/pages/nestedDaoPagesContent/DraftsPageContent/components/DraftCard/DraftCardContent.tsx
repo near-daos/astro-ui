@@ -101,13 +101,15 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
         {replies}
       </div>
       <div className={styles.date}>
-        <span className={styles.activityText}>Last activity:</span>{' '}
+        <span className={styles.activityText}>
+          {t('drafts.feed.card.lastActivity')}:
+        </span>{' '}
         <span className={styles.dateText}>
           {differenceInMinutes(new Date(), updateDate) > 1
             ? `${formatDistanceToNow(updateDate)} ${t(
                 'drafts.feed.card.minutesAgo'
               )}`
-            : 'just now'}
+            : t('drafts.feed.card.justNow')}
         </span>
       </div>
       <div
