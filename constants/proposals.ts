@@ -1,7 +1,7 @@
 import { ProposalCategories } from 'types/proposal';
 import { ListItem } from 'astro_3.0/features/ProposalsFeed/components/CategoriesFeedFilter';
 
-export const FEED_CATEGORIES = [
+export const FEED_CATEGORIES = ([
   {
     value: ProposalCategories.FunctionCalls,
     label: 'Function Calls',
@@ -27,7 +27,7 @@ export const FEED_CATEGORIES = [
     label: 'Members',
     icon: 'filterMembers',
   },
-] as ListItem[];
+] as unknown) as ListItem[];
 
 export const STAKING_CONTRACT_PREFIX = '-staking';
 

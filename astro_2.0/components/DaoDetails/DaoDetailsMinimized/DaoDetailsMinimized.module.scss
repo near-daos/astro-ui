@@ -165,6 +165,7 @@
 .controlIcon {
   @include centralize;
   border-radius: 6px;
+  position: relative;
   width: 42px;
 
   &:not(:first-of-type) {
