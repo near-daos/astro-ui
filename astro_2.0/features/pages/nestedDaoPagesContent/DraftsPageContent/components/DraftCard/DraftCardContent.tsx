@@ -1,11 +1,13 @@
 import React, { FC, useCallback } from 'react';
 import cn from 'classnames';
-import { DraftProposalFeedItem, DraftStatus } from 'types/draftProposal';
-import { formatDistanceToNow, parseISO, differenceInMinutes } from 'date-fns';
-import { useRouter } from 'next/router';
-import { Tooltip } from 'astro_2.0/components/Tooltip';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
+import { formatDistanceToNow, parseISO, differenceInMinutes } from 'date-fns';
+
+import { useRouter } from 'next/router';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
+import { DraftProposalFeedItem, DraftStatus } from 'types/draftProposal';
+import { useLoadDateLocale } from 'hooks/useLoadDateLocale';
 
 import { Icon } from 'components/Icon';
 
@@ -22,7 +24,8 @@ interface Props {
 
 export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const dateLocale = useLoadDateLocale(i18n.language);
   const {
     id,
     title,
@@ -61,7 +64,7 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
     return (
       <>
         <div className={styles.title}>{title}</div>
-        <Tooltip overlay={<>Link converted proposal</>}>
+        <Tooltip overlay={<>{t('drafts.feed.card.linkToConvertedProposal')}</>}>
           <Link
             passHref
             href={{
@@ -106,9 +109,9 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
         </span>{' '}
         <span className={styles.dateText}>
           {differenceInMinutes(new Date(), updateDate) > 1
-            ? `${formatDistanceToNow(updateDate)} ${t(
-                'drafts.feed.card.minutesAgo'
-              )}`
+            ? `${formatDistanceToNow(updateDate, {
+                locale: dateLocale,
+              })} ${t('drafts.feed.card.minutesAgo')}`
             : t('drafts.feed.card.justNow')}
         </span>
       </div>

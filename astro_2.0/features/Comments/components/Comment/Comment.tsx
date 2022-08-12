@@ -115,8 +115,8 @@ export const Comment: FC<CommentProps> = ({
             >
               {replies?.length}{' '}
               {replies?.length === 1
-                ? t('drafts.comments.comment')
-                : t('drafts.comments.comments')}{' '}
+                ? t('drafts.comments.reply')
+                : t('drafts.comments.replies')}{' '}
               <Icon
                 name={showReplies ? 'buttonArrowUp' : 'buttonArrowDown'}
                 className={styles.toggleIcon}

@@ -226,7 +226,16 @@
     "activeProposals": "активных предложений",
     "proposalsInTotal": "предложений всего"
   },
-
+  "daoDetailsCreateButton": {
+    "draft": {
+      "label": "Создать черновик предложения",
+      "description": "для предварительного обсуждения"
+    },
+    "proposal": {
+      "label": "Предложение",
+      "description": "для общего голосования за решение"
+    }
+  },
   "daoDetailsMinimized": {
     "proposals": "Предложения",
     "funds": "Фонд",
@@ -235,7 +244,8 @@
     "nfts": "NFT-токены",
     "bounties": "Работа",
     "polls": "Опросы",
-    "createProposal": "Создать предложение"
+    "createProposal": "Создать предложение",
+    "drafts": "Черновики"
   },
 
   "feed": {
@@ -353,5 +363,68 @@
     "noGroup": "No longer in any group",
     "title": "Votes",
     "voices": "voices"
+  },
+  "drafts": {
+    "breadcrumbs": {
+      "createDraft": "Создать черновик",
+      "editDraft": "Редактировать черновик"
+    },
+    "feed": {
+      "headTitle": "Черновики",
+      "unreadDrafts": "Непрочитанные черновики",
+      "allDrafts": "Все черновики",
+      "noDrafts": {
+        "title": "Нет черновиков",
+        "createDraftButton": "Создать черновик"
+      },
+      "card": {
+        "lastActivity": "Последняя активность",
+        "justNow": "только что",
+        "minutesAgo": "назад",
+        "onDiscussionStatus": "В обсуждении",
+        "convertedToProposalStatus": "Преобразовано в предложение",
+        "linkToConvertedProposal": "Ссылка на преобразованное предложение"
+      }
+    },
+    "editDraftPage": {
+      "title": "Редактировать черновик",
+      "comment": "Комментировать",
+      "saveDraftTooltip": "Сохранить черновик",
+      "convertToProposalButton": "Преобразовать в предложение",
+      "editButton": "Редактировать",
+      "deleteButton": "Удалить",
+      "modalDeleteTitle": "Удалить черновик",
+      "modalDeleteMessage": "Вы уверены, что хотите удалить выбранный черновик?"
+    },
+    "draftPage": {
+      "title": "DAO черновик"
+    },
+    "createDraftPage": {
+      "title": "Создание черновика",
+      "headTitle": "Создать черновик",
+      "saveButton": "Сохранить",
+      "placeholder": "Опишите свой черновик...",
+      "titlePlaceholder": "Добавить название черновика"
+    },
+    "comments": {
+      "placeholder": "Написать комментарий...",
+      "writeCommentButton": "Написать комментарий...",
+      "oneReply": "Ответ",
+      "replies": "Ответа",
+      "comments": "комментария",
+      "comment": "комментарий",
+      "reply": "Ответить",
+      "replyPlaceholder": "Ответ...",
+      "edited": "Отредактировано",
+      "editButton": "Редактировать",
+      "deleteButton": "Удалить",
+      "modalDeleteTitle": "Удалить комментарий",
+      "modalDeleteMessage": "Вы уверены, что хотите удалить выбранный комментарий?"
+    },
+    "backToFeed": "Назад к списку черновиков",
+    "editableContent": {
+      "sendButton": "Отправить",
+      "cancelButton": "Отмена"
+    }
   }
 }
