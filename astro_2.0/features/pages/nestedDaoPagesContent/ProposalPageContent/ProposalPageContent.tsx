@@ -50,6 +50,7 @@ export const ProposalPageContent: FC<Props> = ({
     <>
       <div className={styles.proposalInfo}>
         <ViewProposal
+          key={proposal.id}
           proposal={proposal}
           showFlag={false}
           userPermissions={daoContext.userPermissions}

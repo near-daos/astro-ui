@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Icon } from 'components/Icon';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { useAllCustomTokens } from 'context/AllTokensContext';
 import {
@@ -7,8 +6,9 @@ import {
   FieldWrapper,
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { formatYoktoValue } from 'utils/format';
-import { useIsValidImage } from 'hooks/useIsValidImage';
 import { useTranslation } from 'next-i18next';
+
+import { TokenIcon } from 'astro_2.0/components/TokenIcon';
 
 import styles from './TransferContent.module.scss';
 
@@ -29,27 +29,6 @@ export const TransferContent: FC<TransferContentProps> = ({
 
   const tokenData = token ? tokens[token] : tokens.NEAR;
 
-  const isValid = useIsValidImage(tokenData?.icon);
-
-  function renderIcon() {
-    if (tokenData?.symbol === 'NEAR') {
-      return <Icon name="tokenNearBig" />;
-    }
-
-    if (isValid) {
-      return (
-        <div
-          style={{
-            backgroundImage: `url(${tokenData.icon})`,
-          }}
-          className={styles.icon}
-        />
-      );
-    }
-
-    return <div className={styles.icon} />;
-  }
-
   function renderAmount() {
     return tokenData ? formatYoktoValue(amount, tokenData.decimals) : amount;
   }
@@ -69,7 +48,11 @@ export const TransferContent: FC<TransferContentProps> = ({
         <div className={styles.row}>
           {tokenData && (
             <>
-              <div className={styles.iconWrapper}>{renderIcon()}</div>
+              <TokenIcon
+                symbol={tokenData?.symbol}
+                icon={tokenData?.icon}
+                className={styles.iconWrapper}
+              />
               <div className={styles.symbol}>{tokenData.symbol}</div>
             </>
           )}
