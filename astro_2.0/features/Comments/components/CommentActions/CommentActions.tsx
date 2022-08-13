@@ -7,7 +7,7 @@ import { CommentAction } from 'astro_2.0/features/Comments/components/CommentAct
 
 import styles from './CommentActions.module.scss';
 
-interface Props {
+export interface Props {
   onEdit: () => void;
   onDelete: (id: string) => Promise<void>;
   id: string;
