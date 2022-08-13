@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
 import cn from 'classnames';
+import React, { FC } from 'react';
+import { useTranslation } from 'next-i18next';
 import { useFormContext } from 'react-hook-form';
 
 import { Icon } from 'components/Icon';
@@ -27,6 +28,7 @@ const avatars = new Array(15).fill(0).map((item, i) => {
 });
 
 export const AppLogoSelector: FC = () => {
+  const { t } = useTranslation();
   const { setValue, watch } = useFormContext();
   const logo = watch('flagLogo');
 
@@ -55,14 +57,14 @@ export const AppLogoSelector: FC = () => {
         control={
           <div className={styles.uploadControl}>
             <Icon name="uploadFile" className={cn(styles.uploadIcon)} />
-            <Title size={4}>Drag & drop logo or browse</Title>
-            <Caption size="small">Supported format: IMG, PNG</Caption>
-            <Caption size="small">MAX Size: 200kb</Caption>
+            <Title size={4}>{t('logoSelector.dropOrBrowse')}</Title>
+            <Caption size="small">{t('logoSelector.supportedFormat')}</Caption>
+            <Caption size="small">{t('logoSelector.maxSize')}: 200kb</Caption>
           </div>
         }
       />
       <Subtitle size={5} className={styles.subtitle}>
-        or select from templates
+        {t('logoSelector.selectFromTemplate')}
       </Subtitle>
       <div className={styles.logoTemplates}>
         {avatars.map(item => {

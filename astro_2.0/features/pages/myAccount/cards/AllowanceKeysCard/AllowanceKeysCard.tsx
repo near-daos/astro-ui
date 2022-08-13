@@ -11,8 +11,11 @@ import { useWalletContext } from 'context/WalletContext';
 
 import styles from 'astro_2.0/features/pages/myAccount/cards/AllowanceKeysCard/AllowanceKeysCard.module.scss';
 import { DaoWithAllowanceKey } from 'astro_2.0/features/pages/myAccount/cards/AllowanceKeysCard/types';
+import { useTranslation } from 'next-i18next';
 
 export const AllowanceKeysCard: FC = () => {
+  const { t } = useTranslation();
+
   const isMounted = useMountedState();
   const { accountId, nearService } = useWalletContext();
   const [daosWithAllowanceKey, setDaosWithAllowanceKey] = useState<
@@ -46,7 +49,7 @@ export const AllowanceKeysCard: FC = () => {
 
   return (
     <ConfigCard>
-      <CardTitle>Allowance voting keys</CardTitle>
+      <CardTitle>{t('myAccountPage.allowanceVotingKeys')}</CardTitle>
       {loading ? (
         <Loader className={styles.loader} />
       ) : (
