@@ -727,9 +727,12 @@
   "drafts": {
     "breadcrumbs": {
       "createDraft": "Create Draft",
-      "editOraft": "Edit Draft"
+      "editDraft": "Edit Draft"
     },
     "feed": {
+      "headTitle": "Drafts",
+      "unreadDrafts": "Unread drafts",
+      "allDrafts": "All drafts",
       "noDrafts": {
         "title": "No drafts",
         "createDraftButton": "Create Draft"
@@ -739,7 +742,8 @@
         "justNow": "just now",
         "minutesAgo": "ago",
         "onDiscussionStatus": "On discussion",
-        "convertedToProposalStatus": "Converted to proposal"
+        "convertedToProposalStatus": "Converted to proposal",
+        "linkToConvertedProposal": "Link to converted proposal"
       }
     },
     "editDraftPage": {
@@ -748,7 +752,9 @@
       "saveDraftTooltip": "Save Draft",
       "convertToProposalButton": "Convert to proposal",
       "editButton": "Edit",
-      "deleteButton": "Delete"
+      "deleteButton": "Delete",
+      "modalDeleteTitle": "Delete draft",
+      "modalDeleteMessage": "Are you sure you want to delete selected draft?"
     },
     "draftPage": {
       "title": "DAO Draft"
@@ -763,13 +769,17 @@
     "comments": {
       "placeholder": "Write a comment...",
       "writeCommentButton": "Write a comment...",
+      "oneReply": "Reply",
+      "replies": "Replies",
       "comments": "comments",
       "comment": "comment",
       "reply": "Reply",
       "replyPlaceholder": "Reply...",
       "edited": "Edited",
       "editButton": "Edit",
-      "deleteButton": "Delete"
+      "deleteButton": "Delete",
+      "modalDeleteTitle": "Delete comment",
+      "modalDeleteMessage": "Are you sure you want to delete selected comment?"
     },
     "backToFeed": "Back to Draft Feed",
     "editableContent": {

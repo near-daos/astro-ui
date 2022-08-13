@@ -112,12 +112,14 @@
 .dateText {
   @extend %title5;
   display: block;
+  white-space: nowrap;
 }
 
 .activityText {
   @extend %caption1;
   display: none;
   margin-right: 4px;
+  white-space: nowrap;
   @include tablet-landscape {
     display: block;
   }

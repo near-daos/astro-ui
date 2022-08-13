@@ -25,14 +25,14 @@ export const CommentActions: FC<Props> = ({
 
   const handleDelete = useCallback(async () => {
     const res = await showModal({
-      title: 'Delete comment',
-      message: 'Are you sure you want to delete selected comment?',
+      title: t('drafts.comments.modalDeleteTitle'),
+      message: t('drafts.comments.modalDeleteMessage'),
     });
 
     if (res[0]) {
       await onDelete(id);
     }
-  }, [id, onDelete, showModal]);
+  }, [t, id, onDelete, showModal]);
 
   if (!isEditable) {
     return null;

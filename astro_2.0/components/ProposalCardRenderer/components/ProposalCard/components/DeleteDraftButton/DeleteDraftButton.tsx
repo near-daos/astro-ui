@@ -50,8 +50,8 @@ export const DeleteDraftButton: FC<DeleteDraftButtonProps> = ({
     const { publicKey, signature } = pkAndSignature;
 
     const res = await showModal({
-      title: 'Delete draft',
-      message: 'Are you sure you want to delete selected draft?',
+      title: t('drafts.editDraftPage.modalDeleteTitle'),
+      message: t('drafts.editDraftPage.modalDeleteMessage'),
     });
 
     if (publicKey && signature) {
@@ -78,6 +78,7 @@ export const DeleteDraftButton: FC<DeleteDraftButtonProps> = ({
       }
     }
   }, [
+    t,
     accountId,
     dao,
     draftId,

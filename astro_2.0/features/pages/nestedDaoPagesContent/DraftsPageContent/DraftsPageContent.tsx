@@ -105,7 +105,7 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
     <div className={styles.root}>
       <Head>
         <title>
-          Astro - Drafts {view ? `- ${view}` : ''}{' '}
+          Astro - {t('drafts.feed.headTitle')} {view ? `- ${view}` : ''}{' '}
           {category ? `- ${category}` : ''}
         </title>
         <meta name="viewport" content="width=device-width, minimum-scale=1" />
@@ -171,8 +171,8 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
                   </div>
                 }
               >
-                {renderList('Unread drafts', unreadDrafts)}
-                {renderList('All drafts', readDrafts)}
+                {renderList(t('drafts.feed.unreadDrafts'), unreadDrafts)}
+                {renderList(t('drafts.feed.allDrafts'), readDrafts)}
               </InfiniteScroll>
             ) : null}
           </div>
