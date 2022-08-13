@@ -645,6 +645,7 @@
     "settings": "Settings",
     "usaOnly": "only USA",
     "requestKey": "Request key",
+    "allowanceVotingKeys": "Allowance voting keys",
     "popup": {
       "send": "Send",
       "save": "Save",
@@ -786,5 +787,12 @@
       "sendButton": "Send",
       "cancelButton": "Cancel"
     }
+  },
+  "logoSelector": {
+    "dropOrBrowse": "Drag & drop logo or browse",
+    "supportedFormat": "Supported format: IMG, PNG",
+    "maxSize": "MAX Size",
+    "selectFromTemplate": "or select from templates",
+    "proposeNewLogo": "Propose new logo"
   }
 }
