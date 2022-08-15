@@ -15,14 +15,16 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  GOOGLE_ANALYTICS_KEY: ${{ secrets.GOOGLE_ANALYTICS_KEY }}
-  LOG_ROCKET_APP_ID: ${{ secrets.LOG_ROCKET_APP_ID }}
+  HELM_GOOGLE_ANALYTICS_KEY: ${{ secrets.GOOGLE_ANALYTICS_KEY }}
+  HELM_LOG_ROCKET_APP_ID: ${{ secrets.LOG_ROCKET_APP_ID }}
   AWS_ECR_URL: ${{ secrets.AWS_ECR_URL }}
   EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
   KUBE_CONFIG_DATA:  ${{ secrets.KUBE_CONFIG_DATA }}
   NODE_OPTIONS: "--max-old-space-size=7168"
-  NEXT_PUBLIC_LAUNCHDARKLY_ID: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_ID }}
-  NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY }}
+  HELM_NEXT_PUBLIC_LAUNCHDARKLY_ID: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_ID }}
+  HELM_NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY }}
+  HELM_DD_APPLICATION_ID: ${{ secrets.DD_APPLICATION_ID }}
+  HELM_DD_CLIENT_TOKEN: ${{ secrets.DD_CLIENT_TOKEN }}
 
 jobs:
   get-environment:
@@ -46,68 +48,75 @@ jobs:
           echo "::set-output name=environment::${{ github.event.inputs.environment }}"
         fi
 
-  build-deploy:
+  build-images:
     runs-on: ubuntu-latest
-    name: Build Deploy
+    name: Build Image
     needs:
     - get-environment
-    environment:
-      name: ${{ needs.get-environment.outputs.environment }}
     steps:
     - uses: actions/checkout@v2
     - name: Set Environment
       run: |
-        echo DOCKER_ENV_TAG=${{ needs.get-environment.outputs.environment }}-$GITHUB_SHA >> $GITHUB_ENV
         cat ".github/env.common" >>$GITHUB_ENV
         cat ".github/env.${{ needs.get-environment.outputs.environment }}" >>$GITHUB_ENV
 
     - name: Docker Build Publish
       uses: ./.github/actions/docker-build-publish
 
-    - name: helm deploy
-      uses: koslib/helm-eks-action@v1.8.0
+  helm-deploy:
+    name: Helm Deploy
+    runs-on: ubuntu-latest
+    needs:
+    - get-environment
+    - build-images
+    environment:
+      name: ${{ needs.get-environment.outputs.environment }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set Environment
+      run: |
+        cat ".github/env.common" | grep -E -v '^\ *#' >>$GITHUB_ENV
+        cat ".github/env.${{ needs.get-environment.outputs.environment }}" | grep -E -v '^\ *#' >>$GITHUB_ENV
+    - name: Helm Deploy
+      uses: near-daos/github-actions/deploy@main
       with:
-        command: |
-          export CHART_FOLDER=deployment/app-chart
-          helm lint $CHART_FOLDER
-          helm --namespace $DEPLOYMENT_NAMESPACE upgrade --install --create-namespace --wait $APP_NAME $CHART_FOLDER \
-            --set image.tag=$DOCKER_ENV_TAG \
-            --set environment.near_env=${NEAR_ENV} \
-            --set environment.near_contract_name=${NEAR_CONTRACT_NAME} \
-            --set environment.roketo_contract_name=${ROKETO_CONTRACT_NAME} \
-            --set environment.roketo_multicall_name=${ROKETO_MULTICALL_NAME} \
-            --set environment.api_url=${API_URL} \
-            --set environment.google_analytics_key=${GOOGLE_ANALYTICS_KEY} \
-            --set environment.log_rocket_app_id=${LOG_ROCKET_APP_ID} \
-            --set environment.near_env=${NEAR_ENV} \
-            --set environment.stats_api_url=${STATS_API_URL} \
-            --set environment.next_public_launchdarkly_id=${NEXT_PUBLIC_LAUNCHDARKLY_ID} \
-            --set environment.next_public_launchdarkly_sdk_key=${NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY} \
-            --set environment.app_domain=${APP_DOMAIN} \
-            --set environment.release_notes=${RELEASE_NOTES} \
-            --set environment.drafts_api_url=${DRAFTS_API_URL} \
-            --set environment.generic_factory_contract_name=${GENERIC_FACTORY_CONTRACT_NAME} \
-            --set environment.staking_contract_binary_hash=${STAKING_CONTRACT_BINARY_HASH} \
-            --set ingress.host=${K8S_INGRESS_HOST}
+        name: astro-ui
+        namespace: ${{ env.DEPLOYMENT_NAMESPACE }}
+        tag: ${{ github.sha }}
+        chart_directory: deployment/app-chart
+        debug: "true"
 
+    - name: Tag Previous Image
+      uses: tmknom/retag-ecr-action@v1
+      with:
+        repository-name: astro-ui
+        source-tag: ${{ needs.get-environment.outputs.environment }}-current
+        destination-tag: ${{ needs.get-environment.outputs.environment }}-previous
 
-#  run-autotests:
-#    name: Run Autotests
-#    needs:
-#    - build-deploy
-#    - get-environment
-#    if: needs.get-environment.outputs.environment == 'test'
-#    uses: near-daos/astro-ui/.github/workflows/run-autotests.yaml@develop
-#    with:
-#      environment: test
-#      tags: smoke
-#      browser: chrome
-#    secrets:
-#      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-#      TEST_REPO_TOKEN: ${{ secrets.TEST_REPO_TOKEN }}
-#
+    - name: Tag Current Image
+      uses: tmknom/retag-ecr-action@v1
+      with:
+        repository-name: astro-ui
+        source-tag: ${{ github.sha }}
+        destination-tag: ${{ needs.get-environment.outputs.environment }}-current
+
+  run-autotests:
+    name: Run Autotests
+    needs:
+    - build-deploy
+    - get-environment
+    if: needs.get-environment.outputs.environment == 'test'
+    uses: near-daos/astro-ui/.github/workflows/run-autotests.yaml@develop
+    with:
+      environment: test
+      tags: smoke
+      browser: chrome
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      TEST_REPO_TOKEN: ${{ secrets.TEST_REPO_TOKEN }}
+
 #  build-deploy-storybook:
 #    runs-on: ubuntu-latest
 #    if: needs.get-environment.outputs.environment == 'test'
@@ -120,7 +129,6 @@ jobs:
 #    - uses: actions/checkout@v2
 #    - name: Set Environment
 #      run: |
-#        echo DOCKER_ENV_TAG=${{ needs.get-environment.outputs.environment }}-$GITHUB_SHA >> $GITHUB_ENV
 #        cat ".github/env.common" >>$GITHUB_ENV
 #        cat ".github/env.${{ needs.get-environment.outputs.environment }}" >>$GITHUB_ENV
 #    - name: Build Deploy Storybook
