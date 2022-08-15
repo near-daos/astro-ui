@@ -26,6 +26,8 @@ import { useJoinDao } from 'astro_2.0/features/DaoDashboardHeader/components/hoo
 import { DaoHeaderContent } from 'astro_2.0/features/DaoDashboardHeader/components/DaoHeaderContent';
 import { useAppVersion } from 'hooks/useAppVersion';
 
+import { MainLayout } from 'astro_3.0/features/MainLayout';
+
 import styles from './DaoDashboardHeader.module.scss';
 
 interface DaoDashboardHeaderProps {
@@ -90,78 +92,80 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
           className={className}
         />
       ) : (
-        <div
-          className={cn(styles.root, className, {
-            [styles.hideFollow]: !showFollowButton,
-          })}
-        >
-          <section className={styles.usersSection}>
-            <div className={styles.label}>{t('members')}</div>
-            <div className={styles.value}>{members}</div>
-          </section>
+        <MainLayout className={styles.headerLayout}>
+          <div
+            className={cn(styles.root, className, {
+              [styles.hideFollow]: !showFollowButton,
+            })}
+          >
+            <section className={styles.usersSection}>
+              <div className={styles.label}>{t('members')}</div>
+              <div className={styles.value}>{members}</div>
+            </section>
 
-          {(showFollowButton || showJoinButton || !isMobileOrTablet) && (
-            <section className={styles.followSection}>
-              {showJoinButton && (
-                <JoinDaoButton
-                  onClick={onCreateProposal}
-                  className={styles.joinDao}
+            {(showFollowButton || showJoinButton || !isMobileOrTablet) && (
+              <section className={styles.followSection}>
+                {showJoinButton && (
+                  <JoinDaoButton
+                    onClick={onCreateProposal}
+                    className={styles.joinDao}
+                  />
+                )}
+                {showFollowButton && (
+                  <FollowButton daoId={id} daoName={displayName} />
+                )}
+                {!isMobileOrTablet && (
+                  <div className={styles.link}>
+                    <ShowMoreLinks links={links} />
+                  </div>
+                )}
+              </section>
+            )}
+
+            {isMobileOrTablet && (
+              <div className={styles.link}>
+                <DaoLinks links={links} legal={legal} />
+              </div>
+            )}
+
+            <section className={styles.depositSection}>
+              <DepositToDaoForm daoId={id} />
+            </section>
+
+            {description && (
+              <section className={styles.descriptionSection}>
+                {description}
+              </section>
+            )}
+
+            <div className={styles.warningWrapper}>
+              {showWarning && (
+                <DaoWarning
+                  content={
+                    <>
+                      <div className={styles.title}>
+                        Your request to join is pending
+                      </div>
+                      <div className={styles.text}>
+                        If your membership request is approved, you will be
+                        notified.
+                      </div>
+                    </>
+                  }
+                  className={styles.warning}
                 />
               )}
-              {showFollowButton && (
-                <FollowButton daoId={id} daoName={displayName} />
-              )}
-              {!isMobileOrTablet && (
-                <div className={styles.link}>
-                  <ShowMoreLinks links={links} />
-                </div>
-              )}
-            </section>
-          )}
 
-          {isMobileOrTablet && (
-            <div className={styles.link}>
-              <DaoLinks links={links} legal={legal} />
+              {flags.cloneDaoFlow && (
+                <CloneDaoWarning
+                  dao={dao}
+                  className={styles.warning}
+                  onCreateProposal={onCreateProposal}
+                />
+              )}
             </div>
-          )}
-
-          <section className={styles.depositSection}>
-            <DepositToDaoForm daoId={id} />
-          </section>
-
-          {description && (
-            <section className={styles.descriptionSection}>
-              {description}
-            </section>
-          )}
-
-          <div className={styles.warningWrapper}>
-            {showWarning && (
-              <DaoWarning
-                content={
-                  <>
-                    <div className={styles.title}>
-                      Your request to join is pending
-                    </div>
-                    <div className={styles.text}>
-                      If your membership request is approved, you will be
-                      notified.
-                    </div>
-                  </>
-                }
-                className={styles.warning}
-              />
-            )}
-
-            {flags.cloneDaoFlow && (
-              <CloneDaoWarning
-                dao={dao}
-                className={styles.warning}
-                onCreateProposal={onCreateProposal}
-              />
-            )}
           </div>
-        </div>
+        </MainLayout>
       )}
     </FormProvider>
   );

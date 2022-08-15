@@ -103,7 +103,7 @@ export const DaoLetterHeadSection: FC<Props> = ({
     return content;
   }
 
-  return (
+  const pageContent = (
     <section
       className={cn(styles.letterHeadSection, {
         [styles.fullWidth]: isNextVersion,
@@ -143,4 +143,10 @@ export const DaoLetterHeadSection: FC<Props> = ({
       {renderContent()}
     </section>
   );
+
+  if (isNextVersion) {
+    return pageContent;
+  }
+
+  return <MainLayout className={styles.headerLayout}>{pageContent}</MainLayout>;
 };

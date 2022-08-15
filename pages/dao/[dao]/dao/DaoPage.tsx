@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import Head from 'next/head';
 
 import { PaginationResponse } from 'types/api';
@@ -11,9 +11,7 @@ import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesCon
 
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 
-import { getAppVersion } from 'hooks/useAppVersion';
 import { Page } from 'pages/_app';
-import { MainLayout } from 'astro_3.0/features/MainLayout';
 
 import styles from './DaoPage.module.scss';
 
@@ -58,12 +56,6 @@ const DAOHome: Page<DaoHomeProps> = ({ daoContext }) => {
       </NestedDaoPageWrapper>
     </>
   );
-};
-
-DAOHome.getLayout = function getLayout(page: ReactNode) {
-  const appVersion = getAppVersion();
-
-  return appVersion === 3 ? page : <MainLayout>{page}</MainLayout>;
 };
 
 export default DAOHome;
