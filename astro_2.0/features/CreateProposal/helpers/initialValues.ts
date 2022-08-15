@@ -8,6 +8,7 @@ import {
   DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
 } from 'services/sputnik/constants';
 import { Token } from 'types/token';
+import { DAO } from 'types/dao';
 
 export function getFormInitialValues(
   t: TFunction,
@@ -15,7 +16,8 @@ export function getFormInitialValues(
   accountId: string,
   initialValues: Record<string, unknown> = {},
   daoTokens?: Record<string, Token>,
-  isDraft?: boolean
+  isDraft?: boolean,
+  dao?: DAO
 ): Record<string, unknown> {
   let result: Record<string, unknown>;
 
@@ -151,7 +153,13 @@ export function getFormInitialValues(
     case ProposalVariant.ProposeChangeDaoLinks: {
       const initial = initialValues as { links?: string[] };
 
-      const links = initial ? initial?.links?.map(item => ({ url: item })) : [];
+      let links = initial
+        ? initial?.links?.map(item => ({ url: item, id: item }))
+        : null;
+
+      if (!links || links.length === 0) {
+        links = dao?.links?.map(item => ({ url: item, id: item })) || [];
+      }
 
       result = {
         details: '',

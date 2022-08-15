@@ -118,11 +118,12 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       accountId,
       initialValues,
       daoTokens,
-      isDraft
+      isDraft,
+      dao
     ),
     context: schemaContext,
     shouldUnregister: false,
-    mode: 'onSubmit',
+    mode: 'all',
     reValidateMode: 'onChange',
     resolver: resolver(dao, nearService, t, isDraft),
   });
@@ -171,7 +172,8 @@ export const CreateProposal: FC<CreateProposalProps> = ({
               }
             : undefined,
           undefined,
-          isDraft
+          isDraft,
+          dao
         );
 
         methods.reset({ ...defaults });
@@ -181,7 +183,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 
       setSelectedProposalVariant(value);
     },
-    [draftTitle, draftDescription, t, accountId, isDraft, methods]
+    [t, accountId, isDraft, draftTitle, draftDescription, dao, methods]
   );
 
   return (
