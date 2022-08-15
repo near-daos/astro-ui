@@ -8,7 +8,7 @@ import { DraftComment } from 'services/DraftsService/types';
 
 import styles from './Comments.module.scss';
 
-interface Props {
+export interface Props {
   data: DraftComment[];
   onLike: (id: string, isLike: boolean) => Promise<void>;
   onReply: (value: string, replyTo: string) => Promise<void>;

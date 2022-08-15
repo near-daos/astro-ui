@@ -15,7 +15,7 @@ import { useWalletContext } from 'context/WalletContext';
 
 import styles from './Comment.module.scss';
 
-interface CommentProps {
+export interface CommentProps {
   data: DraftComment;
   onLike: (id: string, isLiked: boolean) => Promise<void>;
   onDislike: (id: string, isDisliked: boolean) => Promise<void>;
