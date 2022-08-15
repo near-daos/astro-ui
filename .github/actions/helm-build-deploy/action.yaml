@@ -19,5 +19,8 @@ runs:
           --set environment.api_url=${API_URL}
           --set environment.google_analytics_key=${GOOGLE_ANALYTICS_KEY}
           --set environment.log_rocket_app_id=${LOG_ROCKET_APP_ID}
+          --set environment.dd_application_id=${DD_APPLICATION_ID}
+          --set environment.dd_client_token=${DD_CLIENT_TOKEN}
+          --set environment.dd_service=${DD_SERVICE}
           --set environment.near_env=${NEAR_ENV}
           --set ingress.host=${K8S_INGRESS_HOST}

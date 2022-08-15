@@ -26,6 +26,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@datadog/browser-rum": "^4.17.1",
     "@hookform/resolvers": "^2.7.1",
     "@near-wallet-selector/core": "^5.0.0",
     "@near-wallet-selector/my-near-wallet": "^5.0.0",
