@@ -12,7 +12,7 @@ import { DepositToDaoForm } from 'astro_2.0/features/DaoDashboardHeader/componen
 import { DaoWarning } from 'astro_2.0/components/DaoWarning';
 import { CloneDaoWarning } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning';
 import { MainLayout } from 'astro_3.0/features/MainLayout';
-import { useJoinDao } from 'astro_2.0/features/DaoDashboardHeader/components/hooks';
+import { useJoinDao } from 'astro_2.0/features/DaoDashboardHeader/hooks/useJoinDao';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { Button } from 'components/button/Button';
 

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { omit } from 'lodash';
 
-import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider';
 import { useWalletContext } from 'context/WalletContext';
 import { ProposalType, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
