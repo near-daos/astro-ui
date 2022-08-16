@@ -39,7 +39,9 @@ export const DaosTopList: FC<DaosTopListProps> = ({
         <div className={styles.header}>
           <div className={styles.index}>&nbsp;</div>
           <div className={styles.name}>{t('discover.daoName')}</div>
-          <div className={styles.proposals}>{valueLabel}</div>
+          <div className={styles.proposals}>
+            {valueLabel === '-' ? '-' : t(`discover.${valueLabel}`)}
+          </div>
           <div className={styles.chart}>{t('discover.lastMonth')}</div>
         </div>
         <InfiniteScroll

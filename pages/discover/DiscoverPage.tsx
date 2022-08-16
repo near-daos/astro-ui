@@ -115,7 +115,7 @@ const DiscoverPage: Page = () => {
 
             <SearchInput
               key={searchQuery.dao}
-              placeholder="Search DAO name"
+              placeholder={t('discover.searchDaoName')}
               className={styles.search}
               onSubmit={handleSearch}
               showResults

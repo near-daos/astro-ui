@@ -15,7 +15,7 @@ export function getValueLabel(topic: string, view: string): string {
     case DaoStatsTopics.GENERAL_INFO: {
       switch (view) {
         case GeneralInfoTabs.ACTIVE_DAOS: {
-          return 'Number of Proposals';
+          return 'numberOfProposals';
         }
         default: {
           return '-';
@@ -25,13 +25,13 @@ export function getValueLabel(topic: string, view: string): string {
     case DaoStatsTopics.USERS_AND_ACTIVITY: {
       switch (view) {
         case UsersAndActivityTabs.ALL_USERS_ON_PLATFORM: {
-          return 'Users';
+          return 'users';
         }
         case UsersAndActivityTabs.USERS_MEMBERS_OF_DAO: {
-          return 'Members';
+          return 'members';
         }
         case UsersAndActivityTabs.NUMBER_OF_INTERACTIONS: {
-          return 'Number of Interactions';
+          return 'numberOfInteractions';
         }
         default: {
           return '-';
@@ -41,10 +41,10 @@ export function getValueLabel(topic: string, view: string): string {
     case DaoStatsTopics.GOVERNANCE: {
       switch (view) {
         case GovernanceTabs.NUMBER_OF_PROPOSALS: {
-          return 'Number of Proposals';
+          return 'numberOfProposals';
         }
         case GovernanceTabs.VOTE_THROUGH_RATE: {
-          return 'Vote through rate';
+          return 'voteThroughRate';
         }
         default: {
           return '-';
@@ -54,16 +54,16 @@ export function getValueLabel(topic: string, view: string): string {
     case DaoStatsTopics.FLOW: {
       switch (view) {
         case FlowTabs.TOTAL_IN: {
-          return 'Total In';
+          return 'totalIn';
         }
         case FlowTabs.TOTAL_OUT: {
-          return 'Total Out';
+          return 'totalOut';
         }
         case FlowTabs.INCOMING_TRANSACTIONS: {
-          return 'Incoming Transactions';
+          return 'incomingTransactions';
         }
         case FlowTabs.OUTGOING_TRANSACTIONS: {
-          return 'Outgoing Transactions';
+          return 'outgoingTransactions';
         }
         default: {
           return '-';
@@ -73,10 +73,10 @@ export function getValueLabel(topic: string, view: string): string {
     case DaoStatsTopics.TVL: {
       switch (view) {
         case TvlTabs.PLATFORM_TVL: {
-          return 'Platform TVL';
+          return 'platformTvl';
         }
         case TvlTabs.VL_IN_BOUNTIES: {
-          return 'VL in Bounties/Grants';
+          return 'vlInBountiesGrants';
         }
         default: {
           return '-';
@@ -86,13 +86,13 @@ export function getValueLabel(topic: string, view: string): string {
     case DaoStatsTopics.TOKENS: {
       switch (view) {
         case TokensTabs.NUMBER_OF_FTS: {
-          return 'Number of FTs';
+          return 'numberOfFts';
         }
         case TokensTabs.VL_OF_FTS: {
-          return 'VL of FTs';
+          return 'vlOfFts';
         }
         case TokensTabs.NUMBER_OF_NFTS: {
-          return 'Number of NFTs';
+          return 'numberOfNfts';
         }
         default: {
           return '-';

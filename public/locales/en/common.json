@@ -81,6 +81,16 @@
     "clickToUploadImage": "Click here to upload image",
     "clickToChangeImage": "Click here to change image"
   },
+  "chart": {
+    "month": "1M",
+    "threeMonths": "3M",
+    "sixMonths": "6M",
+    "year": "1Y",
+    "all": "All",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly"
+  },
   "notifications": {
     "transactionDelay": "The blockchain transactions might take some time to perform, please visit DAO details page in few seconds.",
     "noArchivedNotifications": "There are no archived notifications yet"
@@ -579,6 +589,7 @@
   },
   "discover": {
     "title": "Discovery",
+    "searchDaoName": "Search DAO name",
     "daoActivity": "DAO Activity",
     "financial": "Financial",
     "generalInfo": "General Info",
@@ -598,6 +609,8 @@
     "averageNumberOfUsersPerDao": "Average number of users per DAO",
     "numberOfInteractions": "Number of interactions",
     "averageNumberOfInteractionsPerDao": "Average number of interactions per DAO",
+    "users": "Users",
+    "members": "Members",
     "voteThroughRate": "Vote through rate",
     "totalIn": "Total In",
     "totalOut": "Total Out",
