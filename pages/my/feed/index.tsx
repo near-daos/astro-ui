@@ -19,11 +19,13 @@ import { Page } from 'pages/_app';
 import { AllTokensProvider } from 'context/AllTokensContext';
 
 import { getTranslations } from 'utils/getTranslations';
+import { useTranslation } from 'next-i18next';
 
 import styles from './MyFeedPage.module.scss';
 
 const MyFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
   const { appVersion } = useAppVersion();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -36,7 +38,7 @@ const MyFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
             <ProposalsFeed {...props} className={styles.root} />
           ) : (
             <MainLayout>
-              <Feed {...props} title="My proposals feed" />
+              <Feed {...props} title={t('myProposalsFeed')} />
             </MainLayout>
           )}
         </AllTokensProvider>

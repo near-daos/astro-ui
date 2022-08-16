@@ -3,6 +3,7 @@
   "allDaos": "Все ДАО",
   "myDaos": "Мои ДАО",
   "myFeed": "Моя лента",
+  "myProposalsFeed": "Моя лента",
   "globalFeed": "Глобальная лента",
   "actionsLibrary": "Библиотека действий",
   "daosAndUsers": "ДАО и пользователи",
@@ -15,9 +16,11 @@
   "settings": "Настройки",
   "nfts": "NFT-токены",
   "bounties": "Работа",
+  "transfers": "Трансферы",
   "polls": "Опросы",
   "groups": "Группы",
   "activeProposals": "активные предложения",
+  "function calls": "Вызов функций",
   "proposalsInTotal": "предложений всего",
   "propose": "Предложить",
   "viewProposal": "Просмотреть предложение",
@@ -258,7 +261,8 @@
       "all": "Все",
       "active": "Активные",
       "approved": "Согласовано",
-      "failed": "Отклонено"
+      "failed": "Отклонено",
+      "voteNeeded": "Непроголосованные"
     }
   },
 

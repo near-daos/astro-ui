@@ -21,11 +21,13 @@ import { Page } from 'pages/_app';
 import { AllTokensProvider } from 'context/AllTokensContext';
 
 import { getTranslations } from 'utils/getTranslations';
+import { useTranslation } from 'next-i18next';
 
 import styles from './GlobalFeedPage.module.scss';
 
 const GlobalFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
   const { appVersion } = useAppVersion();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -37,7 +39,7 @@ const GlobalFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
           <ProposalsFeed {...props} className={styles.root} />
         ) : (
           <MainLayout>
-            <Feed {...props} title="Global Feed" />
+            <Feed {...props} title={t('globalFeed')} />
           </MainLayout>
         )}
       </AllTokensProvider>
