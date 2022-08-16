@@ -98,7 +98,7 @@ exports[`App Footer Should render AppFooter component 1`] = `
             rel="noreferrer noopener"
             target="_blank"
           >
-            Testnet env
+            testnetEnv
           </a>
         </div>
         <div

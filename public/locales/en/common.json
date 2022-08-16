@@ -42,6 +42,7 @@
   "leaveFeedback": "Leave feedback",
   "termsAndConditions": "Terms and Conditions",
   "releaseNotes": "Release notes",
+  "testnetEnv": "Testnet env",
   "filterByStatus": "Filter by status",
   "filterByProposalStatus": "Filter by proposal status",
   "numberOfVotes": "Number of votes",

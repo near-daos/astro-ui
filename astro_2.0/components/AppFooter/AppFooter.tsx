@@ -90,7 +90,7 @@ export const AppFooter: FC<AppFooterProps> = ({
               target="_blank"
               rel="noreferrer noopener"
             >
-              Testnet env
+              {t('testnetEnv')}
             </a>
           </div>
 
