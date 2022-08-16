@@ -59,6 +59,17 @@
     "clickToChangeImage": "Нажмите сюда чтобы изменить изображение"
   },
 
+  "chart": {
+    "month": "1М",
+    "threeMonths": "3М",
+    "sixMonths": "6М",
+    "year": "1Г",
+    "all": "Всё",
+    "daily": "По дням",
+    "weekly": "Понедельно",
+    "monthly": "Помесячно"
+  },
+
   "notifications": {
     "transactionDelay": "Транзакции в блокчейне могут занимать некоторе время, пожалуйста, обновите страницу ДАО через несколько секунд."
   },
@@ -358,6 +369,46 @@
     "groups": "Группы",
     "members": "Участники",
     "daoRules": "Правила ДАО"
+  },
+  "discover": {
+    "searchDaoName": "Поиск по названию ДАО",
+    "daoActivity": "ДАО активность",
+    "financial": "Финансы",
+    "generalInfo": "Общая информация",
+    "usersAndActivity": "Пользователи и активность",
+    "governance": "Управление",
+    "flow": "Поток",
+    "tvl": "TVL",
+    "tokens": "Токены",
+    "activeDaos": "Активные ДАО",
+    "daoName": "Название ДАО",
+    "numberOfProposals": "Количество предложений",
+    "lastMonth": "Последний месяц",
+    "allUsersPerDao": "Всех пользователей по DAO",
+    "activeUsers": "Активных пользователей",
+    "allUsersOnAPlatform": "Всех пользователей на платформе",
+    "usersMembersOfDao": "Пользователей - участников ДАО",
+    "averageNumberOfUsersPerDao": "Среднее кол-во пользователей в ДАО",
+    "numberOfInteractions": "Количество взаимодействий",
+    "averageNumberOfInteractionsPerDao": "Среднее кол-во взаимодействий в ДАО",
+    "users": "Пользователи",
+    "members": "Участники",
+    "voteThroughRate": "Рейтинговые голосования",
+    "totalIn": "Суммарный доход",
+    "totalOut": "Суммарный расход",
+    "incomingTransactions": "Входящие транзакции",
+    "outgoingTransactions": "Исходящие транзакции",
+    "platformTvl": "TVL платформы",
+    "vlInBountiesGrants": "VL в работах/грантах",
+    "numberOfFts": "Количество FT",
+    "vlOfFts": "VL в FT",
+    "numberOfNfts": "Количество NFT",
+    "numberOfBounties": "Количество работ",
+    "vlOfBounties": "VL работ",
+    "activity": "Активность",
+    "avgGroupsDao": "Avg. Groups/DAO",
+    "activeProposals": "Активные предложения",
+    "activeVotes": "Активные голосования"
   },
   "proposalVotes": {
     "noGroup": "No longer in any group",

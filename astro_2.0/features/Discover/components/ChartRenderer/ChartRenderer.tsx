@@ -1,4 +1,5 @@
 import React, { FC, ReactNode } from 'react';
+import { useTranslation } from 'next-i18next';
 import { DashboardChart } from 'astro_2.0/features/DaoDashboard/components/DashboardChart';
 import { Loader } from 'components/loader';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
@@ -17,29 +18,6 @@ interface ChartRendererProps {
   unitPosition?: UnitPosition;
 }
 
-const RANGE_SET = [
-  {
-    label: '1M',
-    type: DOMAIN_RANGES.MONTH,
-  },
-  {
-    label: '3M',
-    type: DOMAIN_RANGES.THREE_MONTHS,
-  },
-  {
-    label: '6M',
-    type: DOMAIN_RANGES.SIX_MONTHS,
-  },
-  {
-    label: '1Y',
-    type: DOMAIN_RANGES.YEAR,
-  },
-  {
-    label: 'All',
-    type: DOMAIN_RANGES.ALL,
-  },
-];
-
 export const ChartRenderer: FC<ChartRendererProps> = ({
   data,
   loading,
@@ -47,6 +25,31 @@ export const ChartRenderer: FC<ChartRendererProps> = ({
   unit = '',
   unitPosition = 'left',
 }) => {
+  const { t } = useTranslation();
+
+  const RANGE_SET = [
+    {
+      label: t('chart.month'),
+      type: DOMAIN_RANGES.MONTH,
+    },
+    {
+      label: t('chart.threeMonths'),
+      type: DOMAIN_RANGES.THREE_MONTHS,
+    },
+    {
+      label: t('chart.sixMonths'),
+      type: DOMAIN_RANGES.SIX_MONTHS,
+    },
+    {
+      label: t('chart.year'),
+      type: DOMAIN_RANGES.YEAR,
+    },
+    {
+      label: t('chart.all'),
+      type: DOMAIN_RANGES.ALL,
+    },
+  ];
+
   const { range, setRange } = useDiscoverPageRange();
 
   if (loading) {
