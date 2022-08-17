@@ -1,4 +1,5 @@
 import React, { FC, useCallback } from 'react';
+import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 
 import { Button } from 'components/button/Button';
@@ -35,6 +36,7 @@ export const ApplyToDaos: FC<Props> = ({
   buttonProps = {},
   simpleView,
 }) => {
+  const { t } = useTranslation();
   const { pkAndSignature } = useWalletContext();
   const [showModal] = useModal(SaveFcTemplateModal);
 
@@ -68,14 +70,14 @@ export const ApplyToDaos: FC<Props> = ({
     <Button
       size="small"
       variant="primary"
-      capitalize
+      noTextTransform
       className={cn(styles.control, className)}
       onClick={handleClick}
       disabled={disabled}
       {...buttonProps}
     >
       <span className={cn(styles.label, styles.row)}>
-        {children || 'Copy to dao'}
+        {children || t('actions.copyToDao')}
       </span>
     </Button>
   );

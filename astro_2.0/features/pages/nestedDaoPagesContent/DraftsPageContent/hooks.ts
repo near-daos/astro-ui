@@ -5,7 +5,7 @@ import { useAsyncFn, useMount, useMountedState } from 'react-use';
 import { useCallback, useState } from 'react';
 import { useWalletContext } from 'context/WalletContext';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
-import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider';
 import { getDraftProposalTypeByCategory } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/helpers';
 import { ProposalCategories } from 'types/proposal';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';

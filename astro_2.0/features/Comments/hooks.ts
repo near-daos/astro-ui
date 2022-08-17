@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAsyncFn, useMount, useMountedState } from 'react-use';
-import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider';
 import { DraftComment } from 'services/DraftsService/types';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';

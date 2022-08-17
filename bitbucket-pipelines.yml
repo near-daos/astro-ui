@@ -82,6 +82,9 @@ definitions:
             --set environment.api_url=$API_URL
             --set environment.google_analytics_key=$GOOGLE_ANALYTICS_KEY
             --set environment.log_rocket_app_id=$LOG_ROCKET_APP_ID
+            --set environment.dd_application_id=$DD_APPLICATION_ID
+            --set environment.dd_client_token=$DD_CLIENT_TOKEN
+            --set environment.dd_service=$DD_SERVICE
             --set ingress.host=$K8S_INGRESS_HOST
             > $APP_NAME-manifest.yml
 
@@ -202,6 +205,9 @@ pipelines:
             - echo export API_URL=$API_URL_STAGING >> environment.sh
             - echo export GOOGLE_ANALYTICS_KEY=$GOOGLE_ANALYTICS_KEY_STAGING >> environment.sh
             - echo export LOG_ROCKET_APP_ID=$LOG_ROCKET_APP_ID_STAGING >> environment.sh
+            - echo export DD_APPLICATION_ID=$DD_APPLICATION_ID_STAGING >> environment.sh
+            - echo export DD_CLIENT_TOKEN=$DD_CLIENT_TOKEN_STAGING >> environment.sh
+            - echo export DD_SERVICE=$DD_SERVICE_STAGING >> environment.sh
 
       - step: *build
 
@@ -223,6 +229,9 @@ pipelines:
             - echo export API_URL=$API_URL_PROD >> environment.sh
             - echo export GOOGLE_ANALYTICS_KEY=$GOOGLE_ANALYTICS_KEY_PROD >> environment.sh
             - echo export LOG_ROCKET_APP_ID=$LOG_ROCKET_APP_ID_PROD >> environment.sh
+            - echo export DD_APPLICATION_ID=$DD_APPLICATION_ID_PROD >> environment.sh
+            - echo export DD_CLIENT_TOKEN=$DD_CLIENT_TOKEN_PROD >> environment.sh
+            - echo export DD_SERVICE=$DD_SERVICE_PROD >> environment.sh
 
       - step: *build
 

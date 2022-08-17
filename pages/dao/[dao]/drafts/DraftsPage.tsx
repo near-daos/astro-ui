@@ -8,7 +8,7 @@ import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesCon
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 
 import { DraftsPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent';
-import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider';
 
 export interface DraftsPageProps {
   daoContext: DaoContext;

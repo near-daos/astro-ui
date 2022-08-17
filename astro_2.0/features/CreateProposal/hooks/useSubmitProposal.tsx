@@ -20,7 +20,7 @@ import {
   DeployStakingContractParams,
 } from 'services/sputnik/SputnikNearService/services/GovernanceTokenService';
 import { SputnikNearService } from 'services/sputnik';
-import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider';
 
 async function createProposal(
   variant: ProposalVariant,

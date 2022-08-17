@@ -307,7 +307,7 @@ export enum ProposalsFeedStatuses {
 export enum ProposalCategories {
   All = 'All',
   Governance = 'Governance',
-  Financial = 'Financial',
+  Financial = 'Transfers',
   Bounties = 'Bounties',
   Members = 'Groups',
   Polls = 'Polls',

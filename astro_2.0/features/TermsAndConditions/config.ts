@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 export const TERMS_CONDITIONS = [
   {
     title: 'Acceptance',

@@ -3,7 +3,7 @@ import { useTranslation } from 'next-i18next';
 
 import { EditableContent } from 'astro_2.0/components/EditableContent';
 import { useWalletContext } from 'context/WalletContext';
-import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider';
 
 import styles from 'astro_2.0/features/DraftComments/DraftComments.module.scss';
 
@@ -39,13 +39,13 @@ export const NewComment: FC<Props> = ({ onSubmit }) => {
           setHTML={setHTML}
           handleSend={handleSend}
           placeholder={t('drafts.comments.placeholder')}
-          handleCancel={() => setToggleWriteComment()}
+          handleCancel={setToggleWriteComment}
         />
       ) : (
         <button
           className={styles.writeCommentButton}
           type="button"
-          onClick={() => setToggleWriteComment()}
+          onClick={setToggleWriteComment as () => void}
         >
           {t('drafts.comments.writeCommentButton')}
         </button>

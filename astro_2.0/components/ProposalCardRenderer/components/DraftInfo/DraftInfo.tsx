@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 import { ReplyButton } from 'astro_2.0/components/ReplyButton';
-import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DAO } from 'types/dao';

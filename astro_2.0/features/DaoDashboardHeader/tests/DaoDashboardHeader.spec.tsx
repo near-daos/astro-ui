@@ -13,7 +13,7 @@ jest.mock('react-use', () => {
   };
 });
 
-jest.mock('astro_2.0/features/DaoDashboardHeader/components/hooks', () => {
+jest.mock('astro_2.0/features/DaoDashboardHeader/hooks/useJoinDao', () => {
   return {
     useJoinDao: () => ({
       showButton: true,
