@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 
+// We can safely ignore this as it is expected behavior for some scenarios
+// see https://github.com/WICG/resize-observer/issues/38
+const SAFELY_IGNORE_ERRORS = ['ResizeObserver loop limit exceeded'];
+
 export function useAppInitialize(): boolean {
   const [initialized, setInitialized] = useState(false);
 
@@ -8,6 +12,10 @@ export function useAppInitialize(): boolean {
   }, []);
 
   const handleError = useCallback(e => {
+    if (SAFELY_IGNORE_ERRORS.includes(e?.message)) {
+      return false;
+    }
+
     console.error(
       `Global error: ${e.message}, ${e.source}, ${e.lineno}, ${e.colno}`
     );

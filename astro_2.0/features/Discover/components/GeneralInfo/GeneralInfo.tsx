@@ -175,7 +175,6 @@ export const GeneralInfo: FC = () => {
   return (
     <>
       <ControlTabs
-        loading={loading}
         className={styles.header}
         items={items}
         onSelect={handleTopicSelect}

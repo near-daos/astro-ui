@@ -19,7 +19,6 @@ interface ControlTabsProps {
   onSelect: (id: string) => void;
   activeView: string;
   className?: string;
-  loading: boolean;
 }
 
 function getContainerProps(width: number): [number, number] {
