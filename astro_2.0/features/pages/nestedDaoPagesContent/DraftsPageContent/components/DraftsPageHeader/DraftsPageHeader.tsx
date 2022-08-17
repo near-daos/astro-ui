@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import { useTranslation } from 'next-i18next';
 
 import { SearchInput } from 'astro_2.0/components/SearchInput';
 
@@ -20,9 +21,11 @@ export const DraftsPageHeader: FC<Props> = ({
   loading,
   handleReset,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={cn(styles.root, className)}>
-      <div className={styles.title}>Drafts</div>
+      <div className={styles.title}>{t('drafts.feed.title')}</div>
       <SearchInput
         inputClassName={styles.searchInput}
         iconClassName={styles.searchIcon}

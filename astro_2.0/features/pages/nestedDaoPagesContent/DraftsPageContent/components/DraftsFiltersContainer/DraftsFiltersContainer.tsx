@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 
 import { DraftsStatusFilter } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftsStatusFilter';
-import { DraftsMobileFilters } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftsMobileFilters';
 import { DraftsFilters } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftsFilters';
 import { FeedSort } from 'astro_3.0/components/FeedSort';
 
@@ -19,7 +18,6 @@ export const DraftsFiltersContainer: FC = () => {
         <div className={styles.divider} />
         <FeedSort />
       </div>
-      <DraftsMobileFilters />
     </div>
   );
 };

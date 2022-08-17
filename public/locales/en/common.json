@@ -779,11 +779,31 @@
     },
     "feed": {
       "headTitle": "Drafts",
+      "title": "Drafts",
       "unreadDrafts": "Unread drafts",
       "allDrafts": "All drafts",
       "noDrafts": {
         "title": "No drafts",
         "createDraftButton": "Create Draft"
+      },
+      "filters": {
+        "title": "Filters",
+        "category": {
+          "title": "Category",
+          "all": "All"
+        },
+        "view": {
+          "title": "Type",
+          "all": "All",
+          "unread": "Unread",
+          "saved": "Saved"
+        },
+        "state": {
+          "title": "State",
+          "all": "All",
+          "onDiscussionStatus": "On discussion",
+          "convertedToProposalStatus": "Converted to proposal"
+        }
       },
       "card": {
         "lastActivity": "Last activity",

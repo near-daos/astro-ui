@@ -22,6 +22,7 @@ import { useWalletContext } from 'context/WalletContext';
 import { CREATE_DRAFT_PAGE_URL } from 'constants/routing';
 
 import { DraftsPageHeader } from './components/DraftsPageHeader';
+import { DraftsMobileFilters } from './components/DraftsMobileFilters';
 import { DraftsFiltersContainer } from './components/DraftsFiltersContainer';
 
 import styles from './DraftsPageContent.module.scss';
@@ -105,6 +106,7 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
         handleReset={handleReset}
       />
       <DraftsFiltersContainer />
+      <DraftsMobileFilters />
       <div className={styles.content}>
         {loading ? (
           <Loader className={styles.loader} />

@@ -15,6 +15,7 @@
 
 .title {
   @extend %heading1;
+  white-space: nowrap;
 
   @include tablet-landscape {
     font-size: 28px;
@@ -24,6 +25,7 @@
 }
 
 .search {
+  background: none;
   border: 0;
   padding-left: 16px;
 }
@@ -38,6 +40,15 @@
 .searchInput {
   font-size: 14px;
   line-height: 24px;
+  &::placeholder {
+    opacity: 0;
+  }
+}
+
+.searchInput:focus {
+  &::placeholder {
+    opacity: 1;
+  }
 }
 
 .removeIcon {

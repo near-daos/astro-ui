@@ -13,40 +13,6 @@ type FiltersModalProps = {
   onClose: (...args: unknown[]) => void;
 };
 
-function getTypeOptions() {
-  return [
-    {
-      label: 'All',
-      value: 'all-view',
-    },
-    {
-      label: 'Unread',
-      value: 'unread',
-    },
-    {
-      label: 'Read',
-      value: 'read',
-    },
-  ];
-}
-
-function getStateOptions() {
-  return [
-    {
-      label: 'All',
-      value: 'all-state',
-    },
-    {
-      label: 'Open',
-      value: 'open',
-    },
-    {
-      label: 'Close',
-      value: 'close',
-    },
-  ];
-}
-
 export const DraftsFiltersModal: FC<FiltersModalProps> = ({
   isOpen,
   onClose,
@@ -55,17 +21,49 @@ export const DraftsFiltersModal: FC<FiltersModalProps> = ({
 
   const categoryOptions = useMemo(
     () =>
-      [{ label: 'All', value: 'all-category' }, ...FEED_CATEGORIES].map(
-        item => ({
-          ...item,
-          label: t(item.label.toLowerCase()),
-        })
-      ),
+      [
+        { label: t('drafts.feed.filters.category.all'), value: 'all-category' },
+        ...FEED_CATEGORIES,
+      ].map(item => ({
+        ...item,
+        label: t(item.label.toLowerCase()),
+      })),
     [t]
   );
 
-  const typeOptions = useMemo(() => getTypeOptions(), []);
-  const stateOptions = useMemo(() => getStateOptions(), []);
+  const typeOptions = useMemo(() => {
+    return [
+      {
+        label: t('drafts.feed.filters.view.all'),
+        value: 'all-view',
+      },
+      {
+        label: t('drafts.feed.filters.view.unread'),
+        value: 'unread',
+      },
+      {
+        label: t('drafts.feed.filters.view.saved'),
+        value: 'read',
+      },
+    ];
+  }, [t]);
+
+  const stateOptions = useMemo(() => {
+    return [
+      {
+        label: t('drafts.feed.filters.state.all'),
+        value: 'all-state',
+      },
+      {
+        label: t('drafts.feed.filters.state.onDiscussionStatus'),
+        value: 'open',
+      },
+      {
+        label: t('drafts.feed.filters.state.convertedToProposalStatus'),
+        value: 'close',
+      },
+    ];
+  }, [t]);
 
   return (
     <Modal
@@ -75,10 +73,22 @@ export const DraftsFiltersModal: FC<FiltersModalProps> = ({
       overlayClassName={styles.overlay}
       size="lg"
     >
-      <div className={styles.title}>Filters</div>
-      <Filter options={categoryOptions} title="Category" queryName="category" />
-      <Filter options={typeOptions} title="Type" queryName="view" />
-      <Filter options={stateOptions} title="Accessibility" queryName="state" />
+      <div className={styles.title}>{t('drafts.feed.filters.title')}</div>
+      <Filter
+        options={categoryOptions}
+        title={t('drafts.feed.filters.category.title')}
+        queryName="category"
+      />
+      <Filter
+        options={typeOptions}
+        title={t('drafts.feed.filters.view.title')}
+        queryName="view"
+      />
+      <Filter
+        options={stateOptions}
+        title={t('drafts.feed.filters.state.title')}
+        queryName="state"
+      />
     </Modal>
   );
 };

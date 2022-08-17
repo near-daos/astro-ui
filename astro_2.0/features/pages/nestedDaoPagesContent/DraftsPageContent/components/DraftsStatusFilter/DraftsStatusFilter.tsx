@@ -1,12 +1,15 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import useQuery from 'hooks/useQuery';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+
 import { Dropdown } from 'components/Dropdown';
 
 import styles from './DraftsStatusFilter.module.scss';
 
 export const DraftsStatusFilter: FC = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { query } = useQuery<{ state: string }>();
   const { state } = query;
 
@@ -14,18 +17,18 @@ export const DraftsStatusFilter: FC = () => {
     () => [
       {
         value: 'all',
-        label: 'All',
+        label: t('drafts.feed.filters.state.all'),
       },
       {
         value: 'open',
-        label: 'On discussion',
+        label: t('drafts.feed.filters.state.onDiscussionStatus'),
       },
       {
         value: 'closed',
-        label: 'Converted to proposal',
+        label: t('drafts.feed.filters.state.convertedToProposalStatus'),
       },
     ],
-    []
+    [t]
   );
 
   const handleChange = useCallback(

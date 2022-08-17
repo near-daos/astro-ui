@@ -4,6 +4,7 @@
 .draftMobileFilters {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 30px;
   @include tablet-landscape {
     display: none;
   }
