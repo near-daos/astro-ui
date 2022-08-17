@@ -10,14 +10,14 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  GOOGLE_ANALYTICS_KEY: ${{ secrets.GOOGLE_ANALYTICS_KEY }}
-  LOG_ROCKET_APP_ID: ${{ secrets.LOG_ROCKET_APP_ID }}
-  DD_APPLICATION_ID: ${{ secrets.DD_APPLICATION_ID }}
-  DD_SERVICE: ${{ secrets.DD_SERVICE }}
+  HELM_GOOGLE_ANALYTICS_KEY: ${{ secrets.GOOGLE_ANALYTICS_KEY }}
+  HELM_LOG_ROCKET_APP_ID: ${{ secrets.LOG_ROCKET_APP_ID }}
   KUBE_CONFIG_DATA:  ${{ secrets.KUBE_CONFIG_DATA }}
   NODE_OPTIONS: "--max-old-space-size=7168"
-  NEXT_PUBLIC_LAUNCHDARKLY_ID: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_ID }}
-  NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY }}
+  HELM_NEXT_PUBLIC_LAUNCHDARKLY_ID: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_ID }}
+  HELM_NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY }}
+  HELM_DD_APPLICATION_ID: ${{ secrets.DD_APPLICATION_ID }}
+  HELM_DD_CLIENT_TOKEN: ${{ secrets.DD_CLIENT_TOKEN }}
 
 jobs:
   deploy:
@@ -39,7 +39,7 @@ jobs:
         echo "::set-output name=tag::$TAG"
 
     - name: Helm Deploy
-      uses: ./.github/actions/deploy
+      uses: near-daos/github-actions/deploy@main
       with:
         name: ${{ env.APP_NAME }}
         namespace: ${{ env.DEPLOYMENT_NAMESPACE }}

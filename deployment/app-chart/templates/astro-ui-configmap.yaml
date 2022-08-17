@@ -3,24 +3,10 @@ kind: ConfigMap
 metadata:
   name: astro-ui-configmap
 data:
-  NEAR_ENV: "{{ .Values.environment.near_env }}"
-  NEAR_CONTRACT_NAME: "{{ .Values.environment.near_contract_name }}"
-  ROKETO_CONTRACT_NAME: "{{ .Values.environment.roketo_contract_name }}"
-  ROKETO_MULTICALL_NAME: "{{ .Values.environment.roketo_multicall_name }}"
-  API_URL: "{{ .Values.environment.api_url }}"
-  AWS_BUCKET: "{{ .Values.environment.aws_bucket }}"
-  AWS_REGION: "{{ .Values.environment.aws_region }}"
-  AWS_IDENTITY_POOL_ID: "{{ .Values.environment.aws_identity_pool_id }}"
-  GOOGLE_ANALYTICS_KEY: "{{ .Values.environment.google_analytics_key }}"
-  LOG_ROCKET_APP_ID: "{{ .Values.environment.log_rocket_app_id }}"
-  DD_APPLICATION_ID: "{{ .Values.environment.dd_application_id }}"
-  DD_CLIENT_TOKEN: "{{ .Values.environment.dd_client_token }}"
-  DD_SERVICE: "{{ .Values.environment.dd_service }}"
-  STATS_API_URL: "{{ .Values.environment.stats_api_url }}"
-  NEXT_PUBLIC_LAUNCHDARKLY_ID: "{{ .Values.environment.next_public_launchdarkly_id }}"
-  NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY: "{{ .Values.environment.next_public_launchdarkly_sdk_key }}"
   APP_DOMAIN: "{{ .Values.environment.app_domain }}"
-  RELEASE_NOTES: "{{ .Values.environment.release_notes }}"
   DRAFTS_API_URL: "{{ .Values.environment.drafts_api_url }}"
   GENERIC_FACTORY_CONTRACT_NAME: "{{ .Values.environment.generic_factory_contract_name }}"
   STAKING_CONTRACT_BINARY_HASH: "{{ .Values.environment.staking_contract_binary_hash }}"
+{{- range $k, $v := .Values.environment }}
+  {{ $k }}: "{{ $v }}"
+{{- end }}
