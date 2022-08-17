@@ -54,6 +54,7 @@ export const FeedSort: FC = () => {
         controlIconClassName={styles.controlIcon}
         controlClassName={styles.dropdown}
         menuClassName={styles.menu}
+        selectedClassName={styles.selectedItem}
         options={sortOptions}
         value={sort ?? sortOptions[0].value}
         defaultValue={sort ?? sortOptions[0].value}

@@ -65,6 +65,19 @@ export const DraftsFiltersModal: FC<FiltersModalProps> = ({
     ];
   }, [t]);
 
+  const sortOptions = useMemo(() => {
+    return [
+      {
+        label: t('allDAOsFilter.newest'),
+        value: 'createdAt,DESC',
+      },
+      {
+        label: t('allDAOsFilter.oldest'),
+        value: 'createdAt,ASC',
+      },
+    ];
+  }, [t]);
+
   return (
     <Modal
       className={styles.modal}
@@ -88,6 +101,11 @@ export const DraftsFiltersModal: FC<FiltersModalProps> = ({
         options={stateOptions}
         title={t('drafts.feed.filters.state.title')}
         queryName="state"
+      />
+      <Filter
+        options={sortOptions}
+        title={t('drafts.feed.filters.sort.title')}
+        queryName="sort"
       />
     </Modal>
   );

@@ -109,7 +109,7 @@ export const DraftsFilters: FC = () => {
         onClick={handleFilterSaved}
       >
         <Icon name="draftBookmark" className={styles.icon} />
-        Saved
+        {t('drafts.feed.filters.view.saved')}
       </Button>
       {feedCategories
         .filter(item => {

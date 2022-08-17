@@ -478,6 +478,9 @@
       },
       "filters": {
         "title": "Фильтры",
+        "sort": {
+          "title": "Сортивка"
+        },
         "category": {
           "title": "Категории",
           "all": "Все"

@@ -788,6 +788,9 @@
       },
       "filters": {
         "title": "Filters",
+        "sort": {
+          "title": "Sort"
+        },
         "category": {
           "title": "Category",
           "all": "All"
