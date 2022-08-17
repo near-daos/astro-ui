@@ -43,6 +43,12 @@ type Form = {
   daos: string[];
 };
 
+const schema = yup.object().shape({
+  name: yup.string().required('Required'),
+  daos: yup.array().of(yup.string()).min(1).required(),
+  description: yup.string().max(500),
+});
+
 export const SaveFcTemplateModal: FC<Props> = ({
   isOpen,
   onClose,
@@ -59,11 +65,6 @@ export const SaveFcTemplateModal: FC<Props> = ({
       component: <span className={styles.listItem}>{item.id}</span>,
     }));
   }, [accountDaos]);
-
-  const schema = yup.object().shape({
-    name: yup.string().required('Required'),
-    daos: yup.array().of(yup.string()).min(1).required(),
-  });
 
   const methods = useForm<Form>({
     mode: 'all',
