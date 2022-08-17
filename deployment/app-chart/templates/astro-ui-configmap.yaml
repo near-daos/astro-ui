@@ -14,6 +14,7 @@ data:
   GOOGLE_ANALYTICS_KEY: "{{ .Values.environment.google_analytics_key }}"
   LOG_ROCKET_APP_ID: "{{ .Values.environment.log_rocket_app_id }}"
   DD_APPLICATION_ID: "{{ .Values.environment.dd_application_id }}"
+  DD_CLIENT_TOKEN: "{{ .Values.environment.dd_client_token }}"
   DD_SERVICE: "{{ .Values.environment.dd_service }}"
   STATS_API_URL: "{{ .Values.environment.stats_api_url }}"
   NEXT_PUBLIC_LAUNCHDARKLY_ID: "{{ .Values.environment.next_public_launchdarkly_id }}"
