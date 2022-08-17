@@ -86,13 +86,13 @@ version:
   branch: develop
 
 environment:
-  near_env: "testnet"
-  near_contract_name: "sputnikv2.testnet"
-  roketo_contract_name: "streaming-r-v2.dcversus.testnet"
-  roketo_multicall_name: "multicall.lebedev.testnet"
-  api_url: "http://a6f2431dfded249d18fc7a20377342db-2021398035.eu-central-1.elb.amazonaws.com"
-  aws_bucket: "sputnik-dao"
-  aws_region: "eu-central-1"
-  aws_identity_pool_id: "eu-central-1:5887fd21-7b40-4871-a6cb-21097fe079a2"
-  stats_api_url: "https://testnet.api.daostats.io"
-  release_notes: "https://astrodao.canny.io/changelog"
+  NEAR_ENV: "testnet"
+  NEAR_CONTRACT_NAME: "sputnikv2.testnet"
+  ROKETO_CONTRACT_NAME: "streaming-r-v2.dcversus.testnet"
+  ROKETO_MULTICALL_NAME: "multicall.lebedev.testnet"
+  API_URL: "http://a6f2431dfded249d18fc7a20377342db-2021398035.eu-central-1.elb.amazonaws.com"
+  AWS_BUCKET: "sputnik-dao"
+  AWS_REGION: "eu-central-1"
+  AWS_IDENTITY_POOL_ID: "eu-central-1:5887fd21-7b40-4871-a6cb-21097fe079a2"
+  STATS_API_URL: "https://testnet.api.daostats.io"
+  RELEASE_NOTES: "https://astrodao.canny.io/changelog"
