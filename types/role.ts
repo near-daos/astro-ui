@@ -7,7 +7,7 @@ export type ProposalAction =
   | 'VoteRemove'
   | 'MoveToHub';
 
-export type ProposalKind = 
+export type ContractProposalType = 
   | 'config'
   | 'policy'
   | 'add_member_to_role'
@@ -34,7 +34,7 @@ export interface DefaultVotePolicy {
   weight?: string;
 }
 
-export type DaoPermission = `${'*' | ProposalKind}:${'*' | ProposalAction}`;
+export type DaoPermission = `${'*' | ContractProposalType}:${'*' | ProposalAction}`;
 
 export type DaoRoleKind = 'Everyone' | 'Group' | 'Member';
 

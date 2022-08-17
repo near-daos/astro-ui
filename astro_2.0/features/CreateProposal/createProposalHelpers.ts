@@ -59,7 +59,6 @@ export function checkUserPermission(
     .map(role => role.permissions)
     .flat()
     .filter(permission => {
-
       const [proposalKind, action] = permission.split(':');
 
       return (
@@ -69,9 +68,8 @@ export function checkUserPermission(
     });
   // check if the user can perform the action on the proposal kind
   const canDoAction: boolean = proposalKindPermissions?.some(permission => {
-    
     const [proposalKind, action] = permission.split(':');
-    
+
     return action === '*' || action === givenAction;
   });
 
