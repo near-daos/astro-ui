@@ -1,4 +1,5 @@
 import React, { FC, useMemo } from 'react';
+import { useTranslation } from 'next-i18next';
 import * as yup from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -51,6 +52,7 @@ export const SaveFcTemplateModal: FC<Props> = ({
   name,
   simpleView,
 }) => {
+  const { t } = useTranslation();
   const daosOptions = useMemo<Option[]>(() => {
     return accountDaos.map(item => ({
       label: item.id,
@@ -113,23 +115,25 @@ export const SaveFcTemplateModal: FC<Props> = ({
           className={styles.root}
           onSubmit={handleSubmit(submitHandler)}
         >
-          <h2>Save template</h2>
+          <h2>{t('actions.saveTemplate')}</h2>
 
           {!daosOptions.length && (
-            <span className={styles.warning}>
-              Only councils can save templates to their DAOs
-            </span>
+            <span className={styles.warning}>{t('actions.saveWarning')}</span>
           )}
 
           {!simpleView && (
             <>
               <div className={styles.inputWrapper}>
-                <InputWrapper fieldName="name" label="Add Name" fullWidth>
+                <InputWrapper
+                  fieldName="name"
+                  label={t('actions.addTemplateName')}
+                  fullWidth
+                >
                   <Input
                     {...register('name')}
                     size="block"
                     inputClassName={styles.input}
-                    placeholder="Template Name"
+                    placeholder={t('actions.templateNamePlaceholder')}
                     disabled={!daosOptions.length}
                   />
                 </InputWrapper>
@@ -137,14 +141,14 @@ export const SaveFcTemplateModal: FC<Props> = ({
               <div className={styles.inputWrapper}>
                 <InputWrapper
                   fieldName="description"
-                  label="Add Desctription"
+                  label={t('actions.addTemplateDescription')}
                   fullWidth
                 >
                   <TextArea
                     {...register('description')}
                     size="block"
                     maxLength={500}
-                    placeholder="Template description"
+                    placeholder={t('actions.templateDescriptionPlaceholder')}
                     disabled={!daosOptions.length}
                   />
                 </InputWrapper>
@@ -153,7 +157,11 @@ export const SaveFcTemplateModal: FC<Props> = ({
           )}
 
           <div className={styles.inputWrapper}>
-            <InputWrapper fieldName="daos" label="Choose DAO" fullWidth>
+            <InputWrapper
+              fieldName="daos"
+              label={t('actions.chooseDao')}
+              fullWidth
+            >
               <DropdownMultiSelect
                 menuClassName={styles.menuClassName}
                 selectedItemRenderer={item => (
@@ -177,13 +185,13 @@ export const SaveFcTemplateModal: FC<Props> = ({
 
           <div className={styles.footer}>
             <Button
-              capitalize
+              noTextTransform
               disabled={!isValid}
               type="submit"
               size="block"
               className={styles.confirmButton}
             >
-              Save template
+              {t('actions.saveTemplate')}
             </Button>
           </div>
         </form>

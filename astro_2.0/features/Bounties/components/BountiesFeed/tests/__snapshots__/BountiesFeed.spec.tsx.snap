@@ -122,7 +122,7 @@ exports[`BountiesFeed Should render component 1`] = `
                   <div
                     class="title"
                   >
-                    No data found
+                    noDataFound
                   </div>
                   <div
                     class="desc"

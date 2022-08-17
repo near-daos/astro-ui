@@ -170,6 +170,10 @@
   text-transform: capitalize;
 }
 
+.noTextTransform {
+  text-transform: none;
+}
+
 .disabled {
   pointer-events: none;
 }
