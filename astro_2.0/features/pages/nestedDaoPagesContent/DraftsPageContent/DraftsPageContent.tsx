@@ -10,12 +10,9 @@ import { DaoContext } from 'types/context';
 import { DraftProposalFeedItem } from 'types/draftProposal';
 
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
-import { FEED_CATEGORIES } from 'constants/proposals';
 
 import { Button } from 'components/button/Button';
-import { StateFilter } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/StateFilter';
 import { DraftCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftCard';
-import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { Loader } from 'components/loader';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
@@ -25,7 +22,7 @@ import { useWalletContext } from 'context/WalletContext';
 import { CREATE_DRAFT_PAGE_URL } from 'constants/routing';
 
 import { DraftsPageHeader } from './components/DraftsPageHeader';
-import { DraftMobileFilters } from './components/DraftMobileFilters';
+import { DraftsFiltersContainer } from './components/DraftsFiltersContainer';
 
 import styles from './DraftsPageContent.module.scss';
 
@@ -49,15 +46,6 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
     loadMore,
     handleReset,
   } = useDraftsPageData(dao.id);
-
-  const feedCategoriesOptions = useMemo(
-    () =>
-      FEED_CATEGORIES.map(item => ({
-        ...item,
-        label: t(item.label.toLowerCase()),
-      })),
-    [t]
-  );
 
   const { unreadDrafts, readDrafts } = useMemo(() => {
     const unread: DraftProposalFeedItem[] = [];
@@ -116,19 +104,8 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
         onSearch={handleSearch}
         handleReset={handleReset}
       />
-      <DraftMobileFilters />
+      <DraftsFiltersContainer />
       <div className={styles.content}>
-        <div className={styles.sideFilters}>
-          <SideFilter
-            className={styles.categories}
-            queryName="category"
-            list={feedCategoriesOptions}
-            title={t('feed.filters.chooseAFilter')}
-            disabled={loading}
-            titleClassName={styles.categoriesListTitle}
-          />
-          <StateFilter />
-        </div>
         {loading ? (
           <Loader className={styles.loader} />
         ) : (

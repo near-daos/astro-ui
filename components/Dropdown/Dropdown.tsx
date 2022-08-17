@@ -26,6 +26,7 @@ export interface DropdownProps<T> {
   disabled?: boolean;
   controlIconClassName?: string;
   controlIcon?: IconName;
+  selectedClassName?: string;
 }
 
 export const Dropdown = <T,>(
@@ -43,6 +44,7 @@ export const Dropdown = <T,>(
     disabled: isDisabled,
     controlIconClassName,
     controlIcon,
+    selectedClassName,
   } = props;
 
   const {
@@ -120,7 +122,7 @@ export const Dropdown = <T,>(
           [styles.disabled]: isDisabled,
         })}
       >
-        <span className={styles.selected}>
+        <span className={cn(styles.selected, selectedClassName)}>
           {selectedItem?.label || placeholder}
         </span>
         <IconButton

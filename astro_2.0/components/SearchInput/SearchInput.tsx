@@ -42,6 +42,9 @@ interface SearchInputProps {
   showLoader?: boolean;
   offset?: [number, number];
   inputClassName?: string;
+  iconClassName?: string;
+  removeButtonClassName?: string;
+  removeIconClassName?: string;
 }
 
 export const SearchInput: FC<SearchInputProps> = ({
@@ -56,6 +59,9 @@ export const SearchInput: FC<SearchInputProps> = ({
   showLoader = true,
   offset = [OFFSET_LEFT_RIGHT, OFFSET_TOP_BOTTOM],
   inputClassName,
+  iconClassName,
+  removeButtonClassName,
+  removeIconClassName,
 }) => {
   const { t } = useTranslation();
   const isMounted = useMountedState();
@@ -209,12 +215,13 @@ export const SearchInput: FC<SearchInputProps> = ({
   function renderCloseButton() {
     if (isMounted() && !isEmpty(value)) {
       return (
-        <div className={styles.closeIconHolder}>
+        <div className={cn(styles.closeIconHolder, removeButtonClassName)}>
           <IconButton
             size="medium"
             icon="closeCircle"
             className={styles.icon}
             onClick={handleCancel}
+            iconProps={{ className: removeIconClassName }}
           />
         </div>
       );
@@ -237,7 +244,7 @@ export const SearchInput: FC<SearchInputProps> = ({
       }}
     >
       {showLoader ? (
-        <div className={styles.iconHolder}>
+        <div className={cn(styles.iconHolder, iconClassName)}>
           <AnimatePresence>
             {loading ? (
               <motion.div
@@ -245,7 +252,9 @@ export const SearchInput: FC<SearchInputProps> = ({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <LoadingIndicator className={styles.loader} />
+                <LoadingIndicator
+                  className={cn(styles.loader, iconClassName)}
+                />
               </motion.div>
             ) : (
               <Icon name="buttonSearch" className={styles.icon} />

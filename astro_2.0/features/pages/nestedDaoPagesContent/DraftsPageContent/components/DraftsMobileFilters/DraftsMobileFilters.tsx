@@ -7,9 +7,9 @@ import { Dropdown } from 'components/Dropdown';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { useModal } from 'components/modal';
-import { FiltersModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/FiltersModal';
+import { DraftsFiltersModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftsFiltersModal';
 
-import styles from './DraftMobileFilters.module.scss';
+import styles from './DraftsMobileFilters.module.scss';
 
 function getSortOptions(t: TFunction) {
   return [
@@ -24,13 +24,13 @@ function getSortOptions(t: TFunction) {
   ];
 }
 
-export const DraftMobileFilters: FC = () => {
+export const DraftsMobileFilters: FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const sortOptions = useMemo(() => getSortOptions(t), [t]);
   const { query } = useQuery<{ sort: string; view: string }>();
   const { sort } = query;
-  const [showModal] = useModal(FiltersModal, {});
+  const [showModal] = useModal(DraftsFiltersModal, {});
 
   const handleSort = useCallback(
     async value => {

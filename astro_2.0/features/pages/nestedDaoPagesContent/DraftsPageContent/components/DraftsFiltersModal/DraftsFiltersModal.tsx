@@ -6,7 +6,7 @@ import { Modal } from 'components/modal';
 import { FEED_CATEGORIES } from 'constants/proposals';
 import { Filter } from './Filter';
 
-import styles from './FiltersModal.module.scss';
+import styles from './DraftsFiltersModal.module.scss';
 
 type FiltersModalProps = {
   isOpen: boolean;
@@ -47,7 +47,10 @@ function getStateOptions() {
   ];
 }
 
-export const FiltersModal: FC<FiltersModalProps> = ({ isOpen, onClose }) => {
+export const DraftsFiltersModal: FC<FiltersModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
   const { t } = useTranslation();
 
   const categoryOptions = useMemo(

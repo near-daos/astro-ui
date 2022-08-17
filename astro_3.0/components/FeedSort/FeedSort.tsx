@@ -5,9 +5,9 @@ import useQuery from 'hooks/useQuery';
 
 import { Dropdown } from 'components/Dropdown';
 
-import styles from './ProposalsFeedSort.module.scss';
+import styles from './FeedSort.module.scss';
 
-export const ProposalsFeedSort: FC = () => {
+export const FeedSort: FC = () => {
   const router = useRouter();
 
   const { t } = useTranslation();

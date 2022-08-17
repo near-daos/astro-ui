@@ -9,7 +9,7 @@ import {
 
 import { FEED_CATEGORIES } from 'constants/proposals';
 
-import { ProposalsFeedSort } from 'astro_3.0/features/ProposalsFeed/components/ProposalsFeedSort';
+import { FeedSort } from 'astro_3.0/components/FeedSort';
 import { StatusFeedFilter } from 'astro_3.0/features/ProposalsFeed/components/StatusFeedFilter';
 
 import styles from './ProposalsFeedFilters.module.scss';
@@ -45,7 +45,7 @@ export const ProposalsFeedFilters: FC<Props> = ({ className }) => {
       />
 
       <span className={styles.last}>
-        <ProposalsFeedSort />
+        <FeedSort />
       </span>
     </div>
   );

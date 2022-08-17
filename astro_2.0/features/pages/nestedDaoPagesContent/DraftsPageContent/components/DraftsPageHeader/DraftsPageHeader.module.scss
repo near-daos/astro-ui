@@ -5,12 +5,9 @@
 .root {
   align-items: center;
   display: flex;
-  flex-wrap: wrap;
   gap: 16px;
-  justify-content: flex-start;
   @include tablet-landscape {
     gap: 0;
-    justify-content: space-between;
     margin-bottom: 2px;
     margin-top: 56px;
   }
@@ -26,49 +23,29 @@
   }
 }
 
-.tabs {
-  display: none;
-  @include tablet-landscape {
-    display: block;
-  }
+.search {
+  border: 0;
+  padding-left: 16px;
 }
 
-.tabBtn {
-  color: var(--color-neutral-50);
-  height: 40px;
-  min-width: unset;
-  padding: 0 12px;
-  width: unset;
-
-  &:hover {
-    color: var(--color-neutral-60);
-  }
-
-  &.active {
-    border-bottom: 2px solid var(--color-primary-50);
-    color: var(--color-neutral-80);
-  }
+.searchIcon {
+  color: var(--color-neutral-70);
+  flex: 0 0 0;
+  height: 13px;
+  width: 13px;
 }
 
-.sorting {
-  @extend %body2;
-  align-items: center;
-  display: none;
-  justify-content: flex-end;
-  min-width: 120px;
+.searchInput {
+  font-size: 14px;
+  line-height: 24px;
+}
 
-  @include tablet-landscape {
-    display: flex;
-  }
+.removeIcon {
+  height: 13px;
+  width: 13px;
+}
 
-  .label {
-    color: var(--color-neutral-60);
-    margin-right: 4px;
-  }
-
-  .menu {
-    margin-top: 12px;
-    position: absolute;
-    right: 0;
-  }
+.removeButton {
+  height: 13px;
+  width: 13px;
 }

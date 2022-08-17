@@ -1,0 +1,20 @@
+.root {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 54px 1fr 103px;
+  justify-content: flex-start;
+  margin-bottom: 30px;
+}
+
+.first,
+.last {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.divider {
+  background: var(--color-neutral-50);
+  height: 32px;
+  width: 1px;
+}

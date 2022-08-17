@@ -1,0 +1,28 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  @extend %subtitle5;
+  display: flex;
+}
+
+.selectedClassName {
+  display: none;
+}
+
+.dropdownWrapper {
+  min-width: 100%;
+}
+
+.controlIcon {
+  height: 24px;
+  width: 24px;
+}
+
+.dropdown {
+  margin: 0;
+}
+
+.menu {
+  @extend %body2;
+}
