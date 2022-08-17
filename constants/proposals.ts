@@ -27,6 +27,11 @@ export const FEED_CATEGORIES = ([
     label: 'Members',
     icon: 'filterMembers',
   },
+  {
+    value: ProposalCategories.Polls,
+    label: 'Polls',
+    icon: 'proposalPoll',
+  },
 ] as unknown) as ListItem[];
 
 export const STAKING_CONTRACT_PREFIX = '-staking';
