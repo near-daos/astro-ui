@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useAsyncFn, useMountedState } from 'react-use';
+import { useAsync, useMountedState } from 'react-use';
 
 import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs';
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
@@ -89,7 +89,7 @@ export const GeneralInfo: FC = () => {
     })();
   }, [daoStatsService, isMounted, query.dao]);
 
-  const [{ loading }, getChartData] = useAsyncFn(async () => {
+  const { loading } = useAsync(async () => {
     let data;
 
     if (query.dao) {
@@ -131,7 +131,7 @@ export const GeneralInfo: FC = () => {
     }
   }, [interval, activeView, query.dao, isMounted]);
 
-  const [, getLeaderboardData] = useAsyncFn(async () => {
+  useAsync(async () => {
     if (query.dao) {
       return;
     }
@@ -167,14 +167,6 @@ export const GeneralInfo: FC = () => {
       );
     }
   }, [activeView, query.dao, isMounted, offset]);
-
-  useEffect(() => {
-    getChartData();
-  }, [getChartData]);
-
-  useEffect(() => {
-    getLeaderboardData();
-  }, [getLeaderboardData]);
 
   const nextLeaderboardItems = () => {
     setOffset(offset + LIMIT);

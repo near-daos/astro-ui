@@ -48,7 +48,7 @@ export const TableRow: FC<Props> = ({
   } = useDelegatePageContext();
 
   const progressPercent = (+balance * 100) / (votingGoal || 1);
-  const formattedBalance = Number(balance).toFixed(0);
+  const formattedBalance = Number(balance).toFixed(2);
 
   const actionsNotAvailable = nextActionTime && nextActionTime > new Date();
   const notEnoughStakedBalance =
@@ -74,7 +74,7 @@ export const TableRow: FC<Props> = ({
             }
           >
             <FormattedNumericValue
-              value={kFormatter(Number(formattedBalance), 0, ['k'])}
+              value={kFormatter(Number(formattedBalance), 2, ['k'])}
             />
             {inactiveVotingPower && (
               <Icon name="alertTriangle" className={styles.alert} />
