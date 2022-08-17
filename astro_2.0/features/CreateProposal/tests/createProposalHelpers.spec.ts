@@ -211,13 +211,19 @@ describe('createProposalHelpers', () => {
       expect(
         getAllowedProposalsToVote('123', getDao(permission, '123'))
       ).toEqual({
-        ...result,
         [ProposalType.ChangePolicy]: true,
+        [ProposalType.ChangeConfig]: true,
         [ProposalType.AddBounty]: true,
         [ProposalType.Transfer]: true,
         [ProposalType.Vote]: true,
         [ProposalType.RemoveMemberFromRole]: true,
         [ProposalType.AddMemberToRole]: true,
+        [ProposalType.AddMemberToRole]: true,
+        [ProposalType.FunctionCall]: true,
+        [ProposalType.UpgradeRemote]: true,
+        [ProposalType.UpgradeSelf]: true,
+        [ProposalType.SetStakingContract]: true,
+        [ProposalType.BountyDone]: true,
       });
     });
 
@@ -235,10 +241,10 @@ describe('createProposalHelpers', () => {
       ${'vote:VoteApprove'}                    | ${ProposalType.Vote}
       ${'vote:VoteReject'}                     | ${ProposalType.Vote}
       ${'vote:VoteRemove'}                     | ${ProposalType.Vote}
-      ${'remove_member_from_role:AddProposal'} | ${ProposalType.RemoveMemberFromRole}
-      ${'remove_member_from_role:AddProposal'} | ${ProposalType.RemoveMemberFromRole}
-      ${'remove_member_from_role:AddProposal'} | ${ProposalType.RemoveMemberFromRole}
-      ${'add_member_to_role:AddProposal'}      | ${ProposalType.AddMemberToRole}
+      ${'remove_member_from_role:VoteApprove'} | ${ProposalType.RemoveMemberFromRole}
+      ${'remove_member_from_role:VoteReject'}  | ${ProposalType.RemoveMemberFromRole}
+      ${'remove_member_from_role:VoteRemove'}  | ${ProposalType.RemoveMemberFromRole}
+      ${'add_member_to_role:VoteApprove'}      | ${ProposalType.AddMemberToRole}
       ${'add_member_to_role:VoteReject'}       | ${ProposalType.AddMemberToRole}
       ${'add_member_to_role:VoteRemove'}       | ${ProposalType.AddMemberToRole}
     `(
