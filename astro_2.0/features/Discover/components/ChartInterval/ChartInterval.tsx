@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { RadioGroup } from 'astro_2.0/components/inputs/radio/RadioGroup';
 import { Radio } from 'astro_2.0/components/inputs/radio/Radio';
@@ -16,6 +17,8 @@ export const ChartInterval: FC<ChartIntervalProps> = ({
   interval,
   setInterval,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <RadioGroup
       className={styles.radioGroup}
@@ -23,7 +26,11 @@ export const ChartInterval: FC<ChartIntervalProps> = ({
       onChange={setInterval}
     >
       {intervalOptions.map((option: { value: string; label: string }) => (
-        <Radio key={option.value} value={option.value} label={option.label} />
+        <Radio
+          key={option.value}
+          value={option.value}
+          label={t(`chart.${option.label}`)}
+        />
       ))}
     </RadioGroup>
   );

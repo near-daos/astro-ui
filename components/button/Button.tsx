@@ -17,6 +17,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean | undefined;
   href?: string | UrlObject;
   capitalize?: boolean;
+  noTextTransform?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -26,6 +27,7 @@ export const Button: React.FC<ButtonProps> = ({
   size = 'medium',
   disabled = false,
   capitalize,
+  noTextTransform,
   className: classNameProp,
   ...props
 }) => {
@@ -55,6 +57,7 @@ export const Button: React.FC<ButtonProps> = ({
     classNameProp,
     {
       [styles.capitalize]: capitalize,
+      [styles.noTextTransform]: noTextTransform,
       [styles.disabled]: disabled,
     }
   );

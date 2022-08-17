@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 
 import styles from './Loader.module.scss';
@@ -88,14 +89,13 @@ interface LoaderProps {
   className?: string;
 }
 
-export const Loader: FC<LoaderProps> = ({
-  title = 'Receiving data from the contract',
-  className = '',
-}) => {
+export const Loader: FC<LoaderProps> = ({ title, className = '' }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={cn(styles.root, className)}>
       <div className={styles.logo}>{PRELOADER}</div>
-      <h2 className={styles.title}>{title}</h2>
+      <h2 className={styles.title}>{title || t('loader.title')}</h2>
       <p className={styles.subtitle}>This may take some time</p>
     </div>
   );

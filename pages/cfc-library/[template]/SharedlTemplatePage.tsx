@@ -1,4 +1,5 @@
 import React, { ReactNode, useMemo, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 import TextTruncate from 'react-text-truncate';
 import dynamic from 'next/dynamic';
 import cn from 'classnames';
@@ -47,13 +48,13 @@ const CustomFcTemplateCard = dynamic(
   }
 );
 
-const defaultTooltipText = 'Copy page URL';
-
 interface Props {
   accountDaos: DaoFeedItem[];
 }
 
 const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
+  const { t } = useTranslation();
+  const defaultTooltipText = t('copyPageUrl');
   const {
     data,
     loading,
@@ -76,7 +77,7 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
     }
 
     if (!data) {
-      return <NoResultsView title="No data found" />;
+      return <NoResultsView title={t('noDataFound')} />;
     }
 
     const { createdBy, name, description, daos } = data;
@@ -99,7 +100,7 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
               />
             </div>
             <div className={styles.creator}>
-              <span>by</span>{' '}
+              <span>{t('actions.by')}</span>{' '}
               <span className={styles.creatorName}>
                 <TextTruncate
                   line={2}
@@ -123,7 +124,7 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
                 onClick={async () => {
                   await copyToClipboard(shareUrl);
 
-                  setTooltip('Copied successfully');
+                  setTooltip(t('copiedSuccessfully'));
 
                   setTimeout(() => {
                     setTooltip(defaultTooltipText);
@@ -177,7 +178,7 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
                 showNotification({
                   type: NOTIFICATION_TYPES.SUCCESS,
                   lifetime: 10000,
-                  description: 'Successfully saved proposal template',
+                  description: t('actions.templateSavedSuccessfully'),
                 });
               }}
               disabled={!accountId || cloning}
@@ -186,7 +187,7 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
               }}
               className={styles.duplicateControlBtn}
             >
-              {cloning ? <LoadingIndicator /> : 'Use in DAO'}
+              {cloning ? <LoadingIndicator /> : t('actions.useInDao')}
             </ApplyToDaos>
           </div>
         </div>
@@ -195,7 +196,7 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
           <div className={cn(styles.list, styles.hideMobile)}>
             <OptionsList
               loading={loading}
-              title="Used in DAOs"
+              title={t('actions.usedInDaos')}
               data={daos}
               renderItem={item => (
                 <li key={item.id} className={styles.listItemCond}>
@@ -261,7 +262,7 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
     <div className={styles.root}>
       <div className={styles.nav}>
         <BackButton
-          name="Back to CFC Library"
+          name={t('actions.backToActionsLibrary')}
           href={{
             pathname: CFC_LIBRARY,
           }}

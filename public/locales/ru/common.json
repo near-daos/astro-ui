@@ -3,7 +3,10 @@
   "allDaos": "Все ДАО",
   "myDaos": "Мои ДАО",
   "myFeed": "Моя лента",
+  "myProposalsFeed": "Моя лента",
   "globalFeed": "Глобальная лента",
+  "actionsLibrary": "Библиотека действий",
+  "daosAndUsers": "ДАО и пользователи",
   "daoFunds": "Фонд ДАО",
   "createNewDao": "Создать новое ДАО",
   "loading": "Загрузка",
@@ -13,9 +16,11 @@
   "settings": "Настройки",
   "nfts": "NFT-токены",
   "bounties": "Работа",
+  "transfers": "Трансферы",
   "polls": "Опросы",
   "groups": "Группы",
   "activeProposals": "активные предложения",
+  "function calls": "Вызов функций",
   "proposalsInTotal": "предложений всего",
   "propose": "Предложить",
   "viewProposal": "Просмотреть предложение",
@@ -33,8 +38,10 @@
   "financial": "Финансы",
   "members": "Участники",
   "reportAnIssue": "Сообщить о проблеме",
+  "leaveFeedback": "Оставить отзыв",
   "termsAndConditions": "Пользовательское соглашение",
   "releaseNotes": "Заметки о релизе",
+  "testnetEnv": "Тестовое окружение",
   "filterByStatus": "Отфильтровать по статусу",
   "filterByProposalStatus": "Отфильтровать по статусу предложения",
   "numberOfVotes": "Number of votes",
@@ -48,8 +55,16 @@
   "minimumSearchCharacters": "Please enter at least 3 characters to search",
   "searchBountyPlaceholder": "Search Bounty Name",
   "all": "All",
+  "cancel": "Отмена",
+  "save": "Сохранить",
+  "delete": "Удалить",
   "selectedProposals": "Selected {{length}} proposals{{plural}}",
   "filterByProposer": "Filter by proposer",
+  "noDataFound": "Ничего не найдено",
+  "copyPageUrl": "Копировать URL страницы",
+  "copiedSuccessfully": "Скопировано успешно",
+  "view": "Показать",
+  "edit": "Редактировать",
   "bountiesPage": {
     "successClaimBountyNotification": "Транзакции в блокчейне могут занимать некоторе время, пожалуйста, обновите страницу ДАО через несколько секунд."
   },
@@ -57,6 +72,17 @@
   "common": {
     "clickToUploadImage": "Нажмите сюда чтобы загрузить изображение",
     "clickToChangeImage": "Нажмите сюда чтобы изменить изображение"
+  },
+
+  "chart": {
+    "month": "1М",
+    "threeMonths": "3М",
+    "sixMonths": "6М",
+    "year": "1Г",
+    "all": "Всё",
+    "daily": "По дням",
+    "weekly": "Понедельно",
+    "monthly": "Помесячно"
   },
 
   "notifications": {
@@ -254,7 +280,8 @@
       "all": "Все",
       "active": "Активные",
       "approved": "Согласовано",
-      "failed": "Отклонено"
+      "failed": "Отклонено",
+      "voteNeeded": "Непроголосованные"
     }
   },
 
@@ -267,8 +294,8 @@
   },
 
   "loader": {
-    "title": "Receiving data from the contract",
-    "waitSomeTime": "This may take some time"
+    "title": "Получение данных из контракта",
+    "waitSomeTime": "Это может занять некоторое время"
   },
 
   "proposalCard": {
@@ -359,10 +386,81 @@
     "members": "Участники",
     "daoRules": "Правила ДАО"
   },
+  "discover": {
+    "searchDaoName": "Поиск по названию ДАО",
+    "daoActivity": "ДАО активность",
+    "financial": "Финансы",
+    "generalInfo": "Общая информация",
+    "usersAndActivity": "Пользователи и активность",
+    "governance": "Управление",
+    "flow": "Поток",
+    "tvl": "TVL",
+    "tokens": "Токены",
+    "activeDaos": "Активные ДАО",
+    "daoName": "Название ДАО",
+    "numberOfProposals": "Количество предложений",
+    "lastMonth": "Последний месяц",
+    "allUsersPerDao": "Всех пользователей по DAO",
+    "activeUsers": "Активных пользователей",
+    "allUsersOnAPlatform": "Всех пользователей на платформе",
+    "usersMembersOfDao": "Пользователей - участников ДАО",
+    "averageNumberOfUsersPerDao": "Среднее кол-во пользователей в ДАО",
+    "numberOfInteractions": "Количество взаимодействий",
+    "averageNumberOfInteractionsPerDao": "Среднее кол-во взаимодействий в ДАО",
+    "users": "Пользователи",
+    "members": "Участники",
+    "voteThroughRate": "Рейтинговые голосования",
+    "totalIn": "Суммарный доход",
+    "totalOut": "Суммарный расход",
+    "incomingTransactions": "Входящие транзакции",
+    "outgoingTransactions": "Исходящие транзакции",
+    "platformTvl": "TVL платформы",
+    "vlInBountiesGrants": "VL в работах/грантах",
+    "numberOfFts": "Количество FT",
+    "vlOfFts": "VL в FT",
+    "numberOfNfts": "Количество NFT",
+    "numberOfBounties": "Количество работ",
+    "vlOfBounties": "VL работ",
+    "activity": "Активность",
+    "avgGroupsDao": "Avg. Groups/DAO",
+    "activeProposals": "Активные предложения",
+    "activeVotes": "Активные голосования"
+  },
   "proposalVotes": {
     "noGroup": "No longer in any group",
     "title": "Votes",
     "voices": "voices"
+  },
+  "validation": {
+    "mustBeAValidNumber": "Должно быть корректным числом.",
+    "required": "Необходимо заполнить",
+    "methodNameInvalid": "Указано некорректное имя метода",
+    "jsonNotValid": "Введенный JSON не является валидным"
+  },
+  "actions": {
+    "libraryDesc": "Добавьте новый функционал и усильте свой рабочий процесс с помощью этих шаблонов",
+    "searchByTemplate": "Поиск по названию шаблона",
+    "sorting": "Сортировка",
+    "name": "Название",
+    "smartContractAddress": "Адрес смарт-контракта",
+    "usedNumberDaos": "Использований в ДАО",
+    "useInDao": "Использовать в ДАО",
+    "copyToDao": "Копировать в DAO",
+    "backToActionsLibrary": "Назад в библиотеку действий",
+    "by": "автор:",
+    "usedInDaos": "Использован в ДАО",
+    "templateName": "Название шаблона",
+    "methodName": "Название метода",
+    "deposit": "Депозит",
+    "tGas": "ТГаз",
+    "saveTemplate": "Сохранить шаблон",
+    "chooseDao": "Выберите ДАО",
+    "templateSavedSuccessfully": "Шаблон предложения успешно сохранён",
+    "saveWarning": "Только councils могут сохранять шаблоны в свои ДАО",
+    "addTemplateName": "Укажите имя",
+    "templateNamePlaceholder": "Имя шаблона",
+    "addTemplateDescription": "Добавьте описание",
+    "templateDescriptionPlaceholder": "Описание шаблона"
   },
   "drafts": {
     "breadcrumbs": {

@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { BackButton } from 'astro_2.0/features/ViewProposal/components/BackButton';
 import { DRAFTS_PAGE_URL } from 'constants/routing';
 import styles from 'pages/dao/[dao]/create-draft/CreateDraftPage.module.scss';
-import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 import { DaoContext } from 'types/context';
 import { useDaoCustomTokens } from 'context/DaoTokensContext';

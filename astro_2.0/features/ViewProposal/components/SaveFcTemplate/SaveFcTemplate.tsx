@@ -1,4 +1,5 @@
 import React, { FC, useCallback } from 'react';
+import { useTranslation } from 'next-i18next';
 import { useAsyncFn } from 'react-use';
 import { useWalletContext } from 'context/WalletContext';
 import { SputnikHttpService } from 'services/sputnik';
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export const SaveFcTemplate: FC<Props> = ({ proposal }) => {
+  const { t } = useTranslation();
   const { accountId, pkAndSignature } = useWalletContext();
 
   const [{ loading }, getDaosList] = useAsyncFn(async () => {
@@ -52,7 +54,7 @@ export const SaveFcTemplate: FC<Props> = ({ proposal }) => {
         className={styles.control}
         onClick={handleClick}
       >
-        <span className={styles.label}>Save template</span>
+        <span className={styles.label}>{t('actions.saveTemplate')}</span>
         {loading ? (
           <LoadingIndicator className={styles.loading} />
         ) : (

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -16,6 +17,8 @@ interface Props {
 }
 
 export const TemplatesList: FC<Props> = ({ total, data, next }) => {
+  const { t } = useTranslation();
+
   if (!data) {
     return null;
   }
@@ -23,12 +26,12 @@ export const TemplatesList: FC<Props> = ({ total, data, next }) => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <div className={styles.name}>Name</div>
+        <div className={styles.name}>{t('actions.name')}</div>
         <div className={cn(styles.creator, styles.hideMobile)}>
-          Smart Contract address
+          {t('actions.smartContractAddress')}
         </div>
         <div className={cn(styles.duplicated, styles.hideMobile)}>
-          Used in # DAOs
+          {t('actions.usedNumberDaos')}
         </div>
         <div className={styles.control}>&nbsp;</div>
       </div>

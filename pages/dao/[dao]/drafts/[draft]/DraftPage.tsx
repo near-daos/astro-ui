@@ -17,8 +17,8 @@ import { DraftComments } from 'astro_2.0/features/DraftComments';
 
 import { DraftProposal } from 'types/draftProposal';
 
-import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
-import { DraftWrapper } from 'astro_2.0/features/Drafts/components/DraftWrapper/DraftWrapper';
+import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider';
+import { DraftWrapper } from 'astro_2.0/features/Drafts/components/DraftWrapper';
 
 import styles from './Draft.module.scss';
 

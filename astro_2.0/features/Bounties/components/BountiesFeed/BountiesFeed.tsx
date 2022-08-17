@@ -186,7 +186,7 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
                       <NoResultsView
                         title={
                           isEmpty(data?.data)
-                            ? 'No data found'
+                            ? t('noDataFound')
                             : t('noMoreResults')
                         }
                       />

@@ -736,11 +736,29 @@ export function getValidationSchema(
         externalUrl: yup.string().url(),
         flagCover: yup
           .mixed()
-          .test('Required', t('validation.required'), requiredImg)
+          .test({
+            name: 'Required',
+            message: t('validation.required'),
+            exclusive: true,
+            test: (value, context) => {
+              const { flagLogo } = context.parent;
+
+              return requiredImg(value) || requiredImg(flagLogo);
+            },
+          })
           .test('fileSize', getImgValidationError, validateImgSize),
         flagLogo: yup
           .mixed()
-          .test('Required', t('validation.required'), requiredImg)
+          .test({
+            name: 'Required',
+            message: t('validation.required'),
+            exclusive: true,
+            test: (value, context) => {
+              const { flagCover } = context.parent;
+
+              return requiredImg(value) || requiredImg(flagCover);
+            },
+          })
           .test('fileSize', getImgValidationError, validateImgSize),
         gas: getGasValidation(t),
       });

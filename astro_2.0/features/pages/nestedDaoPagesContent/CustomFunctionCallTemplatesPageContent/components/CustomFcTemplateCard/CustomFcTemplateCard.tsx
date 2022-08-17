@@ -69,20 +69,20 @@ interface Form {
 
 function getSchema(t: TFunction) {
   return yup.object().shape({
-    name: yup.string().required('Required'),
-    smartContractAddress: yup.string().required('Required'),
+    name: yup.string().required(t('required')),
+    smartContractAddress: yup.string().required(t('required')),
     methodName: yup
       .string()
-      .matches(VALID_METHOD_NAME_REGEXP, 'Provided method name is not valid')
-      .required('Required'),
+      .matches(VALID_METHOD_NAME_REGEXP, t('methodNameInvalid'))
+      .required(t('required')),
     deposit: yup
       .number()
-      .typeError('Must be a valid number.')
-      .required('Required'),
+      .typeError(t('mustBeAValidNumber'))
+      .required(t('required')),
     json: yup
       .string()
-      .required('Required')
-      .test('validJson', 'Provided JSON is not valid', value => {
+      .required(t('required'))
+      .test('validJson', t('jsonNotValid'), value => {
         try {
           JSON.parse(value ?? '');
         } catch (e) {

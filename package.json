@@ -26,6 +26,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@datadog/browser-rum": "^4.17.1",
     "@hookform/resolvers": "^2.7.1",
     "@near-wallet-selector/core": "^5.0.0",
     "@near-wallet-selector/my-near-wallet": "^5.0.0",
@@ -155,6 +156,7 @@
     "@testing-library/dom": "^8.11.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
+    "@testing-library/react-hooks": "^8.0.1",
     "@types/big.js": "^6.1.2",
     "@types/bn.js": "^5.1.0",
     "@types/cookie": "^0.4.1",
