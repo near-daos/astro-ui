@@ -8,7 +8,7 @@
 
 .title {
   @extend %subtitle1;
-  background-color: var(--color-neutral-10);
+  background-color: var(--app-background);
   display: none;
 
   @include large-desktop {
