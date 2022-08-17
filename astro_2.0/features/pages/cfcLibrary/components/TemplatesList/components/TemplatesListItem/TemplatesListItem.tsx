@@ -1,4 +1,5 @@
 import React, { FC, useCallback } from 'react';
+import { useTranslation } from 'next-i18next';
 import TextTruncate from 'react-text-truncate';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
@@ -22,6 +23,7 @@ interface Props {
 }
 
 export const TemplatesListItem: FC<Props> = ({ data }) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const {
     id,
@@ -102,7 +104,7 @@ export const TemplatesListItem: FC<Props> = ({ data }) => {
             variant: 'green',
           }}
         >
-          {cloning ? <LoadingIndicator /> : 'Use in DAO'}
+          {cloning ? <LoadingIndicator /> : t('actions.useInDao')}
         </ApplyToDaos>
       </div>
     </div>

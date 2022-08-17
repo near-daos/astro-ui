@@ -94,7 +94,7 @@ const CfcLibraryPage: Page<Props> = ({ accountDaos }) => {
       );
     }
 
-    return <NoResultsView title="No data found" />;
+    return <NoResultsView title={t('noDataFound')} />;
   }
 
   return (
@@ -104,12 +104,12 @@ const CfcLibraryPage: Page<Props> = ({ accountDaos }) => {
       </Head>
       <div className={styles.header}>
         <h1>{t('actionsLibrary')}</h1>
-        <p className={styles.description}>{t('cfcLibraryDesc')}</p>
+        <p className={styles.description}>{t('actions.libraryDesc')}</p>
         <SearchInput
           onSubmit={handleSearch}
           onClose={handleReset}
           loading={loading}
-          placeholder="Search by template name"
+          placeholder={t('actions.searchByTemplate')}
           showResults={false}
           className={styles.search}
         />
@@ -118,7 +118,7 @@ const CfcLibraryPage: Page<Props> = ({ accountDaos }) => {
       <div className={styles.body}>
         <div className={styles.filters}>
           <div className={styles.sorting}>
-            <span className={styles.label}>Sorting by:</span>
+            <span className={styles.label}>{t('actions.sorting')}:</span>
             <Dropdown
               disabled={!data?.data?.length}
               controlClassName={styles.dropdown}

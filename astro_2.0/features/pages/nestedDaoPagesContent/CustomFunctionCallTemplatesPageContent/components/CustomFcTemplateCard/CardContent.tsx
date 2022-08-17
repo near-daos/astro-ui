@@ -1,4 +1,5 @@
 import React, { FC, ReactNode, useCallback, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import AceEditor from 'react-ace';
 import { useFormContext } from 'react-hook-form';
@@ -41,6 +42,7 @@ export const CardContent: FC<Props> = ({
   disabled,
   defaultExpanded,
 }) => {
+  const { t } = useTranslation();
   const {
     register,
     setValue,
@@ -90,7 +92,7 @@ export const CardContent: FC<Props> = ({
             className={styles.cancel}
             disabled={disabled}
           >
-            Cancel
+            {t('cancel')}
           </Button>
           <Button
             disabled={!isValid || disabled}
@@ -99,7 +101,7 @@ export const CardContent: FC<Props> = ({
             type="submit"
             className={styles.save}
           >
-            Save
+            {t('save')}
           </Button>
         </div>
       ) : (
@@ -114,7 +116,7 @@ export const CardContent: FC<Props> = ({
               disabled={disabled}
             >
               <Icon name="buttonDelete" className={styles.icon} />
-              Delete
+              {t('delete')}
             </Button>
           )}
           {optionalControl}
@@ -139,7 +141,11 @@ export const CardContent: FC<Props> = ({
       )}
 
       <div className={styles.name}>
-        <InputWrapper fieldName="name" label="Template Name" fullWidth>
+        <InputWrapper
+          fieldName="name"
+          label={t('actions.templateName')}
+          fullWidth
+        >
           <Input
             className={cn(
               styles.inputWrapper,
@@ -158,7 +164,7 @@ export const CardContent: FC<Props> = ({
       <div className={styles.address}>
         <InputWrapper
           fieldName="smartContractAddress"
-          label="Smart Contract Address"
+          label={t('actions.smartContractAddress')}
           fullWidth
         >
           <Input
@@ -175,7 +181,11 @@ export const CardContent: FC<Props> = ({
       </div>
 
       <div className={styles.method}>
-        <InputWrapper fieldName="methodName" label="Method Name" fullWidth>
+        <InputWrapper
+          fieldName="methodName"
+          label={t('actions.methodName')}
+          fullWidth
+        >
           <Input
             className={cn(styles.inputWrapper, styles.narrow)}
             type="text"
@@ -247,13 +257,13 @@ export const CardContent: FC<Props> = ({
               name={expanded ? 'buttonArrowUp' : 'buttonEdit'}
               className={styles.icon}
             />
-            {!expanded && (disabled ? 'View' : 'Edit')}
+            {!expanded && (disabled ? t('view') : t('edit'))}
           </Button>
         </InputWrapper>
       </div>
 
       <div className={styles.gas}>
-        <InputWrapper fieldName="actionsGas" label="TGas">
+        <InputWrapper fieldName="actionsGas" label={t('actions.tGas')}>
           <div className={styles.row}>
             <Input
               className={cn(styles.inputWrapper, styles.narrow)}
@@ -273,7 +283,7 @@ export const CardContent: FC<Props> = ({
 
       <div className={styles.deposit}>
         <div className={styles.row}>
-          <InputWrapper fieldName="deposit" label="Deposit">
+          <InputWrapper fieldName="deposit" label={t('actions.deposit')}>
             <Input
               className={cn(styles.inputWrapper, styles.narrow)}
               inputStyles={{
