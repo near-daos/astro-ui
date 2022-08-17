@@ -103,7 +103,7 @@ jobs:
   run-autotests:
     name: Run Autotests
     needs:
-    - build-deploy
+    - helm-deploy
     - get-environment
     if: needs.get-environment.outputs.environment == 'test'
     uses: near-daos/astro-ui/.github/workflows/run-autotests.yaml@develop
