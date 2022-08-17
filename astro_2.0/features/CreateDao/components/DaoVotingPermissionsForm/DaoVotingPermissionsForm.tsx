@@ -51,12 +51,21 @@ export const DaoVotingPermissionsForm: VFC = () => {
           state.voting.data ||
           getInitialVotingPermissions({
             policy: {
-              roles: state.groups.items.map(role => ({
-                name: role.name,
-                slug: role?.slug,
-                permissions: ['*:*'],
-                kind: 'Group',
-              })),
+              roles: state.groups.items.map(role =>
+                role?.slug === 'all'
+                  ? {
+                      name: role.name,
+                      slug: role?.slug,
+                      permissions: ['*:-'],
+                      kind: 'Everyone',
+                    }
+                  : {
+                      name: role.name,
+                      slug: role?.slug,
+                      permissions: ['*:*'],
+                      kind: 'Group',
+                    }
+              ),
             },
           })
         }
