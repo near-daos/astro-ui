@@ -13,7 +13,7 @@ import { Flow } from 'astro_2.0/features/Discover/components/Flow';
 import { Tvl } from 'astro_2.0/features/Discover/components/Tvl';
 import { Tokens } from 'astro_2.0/features/Discover/components/Tokens';
 import { SelectedDaoDetails } from 'astro_2.0/features/Discover/components/SelectedDaoDetails';
-import { TopicsFilter } from 'astro_2.0/features/Discover/components/TopicsFilter/TopicsFilter';
+import { TopicsFilter } from 'astro_2.0/features/Discover/components/TopicsFilter';
 import { DiscoverPageProvider } from 'astro_2.0/features/Discover/components/DiscoverPageContext/DiscoverPageContext';
 import { DaoStatsDataProvider } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
 import { useDaoSearch } from 'astro_2.0/features/Discover/hooks';

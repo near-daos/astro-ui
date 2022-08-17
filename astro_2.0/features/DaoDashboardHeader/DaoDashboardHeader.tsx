@@ -21,7 +21,7 @@ import { DaoLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLi
 import { DaoWarning } from 'astro_2.0/components/DaoWarning';
 import { CloneDaoWarning } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning';
 
-import { useJoinDao } from 'astro_2.0/features/DaoDashboardHeader/components/hooks';
+import { useJoinDao } from 'astro_2.0/features/DaoDashboardHeader/hooks/useJoinDao';
 
 import { DaoHeaderContent } from 'astro_2.0/features/DaoDashboardHeader/components/DaoHeaderContent';
 import { useAppVersion } from 'hooks/useAppVersion';

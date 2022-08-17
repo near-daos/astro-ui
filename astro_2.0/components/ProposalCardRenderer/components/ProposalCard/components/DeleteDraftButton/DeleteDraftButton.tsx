@@ -4,7 +4,7 @@ import { useTranslation } from 'next-i18next';
 
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
-import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider';
 import { DRAFTS_PAGE_URL } from 'constants/routing';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';

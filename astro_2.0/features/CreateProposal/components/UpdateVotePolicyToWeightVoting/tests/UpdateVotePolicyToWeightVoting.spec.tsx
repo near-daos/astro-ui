@@ -2,7 +2,7 @@
 
 import { render } from 'jest/testUtils';
 
-import { UpdateVotePolicyToWeightVoting } from 'astro_2.0/features/CreateProposal/components/UpdateVotePolicyToWeightVoting';
+import { UpdateVotePolicyToWeightVoting } from 'astro_2.0/features/CreateProposal/components/UpdateVotePolicyToWeightVoting/index';
 
 const formContextMock = {
   formState: {
@@ -33,7 +33,7 @@ describe('VotePolicyToWeightVotingUpdateContent', () => {
     const { getByText } = render(<UpdateVotePolicyToWeightVoting />);
 
     expect(
-      getByText('proposalCard.updateVotePolicyToWeightVoting.threshold')
+      getByText('Threshold - Minimum votes to pass or reject a proposal.')
     ).toBeTruthy();
   });
 });
