@@ -88,7 +88,8 @@
 
 .daos {
   max-height: calc(100vh - 462px);
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   /* Turn on custom 4px wide scrollbar */
   &::-webkit-scrollbar {
