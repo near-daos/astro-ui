@@ -4,8 +4,13 @@
   background-color: var(--color-white);
   border: 1px solid var(--color-neutral-40);
   border-radius: 8px;
-  display: flex;
+  display: grid;
   flex-wrap: wrap;
+  grid-column-gap: 12px;
+  grid-template-areas:
+    'legend person'
+    'details details';
+  grid-template-columns: 8px 1fr;
   justify-content: flex-start;
   margin-bottom: 8px;
   max-width: 320px;
@@ -13,6 +18,7 @@
   width: 100%;
 
   @include tablet-landscape {
+    display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
   }
