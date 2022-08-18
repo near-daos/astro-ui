@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useAsyncFn, useMountedState } from 'react-use';
+import { useAsync, useMountedState } from 'react-use';
 
 import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs';
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
@@ -120,7 +120,7 @@ export const Tvl: FC = () => {
     })();
   }, [query.dao, isMounted, daoStatsService]);
 
-  const [{ loading }, getChartData] = useAsyncFn(async () => {
+  const { loading } = useAsync(async () => {
     let chart;
 
     if (query.dao) {
@@ -168,7 +168,7 @@ export const Tvl: FC = () => {
     }
   }, [activeView, query.dao, isMounted]);
 
-  const [, getLeaderboardData] = useAsyncFn(async () => {
+  useAsync(async () => {
     if (query.dao) {
       return;
     }
@@ -211,14 +211,6 @@ export const Tvl: FC = () => {
     }
   }, [activeView, query.dao, isMounted, offset]);
 
-  useEffect(() => {
-    getChartData();
-  }, [getChartData]);
-
-  useEffect(() => {
-    getLeaderboardData();
-  }, [getLeaderboardData]);
-
   const nextLeaderboardItems = () => {
     setOffset(offset + LIMIT);
   };
@@ -226,7 +218,6 @@ export const Tvl: FC = () => {
   return (
     <div className={styles.root}>
       <ControlTabs
-        loading={loading}
         className={styles.header}
         items={items}
         onSelect={handleTopicSelect}
