@@ -469,11 +469,34 @@
     },
     "feed": {
       "headTitle": "Черновики",
+      "title": "Черновики",
       "unreadDrafts": "Непрочитанные черновики",
       "allDrafts": "Все черновики",
       "noDrafts": {
         "title": "Нет черновиков",
         "createDraftButton": "Создать черновик"
+      },
+      "filters": {
+        "title": "Фильтры",
+        "sort": {
+          "title": "Сортивка"
+        },
+        "category": {
+          "title": "Категории",
+          "all": "Все"
+        },
+        "view": {
+          "title": "Тип",
+          "all": "Все",
+          "unread": "Прочитанные",
+          "saved": "Сохраненные"
+        },
+        "state": {
+          "title": "Состояние",
+          "all": "Все",
+          "onDiscussionStatus": "В обсуждении",
+          "convertedToProposalStatus": "Преобразованые в предложение"
+        }
       },
       "card": {
         "lastActivity": "Последняя активность",

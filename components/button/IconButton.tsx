@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import cn from 'classnames';
 import { Icon, IconName, IconProps } from 'components/Icon';
 import React from 'react';
 import buttonStyles from './IconButton.module.scss';
@@ -24,14 +24,14 @@ export const IconButton: React.VFC<IconButtonProps> = ({
     medium: buttonStyles.medium,
     large: buttonStyles.large,
   };
-  const className = classNames(
-    buttonStyles.iconButton,
-    sizes[size],
-    classNameProp
-  );
 
   return (
-    <button type="button" className={className} {...props} data-testid={testId}>
+    <button
+      type="button"
+      className={cn(buttonStyles.iconButton, sizes[size], classNameProp)}
+      {...props}
+      data-testid={testId}
+    >
       <Icon {...iconProps} name={icon} />
     </button>
   );

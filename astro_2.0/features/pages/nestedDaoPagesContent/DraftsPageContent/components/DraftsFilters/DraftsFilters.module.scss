@@ -1,0 +1,50 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0 12px;
+}
+
+.items {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.itemLink {
+  @extend %subtitle5;
+  align-items: center;
+  border: 1px solid var(--color-neutral-40);
+  border-radius: 100px;
+  display: flex;
+
+  padding: 8px 12px;
+
+  transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+}
+
+.icon {
+  color: currentColor;
+  margin-right: 6px;
+  width: 16px;
+}
+
+.itemLink.active {
+  background-color: var(--color-primary-10);
+  border-color: var(--color-primary);
+
+  color: var(--color-primary);
+}
+
+.clearFilter,
+.clearFilterIcon {
+  min-height: 14px;
+  min-width: 14px;
+}

@@ -3,27 +3,12 @@
 @import 'styles/mixins';
 
 .root {
-  display: grid;
-  grid-template-areas:
-    'header'
-    'content';
-  grid-template-columns: 1fr;
-  row-gap: 24px;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
-  grid-area: header;
-  margin-top: 24px;
-}
-
-.titleRow {
-  @extend %heading1;
-  grid-area: title;
-  margin-top: 12px;
-
-  @include tablet-portrait {
-    margin-bottom: 16px;
-  }
+  margin: 56px 0 20px;
 }
 
 .content {
@@ -38,26 +23,9 @@
   }
 }
 
-.sideFilters {
-  display: none;
-  margin-right: 24px;
-  @include tablet-landscape {
-    display: block;
-    margin-right: 0;
-  }
-}
-
-/* stylelint-disable-next-line */
-.content :global(.infinite-scroll-component__outerdiv) {
-  flex-grow: 1;
-
-  @media screen and (max-width: #{breakpoints.$screen-sm}px) {
-    flex-grow: 1;
-    max-width: 100%;
-  }
-}
-
 .listWrapper {
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   max-width: 100%;
 
@@ -79,66 +47,8 @@
   padding: 24px 0;
 }
 
-.itemRoot {
-  margin-bottom: 60px;
-}
-
-.proposalCardWrapper {
-  margin-bottom: 60px;
-
-  &:not(:first-of-type) {
-    margin-top: 32px;
-  }
-}
-
-.categories {
-  margin: 0;
-  max-height: unset;
-  top: 0;
-  @include large-desktop {
-    margin: 0 0 32px;
-    top: 90px;
-  }
-}
-
-.categoriesListTitle {
-  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
-    display: none;
-  }
-}
-
-.listWrapper {
-  display: flex;
-  flex-direction: column;
-}
-
-.listHeader {
-  display: none;
-  grid-template-columns: 32px 1fr;
-  padding: 0 16px 4px;
-
-  @include tablet-landscape {
-    display: grid;
-  }
-}
-
 .status {
   width: 32px;
-}
-
-.columns {
-  @extend %body2;
-
-  align-items: center;
-  color: var(--color-neutral-60);
-  display: grid;
-  grid-column-gap: 12px;
-  grid-template-columns: 1fr 60px 60px 120px;
-  margin-bottom: 4px;
-
-  .updated {
-    text-align: right;
-  }
 }
 
 .listTitleWrapper {

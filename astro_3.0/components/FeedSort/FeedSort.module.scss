@@ -1,7 +1,6 @@
 @import 'styles/typography';
 
 .root {
-  @extend %subtitle5;
   align-items: center;
   display: flex;
 
@@ -36,4 +35,8 @@
 .menu {
   @extend %body2;
   right: 0;
+}
+
+.selectedItem {
+  @extend %subtitle5;
 }

@@ -5,12 +5,9 @@
 .root {
   align-items: center;
   display: flex;
-  flex-wrap: wrap;
   gap: 16px;
-  justify-content: flex-start;
   @include tablet-landscape {
     gap: 0;
-    justify-content: space-between;
     margin-bottom: 2px;
     margin-top: 56px;
   }
@@ -18,6 +15,7 @@
 
 .title {
   @extend %heading1;
+  white-space: nowrap;
 
   @include tablet-landscape {
     font-size: 28px;
@@ -26,49 +24,39 @@
   }
 }
 
-.tabs {
-  display: none;
-  @include tablet-landscape {
-    display: block;
+.search {
+  background: none;
+  border: 0;
+  padding-left: 16px;
+}
+
+.searchIcon {
+  color: var(--color-neutral-70);
+  flex: 0 0 0;
+  height: 13px;
+  width: 13px;
+}
+
+.searchInput {
+  font-size: 14px;
+  line-height: 24px;
+  &::placeholder {
+    opacity: 0;
   }
 }
 
-.tabBtn {
-  color: var(--color-neutral-50);
-  height: 40px;
-  min-width: unset;
-  padding: 0 12px;
-  width: unset;
-
-  &:hover {
-    color: var(--color-neutral-60);
-  }
-
-  &.active {
-    border-bottom: 2px solid var(--color-primary-50);
-    color: var(--color-neutral-80);
+.searchInput:focus {
+  &::placeholder {
+    opacity: 1;
   }
 }
 
-.sorting {
-  @extend %body2;
-  align-items: center;
-  display: none;
-  justify-content: flex-end;
-  min-width: 120px;
+.removeIcon {
+  height: 13px;
+  width: 13px;
+}
 
-  @include tablet-landscape {
-    display: flex;
-  }
-
-  .label {
-    color: var(--color-neutral-60);
-    margin-right: 4px;
-  }
-
-  .menu {
-    margin-top: 12px;
-    position: absolute;
-    right: 0;
-  }
+.removeButton {
+  height: 13px;
+  width: 13px;
 }
