@@ -8,6 +8,7 @@ import { NotificationsToastsContainer } from 'astro_2.0/components/AppHeader/com
 import { Icon } from 'components/Icon';
 
 import { useNotificationsCount } from 'astro_2.0/features/Notifications/hooks';
+import { kFormatter } from 'utils/format';
 
 import styles from './NotificationsBell.module.scss';
 
@@ -34,7 +35,7 @@ export const NotificationsBell: VFC<NotificationsBellProps> = ({
               [styles.visible]: counter > 0,
             })}
           >
-            {counter}
+            {kFormatter(counter)}
           </div>
         </div>
       </Link>

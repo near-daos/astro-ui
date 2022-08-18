@@ -7,6 +7,8 @@ import { IconButton } from 'components/button/IconButton';
 import { IconTextButton } from 'components/button/IconTextButton';
 import { IconName } from 'components/Icon';
 
+import { kFormatter } from 'utils/format';
+
 import styles from './ActionButton.module.scss';
 
 interface ActionButtonProps {
@@ -76,7 +78,9 @@ export const ActionButton: FC<ActionButtonProps> = ({
       <Wrapper addRef={setRef} className={className} link={href}>
         <>
           {notifications ? (
-            <div className={styles.notification}>{notifications}</div>
+            <div className={styles.notification}>
+              {kFormatter(notifications)}
+            </div>
           ) : null}
           {children ? (
             <IconTextButton
