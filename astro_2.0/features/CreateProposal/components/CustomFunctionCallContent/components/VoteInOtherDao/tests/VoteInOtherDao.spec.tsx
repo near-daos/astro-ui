@@ -19,7 +19,7 @@ jest.mock('react-hook-form', () => {
 
 describe('VoteInOtherDao', () => {
   it('Should render component', () => {
-    const dao = ({} as unknown) as DAO;
+    const dao = {} as unknown as DAO;
 
     const { getByText } = render(<VoteInOtherDao dao={dao} />);
 

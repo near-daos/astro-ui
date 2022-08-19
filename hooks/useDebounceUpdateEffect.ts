@@ -24,7 +24,7 @@ export const useDebounceEffect = <L = DependencyList>(
 
       fn?.({
         isInitialCall: isInitialCall.current,
-        lastCallDeps: (lastCallDeps.current as unknown) as L | undefined,
+        lastCallDeps: lastCallDeps.current as unknown as L | undefined,
         depsHaveChanged,
       });
 

@@ -104,9 +104,7 @@ export function useNotificationsSettings(): {
   };
 }
 
-export function useNotificationsList(
-  reactOnUpdates?: boolean
-): {
+export function useNotificationsList(reactOnUpdates?: boolean): {
   notifications: PaginationResponse<Notification[]> | null;
   loadMore: () => void;
   loading: boolean;
@@ -154,13 +152,11 @@ export function useNotificationsList(
 
     if (!daoIdsLoaded) {
       if (accountId) {
-        const [
-          accountDaosResponse,
-          subscribedDaosResponse,
-        ] = await Promise.allSettled([
-          SputnikHttpService.getAccountDaos(accountId),
-          SputnikHttpService.getAccountDaoSubscriptions(accountId),
-        ]);
+        const [accountDaosResponse, subscribedDaosResponse] =
+          await Promise.allSettled([
+            SputnikHttpService.getAccountDaos(accountId),
+            SputnikHttpService.getAccountDaoSubscriptions(accountId),
+          ]);
 
         const tmpAccountDaoIds =
           accountDaosResponse.status === 'fulfilled'

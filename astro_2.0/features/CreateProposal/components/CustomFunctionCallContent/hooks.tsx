@@ -10,9 +10,7 @@ import { useAllCustomTokens } from 'context/AllTokensContext';
 
 import styles from './styles.module.scss';
 
-export function useAllTokenOptions(
-  fieldName = 'token'
-): {
+export function useAllTokenOptions(fieldName = 'token'): {
   tokens: Record<string, Token>;
   tokenOptions: {
     value: string;
@@ -61,9 +59,7 @@ export function useAllTokenOptions(
   };
 }
 
-export function useTokenOptions(
-  fieldName = 'token'
-): {
+export function useTokenOptions(fieldName = 'token'): {
   tokens: Record<string, Token>;
   tokenOptions: {
     value: string;

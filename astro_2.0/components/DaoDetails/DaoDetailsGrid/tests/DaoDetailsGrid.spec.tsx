@@ -60,12 +60,12 @@ describe('dao details grid', () => {
   it('Should use dao id when displayName not presented', () => {
     const id = 'myTestId';
 
-    const dao = ({
+    const dao = {
       ...daoMock,
       displayName: undefined,
       description: undefined,
       id,
-    } as unknown) as DaoFeedItem;
+    } as unknown as DaoFeedItem;
 
     const component = render(
       <DaoDetailsGrid dao={dao} activeProposals={12} totalProposals={12} />

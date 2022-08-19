@@ -23,9 +23,8 @@ export const ContractAcceptanceContent: FC<ContractAcceptanceContentProps> = ({
   const { args } = fromBase64ToObj(base64);
 
   // eslint-disable-next-line
-  const data: { token_id: string; unstake_period: string } = fromBase64ToObj(
-    args
-  );
+  const data: { token_id: string; unstake_period: string } =
+    fromBase64ToObj(args);
   const { token_id: tokenId, unstake_period: unstakingPeriod } = data;
   const uPeriod = new Decimal(unstakingPeriod).div('3.6e12').toString();
 

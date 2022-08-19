@@ -23,10 +23,8 @@ export const ContextPopup: FC<Props> = ({
   offset,
 }) => {
   const [open, setOpen] = useState(false);
-  const [
-    referenceElement,
-    setReferenceElement,
-  ] = useState<HTMLDivElement | null>(null);
+  const [referenceElement, setReferenceElement] =
+    useState<HTMLDivElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
   );

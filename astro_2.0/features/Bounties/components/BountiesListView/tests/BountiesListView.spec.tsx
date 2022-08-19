@@ -25,9 +25,9 @@ jest.mock('react-use', () => {
 });
 
 describe('BountiesListView', () => {
-  const dao = ({} as unknown) as DAO;
-  const tokens = ({} as unknown) as Tokens;
-  const context = ({} as unknown) as BountyContext[];
+  const dao = {} as unknown as DAO;
+  const tokens = {} as unknown as Tokens;
+  const context = {} as unknown as BountyContext[];
 
   it('Should render nothing if no dao', () => {
     const { container } = render(

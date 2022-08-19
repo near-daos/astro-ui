@@ -10,9 +10,9 @@ import { NotificationsService } from 'services/NotificationsService';
 
 import MyAccountPage, { MyAccountPageProps } from './MyAccountPage';
 
-export const getServerSideProps: GetServerSideProps<MyAccountPageProps> = async ({
-  locale = 'en',
-}) => {
+export const getServerSideProps: GetServerSideProps<
+  MyAccountPageProps
+> = async ({ locale = 'en' }) => {
   const accountId = CookieService.get<string>(ACCOUNT_COOKIE);
 
   if (!accountId) {

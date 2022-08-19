@@ -32,12 +32,8 @@ interface Form {
 export const AddMemberRow: FC<Props> = ({ votingThreshold, onAddMember }) => {
   const { nearService } = useWalletContext();
 
-  const {
-    daoName,
-    stakedBalance,
-    delegatedBalance,
-    decimals,
-  } = useDelegatePageContext();
+  const { daoName, stakedBalance, delegatedBalance, decimals } =
+    useDelegatePageContext();
   const { triggerUpdate } = useTriggerUpdate();
 
   const maxValue = Number(stakedBalance) - Number(delegatedBalance);

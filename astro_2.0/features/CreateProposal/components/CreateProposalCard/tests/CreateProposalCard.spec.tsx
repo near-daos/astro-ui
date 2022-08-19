@@ -103,7 +103,7 @@ const userPermissions = {
 };
 
 describe('CreateGroupContent', () => {
-  const dao = ({} as unknown) as DAO;
+  const dao = {} as unknown as DAO;
 
   it.each`
     type                                                | content

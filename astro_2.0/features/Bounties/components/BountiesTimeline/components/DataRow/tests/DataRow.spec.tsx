@@ -6,9 +6,9 @@ import { DataRow } from 'astro_2.0/features/Bounties/components/BountiesTimeline
 
 describe('DataRow', () => {
   it('Should render component', () => {
-    const item = ({
+    const item = {
       type: 'Pending Approval',
-    } as unknown) as TimelineMilestone;
+    } as unknown as TimelineMilestone;
 
     const { container } = render(
       <DataRow

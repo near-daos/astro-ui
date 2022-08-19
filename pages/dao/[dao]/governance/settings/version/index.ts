@@ -7,11 +7,9 @@ import { getTranslations } from 'utils/getTranslations';
 
 import { DaoVersionUpdatePageProps } from './DaoVersionUpdatePage';
 
-export const getServerSideProps: GetServerSideProps<DaoVersionUpdatePageProps> = async ({
-  req,
-  query,
-  locale = 'en',
-}) => {
+export const getServerSideProps: GetServerSideProps<
+  DaoVersionUpdatePageProps
+> = async ({ req, query, locale = 'en' }) => {
   const { dao: daoId } = query;
 
   CookieService.initServerSideCookies(req?.headers.cookie || null);

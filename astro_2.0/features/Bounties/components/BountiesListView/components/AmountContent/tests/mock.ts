@@ -1,6 +1,6 @@
 import { Token } from 'types/token';
 
-export const tokens = ({
+export const tokens = {
   NEAR: {
     createdAt: '2021-12-07T19:15:52.793Z',
     transactionHash: null,
@@ -21,4 +21,4 @@ export const tokens = ({
     balance: '5.1002',
     tokenId: '',
   },
-} as unknown) as Record<string, Token>;
+} as unknown as Record<string, Token>;

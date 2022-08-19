@@ -7,7 +7,7 @@ import { TemplateLink } from 'astro_2.0/features/CreateDao/components/TemplateRu
 
 describe('TemplateLink', () => {
   it('Should call onClick callback', () => {
-    const template = ('template' as unknown) as DAOTemplate;
+    const template = 'template' as unknown as DAOTemplate;
     const onClick = jest.fn();
 
     const { getByRole } = render(

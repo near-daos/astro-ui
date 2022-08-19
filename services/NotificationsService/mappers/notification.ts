@@ -15,15 +15,8 @@ export function mapNotificationDtoToNotification(
       notification,
       id,
     }) => {
-      const {
-        type,
-        signerId,
-        metadata,
-        targetId,
-        dao,
-        daoId,
-        status,
-      } = notification;
+      const { type, signerId, metadata, targetId, dao, daoId, status } =
+        notification;
       const date = new Date(createdAt);
 
       return {

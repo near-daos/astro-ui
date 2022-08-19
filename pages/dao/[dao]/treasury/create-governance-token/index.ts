@@ -13,11 +13,9 @@ import CreateGovernanceToken, {
 
 export default CreateGovernanceToken;
 
-export const getServerSideProps: GetServerSideProps<GovernanceTokenProps> = async ({
-  req,
-  query,
-  locale = 'en',
-}) => {
+export const getServerSideProps: GetServerSideProps<
+  GovernanceTokenProps
+> = async ({ req, query, locale = 'en' }) => {
   const daoId = query.dao as string;
 
   CookieService.initServerSideCookies(req?.headers.cookie || null);

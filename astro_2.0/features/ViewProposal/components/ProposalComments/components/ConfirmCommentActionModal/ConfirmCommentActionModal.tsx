@@ -36,7 +36,7 @@ export const ConfirmCommentActionModal = ({
           className={styles.radioGroup}
           itemClassName={styles.radio}
           activeItemClassName={styles.activeRadio}
-          value={((value as unknown) as string) || ''}
+          value={(value as unknown as string) || ''}
           onChange={handleChange}
         >
           {options.map((option: { value: string; label: string }) => (

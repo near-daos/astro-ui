@@ -76,7 +76,7 @@ export const FeedFilter = <T,>({
 
   const handleChange = useCallback(
     (newValue: string, e?: React.ChangeEvent<HTMLInputElement>) => {
-      onChange((newValue as unknown) as T, e);
+      onChange(newValue as unknown as T, e);
 
       if (isShow) {
         setIsShow(false);
@@ -108,7 +108,7 @@ export const FeedFilter = <T,>({
             className={cn(styles.radioGroup, { [styles.show]: isShow })}
             itemClassName={styles.radio}
             activeItemClassName={styles.activeRadio}
-            value={((value as unknown) as string) || ''}
+            value={(value as unknown as string) || ''}
             onChange={handleChange}
           >
             {children}

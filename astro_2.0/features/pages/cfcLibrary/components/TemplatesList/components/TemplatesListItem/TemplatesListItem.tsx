@@ -91,10 +91,12 @@ export const TemplatesListItem: FC<Props> = ({ data }) => {
               description: 'Successfully saved proposal template',
             });
 
-            const daosIds = (res.filter(item => item !== null) as {
-              proposalTemplateId: string;
-              daoId: string;
-            }[]).map(item => item.daoId);
+            const daosIds = (
+              res.filter(item => item !== null) as {
+                proposalTemplateId: string;
+                daoId: string;
+              }[]
+            ).map(item => item.daoId);
 
             onUpdate(id, daosIds.length);
           }}

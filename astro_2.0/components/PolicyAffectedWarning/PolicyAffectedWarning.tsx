@@ -25,9 +25,10 @@ export const PolicyAffectedWarning: FC<PolicyAffectedWarningProps> = ({
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { id, daoId, kind } = useMemo(() => (first(data) || {}) as Proposal, [
-    data,
-  ]);
+  const { id, daoId, kind } = useMemo(
+    () => (first(data) || {}) as Proposal,
+    [data]
+  );
 
   const goToProposalPage = useCallback(() => {
     router.push({

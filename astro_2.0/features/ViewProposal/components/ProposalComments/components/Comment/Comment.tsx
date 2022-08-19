@@ -103,8 +103,7 @@ export const Comment: FC<CommentProps> = ({
   const handleReportAction = useCallback(async () => {
     const res = await showReportModal({
       title: 'Report on',
-      text:
-        'Choose the reason for deleting the message ( 4 votes minimum for deletion)',
+      text: 'Choose the reason for deleting the message ( 4 votes minimum for deletion)',
       options: REASON_OPTIONS,
     });
 
@@ -116,8 +115,7 @@ export const Comment: FC<CommentProps> = ({
   const handleRemoveAction = useCallback(async () => {
     const res = await showReportModal({
       title: 'Delete message',
-      text:
-        'Are you sure you want to delete the message from the chat? It will be deleted permanently. Choose the reason for deleting the message',
+      text: 'Are you sure you want to delete the message from the chat? It will be deleted permanently. Choose the reason for deleting the message',
       options: REASON_OPTIONS,
     });
 

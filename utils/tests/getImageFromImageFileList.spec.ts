@@ -26,9 +26,9 @@ describe('get image from image file list', () => {
   });
 
   it('Should return empty string if file list is empty', () => {
-    expect(
-      getImageFromImageFileList(([] as unknown) as FileList)
-    ).toStrictEqual('');
+    expect(getImageFromImageFileList([] as unknown as FileList)).toStrictEqual(
+      ''
+    );
   });
 
   it('Should get content if file provided', () => {
@@ -38,7 +38,7 @@ describe('get image from image file list', () => {
     const file = new File([blob], 'data.txt', { type: 'text/plain' });
 
     expect(
-      getImageFromImageFileList(([file] as unknown) as FileList)
+      getImageFromImageFileList([file] as unknown as FileList)
     ).resolves.toStrictEqual(content);
   });
 });

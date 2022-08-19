@@ -11,12 +11,9 @@ interface CreateBountyProposalContentProps {
   daysToComplete: string;
 }
 
-export const CreateBountyProposalContent: React.FC<CreateBountyProposalContentProps> = ({
-  amount,
-  token,
-  availableClaims,
-  daysToComplete,
-}) => {
+export const CreateBountyProposalContent: React.FC<
+  CreateBountyProposalContentProps
+> = ({ amount, token, availableClaims, daysToComplete }) => {
   const infos = [
     {
       label: 'Amount',

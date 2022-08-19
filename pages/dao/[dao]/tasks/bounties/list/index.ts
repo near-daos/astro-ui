@@ -8,11 +8,9 @@ import { getTranslations } from 'utils/getTranslations';
 
 import { BountiesListPageProps } from './BountiesListPage';
 
-export const getServerSideProps: GetServerSideProps<BountiesListPageProps> = async ({
-  req,
-  query,
-  locale = 'en',
-}) => {
+export const getServerSideProps: GetServerSideProps<
+  BountiesListPageProps
+> = async ({ req, query, locale = 'en' }) => {
   const daoId = query.dao as string;
 
   CookieService.initServerSideCookies(req?.headers.cookie || null);

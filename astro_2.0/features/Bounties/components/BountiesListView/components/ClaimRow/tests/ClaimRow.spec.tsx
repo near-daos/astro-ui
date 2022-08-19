@@ -50,27 +50,27 @@ describe('ClaimRow', () => {
   });
 
   it('Should render "Not approved" state', () => {
-    const { getByText } = renderClaimRow(({
+    const { getByText } = renderClaimRow({
       bountyClaimId: id,
-    } as unknown) as BountyProposal);
+    } as unknown as BountyProposal);
 
     expect(getByText('Not approved')).toBeInTheDocument();
   });
 
   it('Should render "Approved" state', () => {
-    const { getByText } = renderClaimRow(({
+    const { getByText } = renderClaimRow({
       bountyClaimId: id,
       status: 'Approved',
-    } as unknown) as BountyProposal);
+    } as unknown as BountyProposal);
 
     expect(getByText('Successfully approved')).toBeInTheDocument();
   });
 
   it('Should render "Pending Approval" state', () => {
-    const { getByText } = renderClaimRow(({
+    const { getByText } = renderClaimRow({
       bountyClaimId: id,
       status: 'InProgress',
-    } as unknown) as BountyProposal);
+    } as unknown as BountyProposal);
 
     expect(getByText('Pending Approval')).toBeInTheDocument();
   });

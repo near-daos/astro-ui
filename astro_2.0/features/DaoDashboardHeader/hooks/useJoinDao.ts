@@ -29,9 +29,8 @@ export function useJoinDao(
         return;
       }
 
-      const pendingJoinApproval = await SputnikHttpService.getJoiningDaoProposal(
-        { daoId, accountId }
-      );
+      const pendingJoinApproval =
+        await SputnikHttpService.getJoiningDaoProposal({ daoId, accountId });
 
       if (pendingJoinApproval) {
         setState({

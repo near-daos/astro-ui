@@ -36,9 +36,9 @@ describe('Milestone', () => {
     ${'Pending Approval'} | ${'bountyPendingApproval'} | ${'red'}
     ${'Complete Bounty'}  | ${'bountyCompleteBounty'}  | ${''}
   `('Should render proper icon in proper color', ({ type, icon, color }) => {
-    const data = ({
+    const data = {
       type,
-    } as unknown) as TimelineMilestone;
+    } as unknown as TimelineMilestone;
 
     const { getByText } = render(<Milestone data={data} color={color} />);
 

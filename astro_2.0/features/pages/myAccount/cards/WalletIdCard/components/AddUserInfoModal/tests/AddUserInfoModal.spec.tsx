@@ -82,7 +82,7 @@ describe('AddUserInfoModal', () => {
 
     const verifyContact = jest.fn(() => Promise.resolve(true));
     const getUserContactConfig = jest.fn(() =>
-      Promise.resolve(({} as unknown) as UserContacts)
+      Promise.resolve({} as unknown as UserContacts)
     );
 
     NotificationsService.verifyContact = verifyContact;

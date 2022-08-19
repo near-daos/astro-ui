@@ -18,9 +18,9 @@ describe('ViewToggle', () => {
   const daoId = '123';
 
   function renderComponent() {
-    const dao = ({
+    const dao = {
       id: daoId,
-    } as unknown) as DAO;
+    } as unknown as DAO;
 
     return render(<ViewToggle dao={dao} />);
   }

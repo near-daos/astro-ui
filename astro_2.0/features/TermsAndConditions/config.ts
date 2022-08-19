@@ -30,18 +30,15 @@ export const TERMS_CONDITIONS = [
   },
   {
     title: 'ASTRO DAO Account',
-    body:
-      'You must connect your NEAR wallet to use the ASTRO DAO. To create an account, we will require you to provide certain information about yourself and we may, in our sole discretion, require you to provide further information and/or documents at any stage during your use of the Platform. Through the User community organised content flagging procedure we may , in our sole discretion, refuse, decline, suspend or disable your access or use of the ASTRO DAO. Regardless of disabling the access through the ASTRO DAO, all direct interactions with the NEAR protocol interfaces are out of control of the Company. ',
+    body: 'You must connect your NEAR wallet to use the ASTRO DAO. To create an account, we will require you to provide certain information about yourself and we may, in our sole discretion, require you to provide further information and/or documents at any stage during your use of the Platform. Through the User community organised content flagging procedure we may , in our sole discretion, refuse, decline, suspend or disable your access or use of the ASTRO DAO. Regardless of disabling the access through the ASTRO DAO, all direct interactions with the NEAR protocol interfaces are out of control of the Company. ',
   },
   {
     title: 'No Control of the NEAR protocol',
-    body:
-      'You shall at all times note that no party (neither we or you), including but not limited to any party involved in, or having contributed to the development of, the NEAR Protocol  and any of the affiliates, directors, employees, contractors, service providers or agents of such parties owns or control the NEAR Protocol or any accessory, upgrade, related software or any other modification to it (including, but not limited to, NEAR Protocol user interface) and you are solely and in full responsible for your use of each and any of them. there is no central oversight over the NEAR Protocol. it is built by the participants and participants of their networks themselves. for the avoidance of doubt, Near Inc. assumes no responsibility or liability for (1) availability and operability of the NEAR Protocol and its underlying software, (2) interoperability of your network with other third party networks (this largely depends on external factors beyond of Near Inc. reasonable control such as, in particular the infrastructure and operability of third party networks and their internet-connectivity measures) or 3) suitability of the NEAR Protocol for your own business purposes. You are using the NEAR Protocol for your own business purposes at your sole and own risk.',
+    body: 'You shall at all times note that no party (neither we or you), including but not limited to any party involved in, or having contributed to the development of, the NEAR Protocol  and any of the affiliates, directors, employees, contractors, service providers or agents of such parties owns or control the NEAR Protocol or any accessory, upgrade, related software or any other modification to it (including, but not limited to, NEAR Protocol user interface) and you are solely and in full responsible for your use of each and any of them. there is no central oversight over the NEAR Protocol. it is built by the participants and participants of their networks themselves. for the avoidance of doubt, Near Inc. assumes no responsibility or liability for (1) availability and operability of the NEAR Protocol and its underlying software, (2) interoperability of your network with other third party networks (this largely depends on external factors beyond of Near Inc. reasonable control such as, in particular the infrastructure and operability of third party networks and their internet-connectivity measures) or 3) suitability of the NEAR Protocol for your own business purposes. You are using the NEAR Protocol for your own business purposes at your sole and own risk.',
   },
   {
     title: 'Changes to the ASTRO DAO',
-    body:
-      'We may in our absolute and sole discretion change, update, amend, remove, or discontinue any part of the Site, the services and the Content at any time without prior notice to you.',
+    body: 'We may in our absolute and sole discretion change, update, amend, remove, or discontinue any part of the Site, the services and the Content at any time without prior notice to you.',
   },
   {
     title: 'Your Use of the ASTRO DAO and Conduct',
@@ -103,8 +100,7 @@ export const TERMS_CONDITIONS = [
   },
   {
     title: 'Taxes',
-    body:
-      'You agree that you are solely responsible for determining what, if any, taxes apply to your DAO transactions on the Astro DAO. Neither Company nor any other Party is responsible for determining the taxes that may apply to your DAO transactions.',
+    body: 'You agree that you are solely responsible for determining what, if any, taxes apply to your DAO transactions on the Astro DAO. Neither Company nor any other Party is responsible for determining the taxes that may apply to your DAO transactions.',
   },
   {
     title: 'Disclaimers',
@@ -119,8 +115,7 @@ export const TERMS_CONDITIONS = [
   },
   {
     title: 'Limitation of Liability',
-    body:
-      'TO THE FULLEST EXTENT PERMITTED BY LAW, IN NO EVENT WILL COMPANY BE LIABLE TO YOU OR ANY THIRD PARTY FOR ANY LOST PROFIT OR ANY INDIRECT, CONSEQUENTIAL, EXEMPLARY, INCIDENTAL, SPECIAL OR PUNITIVE DAMAGES ARISING FROM THESE TERMS, THE SITE, PRODUCTS OR THIRD PARTY SITES AND PRODUCTS, OR FOR ANY DAMAGES RELATED TO LOSS OF REVENUE, LOSS OF PROFITS, LOSS OF BUSINESS OR ANTICIPATED SAVINGS, LOSS OF USE, LOSS OF GOODWILL, OR LOSS OF DATA, AND WHETHER CAUSED BY TORT (INCLUDING NEGLIGENCE), BREACH OF CONTRACT, OR OTHERWISE, EVEN IF FORESEEABLE AND EVEN IF COMPANY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. ACCESS TO, AND USE OF THE SITE, PRODUCTS OR THIRD-PARTY SITES AND PRODUCTS ARE AT YOUR OWN DISCRETION AND RISK, AND YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA RESULTING THEREFROM. NOTWITHSTANDING ANYTHING TO THE CONTRARY CONTAINED HEREIN, IN NO EVENT SHALL THE MAXIMUM AGGREGATE LIABILITY OF COMPANY ARISING OUT OF OR IN ANY WAY RELATED TO THESE TERMS, THE ACCESS AND USE OF THE SITE, CONTENT NFTS OR ANY PRODUCT OR SERVICES PURCHASES ON THE SITE EXCEED US$100. THE FOREGOING LIMITATIONS OF LIABILITY SHALL NOT APPLY TO LIABILITY OF COMPANY FOR PERSONAL INJURY CAUSED BY COMPANY’S NEGLIGENCE OR ANY INJURY CAUSED BY COMPANY’S FRAUD OR FRAUDULENT MISREPRESENTATION.',
+    body: 'TO THE FULLEST EXTENT PERMITTED BY LAW, IN NO EVENT WILL COMPANY BE LIABLE TO YOU OR ANY THIRD PARTY FOR ANY LOST PROFIT OR ANY INDIRECT, CONSEQUENTIAL, EXEMPLARY, INCIDENTAL, SPECIAL OR PUNITIVE DAMAGES ARISING FROM THESE TERMS, THE SITE, PRODUCTS OR THIRD PARTY SITES AND PRODUCTS, OR FOR ANY DAMAGES RELATED TO LOSS OF REVENUE, LOSS OF PROFITS, LOSS OF BUSINESS OR ANTICIPATED SAVINGS, LOSS OF USE, LOSS OF GOODWILL, OR LOSS OF DATA, AND WHETHER CAUSED BY TORT (INCLUDING NEGLIGENCE), BREACH OF CONTRACT, OR OTHERWISE, EVEN IF FORESEEABLE AND EVEN IF COMPANY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. ACCESS TO, AND USE OF THE SITE, PRODUCTS OR THIRD-PARTY SITES AND PRODUCTS ARE AT YOUR OWN DISCRETION AND RISK, AND YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA RESULTING THEREFROM. NOTWITHSTANDING ANYTHING TO THE CONTRARY CONTAINED HEREIN, IN NO EVENT SHALL THE MAXIMUM AGGREGATE LIABILITY OF COMPANY ARISING OUT OF OR IN ANY WAY RELATED TO THESE TERMS, THE ACCESS AND USE OF THE SITE, CONTENT NFTS OR ANY PRODUCT OR SERVICES PURCHASES ON THE SITE EXCEED US$100. THE FOREGOING LIMITATIONS OF LIABILITY SHALL NOT APPLY TO LIABILITY OF COMPANY FOR PERSONAL INJURY CAUSED BY COMPANY’S NEGLIGENCE OR ANY INJURY CAUSED BY COMPANY’S FRAUD OR FRAUDULENT MISREPRESENTATION.',
   },
   {
     title: 'Indemnification',
@@ -130,18 +125,15 @@ export const TERMS_CONDITIONS = [
   },
   {
     title: 'Amendment and Variation',
-    body:
-      'These Terms may from time to time be updated or amended. We will post any such updates on the Site. Such updated Terms as posted will take effect immediately unless otherwise indicated. You should regularly check the Site to inform yourself of any such changes. In addition, we may at any time change, add or remove any feature or functionality of the Site without prior notice. By continuing to use the ASTRO DAO and/or the Site after any such changes have taken effect, you are indicating your acceptance of the updated or amended Terms as well as your acceptance of the updated Site. If you do not wish to be bound by any changes or amendments to these Terms then you should stop using the ASTRO DAO and Site immediately.',
+    body: 'These Terms may from time to time be updated or amended. We will post any such updates on the Site. Such updated Terms as posted will take effect immediately unless otherwise indicated. You should regularly check the Site to inform yourself of any such changes. In addition, we may at any time change, add or remove any feature or functionality of the Site without prior notice. By continuing to use the ASTRO DAO and/or the Site after any such changes have taken effect, you are indicating your acceptance of the updated or amended Terms as well as your acceptance of the updated Site. If you do not wish to be bound by any changes or amendments to these Terms then you should stop using the ASTRO DAO and Site immediately.',
   },
   {
     title: 'Transfer, Assignment or Delegation',
-    body:
-      'Unless otherwise stated herein, these Terms, and any rights and obligations and licenses granted hereunder, are limited, revocable, non-exclusive and personal to you and therefore may not be transferred, assigned or delegated by you to any third-party without our written consent, but may be transferred, assigned or delegated by us without notice and restriction, including without limitation to any of the entities within the Company group, or to any successor in interest of any business associated with the Company or ASTRO DAO. Any attempted transfer or assignment in violation hereof shall be null and void.',
+    body: 'Unless otherwise stated herein, these Terms, and any rights and obligations and licenses granted hereunder, are limited, revocable, non-exclusive and personal to you and therefore may not be transferred, assigned or delegated by you to any third-party without our written consent, but may be transferred, assigned or delegated by us without notice and restriction, including without limitation to any of the entities within the Company group, or to any successor in interest of any business associated with the Company or ASTRO DAO. Any attempted transfer or assignment in violation hereof shall be null and void.',
   },
   {
     title: 'Severability',
-    body:
-      'If any provision of these Terms shall be found by any court or administrative body of competent jurisdiction to be invalid or unenforceable, the invalidity or unenforceability of such provision shall not affect the other provisions of these Terms and all provisions not affected by such invalidity or unenforceability shall remain in full force and effect. Such provision will be changed and interpreted to accomplish the objectives of the provision to the greatest extent possible under any Applicable Laws.',
+    body: 'If any provision of these Terms shall be found by any court or administrative body of competent jurisdiction to be invalid or unenforceable, the invalidity or unenforceability of such provision shall not affect the other provisions of these Terms and all provisions not affected by such invalidity or unenforceability shall remain in full force and effect. Such provision will be changed and interpreted to accomplish the objectives of the provision to the greatest extent possible under any Applicable Laws.',
   },
   {
     title: 'Entire Agreement / Translation',
@@ -166,8 +158,7 @@ export const TERMS_CONDITIONS = [
   },
   {
     title: 'Third Party Rights',
-    body:
-      'Other than the entities within the Company group, a person who is not a party to these Terms has no right to enforce any of these Terms.',
+    body: 'Other than the entities within the Company group, a person who is not a party to these Terms has no right to enforce any of these Terms.',
   },
   {
     title: 'Governing Law and Jurisdiction',

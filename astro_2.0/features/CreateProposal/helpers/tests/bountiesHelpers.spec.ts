@@ -54,14 +54,14 @@ describe('bountiesHelpers', () => {
   });
 
   describe('getAddBountyProposal', () => {
-    const dao = ({
+    const dao = {
       id: 'daoId',
       policy: {
         proposalBond: 'proposalBond',
       },
-    } as unknown) as DAO;
+    } as unknown as DAO;
 
-    const data = ({
+    const data = {
       slots: 1,
       amount: 1,
       details: 'proposal details',
@@ -69,15 +69,15 @@ describe('bountiesHelpers', () => {
       deadlineThreshold: 10,
       externalUrl: 'some url',
       token: 'NEAR',
-    } as unknown) as CreateBountyInput;
+    } as unknown as CreateBountyInput;
 
-    const tokens = ({
+    const tokens = {
       NEAR: {
         tokenId: 'NEAR',
         decimals: 10,
         symbol: 'NEAR',
       },
-    } as unknown) as Tokens;
+    } as unknown as Tokens;
 
     it('Should throw error if no tokens data', () => {
       expect(() => getAddBountyProposal(dao, data, {})).toThrow();
@@ -104,7 +104,7 @@ describe('bountiesHelpers', () => {
 
   describe('getChangeBondDeadlinesProposal', () => {
     it('Should provide proper object', () => {
-      const dao = ({
+      const dao = {
         id: 'daoId',
         policy: {
           defaultVotePolicy: {
@@ -133,14 +133,14 @@ describe('bountiesHelpers', () => {
             },
           ],
         },
-      } as unknown) as DAO;
+      } as unknown as DAO;
 
-      const bondsAndDeadlines = ({
+      const bondsAndDeadlines = {
         createProposalBond: 123,
         proposalExpireTime: 1,
         claimBountyBond: 1,
         unclaimBountyTime: 1,
-      } as unknown) as BondsAndDeadlinesData;
+      } as unknown as BondsAndDeadlinesData;
 
       const initialValues = {
         accountName: 'accountName',

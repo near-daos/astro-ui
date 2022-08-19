@@ -2,7 +2,7 @@ import { DAO } from 'types/dao';
 import { Token } from 'types/token';
 import { ProposalType } from 'types/proposal';
 
-export const daoMock = ({
+export const daoMock = {
   id: 'default-flag-test.sputnikv2.testnet',
   txHash: 'A5HkEoiEuiyPPAR69DH7MFnWfui4mUqnZGjKyGpFjK4h',
   name: 'default-flag-test',
@@ -90,9 +90,9 @@ export const daoMock = ({
     legalStatus: '',
     legalLink: '',
   },
-} as unknown) as DAO;
+} as unknown as DAO;
 
-export const tokens = ({
+export const tokens = {
   NEAR: {
     createdAt: '2021-12-07T19:15:52.793Z',
     transactionHash: null,
@@ -133,7 +133,7 @@ export const tokens = ({
     balance: '5.1002',
     tokenId: '',
   },
-} as unknown) as Record<string, Token>;
+} as unknown as Record<string, Token>;
 
 const propPerms = {
   [ProposalType.ChangePolicy]: true,

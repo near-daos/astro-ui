@@ -40,13 +40,8 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
   const { query } = useQuery<{ category: string; view: string }>();
   const { view, category } = query;
 
-  const {
-    data,
-    handleSearch,
-    loading,
-    loadMore,
-    handleReset,
-  } = useDraftsPageData(dao.id);
+  const { data, handleSearch, loading, loadMore, handleReset } =
+    useDraftsPageData(dao.id);
 
   const { unreadDrafts, readDrafts } = useMemo(() => {
     const unread: DraftProposalFeedItem[] = [];

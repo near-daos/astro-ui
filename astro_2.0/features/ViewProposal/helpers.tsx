@@ -437,7 +437,7 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
               }
             }
 
-            const votePolicy = (holdersRole.votePolicy.vote as unknown) as {
+            const votePolicy = holdersRole.votePolicy.vote as unknown as {
               threshold: string;
               quorum: string;
             };

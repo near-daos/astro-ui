@@ -10,9 +10,10 @@ export interface StreamInfo {
   tokensPerSec: string;
 }
 
-export function useRoketoStreamCheck(
-  json: string
-): { create: boolean; stream: StreamInfo } {
+export function useRoketoStreamCheck(json: string): {
+  create: boolean;
+  stream: StreamInfo;
+} {
   const parsedJson = useMemo(() => {
     try {
       return JSON.parse(json);
@@ -20,9 +21,10 @@ export function useRoketoStreamCheck(
       return null;
     }
   }, [json]);
-  const message = useMemo(() => JSON.parse(parsedJson?.msg ?? '{}'), [
-    parsedJson,
-  ]);
+  const message = useMemo(
+    () => JSON.parse(parsedJson?.msg ?? '{}'),
+    [parsedJson]
+  );
   const config = configService.get();
   const streamingContract = config.appConfig.ROKETO_CONTRACT_NAME;
 

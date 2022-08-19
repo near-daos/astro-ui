@@ -19,10 +19,10 @@ jest.mock('astro_2.0/features/Bounties/components/hooks', () => {
 describe('UnclaimCompleteContent', () => {
   const bountyId = 'bountyId';
 
-  const dao = ({} as unknown) as DAO;
-  const bounty = ({
+  const dao = {} as unknown as DAO;
+  const bounty = {
     bountyId,
-  } as unknown) as Bounty;
+  } as unknown as Bounty;
 
   it('Should render component', () => {
     const { container } = render(

@@ -26,16 +26,8 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const dateLocale = useLoadDateLocale(i18n.language);
-  const {
-    id,
-    title,
-    views,
-    replies,
-    updatedAt,
-    state,
-    proposalId,
-    isSaved,
-  } = data;
+  const { id, title, views, replies, updatedAt, state, proposalId, isSaved } =
+    data;
 
   const isOpenStatus = DraftStatus.Open === state;
   const isClosedStatus = DraftStatus.Closed === state;

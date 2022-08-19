@@ -17,11 +17,8 @@ type ReturnType = {
 };
 
 export function useTrackSelectorAccount(selector?: WalletSelector): ReturnType {
-  const [
-    accountId = '',
-    setSelectorAccountId,
-    removeSelectorAccountId,
-  ] = useSelectorLsAccount();
+  const [accountId = '', setSelectorAccountId, removeSelectorAccountId] =
+    useSelectorLsAccount();
 
   const syncAccountState = useCallback(
     (accounts: AccountState[]) => {

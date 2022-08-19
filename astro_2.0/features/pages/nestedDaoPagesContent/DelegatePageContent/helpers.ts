@@ -39,9 +39,7 @@ export function getActiveTokenHolders(
   );
 }
 
-export function getTokensVotingPolicyDetails(
-  dao?: DAO
-): {
+export function getTokensVotingPolicyDetails(dao?: DAO): {
   balance: string;
   threshold: string;
   quorum: string;

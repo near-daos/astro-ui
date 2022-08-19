@@ -15,9 +15,7 @@ export type DelegateTokenDetails = {
 /* eslint-disable camelcase */
 export interface CustomContract extends Contract {
   ft_balance_of: (params: { account_id: string }) => Promise<string>;
-  get_user: (params: {
-    account_id: string;
-  }) => Promise<{
+  get_user: (params: { account_id: string }) => Promise<{
     delegated_amounts: [string, string][];
     vote_amount: string;
     next_action_timestamp: string;

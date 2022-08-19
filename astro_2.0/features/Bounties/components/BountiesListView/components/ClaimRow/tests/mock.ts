@@ -1,6 +1,6 @@
 import { DAO } from 'types/dao';
 
-export const daoMock = ({
+export const daoMock = {
   id: 'default-flag-test.sputnikv2.testnet',
   txHash: 'A5HkEoiEuiyPPAR69DH7MFnWfui4mUqnZGjKyGpFjK4h',
   name: 'default-flag-test',
@@ -88,7 +88,7 @@ export const daoMock = ({
     legalStatus: '',
     legalLink: '',
   },
-} as unknown) as DAO;
+} as unknown as DAO;
 
 export const bounty = {
   isArchived: false,

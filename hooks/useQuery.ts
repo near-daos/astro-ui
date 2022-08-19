@@ -32,7 +32,7 @@ const useQuery = <T>(opt?: {
     [opt, query, replace]
   );
 
-  return { query: (query as unknown) as T, updateQuery };
+  return { query: query as unknown as T, updateQuery };
 };
 
 export default useQuery;

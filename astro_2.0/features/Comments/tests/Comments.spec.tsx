@@ -20,7 +20,7 @@ jest.mock('astro_2.0/features/Comments/components/Comment', () => {
 
 describe('Comments', () => {
   function renderComments(props?: Partial<Props>) {
-    const data = ([] as unknown) as DraftComment[];
+    const data = [] as unknown as DraftComment[];
 
     return render(
       <Comments
@@ -42,7 +42,7 @@ describe('Comments', () => {
     const c1 = 'Hello World 1!';
     const c2 = 'Hello World 2!';
 
-    const data = ([c1, c2] as unknown) as DraftComment[];
+    const data = [c1, c2] as unknown as DraftComment[];
 
     const { getByText } = renderComments({
       data,

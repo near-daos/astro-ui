@@ -93,9 +93,11 @@ export const NFTCard: VFC<NFTCardProps> = ({
       })
     )
       .then(result => {
-        const fulfilledResult = (result.find(
-          item => item.status === 'fulfilled'
-        ) as PromiseFulfilledResult<string> | undefined)?.value;
+        const fulfilledResult = (
+          result.find(item => item.status === 'fulfilled') as
+            | PromiseFulfilledResult<string>
+            | undefined
+        )?.value;
 
         if (fulfilledResult && imgRef?.current && linkRef?.current) {
           imgRef.current.src = fulfilledResult;

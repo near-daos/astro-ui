@@ -5,9 +5,7 @@ import { useEffect, useState } from 'react';
 import { SputnikHttpService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
-export function useDaoSettingsData(
-  daoId: string
-): {
+export function useDaoSettingsData(daoId: string): {
   loading: boolean;
   update: (updates: Record<string, unknown>) => Promise<void>;
   settings: Settings | null | undefined;

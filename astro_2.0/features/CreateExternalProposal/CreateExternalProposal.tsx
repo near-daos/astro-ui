@@ -14,9 +14,8 @@ interface Props {
 }
 
 export const CreateExternalProposal: FC<Props> = ({ onCreateProposal }) => {
-  const { error, handleDismiss } = useCreateProposalFromExternal(
-    onCreateProposal
-  );
+  const { error, handleDismiss } =
+    useCreateProposalFromExternal(onCreateProposal);
 
   if (error) {
     return (

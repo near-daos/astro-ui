@@ -67,9 +67,8 @@ export const useDaoUpgrade = (dao: DAO): DaoUpgradeStatus => {
   const [upgradeStatus, setUpgradeStatus] = useState<
     UpgradeStatus | undefined
   >();
-  const [currentProposalVariant, setProposalVariant] = useState<
-    ProposalVariant
-  >(ProposalVariant.ProposeGetUpgradeCode);
+  const [currentProposalVariant, setProposalVariant] =
+    useState<ProposalVariant>(ProposalVariant.ProposeGetUpgradeCode);
   const [upgradePossible, setUpgradePossible] = useState(false);
 
   useEffect(() => {

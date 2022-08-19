@@ -143,9 +143,9 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
               codeValid
                 ? {}
                 : {
-                    verificationCode: ({
+                    verificationCode: {
                       message: t(`${tBase}.codeIsIncorrect`),
-                    } as unknown) as FieldError,
+                    } as unknown as FieldError,
                   }
             }
             className={styles.input}

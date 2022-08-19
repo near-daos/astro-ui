@@ -71,9 +71,9 @@ describe('createProposalHelpers', () => {
     });
 
     it('Should return false if no dao roles', () => {
-      const dao = ({
+      const dao = {
         policy: {},
-      } as unknown) as DAO;
+      } as unknown as DAO;
 
       expect(isUserPermittedToCreateProposal('123', dao)).toBeFalsy();
     });
@@ -86,7 +86,7 @@ describe('createProposalHelpers', () => {
     `(
       'Should properly handle permissions for role kind "Everyone" and with permission $permissions',
       ({ permission, result }) => {
-        const dao = ({
+        const dao = {
           policy: {
             roles: [
               {
@@ -95,7 +95,7 @@ describe('createProposalHelpers', () => {
               },
             ],
           },
-        } as unknown) as DAO;
+        } as unknown as DAO;
 
         expect(isUserPermittedToCreateProposal('123', dao)).toEqual(result);
       }
@@ -111,7 +111,7 @@ describe('createProposalHelpers', () => {
       ({ permission, result }) => {
         const accountId = '123';
 
-        const dao = ({
+        const dao = {
           policy: {
             roles: [
               {
@@ -120,7 +120,7 @@ describe('createProposalHelpers', () => {
               },
             ],
           },
-        } as unknown) as DAO;
+        } as unknown as DAO;
 
         expect(isUserPermittedToCreateProposal(accountId, dao)).toEqual(result);
       }

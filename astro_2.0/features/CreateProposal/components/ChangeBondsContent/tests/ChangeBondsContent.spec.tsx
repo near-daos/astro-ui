@@ -28,7 +28,7 @@ jest.mock('next-i18next', () => ({
 
 describe('ChangeBondsContent', () => {
   it('Should render component', () => {
-    const dao = ({
+    const dao = {
       id: '123',
       policy: {
         proposalBond: '1',
@@ -36,7 +36,7 @@ describe('ChangeBondsContent', () => {
         bountyBond: '3',
         bountyForgivenessPeriod: '4',
       },
-    } as unknown) as DAO;
+    } as unknown as DAO;
 
     const { container } = render(<ChangeBondsContent dao={dao} />);
 

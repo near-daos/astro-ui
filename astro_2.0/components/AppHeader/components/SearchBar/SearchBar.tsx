@@ -46,12 +46,8 @@ export const SearchBar: FC<SearchBarProps> = ({
   const POPUP_RIGHT_MARGIN = 20;
   const isSearchPage = router.pathname.includes(SEARCH_PAGE_URL);
 
-  const {
-    handleSearch,
-    handleClose,
-    searchResults,
-    loading,
-  } = useSearchResults();
+  const { handleSearch, handleClose, searchResults, loading } =
+    useSearchResults();
 
   const { t } = useTranslation('common');
 

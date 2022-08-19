@@ -234,23 +234,24 @@ export class SputnikWalletService implements WalletService {
     const accountId = await this.getAccountId();
     const publicKey = await this.getPublicKey();
 
-    const accessKey = ((await this.near.connection.provider.query(
+    const accessKey = (await this.near.connection.provider.query(
       `access_key/${accountId}/${publicKey}`,
       ''
-    )) as unknown) as AccessKey;
+    )) as unknown as AccessKey;
 
     if (!accessKey) {
       throw new Error(`Cannot find matching key for transaction`);
     }
 
-    const account = (this.getAccount() as unknown) as SputnikConnectedWalletAccount;
+    const account =
+      this.getAccount() as unknown as SputnikConnectedWalletAccount;
 
     const trx = await Promise.all(
       transactionsConf.map(({ receiverId, actions }, i) =>
         this.buildTransaction(
           receiverId,
           accessKey.nonce + i + 1,
-          actions.map(action => (action as unknown) as Action)
+          actions.map(action => action as unknown as Action)
         )
       )
     );

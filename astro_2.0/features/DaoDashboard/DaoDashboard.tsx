@@ -20,13 +20,8 @@ interface DaoDashboardProps {
 
 export const DaoDashboard: FC<DaoDashboardProps> = ({ className }) => {
   const { t } = useTranslation();
-  const {
-    chartData,
-    dashboardData,
-    toggleView,
-    activeView,
-    loading,
-  } = useDaoDashboardData();
+  const { chartData, dashboardData, toggleView, activeView, loading } =
+    useDaoDashboardData();
 
   function renderChart() {
     if (chartData) {

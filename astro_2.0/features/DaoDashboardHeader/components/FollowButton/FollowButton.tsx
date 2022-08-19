@@ -48,12 +48,8 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({
 
 export const FollowButton: FC<FollowButtonProps> = ({ daoId, daoName }) => {
   const { t } = useTranslation();
-  const {
-    subscriptions,
-    handleFollow,
-    handleUnfollow,
-    isLoading,
-  } = useDaoSubscriptions();
+  const { subscriptions, handleFollow, handleUnfollow, isLoading } =
+    useDaoSubscriptions();
   const subscription = subscriptions ? subscriptions[daoId] : null;
   const isSubscribed = !!subscription;
 

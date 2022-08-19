@@ -2,7 +2,7 @@ import { DAO } from 'types/dao';
 
 export const daoDescription = 'DAO description';
 
-export const dao = ({
+export const dao = {
   id: 'daoId',
   displayName: 'displayName',
   daoMembersList: ['DM1', 'DM2'],
@@ -18,4 +18,4 @@ export const dao = ({
   policy: {
     roles: [],
   },
-} as unknown) as DAO;
+} as unknown as DAO;

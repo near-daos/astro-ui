@@ -105,19 +105,17 @@ export const FeedProposals = ({
     return categories;
   }, [t]);
 
-  const [
-    { loading: proposalsSearchLoading },
-    fetchSearchProposals,
-  ] = useAsyncFn(
-    async (value: string) => {
-      return SputnikHttpService.getProposalsByProposer({
-        daoId: dao?.id,
-        accountId,
-        proposers: value,
-      });
-    },
-    [dao, accountId]
-  );
+  const [{ loading: proposalsSearchLoading }, fetchSearchProposals] =
+    useAsyncFn(
+      async (value: string) => {
+        return SputnikHttpService.getProposalsByProposer({
+          daoId: dao?.id,
+          accountId,
+          proposers: value,
+        });
+      },
+      [dao, accountId]
+    );
 
   const [{ loading: proposalsDataIsLoading }, fetchProposalsData] = useAsyncFn(
     async (initialData?: typeof proposalsData) => {

@@ -43,11 +43,10 @@ export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
   const [dataset, setDataset] = useState<TimelineGroup[]>([]);
   const [granularity, setGranularity] = useState<TimelineGranularity>('month');
   const [min, max] = useMemo(() => getTimelineRange(dataset), [dataset]);
-  const topColumns = useMemo(() => getTopColumns(min, max, granularity), [
-    granularity,
-    max,
-    min,
-  ]);
+  const topColumns = useMemo(
+    () => getTopColumns(min, max, granularity),
+    [granularity, max, min]
+  );
 
   const toggleGroup = useCallback(
     groupId => {

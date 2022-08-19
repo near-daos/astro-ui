@@ -12,9 +12,7 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 type PageData = PaginationResponse<DraftProposalFeedItem[]>;
 
-export function useDraftsPageData(
-  daoId: string
-): {
+export function useDraftsPageData(daoId: string): {
   loading: boolean;
   loadMore: () => void;
   data: PageData | null;

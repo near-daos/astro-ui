@@ -37,11 +37,11 @@ describe('DaosTopList', () => {
   });
 
   it('Should render list items', () => {
-    const data = ([
+    const data = [
       { dao: 1 },
       { dao: 2 },
       { dao: 3 },
-    ] as unknown) as LeaderboardData[];
+    ] as unknown as LeaderboardData[];
 
     const { getByText } = render(
       <DaosTopList

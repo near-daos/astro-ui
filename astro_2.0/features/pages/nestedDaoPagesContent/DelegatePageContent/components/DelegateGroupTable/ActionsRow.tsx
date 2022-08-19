@@ -36,13 +36,8 @@ export const ActionsRow: FC<Props> = ({
   const { nearService } = useWalletContext();
   const { triggerUpdate } = useTriggerUpdate();
 
-  const {
-    daoName,
-    stakedBalance,
-    delegatedBalance,
-    delegateToUser,
-    decimals,
-  } = useDelegatePageContext();
+  const { daoName, stakedBalance, delegatedBalance, delegateToUser, decimals } =
+    useDelegatePageContext();
 
   const delegatedAmount = (delegateToUser && delegateToUser[accountId]) || 0;
 

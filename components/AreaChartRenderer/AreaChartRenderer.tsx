@@ -32,10 +32,11 @@ export const AreaChartRenderer: FC<AreaChartProps> = ({
   );
 
   const [width, setWidth] = useState(0);
-  const { data: chartData, toggleDomain, activeRange } = useDomainControl(
-    preparedData || [],
-    range
-  );
+  const {
+    data: chartData,
+    toggleDomain,
+    activeRange,
+  } = useDomainControl(preparedData || [], range);
 
   if (!preparedData.length) {
     return null;

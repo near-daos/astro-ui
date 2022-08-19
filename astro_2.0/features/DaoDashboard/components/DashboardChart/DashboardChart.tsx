@@ -45,10 +45,11 @@ export const DashboardChart: FC<DashboardChartProps> = ({
 }) => {
   const { t } = useTranslation();
   const [width, setWidth] = useState(0);
-  const { data: chartData, toggleDomain, activeRange } = useDomainControl(
-    data || [],
-    initialRange || DOMAIN_RANGES.ALL
-  );
+  const {
+    data: chartData,
+    toggleDomain,
+    activeRange,
+  } = useDomainControl(data || [], initialRange || DOMAIN_RANGES.ALL);
 
   const lines = [
     {

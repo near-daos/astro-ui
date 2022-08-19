@@ -28,12 +28,14 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
   const coverFileList = watch('flagCover');
   const logoFileList = watch('flagLogo');
 
-  const coverImg = useMemo(() => getImageFromImageFileList(coverFileList), [
-    coverFileList,
-  ]);
-  const logoImg = useMemo(() => getImageFromImageFileList(logoFileList), [
-    logoFileList,
-  ]);
+  const coverImg = useMemo(
+    () => getImageFromImageFileList(coverFileList),
+    [coverFileList]
+  );
+  const logoImg = useMemo(
+    () => getImageFromImageFileList(logoFileList),
+    [logoFileList]
+  );
 
   const handleAssetsPreview = useCallback(async () => {
     await showModal({

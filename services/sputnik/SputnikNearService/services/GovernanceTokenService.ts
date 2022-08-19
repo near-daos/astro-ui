@@ -101,10 +101,8 @@ export class GovernanceTokenService extends BaseService {
     daoBond,
     unstakingPeriodInHours,
   }: DeployStakingContractParams): Promise<FinalExecutionOutcome[]> {
-    const {
-      GENERIC_FACTORY_CONTRACT_NAME,
-      STAKING_CONTRACT_BINARY_HASH,
-    } = this.appConfig;
+    const { GENERIC_FACTORY_CONTRACT_NAME, STAKING_CONTRACT_BINARY_HASH } =
+      this.appConfig;
 
     const currentAccountPublicKey = await this.walletService.getPublicKey();
 

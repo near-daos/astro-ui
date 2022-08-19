@@ -56,9 +56,7 @@ export interface GetProposalsResponse {
   data: ProposalDTO[];
 }
 
-export function getVotesStatistic(
-  proposal: Pick<ProposalDTO, 'votes'>
-): {
+export function getVotesStatistic(proposal: Pick<ProposalDTO, 'votes'>): {
   voteYes: number;
   voteNo: number;
   voteRemove: number;
@@ -109,11 +107,8 @@ export const mapProposalToProposers = (
 export const mapProposalDTOToProposal = (
   proposalDTO: ProposalDTO
 ): Proposal => {
-  const [
-    description,
-    link,
-    proposalVariant = ProposalVariant.ProposeDefault,
-  ] = proposalDTO.description.split(DATA_SEPARATOR);
+  const [description, link, proposalVariant = ProposalVariant.ProposeDefault] =
+    proposalDTO.description.split(DATA_SEPARATOR);
 
   const config = get(proposalDTO.dao, 'config');
   const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
@@ -158,11 +153,8 @@ export const mapProposalDTOToProposal = (
 export const mapProposalFeedItemResponseToProposalFeedItem = (
   proposalDTO: ProposalFeedItemResponse
 ): ProposalFeedItem => {
-  const [
-    description,
-    link,
-    proposalVariant = ProposalVariant.ProposeDefault,
-  ] = proposalDTO.description.split(DATA_SEPARATOR);
+  const [description, link, proposalVariant = ProposalVariant.ProposeDefault] =
+    proposalDTO.description.split(DATA_SEPARATOR);
 
   const config = get(proposalDTO.dao, 'config');
   const meta = config.metadata ? fromBase64ToMetadata(config.metadata) : null;

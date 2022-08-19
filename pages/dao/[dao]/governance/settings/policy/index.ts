@@ -6,11 +6,9 @@ import { getTranslations } from 'utils/getTranslations';
 
 import { DaoPolicyPageProps } from './DaoPolicyPage';
 
-export const getServerSideProps: GetServerSideProps<DaoPolicyPageProps> = async ({
-  req,
-  query,
-  locale = 'en',
-}) => {
+export const getServerSideProps: GetServerSideProps<
+  DaoPolicyPageProps
+> = async ({ req, query, locale = 'en' }) => {
   const { dao: daoId } = query;
 
   CookieService.initServerSideCookies(req?.headers.cookie || null);

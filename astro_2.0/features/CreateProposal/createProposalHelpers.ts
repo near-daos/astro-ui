@@ -59,21 +59,20 @@ export function checkUserPermission(
     .map(role => role.permissions)
     .flat()
     .filter(permission => {
-      const [proposalKind, action] = permission.split(':');
+      const [proposalKind] = permission.split(':');
 
       return (
         proposalKind === '*' ||
         proposalKind === APP_TO_CONTRACT_PROPOSAL_TYPE[givenProposalType]
       );
     });
+
   // check if the user can perform the action on the proposal kind
-  const canDoAction: boolean = proposalKindPermissions?.some(permission => {
-    const [proposalKind, action] = permission.split(':');
+  return proposalKindPermissions?.some(permission => {
+    const [, action] = permission.split(':');
 
     return action === '*' || action === givenAction;
   });
-
-  return canDoAction;
 }
 
 export function getAllowedProposalsToCreate(
