@@ -1,9 +1,30 @@
 export type ProposalAction =
   | 'Finalize'
   | 'AddProposal'
+  | 'RemoveProposal'
   | 'VoteApprove'
   | 'VoteReject'
-  | 'VoteRemove';
+  | 'VoteRemove'
+  | 'MoveToHub';
+
+export type ContractProposalType = 
+  | 'config'
+  | 'policy'
+  | 'add_member_to_role'
+  | 'remove_member_from_role'
+  | 'call'
+  | 'upgrade_self'
+  | 'upgrade_remote'
+  | 'transfer'
+  | 'set_vote_token'
+  | 'add_bounty'
+  | 'bounty_done'
+  | 'vote'
+  | 'factory_info_update'
+  | 'policy_add_or_update_role'
+  | 'policy_remove_role'
+  | 'policy_update_default_vote_policy'
+  | 'policy_update_parameters';
 
 export interface DefaultVotePolicy {
   weightKind: string;
@@ -13,61 +34,7 @@ export interface DefaultVotePolicy {
   weight?: string;
 }
 
-export type DaoPermission =
-  | '*:*'
-  | '*:Finalize'
-  | '*:AddProposal'
-  | '*:VoteApprove'
-  | '*:VoteReject'
-  | '*:VoteRemove'
-  | 'config:AddProposal'
-  | 'policy:AddProposal'
-  | 'add_bounty:AddProposal'
-  | 'bounty_done:AddProposal'
-  | 'transfer:AddProposal'
-  | 'call:AddProposal'
-  | 'vote:AddProposal'
-  | 'remove_member_from_role:AddProposal'
-  | 'add_member_to_role:AddProposal'
-  | 'upgrade_self:AddProposal'
-  | 'upgrade_remote:AddProposal'
-  | 'set_vote_token:AddProposal'
-  | 'config:VoteApprove'
-  | 'call:VoteApprove'
-  | 'upgrade_self:VoteApprove'
-  | 'upgrade_remote:VoteApprove'
-  | 'set_vote_token:VoteApprove'
-  | 'bounty_done:VoteApprove'
-  | 'policy:VoteApprove'
-  | 'add_bounty:VoteApprove'
-  | 'transfer:VoteApprove'
-  | 'vote:VoteApprove'
-  | 'remove_member_from_role:VoteApprove'
-  | 'add_member_to_role:VoteApprove'
-  | 'config:VoteReject'
-  | 'call:VoteReject'
-  | 'upgrade_self:VoteReject'
-  | 'upgrade_remote:VoteReject'
-  | 'set_vote_token:VoteReject'
-  | 'bounty_done:VoteReject'
-  | 'policy:VoteReject'
-  | 'add_bounty:VoteReject'
-  | 'transfer:VoteReject'
-  | 'vote:VoteReject'
-  | 'remove_member_from_role:VoteReject'
-  | 'add_member_to_role:VoteReject'
-  | 'config:VoteRemove'
-  | 'call:VoteRemove'
-  | 'upgrade_self:VoteRemove'
-  | 'upgrade_remote:VoteRemove'
-  | 'set_vote_token:VoteRemove'
-  | 'bounty_done:VoteRemove'
-  | 'policy:VoteRemove'
-  | 'add_bounty:VoteRemove'
-  | 'transfer:VoteRemove'
-  | 'vote:VoteRemove'
-  | 'remove_member_from_role:VoteRemove'
-  | 'add_member_to_role:VoteRemove';
+export type DaoPermission = `${'*' | ContractProposalType}:${'*' | ProposalAction}`;
 
 export type DaoRoleKind = 'Everyone' | 'Group' | 'Member';
 

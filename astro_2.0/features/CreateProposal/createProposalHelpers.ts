@@ -1,6 +1,8 @@
 import { DAO } from 'types/dao';
-import { ProposalType, ProposalVariant } from 'types/proposal';
+import { ProposalType, ProposalActions, ProposalVariant } from 'types/proposal';
+import { APP_TO_CONTRACT_PROPOSAL_TYPE } from 'utils/dataConverter';
 import { ProposalPermissions } from 'types/context';
+import { PolicyType } from 'types/policy';
 
 export function isUserPermittedToCreateProposal(
   accountId: string | null | undefined,
@@ -38,13 +40,49 @@ export function isUserPermittedToCreateProposal(
   return matched;
 }
 
+// check if user can perform some action on some proposal kind
+export function checkUserPermission(
+  accountId: string,
+  policy: PolicyType,
+  userHasDelegatedTokens: boolean,
+  givenAction: ProposalActions,
+  givenProposalType: ProposalType
+): boolean {
+  // get all the user's permissions on the chosen proposal kind
+  const proposalKindPermissions: string[] = policy.roles
+    .filter(
+      role =>
+        role.kind === 'Everyone' ||
+        role.accountIds?.includes(accountId) ||
+        (role.kind === 'Member' && userHasDelegatedTokens)
+    )
+    .map(role => role.permissions)
+    .flat()
+    .filter(permission => {
+      const [proposalKind, action] = permission.split(':');
+
+      return (
+        proposalKind === '*' ||
+        proposalKind === APP_TO_CONTRACT_PROPOSAL_TYPE[givenProposalType]
+      );
+    });
+  // check if the user can perform the action on the proposal kind
+  const canDoAction: boolean = proposalKindPermissions?.some(permission => {
+    const [proposalKind, action] = permission.split(':');
+
+    return action === '*' || action === givenAction;
+  });
+
+  return canDoAction;
+}
+
 export function getAllowedProposalsToCreate(
   accountId: string | null | undefined,
   dao: DAO | null,
   userHasDelegatedTokens: boolean
 ): ProposalPermissions {
   // Restrict create by default
-  const result = {
+  const result: getAllowedProposalsResultType = {
     [ProposalType.ChangeConfig]: false,
     [ProposalType.ChangePolicy]: false,
     [ProposalType.AddBounty]: false,
@@ -64,89 +102,18 @@ export function getAllowedProposalsToCreate(
     return result;
   }
 
-  // Iterate through roles and try to find relevant permissions in user's roles
-  dao?.policy.roles.forEach(role => {
-    if (
-      role.kind === 'Everyone' ||
-      role.accountIds?.includes(accountId) ||
-      (role.kind === 'Member' && userHasDelegatedTokens)
-    ) {
-      role.permissions.forEach(permission => {
-        switch (permission) {
-          case '*:*':
-          case '*:AddProposal': {
-            result[ProposalType.ChangeConfig] = true;
-            result[ProposalType.ChangePolicy] = true;
-            result[ProposalType.AddBounty] = true;
-            result[ProposalType.BountyDone] = true;
-            result[ProposalType.FunctionCall] = true;
-            result[ProposalType.Transfer] = true;
-            result[ProposalType.Vote] = true;
-            result[ProposalType.RemoveMemberFromRole] = true;
-            result[ProposalType.AddMemberToRole] = true;
-            result[ProposalType.UpgradeRemote] = true;
-            result[ProposalType.UpgradeSelf] = true;
-            result[ProposalType.SetStakingContract] = true;
-            break;
-          }
-          case 'config:AddProposal': {
-            result[ProposalType.ChangeConfig] = true;
-            break;
-          }
-          case 'call:AddProposal': {
-            result[ProposalType.FunctionCall] = true;
-            break;
-          }
-          case 'bounty_done:AddProposal': {
-            result[ProposalType.BountyDone] = true;
-            break;
-          }
-          case 'policy:AddProposal': {
-            result[ProposalType.ChangePolicy] = true;
-            break;
-          }
-          case 'add_bounty:AddProposal': {
-            result[ProposalType.AddBounty] = true;
-            break;
-          }
-          case 'transfer:AddProposal': {
-            result[ProposalType.Transfer] = true;
-            break;
-          }
-          case 'vote:AddProposal': {
-            result[ProposalType.Vote] = true;
-            break;
-          }
-          case 'remove_member_from_role:AddProposal': {
-            result[ProposalType.RemoveMemberFromRole] = true;
-            break;
-          }
-          case 'add_member_to_role:AddProposal': {
-            result[ProposalType.AddMemberToRole] = true;
-            break;
-          }
-
-          // todo - temp disable some as they are hidden in ui
-          case 'upgrade_self:AddProposal': {
-            result[ProposalType.UpgradeSelf] = true;
-            break;
-          }
-          case 'upgrade_remote:AddProposal': {
-            result[ProposalType.UpgradeRemote] = true;
-            break;
-          }
-          case 'set_vote_token:AddProposal': {
-            result[ProposalType.SetStakingContract] = true;
-            break;
-          }
-
-          default: {
-            break;
-          }
-        }
-      });
-    }
-  });
+  if (dao?.policy) {
+    // Iterate through roles and try to find relevant permissions in user's roles
+    Object.keys(result).forEach(propType => {
+      result[<getAllowedProposalsResultKeyType>propType] = checkUserPermission(
+        accountId,
+        dao.policy,
+        userHasDelegatedTokens,
+        ProposalActions.AddProposal,
+        <getAllowedProposalsResultKeyType>propType
+      );
+    });
+  }
 
   return result;
 }
@@ -156,7 +123,7 @@ export function getAllowedProposalsToVote(
   dao: DAO | null
 ): ProposalPermissions {
   // Restrict create by default
-  const result = {
+  const result: getAllowedProposalsResultType = {
     [ProposalType.ChangeConfig]: false,
     [ProposalType.ChangePolicy]: false,
     [ProposalType.AddBounty]: false,
@@ -177,107 +144,37 @@ export function getAllowedProposalsToVote(
   }
 
   // Iterate through roles and try to find relevant permissions in user's roles
-  dao?.policy.roles.forEach(role => {
-    if (role.kind === 'Everyone' || role.accountIds?.includes(accountId)) {
-      role.permissions.forEach(permission => {
-        switch (permission) {
-          case '*:*':
-          case '*:VoteApprove':
-          case '*:VoteReject':
-          case '*:VoteRemove': {
-            result[ProposalType.ChangePolicy] = true;
-            result[ProposalType.AddBounty] = true;
-            result[ProposalType.Transfer] = true;
-            result[ProposalType.Vote] = true;
-            result[ProposalType.RemoveMemberFromRole] = true;
-            result[ProposalType.AddMemberToRole] = true;
-            break;
-          }
-          case 'config:VoteApprove':
-          case 'config:VoteReject':
-          case 'config:VoteRemove': {
-            result[ProposalType.ChangeConfig] = true;
-            break;
-          }
-
-          case 'bounty_done:VoteApprove':
-          case 'bounty_done:VoteReject':
-          case 'bounty_done:VoteRemove': {
-            result[ProposalType.BountyDone] = true;
-            break;
-          }
-
-          case 'call:VoteApprove':
-          case 'call:VoteReject':
-          case 'call:VoteRemove': {
-            result[ProposalType.FunctionCall] = true;
-            break;
-          }
-
-          case 'set_vote_token:VoteApprove':
-          case 'set_vote_token:VoteReject':
-          case 'set_vote_token:VoteRemove': {
-            result[ProposalType.SetStakingContract] = true;
-            break;
-          }
-
-          case 'upgrade_remote:VoteApprove':
-          case 'upgrade_remote:VoteReject':
-          case 'upgrade_remote:VoteRemove': {
-            result[ProposalType.UpgradeRemote] = true;
-            break;
-          }
-
-          case 'upgrade_self:VoteApprove':
-          case 'upgrade_self:VoteReject':
-          case 'upgrade_self:VoteRemove': {
-            result[ProposalType.UpgradeSelf] = true;
-            break;
-          }
-
-          case 'policy:VoteApprove':
-          case 'policy:VoteReject':
-          case 'policy:VoteRemove': {
-            result[ProposalType.ChangePolicy] = true;
-            break;
-          }
-          case 'add_bounty:VoteApprove':
-          case 'add_bounty:VoteReject':
-          case 'add_bounty:VoteRemove': {
-            result[ProposalType.AddBounty] = true;
-            break;
-          }
-          case 'transfer:VoteApprove':
-          case 'transfer:VoteReject':
-          case 'transfer:VoteRemove': {
-            result[ProposalType.Transfer] = true;
-            break;
-          }
-          case 'vote:VoteApprove':
-          case 'vote:VoteReject':
-          case 'vote:VoteRemove': {
-            result[ProposalType.Vote] = true;
-            break;
-          }
-          case 'remove_member_from_role:AddProposal':
-          case 'remove_member_from_role:VoteReject':
-          case 'remove_member_from_role:VoteRemove': {
-            result[ProposalType.RemoveMemberFromRole] = true;
-            break;
-          }
-          case 'add_member_to_role:AddProposal':
-          case 'add_member_to_role:VoteReject':
-          case 'add_member_to_role:VoteRemove': {
-            result[ProposalType.AddMemberToRole] = true;
-            break;
-          }
-          default: {
-            break;
-          }
-        }
-      });
-    }
-  });
+  if (dao?.policy) {
+    // Iterate through roles and try to find relevant permissions in user's roles
+    Object.keys(result).forEach(propType => {
+      // Can user VoteAppove or VoteRemove or VoteReject?
+      result[<getAllowedProposalsResultKeyType>propType] =
+        // check VoteApprove permission
+        checkUserPermission(
+          accountId,
+          dao.policy,
+          false,
+          ProposalActions.VoteApprove,
+          <getAllowedProposalsResultKeyType>propType
+        ) ||
+        // alternatively, check VoteReject permission
+        checkUserPermission(
+          accountId,
+          dao.policy,
+          false,
+          ProposalActions.VoteReject,
+          <getAllowedProposalsResultKeyType>propType
+        ) ||
+        // alternatively, check VoteRemove permission
+        checkUserPermission(
+          accountId,
+          dao.policy,
+          false,
+          ProposalActions.VoteRemove,
+          <getAllowedProposalsResultKeyType>propType
+        );
+    });
+  }
 
   return result;
 }
@@ -430,3 +327,19 @@ export function getInitialProposalVariant(
   // If user cannot create required proposals we return first available
   return getDefaultProposalVariantByType(allowedProposals[0]);
 }
+
+type getAllowedProposalsResultType = {
+  [ProposalType.ChangeConfig]: boolean;
+  [ProposalType.ChangePolicy]: boolean;
+  [ProposalType.AddBounty]: boolean;
+  [ProposalType.BountyDone]: boolean;
+  [ProposalType.FunctionCall]: boolean;
+  [ProposalType.Transfer]: boolean;
+  [ProposalType.Vote]: boolean;
+  [ProposalType.RemoveMemberFromRole]: boolean;
+  [ProposalType.AddMemberToRole]: boolean;
+  [ProposalType.UpgradeRemote]: boolean;
+  [ProposalType.UpgradeSelf]: boolean;
+  [ProposalType.SetStakingContract]: boolean;
+};
+type getAllowedProposalsResultKeyType = keyof getAllowedProposalsResultType;
