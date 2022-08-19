@@ -5,13 +5,13 @@
   width: 100%;
 
   @include desktop {
-    padding: 0 48px 60px;
+    padding: 0 48px 60px 94px;
   }
 
   @include large-desktop {
     margin: auto;
     max-width: 1000px;
-    padding: 0 60px 60px;
+    padding: 0 60px 60px 94px;
   }
 
   @include large-x-desktop {

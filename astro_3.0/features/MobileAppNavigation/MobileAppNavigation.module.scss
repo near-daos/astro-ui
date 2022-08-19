@@ -1,0 +1,18 @@
+@import 'styles/mixins';
+
+.root {
+  align-items: center;
+  background-color: var(--color-white);
+  bottom: 0;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  display: flex;
+  height: 64px;
+  justify-content: space-around;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+
+  @include desktop {
+    display: none;
+  }
+}

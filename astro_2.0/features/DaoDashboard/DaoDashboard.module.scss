@@ -6,6 +6,7 @@
   display: grid;
   grid-gap: 12px;
   grid-template-areas:
+    'description'
     'chart'
     'funds'
     'bounties'
@@ -15,12 +16,18 @@
 
   @include astro-desktop {
     grid-template-areas:
+      'description description'
       'chart funds'
       'chart bounties'
       'chart nfts'
       'chart proposals';
     grid-template-columns: 1fr 275px;
   }
+}
+
+.descriptionSection {
+  @extend %body2;
+  grid-area: description;
 }
 
 .chart {

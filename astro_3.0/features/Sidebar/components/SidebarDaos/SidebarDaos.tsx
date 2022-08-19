@@ -10,25 +10,9 @@ import { useWalletContext } from 'context/WalletContext';
 import { SidebarMarker } from 'astro_3.0/features/Sidebar/components/SidebarMarker';
 import { SINGLE_DAO_PAGE } from 'constants/routing';
 
-import { DaoFeedItem } from 'types/dao';
+import { getDaoAvatar } from 'astro_3.0/features/Sidebar/helpers';
 
 import styles from './SidebarDaos.module.scss';
-
-const DEFAULT_DAO_AVATAR = '/avatars/defaultDaoAvatar.png';
-
-function getDaoAvatar(dao: DaoFeedItem) {
-  if (!dao.flagLogo && !dao.logo) {
-    return DEFAULT_DAO_AVATAR;
-  }
-
-  const daoLogo = dao.flagLogo || dao.logo;
-
-  if (daoLogo?.indexOf('defaultDaoFlag') !== -1) {
-    return DEFAULT_DAO_AVATAR;
-  }
-
-  return daoLogo;
-}
 
 export const SidebarDaos: FC = () => {
   const router = useRouter();

@@ -13,6 +13,8 @@ import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 
 import { Page } from 'pages/_app';
 
+import { useAppVersion } from 'hooks/useAppVersion';
+
 import styles from './DaoPage.module.scss';
 
 interface DaoHomeProps {
@@ -22,6 +24,7 @@ interface DaoHomeProps {
 
 const DAOHome: Page<DaoHomeProps> = ({ daoContext }) => {
   const { dao, userPermissions } = daoContext;
+  const { appVersion } = useAppVersion();
 
   const breadcrumbsConfig = useGetBreadcrumbsConfig(dao.id, dao.displayName);
 
@@ -36,7 +39,7 @@ const DAOHome: Page<DaoHomeProps> = ({ daoContext }) => {
       </Head>
       <NestedDaoPageWrapper
         daoContext={daoContext}
-        breadcrumbs={breadcrumbs}
+        breadcrumbs={appVersion === 3 ? undefined : breadcrumbs}
         className={styles.pageWrapper}
         header={onCreateProposal => {
           return (
@@ -50,6 +53,7 @@ const DAOHome: Page<DaoHomeProps> = ({ daoContext }) => {
         }}
       >
         <DaoDashboard
+          daoContext={daoContext}
           key={`dashboard_${dao.id}`}
           className={styles.dashboard}
         />

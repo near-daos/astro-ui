@@ -21,6 +21,7 @@ import { shortenString } from 'utils/format';
 import { useDaoSettings } from 'context/DaoSettingsContext';
 import { useDraft } from 'hooks/useDraft';
 import { useWalletContext } from 'context/WalletContext';
+import { useAppVersion } from 'hooks/useAppVersion';
 
 import styles from './DaoDetailsMinimized.module.scss';
 
@@ -44,12 +45,15 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   const { accountId } = useWalletContext();
   const { settings } = useDaoSettings();
   const isXsMobile = useMedia('(max-width: 600px)');
+  const isMobile = useMedia('(max-width: 1023px)');
   const flags = useFlags();
   const router = useRouter();
   const { t } = useTranslation();
   const { asPath } = router;
   const currentPath = asPath.split('?')[0];
   const draftData = useDraft(dao.id);
+  const { appVersion } = useAppVersion();
+  const isNextVersion = appVersion === 3;
 
   const daoHasGovernanceTokenConfigured =
     settings?.createGovernanceToken?.wizardCompleted;
@@ -79,54 +83,78 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
     return draftData?.data.filter(item => !item.isRead).length;
   }, [draftData?.data]);
 
-  return (
-    <div className={cn(styles.root, className)}>
-      <div className={styles.wrapper}>
-        <Link href={`/dao/${dao.id}`}>
-          <a>
-            <section
-              className={cn(
-                {
-                  [styles.paddingWithNoProposalButton]:
-                    !userPermissions.isCanCreateProposals,
-                  [styles.paddingWithProposalButton]:
-                    userPermissions.isCanCreateProposals,
-                },
-                styles.general
-              )}
-            >
+  function renderDaoLink() {
+    return (
+      <Link href={`/dao/${dao.id}`}>
+        <a>
+          <section
+            className={cn(
+              {
+                [styles.paddingWithNoProposalButton]:
+                  !userPermissions.isCanCreateProposals,
+                [styles.paddingWithProposalButton]:
+                  userPermissions.isCanCreateProposals,
+                [styles.nextPadding]: isNextVersion,
+              },
+              styles.general
+            )}
+          >
+            {!isMobile && (
               <div className={styles.flagWrapper}>
                 <DaoLogo size="md" src={dao.flagLogo} className={styles.logo} />
               </div>
+            )}
 
-              <div>
-                <div className={styles.displayName}>
-                  <div className={styles.name}>
-                    {shortenString(dao.displayName, isXsMobile ? 25 : 40)}
-                  </div>
-
-                  <ExplorerLink
-                    linkData={dao.id}
-                    linkType="member"
-                    className={styles.explorerLink}
-                  />
+            <div>
+              <div className={styles.displayName}>
+                <div className={styles.name}>
+                  {shortenString(dao.displayName, isXsMobile ? 25 : 40)}
                 </div>
 
-                <div className={styles.daoId}>
-                  <CopyButton
-                    text={dao.id}
-                    tooltipPlacement="auto"
-                    className={styles.copyAddress}
-                  >
-                    <div className={styles.daoId}>
-                      {shortenString(dao.id, isXsMobile ? 32 : 45)}
-                    </div>
-                  </CopyButton>
-                </div>
+                <ExplorerLink
+                  linkData={dao.id}
+                  linkType="member"
+                  className={styles.explorerLink}
+                />
               </div>
-            </section>
-          </a>
-        </Link>
+
+              <div className={styles.daoId}>
+                <CopyButton
+                  text={dao.id}
+                  tooltipPlacement="auto"
+                  className={styles.copyAddress}
+                >
+                  <div className={styles.daoId}>
+                    {shortenString(dao.id, isXsMobile ? 32 : 45)}
+                  </div>
+                </CopyButton>
+              </div>
+            </div>
+          </section>
+        </a>
+      </Link>
+    );
+  }
+
+  function renderNewProposalButton() {
+    return (
+      <DaoAction
+        canCreateProposals={userPermissions.isCanCreateProposals}
+        onCreateProposalClick={onCreateProposalClick}
+        daoId={dao.id}
+      />
+    );
+  }
+
+  return (
+    <div
+      className={cn(styles.root, className, {
+        [styles.nextVersion]: isMobile,
+      })}
+    >
+      {isMobile && renderDaoLink()}
+      <div className={styles.wrapper}>
+        {!isMobile && renderDaoLink()}
 
         <section className={styles.controls}>
           {flags.delegateVoting && daoHasGovernanceTokenConfigured && (
@@ -206,16 +234,15 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           </ActionButton>
         </section>
 
-        {onCreateProposalClick && !!accountId && (
+        {!isMobile && onCreateProposalClick && !!accountId && (
           <section className={styles.proposals}>
-            <DaoAction
-              canCreateProposals={userPermissions.isCanCreateProposals}
-              onCreateProposalClick={onCreateProposalClick}
-              daoId={dao.id}
-            />
+            {renderNewProposalButton()}
           </section>
         )}
       </div>
+      {isMobile && (
+        <div className={styles.daoAction}>{renderNewProposalButton()}</div>
+      )}
     </div>
   );
 };

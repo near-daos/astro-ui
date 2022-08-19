@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`search results dropdown Should render component 1`] = `
+<div>
+  <div
+    class="root"
+    style="width: 100px;"
+  >
+    <div
+      class="root root"
+    >
+      <div
+        class="image image"
+      />
+      <div
+        class="title"
+      >
+        No results for asd
+      </div>
+      <div
+        class="desc"
+      >
+        We couldn't find anything matching your search. Try again with a different term.
+      </div>
+    </div>
+  </div>
+</div>
+`;

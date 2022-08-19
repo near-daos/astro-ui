@@ -12,13 +12,19 @@ import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { useDaoDashboardData } from 'astro_2.0/features/DaoDashboard/hooks';
 import { formatCurrency } from 'utils/formatCurrency';
 
+import { DaoContext } from 'types/context';
+
 import styles from './DaoDashboard.module.scss';
 
 interface DaoDashboardProps {
   className?: string;
+  daoContext: DaoContext;
 }
 
-export const DaoDashboard: FC<DaoDashboardProps> = ({ className }) => {
+export const DaoDashboard: FC<DaoDashboardProps> = ({
+  className,
+  daoContext: { dao },
+}) => {
   const { t } = useTranslation();
   const { chartData, dashboardData, toggleView, activeView, loading } =
     useDaoDashboardData();
@@ -43,6 +49,12 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({ className }) => {
 
   return (
     <div className={cn(styles.root, className)}>
+      {dao.description && (
+        <section className={styles.descriptionSection}>
+          {dao.description}
+        </section>
+      )}
+
       <div className={styles.chart}>{renderChart()}</div>
       <StatCard
         selected={activeView === 'DAO_FUNDS'}

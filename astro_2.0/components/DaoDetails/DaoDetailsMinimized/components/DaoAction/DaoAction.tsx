@@ -3,6 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import cn from 'classnames';
 import { useRouter } from 'next/router';
 import { useFlags } from 'launchdarkly-react-client-sdk';
+import { useMedia } from 'react-use';
 
 import { WalletType } from 'types/config';
 
@@ -32,6 +33,7 @@ export const DaoAction: FC<Props> = ({
   const flags = useFlags();
   const { t } = useTranslation();
   const { accountId, login } = useWalletContext();
+  const isMobile = useMedia('(max-width: 1023px)');
   const [open, setOpen] = useState(false);
 
   const closeDropdown = useCallback(() => {
@@ -94,15 +96,26 @@ export const DaoAction: FC<Props> = ({
         parent={
           <div className={styles.root}>
             <Button
+              capitalize
               data-testid="createProposal"
               size="block"
               onClick={() => {
                 setOpen(true);
               }}
-              className={styles.addProposalButton}
+              className={
+                isMobile ? styles.nextAction : styles.addProposalButton
+              }
               variant="tertiary"
             >
-              <Icon width={32} name="buttonAdd" className={styles.createIcon} />
+              {isMobile ? (
+                'Create proposal'
+              ) : (
+                <Icon
+                  width={32}
+                  name="buttonAdd"
+                  className={styles.createIcon}
+                />
+              )}
             </Button>
           </div>
         }
@@ -131,13 +144,18 @@ export const DaoAction: FC<Props> = ({
   if (!flags.draftProposals && canCreateProposals) {
     return (
       <Button
+        capitalize
         data-testid="createProposal"
         size="block"
         onClick={handleCreateProposal}
-        className={styles.addProposalButton}
+        className={isMobile ? styles.nextAction : styles.addProposalButton}
         variant="tertiary"
       >
-        <Icon width={32} name="buttonAdd" className={styles.createIcon} />
+        {isMobile ? (
+          'Create proposal'
+        ) : (
+          <Icon width={32} name="buttonAdd" className={styles.createIcon} />
+        )}
       </Button>
     );
   }

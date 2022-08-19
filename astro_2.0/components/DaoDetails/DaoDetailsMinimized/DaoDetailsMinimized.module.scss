@@ -6,7 +6,7 @@
   box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
   display: flex;
   height: 66px;
-  margin: 0 -24px;
+  margin: 24px -24px 0;
   transition: box-shadow 0.4s;
 
   @include tablet-landscape {
@@ -18,16 +18,26 @@
   &:hover {
     box-shadow: 3px 2px 24px var(--color-black-opacity-25);
   }
+
+  &.nextVersion {
+    flex-direction: column;
+    height: unset;
+  }
 }
 
 .wrapper {
   align-items: center;
   display: flex;
+  margin-bottom: 24px;
   -ms-overflow-style: none;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
   width: 100%;
+
+  @include desktop {
+    margin-bottom: 0;
+  }
 }
 
 .wrapper::-webkit-scrollbar {
@@ -40,6 +50,10 @@
 
 .paddingWithProposalButton {
   padding: 0 0 0 70px;
+}
+
+.nextPadding.nextPadding {
+  padding: 16px;
 }
 
 .general {
@@ -100,6 +114,10 @@
   }
 }
 
+.daoAction {
+  display: flex;
+}
+
 .flagWrapper {
   flex: 0 0 47px;
   height: 53px;
@@ -123,6 +141,10 @@
 
 .name {
   @include ellipse-text;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
 }
 
 .explorerLink {

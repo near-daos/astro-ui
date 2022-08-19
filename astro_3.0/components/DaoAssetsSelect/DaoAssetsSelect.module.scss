@@ -1,0 +1,172 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.letterHeadSection {
+  background: var(--color-neutral-30);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  grid-area: letterHeadSection;
+  height: 134px;
+  margin: 0;
+  position: relative;
+
+  @include tablet-landscape {
+    border-radius: 8px;
+    margin: 0;
+  }
+
+  &.fullWidth {
+    border-radius: 0;
+  }
+
+  .assetsWrapper {
+    position: relative;
+    width: fit-content;
+  }
+
+  .logo {
+    left: 0;
+    transform: translate(26px, 90px);
+  }
+
+  .logo.leftAligned {
+    transform: translate(0, 88px);
+
+    @include desktop {
+      transform: translate(0, 68px);
+    }
+  }
+}
+
+.backgroundFilter {
+  background-color: var(--color-black);
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: opacity 0.1s ease-out;
+}
+
+.contentLayout {
+  padding-bottom: 0;
+}
+
+.headerLayout {
+  padding-bottom: 0;
+}
+
+.editCover {
+  @include centralize;
+  border-radius: 50%;
+  position: absolute;
+  right: 24px;
+  top: 24px;
+}
+
+.edit {
+  color: var(--color-white);
+  transition: color 0.1s ease-out;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.uploader {
+  background-color: var(--color-black-opacity-14);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 30px;
+  opacity: 1;
+  overflow: hidden;
+  width: 30px;
+
+  &:hover .uploadIcon {
+    color: var(--color-black);
+  }
+
+  label {
+    @include centralize;
+    cursor: pointer;
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.uploadControl {
+  cursor: pointer;
+}
+
+.uploadIcon {
+  color: var(--color-white);
+  transition: color 0.1s ease-out;
+  width: 16px;
+}
+
+.logo {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.defaultLogo {
+  height: 50px;
+  width: 50px;
+}
+
+.logoControl {
+  @include centralize;
+  background-color: transparent;
+  cursor: pointer;
+  height: 92px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 92px;
+
+  &.editable:hover .logoOverlay {
+    opacity: 1;
+  }
+}
+
+.overlayIcon {
+  width: 24px;
+}
+
+.overlayText {
+  @extend %title3;
+  color: var(--color-white);
+}
+
+.logoOverlay {
+  @include centralize;
+  background-color: var(--color-black-opacity-50);
+  bottom: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: opacity 0.1s ease-out;
+}
+
+.appLogoSelectorWrapper {
+  margin-top: 48px;
+  padding: 16px;
+}

@@ -2,7 +2,11 @@
 @import 'styles/typography';
 
 .root {
-  margin-top: 56px;
+  margin-top: 24px;
+
+  @include desktop {
+    margin-top: 56px;
+  }
 }
 
 .dao {

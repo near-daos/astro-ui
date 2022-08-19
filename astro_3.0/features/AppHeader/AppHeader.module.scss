@@ -1,3 +1,5 @@
+@import 'styles/mixins';
+
 .root {
   align-items: center;
   background-color: var(--color-white);
@@ -12,22 +14,47 @@
 
   width: 100%;
 
-  z-index: 1000;
+  z-index: 1100;
+}
+
+.logoWrapper {
+  min-width: 75px;
 }
 
 .main {
-  left: 50%;
   margin: 0 auto;
   padding-bottom: 0;
-  position: absolute;
-  transform: translateX(-50%);
   width: 100%;
+
+  @include desktop {
+    max-width: 920px;
+    padding: 0 48px;
+  }
+
+  @include large-desktop {
+    margin: auto;
+    max-width: 1140px;
+  }
+
+  @include large-x-desktop {
+    left: 50%;
+    margin: auto;
+    max-width: 1200px;
+    padding: 0 64px;
+    position: absolute;
+    transform: translateX(-50%);
+  }
 }
 
 .search {
   left: unset;
-  max-width: unset;
+  margin-left: auto;
+  max-width: 600px;
   position: relative;
+
+  @include desktop {
+    margin-left: unset;
+  }
 }
 
 .bell {
@@ -39,4 +66,12 @@
   display: flex;
   margin-left: auto;
   z-index: 1;
+}
+
+.mobileMenu {
+  display: block;
+
+  @include desktop {
+    display: none;
+  }
 }
