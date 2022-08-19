@@ -34,7 +34,7 @@ describe('format', () => {
 
   describe('kFormatter', () => {
     it('Should return 0 if argument is not defined', () => {
-      expect(kFormatter((undefined as unknown) as number)).toStrictEqual('0');
+      expect(kFormatter(undefined as unknown as number)).toStrictEqual('0');
     });
 
     it('Should properly format number', () => {

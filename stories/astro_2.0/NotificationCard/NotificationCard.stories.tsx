@@ -50,8 +50,7 @@ Template.args = {
     totalDaoFunds: 77,
     lastProposalId: 12,
     totalProposals: 15,
-    logo:
-      'https://image.freepik.com/free-photo/blue-liquid-marble-background-abstract-flowing-texture-experimental-art_53876-104502.jpg',
+    logo: 'https://image.freepik.com/free-photo/blue-liquid-marble-background-abstract-flowing-texture-experimental-art_53876-104502.jpg',
     funds: '17043.60259',
     createdAt: '2021-10-22T12:46:32.885Z',
     groups: [

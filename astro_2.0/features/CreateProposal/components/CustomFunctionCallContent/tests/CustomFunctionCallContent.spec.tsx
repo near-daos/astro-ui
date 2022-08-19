@@ -79,7 +79,7 @@ describe('CustomFunctionCallContent', () => {
       }));
 
       const { getByText } = render(
-        <CustomFunctionCallContent dao={({} as unknown) as DAO} />
+        <CustomFunctionCallContent dao={{} as unknown as DAO} />
       );
 
       expect(getByText(component)).toBeTruthy();

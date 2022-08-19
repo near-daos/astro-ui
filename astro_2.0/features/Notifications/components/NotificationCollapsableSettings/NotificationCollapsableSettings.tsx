@@ -26,7 +26,9 @@ interface NotificationCollapsableSettingsProps {
   isMuted: boolean;
 }
 
-export const NotificationCollapsableSettings: FC<NotificationCollapsableSettingsProps> = ({
+export const NotificationCollapsableSettings: FC<
+  NotificationCollapsableSettingsProps
+> = ({
   daoId,
   flagCover,
   flagBack,

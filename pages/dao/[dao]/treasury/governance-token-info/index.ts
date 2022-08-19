@@ -7,11 +7,9 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
 import { getTranslations } from 'utils/getTranslations';
 
-export const getServerSideProps: GetServerSideProps<GovernanceTokenInfoPageProps> = async ({
-  req,
-  query,
-  locale = 'en',
-}) => {
+export const getServerSideProps: GetServerSideProps<
+  GovernanceTokenInfoPageProps
+> = async ({ req, query, locale = 'en' }) => {
   const daoId = query.dao as string;
 
   CookieService.initServerSideCookies(req?.headers.cookie || null);

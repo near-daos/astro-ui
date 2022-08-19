@@ -794,14 +794,14 @@ export async function getDeployStakingContractProposal(
   const { id, name, policy } = dao;
   const { unstakingPeriod, token } = data;
 
-  return ({
+  return {
     description: 'Deploy staking contract via factory',
     stakingContractName: `${name}${STAKING_CONTRACT_PREFIX}`,
     daoId: id,
     tokenId: token,
     daoBond: policy.proposalBond,
     unstakingPeriodInHours: unstakingPeriod,
-  } as unknown) as CreateProposalParams;
+  } as unknown as CreateProposalParams;
 }
 
 export async function getAcceptStakingContractProposal(
@@ -811,12 +811,12 @@ export async function getAcceptStakingContractProposal(
 
   const stakingContractName = `${name}${STAKING_CONTRACT_PREFIX}`;
 
-  return ({
+  return {
     daoId: id,
     daoBond: policy.proposalBond,
     description: `Adopt staking contract ${stakingContractName}`,
     stakingContractName,
-  } as unknown) as CreateProposalParams;
+  } as unknown as CreateProposalParams;
 }
 
 export async function getChangeVotingPolicyToWeightVoting(

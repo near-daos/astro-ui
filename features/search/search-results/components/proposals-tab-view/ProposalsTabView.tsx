@@ -30,20 +30,16 @@ export const ProposalsTabView: React.FC = () => {
   const { searchResults } = useSearchResults();
   const { query, proposals } = searchResults || {};
 
-  const {
-    filteredProposals,
-    filter,
-    setFilter,
-    onFilterChange,
-  } = useFilteredProposalsData(
-    proposals || [],
-    queries.category
-      ? {
-          ...FILTER_DEFAULT_STATE,
-          [queries.category as keyof typeof FILTER_DEFAULT_STATE]: true,
-        }
-      : undefined
-  );
+  const { filteredProposals, filter, setFilter, onFilterChange } =
+    useFilteredProposalsData(
+      proposals || [],
+      queries.category
+        ? {
+            ...FILTER_DEFAULT_STATE,
+            [queries.category as keyof typeof FILTER_DEFAULT_STATE]: true,
+          }
+        : undefined
+    );
 
   useUpdateEffect(() => {
     window.scroll(0, 0);

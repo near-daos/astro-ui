@@ -33,7 +33,7 @@ export const EditDraftPageContent: FC<Props> = ({ daoContext, draft }) => {
       if (tokens) {
         const createdInitialValues = await getInitialFormValuesFromDraft(
           draft?.proposalVariant,
-          (draft as unknown) as Record<string, unknown>,
+          draft as unknown as Record<string, unknown>,
           tokens,
           accountId || ''
         );

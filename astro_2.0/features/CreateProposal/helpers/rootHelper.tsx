@@ -179,9 +179,8 @@ export function getProposalTypesOptions(
           label: getLabel('proposeRemoveMember'),
           value: ProposalVariant.ProposeRemoveMember,
           group: getLabel('groupChangeMembers'),
-          disabled: !allowedProposalsToCreate[
-            ProposalType.RemoveMemberFromRole
-          ],
+          disabled:
+            !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole],
         },
       ],
     },

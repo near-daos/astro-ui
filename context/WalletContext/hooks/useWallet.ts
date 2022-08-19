@@ -31,11 +31,8 @@ export const useWallet = (props: Props): ReturnVal => {
 
   const { setConnectingToWallet } = props;
 
-  const [
-    persistedWallet,
-    setPersistedWallet,
-    removePersistedWallet,
-  ] = useLocalStorage('selectedWallet');
+  const [persistedWallet, setPersistedWallet, removePersistedWallet] =
+    useLocalStorage('selectedWallet');
 
   const [currentWallet, setCurrentWallet] = useState<WalletService | null>(
     null

@@ -17,12 +17,12 @@ describe('CompleteProposalRow', () => {
     ${'InProgress'} | ${'Pending Approval'}
     ${'AnyOther'}   | ${'Not approved'}
   `('Should render proper ui for $status status', ({ status, statusLabel }) => {
-    const data = ({
+    const data = {
       status,
       proposer: 'proposer',
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',
-    } as unknown) as BountyProposal;
+    } as unknown as BountyProposal;
 
     const { getByText } = render(<CompleteProposalRow data={data} />);
 

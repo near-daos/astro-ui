@@ -18,11 +18,9 @@ interface PlatformNotificationSettingsProps {
   onTogglePlatform: (id: string) => void;
 }
 
-export const PlatformNotificationSettings: FC<PlatformNotificationSettingsProps> = ({
-  settingsState,
-  onToggleGroup,
-  onTogglePlatform,
-}) => {
+export const PlatformNotificationSettings: FC<
+  PlatformNotificationSettingsProps
+> = ({ settingsState, onToggleGroup, onTogglePlatform }) => {
   return (
     <div className={styles.group}>
       <div className={cn(styles.groupHeader, styles.platformSettings)}>

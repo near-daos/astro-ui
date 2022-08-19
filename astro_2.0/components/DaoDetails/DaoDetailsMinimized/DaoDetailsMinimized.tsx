@@ -87,7 +87,8 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
             <section
               className={cn(
                 {
-                  [styles.paddingWithNoProposalButton]: !userPermissions.isCanCreateProposals,
+                  [styles.paddingWithNoProposalButton]:
+                    !userPermissions.isCanCreateProposals,
                   [styles.paddingWithProposalButton]:
                     userPermissions.isCanCreateProposals,
                 },

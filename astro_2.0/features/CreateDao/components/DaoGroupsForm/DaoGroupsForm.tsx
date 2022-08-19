@@ -21,16 +21,17 @@ type Group = { group: string; slug?: string };
 
 type Form = { groups: Group[] };
 
-yup.addMethod(yup.array, 'unique', function validate(
-  message,
-  mapper = (val: unknown) => val
-) {
-  return this.test(
-    'unique',
-    message,
-    (list = []) => list.length === new Set(list.map(mapper)).size
-  );
-});
+yup.addMethod(
+  yup.array,
+  'unique',
+  function validate(message, mapper = (val: unknown) => val) {
+    return this.test(
+      'unique',
+      message,
+      (list = []) => list.length === new Set(list.map(mapper)).size
+    );
+  }
+);
 
 export const DaoGroupsForm: VFC = () => {
   const { t } = useTranslation();

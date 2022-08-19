@@ -21,10 +21,8 @@ export function useProposalTypeOptions(
 ): DropdownOption[] {
   const { t } = useTranslation();
 
-  const {
-    isCanCreatePolicyProposals,
-    allowedProposalsToCreate,
-  } = userPermissions;
+  const { isCanCreatePolicyProposals, allowedProposalsToCreate } =
+    userPermissions;
 
   const getTitle = (key: string) => t(`createProposal.header.${key}`);
   const getLabel = useCallback(
@@ -222,9 +220,8 @@ export function useProposalTypeOptions(
             label: getLabel('proposeRemoveMember'),
             value: ProposalVariant.ProposeRemoveMember,
             group: getLabel('groupChangeMembers'),
-            disabled: !allowedProposalsToCreate[
-              ProposalType.RemoveMemberFromRole
-            ],
+            disabled:
+              !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole],
           },
         ],
       },

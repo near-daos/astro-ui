@@ -124,7 +124,7 @@ export const Chart: React.FC<ChartProps> = ({
       {lines.map(filterLine => {
         const max = Math.max.apply(
           null,
-          ((data as unknown) as Record<string, number>[]).map(
+          (data as unknown as Record<string, number>[]).map(
             entry => entry[filterLine.dataKey]
           )
         );

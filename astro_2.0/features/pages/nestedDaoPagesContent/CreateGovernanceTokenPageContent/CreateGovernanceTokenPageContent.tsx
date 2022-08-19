@@ -24,7 +24,9 @@ interface CreateGovernanceTokenPageContentProps {
   daoContext: DaoContext;
 }
 
-export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageContentProps> = props => {
+export const CreateGovernanceTokenPageContent: VFC<
+  CreateGovernanceTokenPageContentProps
+> = props => {
   const { daoContext } = props;
   const { t } = useTranslation();
   const { status, update, loading } = useCreateGovernanceTokenStatus();

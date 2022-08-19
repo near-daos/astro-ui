@@ -122,8 +122,7 @@ const dao = {
   proposals: 11,
   totalProposals: 15,
   lastProposalId: 12,
-  logo:
-    'https://sputnik-dao.s3.eu-central-1.amazonaws.com/3RFSVcbRRXIGNxq5C1OMI',
+  logo: 'https://sputnik-dao.s3.eu-central-1.amazonaws.com/3RFSVcbRRXIGNxq5C1OMI',
   funds: '6.10334',
   createdAt: '2021-11-01T08:21:53.955Z',
   groups: [

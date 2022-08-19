@@ -48,14 +48,8 @@ const CfcLibraryPage: Page<Props> = ({ accountDaos }) => {
   const { query } = useQuery<{ sort: string; view: string }>();
   const { sort } = query;
 
-  const {
-    data,
-    handleSearch,
-    loading,
-    loadMore,
-    handleReset,
-    onUpdate,
-  } = useCfcLibraryData();
+  const { data, handleSearch, loading, loadMore, handleReset, onUpdate } =
+    useCfcLibraryData();
 
   const contextValue = useMemo(() => {
     return {

@@ -22,8 +22,7 @@ Template.args = {
       {
         id: '1',
         functionName: 'Token Farm: Create new token',
-        code:
-          '{"contract":"app.tokenfarm.near","method":"createToken","description":"Create a new token on token farm","args":[]}',
+        code: '{"contract":"app.tokenfarm.near","method":"createToken","description":"Create a new token on token farm","args":[]}',
       },
     ],
   },

@@ -387,8 +387,7 @@ export function prepareSettingsGroups(
   const myDaosGroup = {
     groupId: 'my',
     groupName: 'My DAOs Notification',
-    text:
-      'Choose for how long you would like to disable notifications from your DAOs and DAOs you are a member.',
+    text: 'Choose for how long you would like to disable notifications from your DAOs and DAOs you are a member.',
     status:
       myDaosSettings.filter(item => !item.settings?.isAllMuted).length > 0
         ? NotificationsGroupStatus.Enabled
@@ -399,8 +398,7 @@ export function prepareSettingsGroups(
   const subscribedDaosGroup = {
     groupId: 'subscribed',
     groupName: 'Subscribed DAOs',
-    text:
-      'Choose for how long you would like to disable notifications from your subscribed DAOs.',
+    text: 'Choose for how long you would like to disable notifications from your subscribed DAOs.',
     status:
       subscribedDaosSettings.filter(item => !item.settings?.isAllMuted).length >
       0

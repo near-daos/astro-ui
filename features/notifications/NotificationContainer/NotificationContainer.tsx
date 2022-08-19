@@ -23,9 +23,8 @@ export const NotificationContainer: React.FC = () => {
   const idStorage = React.useRef<number>(0);
 
   const [styles, setStyles] = useState({});
-  const [notifications, setNotifications] = React.useState<NotificationProps[]>(
-    emptyArray
-  );
+  const [notifications, setNotifications] =
+    React.useState<NotificationProps[]>(emptyArray);
 
   useEffect(() => {
     function addNotification(e: ShowNotificationEvent) {

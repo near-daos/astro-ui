@@ -23,12 +23,8 @@ interface WalletIdCardProps {
 export const WalletIdCard: VFC<WalletIdCardProps> = props => {
   const { setConfig, contactsConfig } = props;
 
-  const {
-    email,
-    isEmailVerified,
-    phoneNumber,
-    isPhoneVerified,
-  } = contactsConfig;
+  const { email, isEmailVerified, phoneNumber, isPhoneVerified } =
+    contactsConfig;
 
   const { accountId, pkAndSignature } = useWalletContext();
 

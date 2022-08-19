@@ -31,10 +31,10 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
     [modals]
   );
 
-  const contextValue = useMemo(() => ({ showModal, hideModal }), [
-    hideModal,
-    showModal,
-  ]);
+  const contextValue = useMemo(
+    () => ({ showModal, hideModal }),
+    [hideModal, showModal]
+  );
 
   return (
     <ModalContext.Provider value={contextValue}>

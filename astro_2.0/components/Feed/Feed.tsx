@@ -33,12 +33,8 @@ export const Feed = <T,>({
   renderItem,
   loadMore,
 }: FeedProps<T>): React.ReactElement | null => {
-  const {
-    handleVote,
-    handleSelect,
-    handleDismiss,
-    list,
-  } = useMultiVoteActions();
+  const { handleVote, handleSelect, handleDismiss, list } =
+    useMultiVoteActions();
 
   if (!data.data) {
     return null;

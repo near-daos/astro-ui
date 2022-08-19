@@ -109,9 +109,7 @@ export function getChartData(receipts: Receipt[], token: Token): ChartData[] {
   });
 }
 
-export function useTokenFilteredData(
-  tokens: Record<string, Token>
-): {
+export function useTokenFilteredData(tokens: Record<string, Token>): {
   loading: boolean;
   error: boolean;
   chartData: ChartData[];

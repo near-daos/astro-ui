@@ -8,9 +8,8 @@ export function useIntercomAdjust(): void {
   useEffect(() => {
     // workaround to align intercom button
     if (!adjusted) {
-      const intercom: HTMLElement | null = document.querySelector(
-        '.intercom-launcher'
-      );
+      const intercom: HTMLElement | null =
+        document.querySelector('.intercom-launcher');
 
       if (intercom) {
         intercom.style.bottom = '75px';

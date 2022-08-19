@@ -35,8 +35,8 @@ describe('proposalObjectHelpers', () => {
     it('Should throw error if no token info provided', async () => {
       await expect(
         getCustomFunctionCallProposal(
-          ({} as unknown) as DAO,
-          ({} as unknown) as CustomFunctionCallInput,
+          {} as unknown as DAO,
+          {} as unknown as CustomFunctionCallInput,
           {}
         )
       ).rejects.toThrow();
@@ -73,8 +73,8 @@ describe('proposalObjectHelpers', () => {
     it('Should throw error if no token info', async () => {
       await expect(
         getBuyNftFromMintbaseProposal(
-          ({} as unknown) as DAO,
-          ({} as unknown) as BuyNftFromMintbaseInput,
+          {} as unknown as DAO,
+          {} as unknown as BuyNftFromMintbaseInput,
           {}
         )
       ).rejects.toThrow();
@@ -93,8 +93,7 @@ describe('proposalObjectHelpers', () => {
         data: {
           actions: [
             {
-              args:
-                'eyJ0b2tlbl9rZXkiOlsidG9rZW5LZXkiXSwicHJpY2UiOlsiMjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCJdLCJ0aW1lb3V0IjpbeyJob3VycyI6IjEwMCJ9XX0=',
+              args: 'eyJ0b2tlbl9rZXkiOlsidG9rZW5LZXkiXSwicHJpY2UiOlsiMjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCJdLCJ0aW1lb3V0IjpbeyJob3VycyI6IjEwMCJ9XX0=',
               deposit: '2000000000000000000000000',
               gas: '5000000000000',
               method_name: 'make_offer',
@@ -139,8 +138,8 @@ describe('proposalObjectHelpers', () => {
     it('Should throw error if no token info', async () => {
       await expect(
         getBuyNftFromParasProposal(
-          ({} as unknown) as DAO,
-          ({} as unknown) as BuyNftFromParasInput,
+          {} as unknown as DAO,
+          {} as unknown as BuyNftFromParasInput,
           {}
         )
       ).rejects.toThrow();
@@ -159,8 +158,7 @@ describe('proposalObjectHelpers', () => {
         data: {
           actions: [
             {
-              args:
-                'eyJ0b2tlbl9zZXJpZXNfaWQiOiJORUFSIiwicmVjZWl2ZXJfaWQiOiJ0YXJnZXQifQ==',
+              args: 'eyJ0b2tlbl9zZXJpZXNfaWQiOiJORUFSIiwicmVjZWl2ZXJfaWQiOiJ0YXJnZXQifQ==',
               deposit: '10000000000000000000000000',
               gas: '5000000000000',
               method_name: 'nft_buy',
@@ -184,8 +182,7 @@ describe('proposalObjectHelpers', () => {
         data: {
           actions: [
             {
-              args:
-                'eyJhY3Rpb25zIjpbeyJwb29sX2lkIjoicG9vbElkIiwidG9rZW5faW4iOiJUMSIsInRva2VuX291dCI6IlQyIiwiYW1vdW50X2luIjoxMCwibWluX2Ftb3VudF9vdXQiOjEwMH1dfQ==',
+              args: 'eyJhY3Rpb25zIjpbeyJwb29sX2lkIjoicG9vbElkIiwidG9rZW5faW4iOiJUMSIsInRva2VuX291dCI6IlQyIiwiYW1vdW50X2luIjoxMCwibWluX2Ftb3VudF9vdXQiOjEwMH1dfQ==',
               deposit: '1000000000000000000000000',
               gas: '5000000000000',
               method_name: 'ft_transfer_call',
@@ -313,8 +310,8 @@ describe('proposalObjectHelpers', () => {
     it('Should throw error if no token info provided', async () => {
       await expect(
         getTransferProposal(
-          ({} as unknown) as DAO,
-          ({} as unknown) as CreateTransferInput,
+          {} as unknown as DAO,
+          {} as unknown as CreateTransferInput,
           {}
         )
       ).rejects.toThrow();

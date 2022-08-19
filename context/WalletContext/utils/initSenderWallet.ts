@@ -26,7 +26,7 @@ export function initSenderWallet(reload: () => void): Promise<WalletService> {
         clearInterval(intervalId);
         resolve(
           new SenderWalletService(
-            (window.near as unknown) as SenderWalletInstance
+            window.near as unknown as SenderWalletInstance
           )
         );
       }

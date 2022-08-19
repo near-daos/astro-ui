@@ -31,7 +31,7 @@ describe('CollapsableSection', () => {
       <CollapsableSection
         title="title"
         contentTitle="contentTitle"
-        dao={({} as unknown) as DAO}
+        dao={{} as unknown as DAO}
         data={[]}
         status="Pending"
         accountId="accountId"

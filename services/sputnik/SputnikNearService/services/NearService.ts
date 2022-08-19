@@ -216,10 +216,8 @@ export class NearService extends BaseService {
       }
       case WalletType.SELECTOR_NEAR:
       case WalletType.SELECTOR_SENDER: {
-        storageDepositTransactionAction = getWalletSelectorStorageDepositTransaction(
-          tokenId ?? '',
-          accountId
-        );
+        storageDepositTransactionAction =
+          getWalletSelectorStorageDepositTransaction(tokenId ?? '', accountId);
 
         claimAction = getPlainFunctionCallTransaction({
           receiverId: daoId,
@@ -490,10 +488,8 @@ export class NearService extends BaseService {
   private mapTokenTransferProposal(proposal: CreateProposalParams) {
     const { bond, daoId, description, kind, data } = proposal;
 
-    const {
-      token_id: tokenContract,
-      receiver_id: recipient,
-    } = data as Transfer;
+    const { token_id: tokenContract, receiver_id: recipient } =
+      data as Transfer;
 
     let storageDepositTransactionAction;
     let transferTransaction;
@@ -537,10 +533,8 @@ export class NearService extends BaseService {
       }
       case WalletType.SELECTOR_NEAR:
       case WalletType.SELECTOR_SENDER: {
-        storageDepositTransactionAction = getWalletSelectorStorageDepositTransaction(
-          tokenContract,
-          recipient
-        );
+        storageDepositTransactionAction =
+          getWalletSelectorStorageDepositTransaction(tokenContract, recipient);
 
         transferTransaction = getPlainFunctionCallTransaction({
           receiverId: daoId,

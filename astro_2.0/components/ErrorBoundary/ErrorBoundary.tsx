@@ -27,9 +27,7 @@ class ErrorBoundary extends React.PureComponent<
   /**
    * Update state with error details
    */
-  static getDerivedStateFromError(
-    error: Error
-  ): {
+  static getDerivedStateFromError(error: Error): {
     hasError: boolean;
     error: Error;
   } {

@@ -33,8 +33,7 @@ jest.mock('features/search/search-results/SearchResults', () => {
             description: '',
             displayName: 'New Hello World!',
             links: ['youtube.com'],
-            logo:
-              'https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png',
+            logo: 'https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png',
             flagCover: '',
             flagLogo: '',
             legal: {},
@@ -72,8 +71,7 @@ jest.mock('features/search/search-results/SearchResults', () => {
               actions: [
                 {
                   methodName: 'nft_batch_mint',
-                  args:
-                    'eyJvd25lcl9pZCI6Imx1aXNmLnRlc3RuZXQiLCJtZXRhZGF0YSI6eyJyZWZlcmVuY2UiOiJrZXhjUU02QnBjU3RwWGc3THBxVHNKNmtvQXVtTkxDcUdqRlRfN2hGZXNjIiwiZXh0cmEiOiJjdXN0b20tM3hyLWdhbGxlcnkifSwibnVtX3RvX21pbnQiOjEsInJveWFsdHlfYXJncyI6eyJzcGxpdF9iZXR3ZWVuIjp7Im5hdGUudGVzdG5ldCI6MjgzMywiY2Fyb2xpbi50ZXN0bmV0IjoyODMzLCJuLnRlc3RuZXQiOjI4MzMsIjN4ci10ZXN0bmV0LnNwdXRuaWt2Mi50ZXN0bmV0Ijo1MDAsImx1aXNmLnRlc3RuZXQiOjEwMDF9LCJwZXJjZW50YWdlIjoxMDAwfSwic3BsaXRfb3duZXJzIjpudWxsfQ==',
+                  args: 'eyJvd25lcl9pZCI6Imx1aXNmLnRlc3RuZXQiLCJtZXRhZGF0YSI6eyJyZWZlcmVuY2UiOiJrZXhjUU02QnBjU3RwWGc3THBxVHNKNmtvQXVtTkxDcUdqRlRfN2hGZXNjIiwiZXh0cmEiOiJjdXN0b20tM3hyLWdhbGxlcnkifSwibnVtX3RvX21pbnQiOjEsInJveWFsdHlfYXJncyI6eyJzcGxpdF9iZXR3ZWVuIjp7Im5hdGUudGVzdG5ldCI6MjgzMywiY2Fyb2xpbi50ZXN0bmV0IjoyODMzLCJuLnRlc3RuZXQiOjI4MzMsIjN4ci10ZXN0bmV0LnNwdXRuaWt2Mi50ZXN0bmV0Ijo1MDAsImx1aXNmLnRlc3RuZXQiOjEwMDF9LCJwZXJjZW50YWdlIjoxMDAwfSwic3BsaXRfb3duZXJzIjpudWxsfQ==',
                   deposit: '100000000000000000000000',
                   gas: '150000000000000',
                 },
@@ -88,8 +86,7 @@ jest.mock('features/search/search-results/SearchResults', () => {
             dao: {
               id: '3xr-testnet.sputnikv2.testnet',
               name: '3xr-testnet',
-              logo:
-                'https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png',
+              logo: 'https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png',
               flagCover:
                 'https://sputnik-dao.s3.eu-central-1.amazonaws.com/7l9I1KTpqNACTF1GWaHM5',
               flagLogo: '',
@@ -111,8 +108,7 @@ jest.mock('features/search/search-results/SearchResults', () => {
             daoDetails: {
               name: '3xr-testnet',
               displayName: '3xr-testnet',
-              logo:
-                'https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png',
+              logo: 'https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png',
             },
             proposalVariant: 'ProposeDefault',
             updatedAt: '2022-02-08T17:51:31.446Z',
@@ -152,8 +148,7 @@ jest.mock('features/search/search-results/SearchResults', () => {
             dao: {
               id: 'hello-world.sputnikv2.testnet',
               name: 'hello-world',
-              logo:
-                'https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png',
+              logo: 'https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png',
               flagCover: '',
               flagLogo: '',
               legal: {},
@@ -171,8 +166,7 @@ jest.mock('features/search/search-results/SearchResults', () => {
             daoDetails: {
               name: 'hello-world',
               displayName: 'New Hello World!',
-              logo:
-                'https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png',
+              logo: 'https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png',
             },
             proposalVariant: 'ProposeDoneBounty',
             updatedAt: '2022-02-08T17:50:03.700Z',

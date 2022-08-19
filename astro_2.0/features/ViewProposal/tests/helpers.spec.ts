@@ -33,10 +33,10 @@ describe('ViewProposal helpers', () => {
   });
 
   it('Uses updatedAt if actions are empty', () => {
-    const proposal = ({
+    const proposal = {
       updatedAt: '2022-07-27T22:39:52.173Z',
       actions: [],
-    } as unknown) as ProposalFeedItem;
+    } as unknown as ProposalFeedItem;
 
     expect(getProposalUpdatedDate(proposal)).toEqual(
       '2022-07-27T22:39:52.173Z'

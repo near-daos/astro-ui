@@ -33,13 +33,13 @@ async function createProposal(
 
   if (variant === ProposalVariant.ProposeStakingContractDeployment) {
     return nearService?.deployStakingContract(
-      (proposal as unknown) as DeployStakingContractParams
+      proposal as unknown as DeployStakingContractParams
     );
   }
 
   if (variant === ProposalVariant.ProposeAcceptStakingContract) {
     return nearService?.acceptStakingContract(
-      (proposal as unknown) as AcceptStakingContractParams
+      proposal as unknown as AcceptStakingContractParams
     );
   }
 

@@ -142,7 +142,7 @@ export function getDetailedRolesVotingPolicy(
     });
 
   return {
-    roles: (roles as unknown) as RolesRequest[],
+    roles: roles as unknown as RolesRequest[],
     defaultVotePolicy: DemocraticVoting,
   };
 }

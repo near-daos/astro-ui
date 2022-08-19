@@ -28,7 +28,7 @@ describe('get element size', () => {
       offsetWidth: 14,
     };
 
-    const sizes = getElementSize((element as unknown) as HTMLElement);
+    const sizes = getElementSize(element as unknown as HTMLElement);
 
     expect(sizes).toStrictEqual({
       height: 8,

@@ -5,9 +5,7 @@ const schema = yup.object().shape({
   value: yup.mixed().test('fileSize', getImgValidationError, validateImgSize),
 });
 
-export async function validateAsset(data: {
-  value: FileList;
-}): Promise<{
+export async function validateAsset(data: { value: FileList }): Promise<{
   values: Record<string, unknown> | null;
   errors: Record<string, { type: string; message: string }> | null;
 }> {

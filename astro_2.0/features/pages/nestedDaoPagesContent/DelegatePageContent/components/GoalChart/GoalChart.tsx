@@ -40,8 +40,7 @@ export const GoalChart: FC<Props> = ({
       },
       {
         label: 'Total Delegated',
-        info:
-          'Total delegated tokens. If Total delegated tokens is less than Threshold then this value will be used as a threshold',
+        info: 'Total delegated tokens. If Total delegated tokens is less than Threshold then this value will be used as a threshold',
         value: totalDelegated,
       },
       {

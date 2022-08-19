@@ -43,7 +43,7 @@ describe('NotificationCard', () => {
       <NotificationCard
         smsEnabled
         emailEnabled
-        contactsConfig={({} as unknown) as UserContacts}
+        contactsConfig={{} as unknown as UserContacts}
         {...props}
       />
     );
@@ -81,7 +81,7 @@ describe('NotificationCard', () => {
 
     const { getAllByRole } = renderComponent({
       emailEnabled,
-      contactsConfig: ({ isEmailVerified: true } as unknown) as UserContacts,
+      contactsConfig: { isEmailVerified: true } as unknown as UserContacts,
     });
 
     fireEvent.click(getAllByRole('checkbox')[0]);
@@ -102,7 +102,7 @@ describe('NotificationCard', () => {
 
     const { getAllByRole } = renderComponent({
       smsEnabled,
-      contactsConfig: ({ isPhoneVerified: true } as unknown) as UserContacts,
+      contactsConfig: { isPhoneVerified: true } as unknown as UserContacts,
     });
 
     fireEvent.click(getAllByRole('checkbox')[1]);

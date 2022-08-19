@@ -275,13 +275,11 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     [daoId, proposalId, router, nearService]
   );
 
-  const [
-    { loading: finalizeLoading },
-    finalizeClickHandler,
-  ] = useAsyncFn(async () => {
-    await nearService?.finalize(daoId, proposalId);
-    await router.reload();
-  }, [daoId, proposalId, router, nearService]);
+  const [{ loading: finalizeLoading }, finalizeClickHandler] =
+    useAsyncFn(async () => {
+      await nearService?.finalize(daoId, proposalId);
+      await router.reload();
+    }, [daoId, proposalId, router, nearService]);
 
   const handleCardClick = useCallback(
     e => {

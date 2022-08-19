@@ -10,11 +10,9 @@ import { getTranslations } from 'utils/getTranslations';
 
 import { BountiesFeedPageProps } from './BountiesFeedPage';
 
-export const getServerSideProps: GetServerSideProps<BountiesFeedPageProps> = async ({
-  req,
-  query,
-  locale = 'en',
-}) => {
+export const getServerSideProps: GetServerSideProps<
+  BountiesFeedPageProps
+> = async ({ req, query, locale = 'en' }) => {
   CookieService.initServerSideCookies(req?.headers.cookie || null);
 
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);

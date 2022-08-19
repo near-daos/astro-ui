@@ -67,9 +67,8 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
   const { accountId } = useWalletContext();
   const [proposal, setProposal] = useState<ProposalFeedItem | null>(null);
   const steps = getCreateGovernanceTokenSteps(status, proposal, t);
-  const stepProposalVariant = getCreateGovernanceTokenStepProposalVariant(
-    status
-  );
+  const stepProposalVariant =
+    getCreateGovernanceTokenStepProposalVariant(status);
   const isCouncil = isCouncilUser(daoContext.dao, accountId);
   const proposalId = status?.proposalId;
   const isViewProposal = proposalId !== null;

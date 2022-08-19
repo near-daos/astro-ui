@@ -54,12 +54,8 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
   const { accountId } = useWalletContext();
   const canActOnFlow = isActiveUserCouncil(daoContext.dao, accountId);
 
-  const {
-    templates,
-    loading,
-    updateTemplate,
-    deleteTemplate,
-  } = useProposalTemplates(daoContext.dao.id);
+  const { templates, loading, updateTemplate, deleteTemplate } =
+    useProposalTemplates(daoContext.dao.id);
 
   const { saveTemplates } = useSaveTemplates();
 

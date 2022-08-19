@@ -30,13 +30,13 @@ jest.mock('services/sputnik/mappers', () => {
 });
 
 describe('UnclaimCompleteContent', () => {
-  const dao = ({} as unknown) as DAO;
-  const proposal = ({
+  const dao = {} as unknown as DAO;
+  const proposal = {
     permissions: {
       canApprove: true,
       canReject: true,
     },
-  } as unknown) as BountyProposal;
+  } as unknown as BountyProposal;
 
   it('Should render component', () => {
     jest

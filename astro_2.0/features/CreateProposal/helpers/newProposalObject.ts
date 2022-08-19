@@ -68,9 +68,7 @@ import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/C
 import { getNewPermissionsProposalObject } from 'astro_2.0/features/CreateProposal/helpers/permissionsHelpers';
 import { SelectorRow } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
 
-function getFlagsParamsForMetadata(
-  dao: DAO
-): {
+function getFlagsParamsForMetadata(dao: DAO): {
   flag?: string;
   flagCover?: string;
   flagLogo?: string;
@@ -145,7 +143,7 @@ export async function getNewProposalObject(
         purpose: dao.description,
         metadata: jsonToBase64Str({
           ...getFlagsParamsForMetadata(dao),
-          links: ((data as unknown) as LinksFormData).links
+          links: (data as unknown as LinksFormData).links
             .map(item => item.url)
             .filter(item => item.length > 0),
           displayName: dao.displayName,
@@ -204,18 +202,18 @@ export async function getNewProposalObject(
       };
     }
     case ProposalVariant.ProposeRemoveMember: {
-      return getRemoveMemberProposal((data as unknown) as IGroupForm, dao);
+      return getRemoveMemberProposal(data as unknown as IGroupForm, dao);
     }
     case ProposalVariant.ProposeAddMember: {
-      return getAddMemberProposal((data as unknown) as IGroupForm, dao);
+      return getAddMemberProposal(data as unknown as IGroupForm, dao);
     }
     case ProposalVariant.ProposeCreateGroup: {
-      return getChangePolicyProposal((data as unknown) as IGroupForm, dao);
+      return getChangePolicyProposal(data as unknown as IGroupForm, dao);
     }
     case ProposalVariant.ProposeUpdateGroup: {
       return getUpdateGroupProposal(
         data.groups as TGroup[],
-        (data as unknown) as IGroupForm,
+        data as unknown as IGroupForm,
         dao
       );
     }
@@ -241,7 +239,7 @@ export async function getNewProposalObject(
     case ProposalVariant.ProposeChangeBonds: {
       return getChangeBondDeadlinesProposal(
         dao,
-        (data as unknown) as BondsAndDeadlinesData,
+        data as unknown as BondsAndDeadlinesData,
         {
           accountName: '',
           createProposalBond: new Decimal(dao.policy.proposalBond)
@@ -378,12 +376,12 @@ export async function getNewProposalObject(
       }
     }
     case ProposalVariant.ProposeCreateToken: {
-      return getCreateTokenProposal(dao, (data as unknown) as CreateTokenInput);
+      return getCreateTokenProposal(dao, data as unknown as CreateTokenInput);
     }
     case ProposalVariant.ProposeTokenDistribution: {
       return getTokenDistributionProposal(
         dao,
-        (data as unknown) as TokenDistributionInput
+        data as unknown as TokenDistributionInput
       );
     }
     case ProposalVariant.ProposeStakingContractDeployment: {

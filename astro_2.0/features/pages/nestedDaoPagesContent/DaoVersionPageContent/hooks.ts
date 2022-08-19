@@ -20,9 +20,7 @@ interface ExtendedContract extends Contract {
 
 type Version = [string, { version: number[] }];
 
-export function useCheckDaoUpgrade(
-  dao: DAO
-): {
+export function useCheckDaoUpgrade(dao: DAO): {
   version: Version | null;
   loading: boolean;
 } {
@@ -103,9 +101,7 @@ export function useCheckDaoUpgrade(
   };
 }
 
-export function useUpgradeStatus(
-  daoId: string
-): {
+export function useUpgradeStatus(daoId: string): {
   loading: boolean;
   upgradeStatus: UpgradeStatus | null;
   update: ({

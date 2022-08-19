@@ -40,12 +40,8 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
   const isMounted = useMountedState();
   const { t } = useTranslation();
 
-  const {
-    comments,
-    sendComment,
-    reportComment,
-    deleteComment,
-  } = useProposalComments(contextId, contextType);
+  const { comments, sendComment, reportComment, deleteComment } =
+    useProposalComments(contextId, contextType);
 
   const handleCommentInput = useCallback(e => {
     const { value: newValue } = e.target;

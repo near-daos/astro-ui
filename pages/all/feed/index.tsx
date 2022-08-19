@@ -58,14 +58,12 @@ GlobalFeedPage.getLayout = function getLayout(page: ReactNode) {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<React.ComponentProps<
-  typeof Feed
->> = async ({ query, locale = 'en' }) => {
+export const getServerSideProps: GetServerSideProps<
+  React.ComponentProps<typeof Feed>
+> = async ({ query, locale = 'en' }) => {
   const accountId = CookieService.get(ACCOUNT_COOKIE);
-  const {
-    category,
-    status = ProposalsFeedStatuses.Active,
-  } = query as ProposalsQueries;
+  const { category, status = ProposalsFeedStatuses.Active } =
+    query as ProposalsQueries;
   const res = await SputnikHttpService.getProposalsList({
     category,
     status,

@@ -3,7 +3,7 @@ import { Token } from 'types/token';
 
 import { BuyNftFromMintbaseInput } from 'astro_2.0/features/CreateProposal/helpers/proposalObjectHelpers';
 
-export const dao = ({
+export const dao = {
   id: 'legaldao.sputnikv2.testnet',
   name: 'legaldao',
   policy: {
@@ -12,7 +12,7 @@ export const dao = ({
     proposalPeriod: '100000000000000000000000',
     bountyForgivenessPeriod: '100000000000000000000000',
   },
-} as unknown) as DAO;
+} as unknown as DAO;
 
 export const customFunctionCallData = {
   gas: 150,
@@ -76,7 +76,7 @@ export const swapsOnRefInputData = {
   target: 'target',
 };
 
-export const tokens = ({
+export const tokens = {
   NEAR: {
     createdAt: '2021-12-07T19:15:52.793Z',
     transactionHash: null,
@@ -97,4 +97,4 @@ export const tokens = ({
     balance: '5.1002',
     tokenId: '',
   },
-} as unknown) as Record<string, Token>;
+} as unknown as Record<string, Token>;

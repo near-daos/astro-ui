@@ -9,13 +9,13 @@ import {
 describe('image validators', () => {
   describe('requiredImg', () => {
     it('Should return false if FileList is empty', () => {
-      const result = requiredImg(([] as unknown) as FileList);
+      const result = requiredImg([] as unknown as FileList);
 
       expect(result).toBeFalsy();
     });
 
     it('Should return true if FileList is not empty', () => {
-      const result = requiredImg(([1] as unknown) as FileList);
+      const result = requiredImg([1] as unknown as FileList);
 
       expect(result).toBeTruthy();
     });
@@ -25,13 +25,13 @@ describe('image validators', () => {
     it('Should return true for files that are smaller than 204800 kB', () => {
       const fileList = [{ size: 20000 }];
 
-      const result = validateImgSize((fileList as unknown) as FileList);
+      const result = validateImgSize(fileList as unknown as FileList);
 
       expect(result).toBeTruthy();
     });
 
     it('Should not return error if no file provided', () => {
-      const result = validateImgSize(([] as unknown) as FileList);
+      const result = validateImgSize([] as unknown as FileList);
 
       expect(result).toBeTruthy();
     });
@@ -39,7 +39,7 @@ describe('image validators', () => {
     it('Should return false for files that are bigger than 204800 kB', () => {
       const fileList = [{ size: 2048000 }];
 
-      const result = validateImgSize((fileList as unknown) as FileList);
+      const result = validateImgSize(fileList as unknown as FileList);
 
       expect(result).toBeFalsy();
     });

@@ -13,9 +13,7 @@ import {
 } from 'types/proposalTemplate';
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 
-export function useProposalTemplates(
-  daoId: string
-): {
+export function useProposalTemplates(daoId: string): {
   deleteTemplate: (id: string) => void;
   updateTemplate: (id: string, data: TemplateUpdatePayload) => void;
   templates: ProposalTemplate[];
@@ -48,10 +46,8 @@ export function useProposalTemplates(
 
       if (publicKey && signature) {
         try {
-          const updatedTemplate = await SputnikHttpService.updateProposalTemplate(
-            daoId,
-            id,
-            {
+          const updatedTemplate =
+            await SputnikHttpService.updateProposalTemplate(daoId, id, {
               accountId,
               publicKey,
               signature,
@@ -59,8 +55,7 @@ export function useProposalTemplates(
               description,
               isEnabled,
               config,
-            }
-          );
+            });
 
           showNotification({
             type: NOTIFICATION_TYPES.SUCCESS,

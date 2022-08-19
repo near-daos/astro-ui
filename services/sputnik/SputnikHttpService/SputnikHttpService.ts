@@ -244,8 +244,7 @@ class SputnikHttpServiceClass {
         PaginationResponse<ProposalFeedItem[]>
       >('/proposals/account-proposals', {
         responseMapper: {
-          name:
-            API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+          name: API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
         },
         queryRequest: {
           name: API_QUERIES.GET_PROPOSALS_LIST_BY_ACCOUNT_ID,
@@ -272,8 +271,7 @@ class SputnikHttpServiceClass {
         PaginationResponse<ProposalFeedItem[]>
       >('/proposals', {
         responseMapper: {
-          name:
-            API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+          name: API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
         },
         queryRequest: {
           name: API_QUERIES.GET_PROPOSALS_LIST,
@@ -300,8 +298,7 @@ class SputnikHttpServiceClass {
         PaginationResponse<ProposalFeedItem[]>
       >('/proposals', {
         responseMapper: {
-          name:
-            API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+          name: API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
         },
         queryRequest: {
           name: API_QUERIES.GET_PROPOSAL_BY_ID,
@@ -328,8 +325,7 @@ class SputnikHttpServiceClass {
         PaginationResponse<ProposalFeedItem[]>
       >('/proposals', {
         responseMapper: {
-          name:
-            API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+          name: API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
         },
         queryRequest: {
           name: API_QUERIES.FIND_POLICY_AFFECTS_PROPOSALS,
@@ -398,8 +394,7 @@ class SputnikHttpServiceClass {
         PaginationResponse<ProposalFeedItem[]>
       >('/proposals', {
         responseMapper: {
-          name:
-            API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+          name: API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
         },
         params: daoId ? params : omit(params, 'filter'),
       });
@@ -1172,8 +1167,7 @@ class SputnikHttpServiceClass {
         PaginationResponse<ProposalFeedItem[]>
       >('/proposals', {
         responseMapper: {
-          name:
-            API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+          name: API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
         },
         queryRequest: {
           name: API_QUERIES.FIND_TRANSFER_PROPOSALS,
