@@ -61,6 +61,7 @@ jobs:
         path: astro-test-framework
 
     - name: Set Environment
+      id: set_environment
       run: |
         cat ".github/env.common" | grep -E -v '^\ *#' >>$GITHUB_ENV
         cat ".github/env.${{ inputs.environment }}" | grep -E -v '^\ *#' >>$GITHUB_ENV
@@ -102,32 +103,32 @@ jobs:
           find ./
           set -x
         fi
-        sudo mkdir astro-test-framework/build/${{ inputs.workflow_name }}-${{ github.run_number }}
-        sudo cp -r astro-test-framework/build/reports/allure-report astro-test-framework/build/${{ inputs.workflow_name }}-${{ github.run_number }}/
-        #sudo cp -r astro-test-framework/build/swagger-coverage-output astro-test-framework/build/${{ inputs.workflow_name }}-${{ github.run_number }}/
-        #sudo find astro-test-framework/build -name swagger-coverage-report.html -exec cp '{}' astro-test-framework/build/${{ inputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/index.html \;
-        #sudo find astro-test-framework/build -name swagger-coverage-results.json -exec cp '{}' astro-test-framework/build/${{ inputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/ \;
-        cat .github/actions/tests/reports-site/HEADER.html.template | envsubst | sudo tee astro-test-framework/build/${{ inputs.workflow_name }}-${{ github.run_number }}/HEADER.html
+        sudo mkdir astro-test-framework/build/${{ steps.set_environment.workflow_name }}-${{ github.run_number }}
+        sudo cp -r astro-test-framework/build/reports/allure-report astro-test-framework/build/${{ steps.set_environment.workflow_name }}-${{ github.run_number }}/
+        #sudo cp -r astro-test-framework/build/swagger-coverage-output astro-test-framework/build/${{ steps.set_environment.workflow_name }}-${{ github.run_number }}/
+        #sudo find astro-test-framework/build -name swagger-coverage-report.html -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/index.html \;
+        #sudo find astro-test-framework/build -name swagger-coverage-results.json -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/ \;
+        cat .github/actions/tests/reports-site/HEADER.html.template | envsubst | sudo tee astro-test-framework/build/${{ steps.set_environment.workflow_name }}-${{ github.run_number }}/HEADER.html
 
 #    - uses: actions/upload-artifact@v2
 #      with:
 #        name: coverage_report
-#        path: astro-test-framework/build/${{ inputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/**
+#        path: astro-test-framework/build/${{ steps.set_environment.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/**
 
     - uses: Consensys/kubernetes-action@1.1.0
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: cp -n autotests astro-test-framework/build/${{ inputs.workflow_name }}-${{ github.run_number }} ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ inputs.environment }}
+        args: cp -n autotests astro-test-framework/build/${{ steps.set_environment.workflow_name }}-${{ github.run_number }} ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ inputs.environment }}
 
     - uses: Consensys/kubernetes-action@1.1.0
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: cp -n autotests astro-test-framework/build/${{ inputs.workflow_name }}-${{ github.run_number }}/allure-report/history ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ inputs.environment }}/history
+        args: cp -n autotests astro-test-framework/build/${{ steps.set_environment.workflow_name }}-${{ github.run_number }}/allure-report/history ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ inputs.environment }}/history
 
     - name: Add Annotation
       run: |
-        echo "::notice title=Allure Report::https://automation-report.app.astrodao.com/ui-${{ inputs.environment }}/${{ inputs.workflow_name }}-${{ github.run_number }}/allure-report/"
-        #echo "::notice title=Coverage Report::https://automation-report.app.astrodao.com/ui-${{ inputs.environment }}/${{ inputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/"
+        echo "::notice title=Allure Report::https://automation-report.app.astrodao.com/ui-${{ inputs.environment }}/${{ steps.set_environment.workflow_name }}-${{ github.run_number }}/allure-report/"
+        #echo "::notice title=Coverage Report::https://automation-report.app.astrodao.com/ui-${{ inputs.environment }}/${{ steps.set_environment.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/"
         echo "::notice title=History for Environment::https://automation-report.app.astrodao.com/ui-${{ inputs.environment }}/"
