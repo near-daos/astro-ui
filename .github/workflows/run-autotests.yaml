@@ -65,6 +65,7 @@ jobs:
       run: |
         cat ".github/env.common" | grep -E -v '^\ *#' >>$GITHUB_ENV
         cat ".github/env.${{ inputs.environment }}" | grep -E -v '^\ *#' >>$GITHUB_ENV
+        echo "GITHUB_WORKFLOW is $GITHUB_WORKFLOW"
         echo "::set-output name=workflow_name::${GITHUB_WORKFLOW// /-}"
 
     - name: Run Tests
