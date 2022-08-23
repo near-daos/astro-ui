@@ -33,7 +33,7 @@ export const DaoAction: FC<Props> = ({
   const flags = useFlags();
   const { t } = useTranslation();
   const { accountId, login } = useWalletContext();
-  const isMobile = useMedia('(max-width: 1023px)');
+  const isMobile = useMedia('(max-width: 768px)');
   const [open, setOpen] = useState(false);
 
   const closeDropdown = useCallback(() => {
@@ -160,13 +160,13 @@ export const DaoAction: FC<Props> = ({
     );
   }
 
-  if (flags.draftProposals && !canCreateProposals) {
+  if (flags.draftProposals && accountId && !canCreateProposals) {
     return (
       <Button
         data-testid="createDraft"
         size="block"
         onClick={handleCreateDraft}
-        className={styles.addProposalButton}
+        className={isMobile ? styles.nextAction : styles.addProposalButton}
         variant="tertiary"
       >
         <Icon width={32} name="buttonAdd" className={styles.createIcon} />

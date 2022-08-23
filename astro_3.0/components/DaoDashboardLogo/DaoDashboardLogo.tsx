@@ -27,7 +27,7 @@ export const DaoDashboardLogo: FC<Props> = ({
   className,
   isEditable,
 }) => {
-  const isMobile = useMedia('(max-width: 1023px)');
+  const isMobile = useMedia('(max-width: 768px)');
   const { appVersion } = useAppVersion();
   const { watch, setValue } = useFormContext();
   const isNextVersion = appVersion === 3;

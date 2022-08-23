@@ -42,7 +42,7 @@ export const DaoHeaderContent: FC<Props> = ({
   userPermissions,
 }) => {
   const { id, displayName, daoMembersList, members, daoVersion } = dao;
-  const isMobile = useMedia('(max-width: 1023px)');
+  const isMobile = useMedia('(max-width: 768px)');
   const flags = useFlags();
   const { accountId } = useWalletContext();
   const { t } = useTranslation();
@@ -117,7 +117,7 @@ export const DaoHeaderContent: FC<Props> = ({
         </section>
 
         {showFollowButton || showJoinButton ? (
-          <section className={styles.followSection}>
+          <section className={styles.versionSection}>
             {showJoinButton && (
               <JoinDaoButton
                 onClick={onCreateProposal}
