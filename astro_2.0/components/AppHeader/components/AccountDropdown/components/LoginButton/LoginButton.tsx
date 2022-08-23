@@ -7,6 +7,8 @@ import { useWalletContext } from 'context/WalletContext';
 import { useAppVersion } from 'hooks/useAppVersion';
 import { Button } from 'components/button/Button';
 
+import styles from './LoginButton.module.scss';
+
 export const LoginButton: React.FC = () => {
   const { login, connectingToWallet } = useWalletContext();
   const { appVersion } = useAppVersion();
@@ -22,6 +24,7 @@ export const LoginButton: React.FC = () => {
         capitalize
         disabled={connectingToWallet}
         onClick={() => showModal()}
+        className={styles.loginButton}
       >
         Connect wallet
       </Button>

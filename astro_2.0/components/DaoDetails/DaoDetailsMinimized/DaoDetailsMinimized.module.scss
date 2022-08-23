@@ -28,14 +28,14 @@
 .wrapper {
   align-items: center;
   display: flex;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   -ms-overflow-style: none;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
   width: 100%;
 
-  @include desktop {
+  @include tablet-landscape {
     margin-bottom: 0;
   }
 }
