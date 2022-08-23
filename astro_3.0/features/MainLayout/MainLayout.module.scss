@@ -4,7 +4,13 @@
   padding: 0 24px 60px;
   width: 100%;
 
+  @include tablet-landscape {
+    padding: 0 42px 60px 24px;
+  }
+
   @include desktop {
+    margin: auto;
+    max-width: 920px;
     padding: 0 48px 60px 94px;
   }
 

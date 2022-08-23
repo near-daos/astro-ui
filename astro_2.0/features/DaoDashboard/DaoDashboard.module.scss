@@ -28,6 +28,7 @@
 .descriptionSection {
   @extend %body2;
   grid-area: description;
+  margin: 0;
 }
 
 .chart {

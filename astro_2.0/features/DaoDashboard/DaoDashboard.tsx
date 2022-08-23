@@ -14,6 +14,8 @@ import { formatCurrency } from 'utils/formatCurrency';
 
 import { DaoContext } from 'types/context';
 
+import { DaoPurpose } from 'astro_2.0/features/DaoDashboard/DaoPurpose';
+
 import styles from './DaoDashboard.module.scss';
 
 interface DaoDashboardProps {
@@ -49,11 +51,11 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
 
   return (
     <div className={cn(styles.root, className)}>
-      {dao.description && (
-        <section className={styles.descriptionSection}>
-          {dao.description}
-        </section>
-      )}
+      <DaoPurpose
+        links={dao.links}
+        description={dao.description}
+        className={styles.descriptionSection}
+      />
 
       <div className={styles.chart}>{renderChart()}</div>
       <StatCard

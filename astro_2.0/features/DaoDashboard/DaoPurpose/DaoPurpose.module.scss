@@ -1,0 +1,44 @@
+@import 'styles/mixins';
+
+.root {
+  align-items: flex-start;
+  display: grid;
+  grid-column-gap: 12px;
+  grid-template-columns: 1fr 24px;
+
+  margin-bottom: 12px;
+}
+
+.content {
+  a {
+    color: var(--color-neutral-90);
+    margin-bottom: 12px;
+  }
+
+  a:hover {
+    color: var(--color-primary);
+  }
+
+  .link {
+    margin-right: 8px;
+  }
+}
+
+.links {
+  display: block;
+  margin-top: 12px;
+  visibility: hidden;
+
+  @include desktop {
+    display: none;
+  }
+
+  &.visible {
+    visibility: visible;
+  }
+}
+
+.icon {
+  min-width: 24px;
+  width: 24px;
+}

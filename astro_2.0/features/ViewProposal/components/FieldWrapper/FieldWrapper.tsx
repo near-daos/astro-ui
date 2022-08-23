@@ -50,6 +50,7 @@ interface FieldValueProps {
   normal?: boolean;
   noWrap?: boolean;
   className?: string;
+  autoHeight?: boolean;
 }
 
 export const FieldValue: FC<FieldValueProps> = ({
@@ -57,6 +58,7 @@ export const FieldValue: FC<FieldValueProps> = ({
   normal,
   noWrap,
   className,
+  autoHeight,
 }) => {
   return (
     <div
@@ -65,6 +67,7 @@ export const FieldValue: FC<FieldValueProps> = ({
         {
           [styles.normal]: normal,
           [styles.noWrap]: noWrap,
+          [styles.autoHeight]: autoHeight,
         },
         className
       )}
