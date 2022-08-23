@@ -25,7 +25,7 @@ export const ChangeDaoPurposeContent: FC<ChangeDaoPurposeContentProps> = ({
     <div className={styles.root}>
       <div className={styles.row}>
         <FieldWrapper label={t('proposalCard.newDAOPurpose')}>
-          <FieldValue value={purpose} normal />
+          <FieldValue value={purpose} normal autoHeight />
         </FieldWrapper>
       </div>
       <div className={cn(styles.row, styles.target)}>

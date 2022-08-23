@@ -89,7 +89,7 @@ $search-max-width: 768;
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 20;
+  z-index: 120;
 
   @include astro-desktop {
     height: unset;

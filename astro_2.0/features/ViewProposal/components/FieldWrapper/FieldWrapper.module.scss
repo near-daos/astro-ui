@@ -58,6 +58,10 @@
     font-weight: 400;
   }
 
+  &.autoHeight {
+    height: auto;
+  }
+
   .ellipse {
     @include ellipse-text;
     display: block;

@@ -12,11 +12,12 @@ export type ListItem = {
   label: string;
   disabled?: boolean;
   icon?: IconName;
+  queryName?: string;
 };
 
 interface Props {
   disabled?: boolean;
-  queryName: string;
+  // queryName: string;
   className?: string;
   list?: ListItem[];
   hideAllOption?: boolean;
@@ -27,16 +28,22 @@ interface Props {
 export const CategoriesFeedFilter: FC<Props> = ({
   list,
   disabled,
-  queryName,
   className,
   itemClassName,
   shallowUpdate = false,
 }) => {
   const { query, replace } = useRouter();
-  const { [queryName]: value } = query;
 
   function renderFilterItem(item: ListItem) {
-    const { value: itemVal, label, disabled: disabledItem, icon } = item;
+    const {
+      value: itemVal,
+      label,
+      disabled: disabledItem,
+      icon,
+      queryName = '',
+    } = item;
+
+    const { [queryName]: value } = query;
 
     const href = {
       query: {

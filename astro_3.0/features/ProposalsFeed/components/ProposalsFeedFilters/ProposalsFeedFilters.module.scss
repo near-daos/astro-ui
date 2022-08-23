@@ -105,11 +105,3 @@
   overflow-y: hidden;
   padding: 0 12px;
 }
-
-.categoriesFilter {
-  display: none;
-
-  @include desktop {
-    display: flex;
-  }
-}

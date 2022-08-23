@@ -56,7 +56,6 @@ export const StatusFeedFilter: FC<Props> = ({ className }) => {
   return (
     <CategoriesFeedFilter
       hideAllOption
-      queryName="status"
       list={options}
       disabled={false}
       className={className}
