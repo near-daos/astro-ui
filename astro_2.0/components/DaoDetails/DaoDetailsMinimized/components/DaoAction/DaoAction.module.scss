@@ -4,6 +4,7 @@
 .root {
   height: 100%;
   position: relative;
+  width: 100%;
 }
 
 .menu {
@@ -78,6 +79,26 @@
   height: 66px;
   padding: 0;
   width: 56px;
+
+  @include tablet-landscape {
+    border-radius: 0 8px 8px 0;
+    height: 100%;
+    padding: 0;
+  }
+
+  @include large-desktop {
+    padding: 0;
+  }
+}
+
+.nextAction {
+  @extend %title3;
+  @include centralize;
+  background-color: var(--color-brand-green);
+  border-radius: 0 0 8px 8px;
+  height: 40px;
+  padding: 0;
+  width: 100%;
 
   @include tablet-landscape {
     border-radius: 0 8px 8px 0;

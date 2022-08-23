@@ -1,0 +1,59 @@
+@import 'styles/mixins';
+
+.root {
+  border-radius: 6px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  color: var(--color-neutral-60);
+  cursor: pointer;
+  display: flex;
+
+  font-family: var(--font-family-primary);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 24px;
+  margin: 8px 0;
+
+  padding: 8px 14px;
+  transition: 0.4s;
+  white-space: nowrap;
+
+  &:not(:last-of-type) {
+    margin-right: 16px;
+  }
+
+  &:hover {
+    box-shadow: 0 2px 14px var(--color-black-opacity-3);
+  }
+}
+
+.flagHolder {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.header {
+  @include ellipse-text;
+  color: var(--color-brand-black);
+  font-family: var(--font-family-primary);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 24px;
+  max-width: 140px;
+
+  @include tablet-landscape {
+    max-width: 180px;
+  }
+}
+
+.sub {
+  @include ellipse-text;
+  max-width: 140px;
+
+  @include tablet-landscape {
+    max-width: 180px;
+  }
+}

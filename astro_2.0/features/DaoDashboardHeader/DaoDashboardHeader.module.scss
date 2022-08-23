@@ -57,7 +57,7 @@
   background-size: cover;
   grid-area: letterHeadSection;
   height: 134px;
-  margin: 0 -24px;
+  margin: 0;
   position: relative;
 
   @include tablet-landscape {
@@ -75,6 +75,11 @@
 
   .assetsWrapper {
     position: relative;
+    width: fit-content;
+
+    @include desktop {
+      width: auto;
+    }
   }
 
   .logo {
@@ -83,7 +88,11 @@
   }
 
   .logo.leftAligned {
-    transform: translate(0, 68px);
+    transform: translate(0, 88px);
+
+    @include desktop {
+      transform: translate(0, 68px);
+    }
   }
 }
 

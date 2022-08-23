@@ -33,7 +33,7 @@ import styles from './NestedDaoPageWrapper.module.scss';
 interface NestedDaoPageWrapperProps {
   daoContext: DaoContext;
   defaultProposalType?: ProposalVariant;
-  breadcrumbs: {
+  breadcrumbs?: {
     href?: string | UrlObject;
     label: string;
   }[];
@@ -54,6 +54,10 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
   function renderBreadcrumbs() {
+    if (!breadcrumbs) {
+      return null;
+    }
+
     const navItems = breadcrumbs.map(breadcrumb => {
       const { href, label } = breadcrumb;
 

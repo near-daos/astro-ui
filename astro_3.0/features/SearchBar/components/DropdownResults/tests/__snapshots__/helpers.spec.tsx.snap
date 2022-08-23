@@ -1,0 +1,223 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`search results dropdown helpers Should render proper content for AddBounty proposals 1`] = `
+<Button
+  className="row"
+  onClick={[Function]}
+  variant="tertiary"
+>
+  <div
+    className="summary"
+  >
+    <TextTruncate
+      element="span"
+      line={3}
+      maxCalculateTimes={10}
+      text=""
+      textElement="span"
+      textTruncateChild={null}
+      truncateText="…"
+    />
+  </div>
+</Button>
+`;
+
+exports[`search results dropdown helpers Should render proper content for AddMemberToRole proposals 1`] = `
+<Button
+  className="row"
+  onClick={[Function]}
+  variant="tertiary"
+>
+  <div
+    className="summary"
+  >
+    <span>
+      Add 
+      <strong />
+       as a member to
+    </span>
+    <ForwardRef
+      size="small"
+    />
+  </div>
+</Button>
+`;
+
+exports[`search results dropdown helpers Should render proper content for BountyDone proposals 1`] = `
+<Button
+  className="row"
+  onClick={[Function]}
+  variant="tertiary"
+>
+  <div
+    className="summary"
+  >
+    <TextTruncate
+      element="span"
+      line={3}
+      maxCalculateTimes={10}
+      text=""
+      textElement="span"
+      textTruncateChild={null}
+      truncateText="…"
+    />
+  </div>
+</Button>
+`;
+
+exports[`search results dropdown helpers Should render proper content for ChangePolicy proposals 1`] = `
+<Button
+  className="row"
+  onClick={[Function]}
+  variant="tertiary"
+>
+  <div
+    className="summary"
+  >
+    <span>
+      This is a proposal to change voting policies for our groups.
+    </span>
+  </div>
+</Button>
+`;
+
+exports[`search results dropdown helpers Should render proper content for FunctionCall proposals 1`] = `
+<Button
+  className="row"
+  onClick={[Function]}
+  variant="tertiary"
+>
+  <div
+    className="summary"
+  >
+    <span>
+      Function call
+    </span>
+  </div>
+</Button>
+`;
+
+exports[`search results dropdown helpers Should render proper content for RemoveMemberFromRole proposals 1`] = `
+<Button
+  className="row"
+  onClick={[Function]}
+  variant="tertiary"
+>
+  <div
+    className="summary"
+  >
+    <span>
+      Remove 
+      <strong />
+       from
+    </span>
+    <ForwardRef
+      size="small"
+    />
+  </div>
+</Button>
+`;
+
+exports[`search results dropdown helpers Should render proper content for SetStakingContract proposals 1`] = `
+<Button
+  className="row"
+  onClick={[Function]}
+  variant="tertiary"
+>
+  <div
+    className="summary"
+  >
+    <TextTruncate
+      element="span"
+      line={3}
+      maxCalculateTimes={10}
+      text=""
+      textElement="span"
+      textTruncateChild={null}
+      truncateText="…"
+    />
+  </div>
+</Button>
+`;
+
+exports[`search results dropdown helpers Should render proper content for Transfer proposals 1`] = `
+<Button
+  className="row"
+  onClick={[Function]}
+  variant="tertiary"
+>
+  <div
+    className="summary"
+  >
+    <span>
+      I would like to request a payment
+    </span>
+  </div>
+</Button>
+`;
+
+exports[`search results dropdown helpers Should render proper content for UpgradeRemote proposals 1`] = `
+<Button
+  className="row"
+  onClick={[Function]}
+  variant="tertiary"
+>
+  <div
+    className="summary"
+  >
+    <TextTruncate
+      element="span"
+      line={3}
+      maxCalculateTimes={10}
+      text=""
+      textElement="span"
+      textTruncateChild={null}
+      truncateText="…"
+    />
+  </div>
+</Button>
+`;
+
+exports[`search results dropdown helpers Should render proper content for UpgradeSelf proposals 1`] = `
+<Button
+  className="row"
+  onClick={[Function]}
+  variant="tertiary"
+>
+  <div
+    className="summary"
+  >
+    <TextTruncate
+      element="span"
+      line={3}
+      maxCalculateTimes={10}
+      text=""
+      textElement="span"
+      textTruncateChild={null}
+      truncateText="…"
+    />
+  </div>
+</Button>
+`;
+
+exports[`search results dropdown helpers Should render proper content for Vote proposals 1`] = `
+<Button
+  className="row"
+  onClick={[Function]}
+  variant="tertiary"
+>
+  <div
+    className="summary"
+  >
+    <TextTruncate
+      element="span"
+      line={3}
+      maxCalculateTimes={10}
+      text=""
+      textElement="span"
+      textTruncateChild={null}
+      truncateText="…"
+    />
+  </div>
+</Button>
+`;

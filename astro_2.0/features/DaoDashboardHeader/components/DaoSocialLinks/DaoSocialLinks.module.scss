@@ -1,15 +1,22 @@
+@import 'styles/mixins';
+
 .root {
   align-items: center;
   background-color: var(--color-black-opacity-14);
   border-radius: 8px;
-  bottom: 24px;
-  display: flex;
+  bottom: -24px;
+  display: none;
 
   height: 42px;
 
   padding: 12px;
   position: absolute;
   right: 0;
+
+  @include desktop {
+    bottom: 24px;
+    display: flex;
+  }
 
   &.editable:hover .edit {
     display: block;

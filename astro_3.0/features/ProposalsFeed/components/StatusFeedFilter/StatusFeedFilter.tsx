@@ -9,7 +9,11 @@ import {
 } from 'astro_3.0/features/ProposalsFeed/components/CategoriesFeedFilter';
 import { IconName } from 'components/Icon';
 
-export const StatusFeedFilter: FC = () => {
+interface Props {
+  className?: string;
+}
+
+export const StatusFeedFilter: FC<Props> = ({ className }) => {
   const router = useRouter();
 
   const { t } = useTranslation();
@@ -55,6 +59,7 @@ export const StatusFeedFilter: FC = () => {
       queryName="status"
       list={options}
       disabled={false}
+      className={className}
     />
   );
 };

@@ -1,0 +1,16 @@
+@import 'styles/typography';
+
+.root {
+  background: var(--color-neutral-10);
+  border-radius: 8px;
+  box-shadow: 0 8.89583px 30px rgba(0, 0, 0, 0.14);
+  max-height: 50vh;
+  overflow: auto;
+  width: 100%;
+}
+
+.proposalsContent {
+  display: block;
+  padding-left: 0;
+  padding-right: 0;
+}

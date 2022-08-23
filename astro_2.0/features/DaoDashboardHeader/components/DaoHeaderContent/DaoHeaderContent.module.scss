@@ -6,20 +6,18 @@
   grid-gap: 12px 0;
   grid-template-areas:
     'letterHeadSection letterHeadSection letterHeadSection'
-    '. usersSection linksSection'
+    '. usersSection versionSection'
     'followSection followSection followSection'
     'depositSection depositSection depositSection'
-    'descriptionSection descriptionSection descriptionSection'
     'warningSection warningSection warningSection';
-  grid-template-columns: 160px 80px 1fr;
+  grid-template-columns: 110px 80px 1fr;
 
   @include tablet-landscape {
     grid-gap: 12px 0;
     grid-template-areas:
       'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
       '. depositSection depositSection depositSection'
-      '. usersSection followSection followSection'
-      'descriptionSection descriptionSection descriptionSection descriptionSection'
+      '. usersSection versionSection followSection'
       'warningSection warningSection warningSection warningSection';
     grid-template-columns: 200px 60px 1fr minmax(230px, 280px);
     padding-top: 24px;
@@ -29,8 +27,7 @@
     grid-gap: 12px 0;
     grid-template-areas:
       'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
-      '. usersSection followSection depositSection'
-      'descriptionSection descriptionSection descriptionSection descriptionSection'
+      '. usersSection versionSection depositSection'
       'warningSection warningSection warningSection warningSection';
     grid-template-columns: 200px 60px 1fr minmax(220px, 280px);
 
@@ -43,8 +40,7 @@
     grid-gap: 12px 0;
     grid-template-areas:
       'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
-      '. usersSection followSection depositSection'
-      'descriptionSection descriptionSection descriptionSection descriptionSection'
+      '. usersSection versionSection depositSection'
       'warningSection warningSection warningSection warningSection';
     grid-template-columns: 200px 80px 1fr max(320px);
   }
@@ -95,7 +91,7 @@
   display: flex;
   grid-area: followSection;
   justify-content: center;
-  margin-top: 24px;
+  //margin-top: 24px;
   width: 100%;
 
   @include tablet-landscape {
@@ -124,7 +120,7 @@
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  grid-area: followSection;
+  grid-area: versionSection;
   justify-content: center;
   padding: 0 0 0 12px;
 

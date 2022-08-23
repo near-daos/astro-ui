@@ -1,0 +1,61 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+
+  border: 1px solid transparent;
+
+  border-radius: 8px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  height: 40px;
+
+  margin: 12px 0;
+
+  position: relative;
+}
+
+.iconWrapper {
+  @include centralize;
+}
+
+.iconWrapper:active {
+  background-color: var(--color-neutral-10);
+  border-color: transparent;
+
+  .icon {
+    color: var(--color-primary);
+  }
+}
+
+.icon {
+  color: var(--color-neutral-80);
+  width: 24px;
+}
+
+.actionsCount {
+  @extend %subtitle6;
+  background-color: var(--color-error-60);
+  border-radius: 10px;
+  color: var(--color-white);
+  padding: 1px 4px;
+  position: absolute;
+  right: 0;
+  top: -4px;
+}
+
+.label {
+  @extend %caption2;
+  display: block;
+}
+
+.active {
+  .icon,
+  .label {
+    color: var(--color-primary);
+  }
+}

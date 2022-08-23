@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`search result dao card Should render component 1`] = `
+<div>
+  <div
+    class="root"
+    role="button"
+    tabindex="0"
+  >
+    <div
+      class="flagHolder"
+    >
+      <div
+        class="root md"
+      >
+        <svg
+          class="defaultLogo"
+        >
+          <use
+            href="/_next/undefined"
+          />
+        </svg>
+      </div>
+    </div>
+    <div>
+      <div
+        class="header"
+      >
+        dao id
+      </div>
+      <div
+        class="sub"
+      >
+        dao id
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,150 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  @include centralize;
+  display: flex;
+  margin: 0 24px 0 0;
+  position: relative;
+}
+
+.toggleWrapper {
+  align-items: center;
+  background-color: var(--color-white);
+  display: flex;
+  justify-content: flex-start;
+  z-index: 100;
+}
+
+.toggle {
+  @include centralize;
+  position: relative;
+  width: fit-content;
+
+  &::after {
+    @extend %heading3;
+    color: var(--color-neutral-90);
+    content: attr(data-title);
+    left: 100%;
+    margin-left: 24px;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    transition: opacity 0.1s ease-out;
+    white-space: nowrap;
+  }
+}
+
+.title {
+  color: var(--color-neutral-90);
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+.icon {
+  width: 24px;
+}
+
+.content {
+  background-color: var(--color-neutral-30);
+  bottom: 0;
+  display: none;
+  left: 0;
+  padding: 28px 16px;
+  position: fixed;
+  right: 0;
+  top: var(--app-header-height);
+}
+
+.root.expanded {
+  .toggleWrapper {
+    width: 100%;
+  }
+
+  .content {
+    display: flex;
+  }
+
+  .toggle {
+    margin-left: 24px;
+  }
+
+  .toggle::after {
+    opacity: 1;
+  }
+
+  .toggleWrapper {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+    height: var(--app-header-height);
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+  }
+}
+
+.list {
+  @include custom-scrollbar-vertical;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.listItem {
+  align-items: center;
+  display: flex;
+  height: 40px;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.avatar {
+  @include centralize;
+  background-color: var(--color-neutral-20);
+  background-position: center;
+  background-size: contain;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  height: 40px;
+  width: 40px;
+}
+
+.label {
+  @extend %title2;
+  display: flex;
+  margin-left: 24px;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+.noDaosWarning {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+
+  h2 {
+    margin-bottom: 0;
+  }
+}
+
+.image {
+  background-image: url('/assets/illustrations/no-results.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  max-width: 320px;
+  min-height: 200px;
+  text-align: center;
+  width: 100%;
+}
+
+.createDaoButton {
+  @include centralize;
+  margin-top: 24px;
+}

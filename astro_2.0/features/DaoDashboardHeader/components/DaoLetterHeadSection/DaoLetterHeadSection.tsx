@@ -111,7 +111,6 @@ export const DaoLetterHeadSection: FC<Props> = ({
       })}
       style={backgroundImageStyles}
     >
-      {isNextVersion && <div className={styles.backgroundFilter} />}
       {isNextVersion && isEditable && (
         <div className={styles.editCover}>
           <ImageUpload

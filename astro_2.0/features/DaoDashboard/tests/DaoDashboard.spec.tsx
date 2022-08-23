@@ -6,6 +6,8 @@ import { useDaoDashboardData } from 'astro_2.0/features/DaoDashboard/hooks';
 
 import { DaoDashboard } from 'astro_2.0/features/DaoDashboard';
 
+import { DaoContext } from 'types/context';
+
 import { chartData, dashboardData } from './mock';
 
 jest.mock('astro_2.0/features/DaoDashboard/hooks', () => {
@@ -38,6 +40,8 @@ jest.mock('next-i18next', () => ({
 }));
 
 describe('DaoDashboard', () => {
+  const daoContext = { dao: { id: '1' } } as DaoContext;
+
   it('Should render component', () => {
     // @ts-ignore
     useDaoDashboardData.mockImplementation(() => ({
@@ -48,7 +52,7 @@ describe('DaoDashboard', () => {
       loading: false,
     }));
 
-    const { getByText } = render(<DaoDashboard />);
+    const { getByText } = render(<DaoDashboard daoContext={daoContext} />);
 
     expect(getByText('daoDashboard.bounties')).toBeTruthy();
   });
@@ -62,7 +66,7 @@ describe('DaoDashboard', () => {
       loading: true,
     }));
 
-    const { getByText } = render(<DaoDashboard />);
+    const { getByText } = render(<DaoDashboard daoContext={daoContext} />);
 
     expect(getByText('This may take some time')).toBeTruthy();
   });
@@ -76,7 +80,7 @@ describe('DaoDashboard', () => {
       loading: false,
     }));
 
-    const { getByText } = render(<DaoDashboard />);
+    const { getByText } = render(<DaoDashboard daoContext={daoContext} />);
 
     expect(getByText('No data available')).toBeTruthy();
   });
@@ -99,7 +103,7 @@ describe('DaoDashboard', () => {
       loading: false,
     }));
 
-    const { getAllByTestId } = render(<DaoDashboard />);
+    const { getAllByTestId } = render(<DaoDashboard daoContext={daoContext} />);
 
     fireEvent.click(getAllByTestId('stat-card')[index]);
 

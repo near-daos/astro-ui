@@ -1,0 +1,23 @@
+.root {
+  align-items: center;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+
+  height: 52px;
+  letter-spacing: 0;
+  line-height: 16px;
+
+  transition: 0.2s;
+
+  &:not(:last-of-type) {
+    margin-right: 32px;
+  }
+}
+
+.icon {
+  margin-right: 8px;
+}

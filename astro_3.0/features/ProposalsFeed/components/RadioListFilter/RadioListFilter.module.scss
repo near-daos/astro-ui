@@ -1,0 +1,15 @@
+.root {
+  display: block;
+}
+
+.items {
+  list-style: none;
+  padding: 0;
+}
+
+.item {
+  align-items: center;
+  display: flex;
+
+  margin-bottom: 24px;
+}

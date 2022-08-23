@@ -1,0 +1,100 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  height: 40px;
+
+  margin: 12px 0;
+
+  position: relative;
+
+  &.open {
+    color: var(--color-primary);
+  }
+}
+
+.iconWrapper {
+  @include centralize;
+}
+
+.iconWrapper:active {
+  background-color: var(--color-neutral-10);
+  border-color: transparent;
+
+  .icon {
+    color: var(--color-primary);
+  }
+}
+
+.icon,
+.more {
+  color: var(--color-neutral-80);
+  width: 24px;
+}
+
+.more {
+  transform: rotate(90deg);
+}
+
+.moreButton {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+  padding: 0;
+
+  a {
+    align-items: center;
+    display: flex;
+  }
+
+  .icon {
+    margin-right: 12px;
+  }
+}
+
+.label {
+  @extend %caption2;
+  display: block;
+}
+
+.active {
+  .icon,
+  .label {
+    color: var(--color-primary);
+  }
+}
+
+.content {
+  background-color: var(--color-neutral-20);
+  bottom: var(--app-footer-height);
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  padding: 24px;
+  position: fixed;
+  right: 0;
+  top: var(--app-header-height);
+  z-index: 100;
+}
+
+.footer {
+  margin-top: auto;
+}
+
+.locale {
+  margin: 24px 0;
+}
+
+.social {
+  margin-right: 24px;
+}
+
+.copyright {
+  @extend %caption1;
+  margin-top: 24px;
+}

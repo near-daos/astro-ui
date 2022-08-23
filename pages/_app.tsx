@@ -25,6 +25,8 @@ import { useAppInitialize } from 'hooks/useAppInitialize';
 import { FeatureFlagsProvider } from 'astro_2.0/features/FeatureFlagsProvider/FeatureFlagsProvider';
 
 import 'styles/globals.scss';
+import { useAppVersion } from 'hooks/useAppVersion';
+import { MobileAppNavigation } from 'astro_3.0/features/MobileAppNavigation';
 
 type GetLayout = (page: ReactNode) => ReactNode;
 
@@ -44,6 +46,7 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
   const router = useRouter();
   const initialized = useAppInitialize();
   const getLayout = Component.getLayout ?? defaultGetLayout;
+  const { appVersion } = useAppVersion();
 
   useEffect(() => {
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
@@ -71,7 +74,7 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
                     {getLayout(<Component {...pageProps} />)}
                   </ErrorBoundary>
                 </PageLayout>
-                <MobileNav />
+                {appVersion === 3 ? <MobileAppNavigation /> : <MobileNav />}
               </SearchResults>
             </SocketProvider>
           </ModalProvider>

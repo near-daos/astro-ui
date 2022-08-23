@@ -12,6 +12,8 @@ import { FEED_CATEGORIES } from 'constants/proposals';
 import { FeedSort } from 'astro_3.0/components/FeedSort';
 import { StatusFeedFilter } from 'astro_3.0/features/ProposalsFeed/components/StatusFeedFilter';
 
+import { MobileFilters } from 'astro_3.0/features/ProposalsFeed/components/MobileFilters';
+
 import styles from './ProposalsFeedFilters.module.scss';
 
 interface Props {
@@ -35,18 +37,27 @@ export const ProposalsFeedFilters: FC<Props> = ({ className }) => {
 
   return (
     <div className={cn(styles.root, className)}>
-      <StatusFeedFilter />
+      <div className={styles.scrollableFilter}>
+        <StatusFeedFilter className={styles.statusFilter} />
+      </div>
 
-      <CategoriesFeedFilter
-        queryName="category"
-        list={feedCategoriesOptions}
-        disabled={false}
-        hideAllOption
-      />
+      <div className={cn(styles.scrollableFilter, styles.hideOnMobiles)}>
+        <CategoriesFeedFilter
+          queryName="category"
+          list={feedCategoriesOptions}
+          disabled={false}
+          hideAllOption
+          className={styles.categoriesFilter}
+        />
+      </div>
 
-      <span className={styles.last}>
+      <div className={styles.last}>
         <FeedSort />
-      </span>
+      </div>
+
+      <div className={styles.mobileFilters}>
+        <MobileFilters />
+      </div>
     </div>
   );
 };

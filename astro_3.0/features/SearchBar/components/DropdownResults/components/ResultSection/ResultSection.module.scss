@@ -1,0 +1,38 @@
+.root {
+  padding: 24px 0;
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid var(--color-neutral-20);
+  }
+}
+
+.header {
+  color: var(--color-neutral-50);
+  display: flex;
+
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  justify-content: space-between;
+  letter-spacing: -0.2px;
+  line-height: 16px;
+
+  padding: 0 24px 24px 16px;
+  text-align: left;
+}
+
+.link {
+  color: var(--color-brand-purple);
+  cursor: pointer;
+  font-weight: 400;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 16px;
+}

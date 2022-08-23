@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import React, { FC, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useMedia } from 'react-use';
 
 import { Icon } from 'components/Icon';
 
@@ -26,8 +27,9 @@ export const DaoDashboardLogo: FC<Props> = ({
   className,
   isEditable,
 }) => {
+  const isMobile = useMedia('(max-width: 1023px)');
   const { appVersion } = useAppVersion();
-  const { watch } = useFormContext();
+  const { watch, setValue } = useFormContext();
   const isNextVersion = appVersion === 3;
 
   const flagLogo = watch('flagLogo');
@@ -76,9 +78,34 @@ export const DaoDashboardLogo: FC<Props> = ({
     [styles.square]: isNextVersion,
   });
 
-  return (
-    <div className={rootClassName}>
-      {isNextVersion ? (
+  function renderContent() {
+    if (isNextVersion && isMobile) {
+      return (
+        <Button
+          disabled={!isEditable}
+          variant="transparent"
+          size="block"
+          onClick={() => {
+            setValue('flagLogo', '', { shouldDirty: true });
+          }}
+        >
+          <div
+            className={cn(styles.logoControl, {
+              [styles.editable]: isEditable,
+            })}
+          >
+            {logo}
+            <div className={styles.logoOverlay}>
+              <Icon name="camera" className={styles.overlayIcon} />
+              <div className={styles.overlayText}>Change Logo</div>
+            </div>
+          </div>
+        </Button>
+      );
+    }
+
+    if (isNextVersion) {
+      return (
         <ContextPopup
           offset={[84, -64]}
           className={styles.popup}
@@ -105,9 +132,11 @@ export const DaoDashboardLogo: FC<Props> = ({
         >
           <AppLogoSelector />
         </ContextPopup>
-      ) : (
-        logo
-      )}
-    </div>
-  );
+      );
+    }
+
+    return logo;
+  }
+
+  return <div className={rootClassName}>{renderContent()}</div>;
 };

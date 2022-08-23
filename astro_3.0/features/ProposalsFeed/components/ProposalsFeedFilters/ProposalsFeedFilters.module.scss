@@ -4,7 +4,8 @@
   align-items: center;
   display: flex;
   justify-content: flex-start;
-  padding: 12px 0;
+  margin-bottom: 12px;
+  padding: 0;
   width: 100%;
 }
 
@@ -37,5 +38,78 @@
 }
 
 .last {
+  display: none;
   margin-left: auto;
+
+  @include desktop {
+    display: flex;
+  }
+}
+
+.mobileFilters {
+  display: flex;
+  margin-left: auto;
+
+  @include desktop {
+    display: none;
+  }
+}
+
+.scrollableFilter {
+  margin-right: 12px;
+  overflow: hidden;
+  padding: 12px 0;
+  position: relative;
+
+  &::before {
+    background-image: linear-gradient(
+      to right,
+      var(--color-white),
+      rgba(0, 0, 0, 0)
+    );
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 24px;
+  }
+
+  &::after {
+    background-image: linear-gradient(
+      to left,
+      var(--color-white),
+      rgba(0, 0, 0, 0)
+    );
+    content: '';
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 24px;
+  }
+
+  &.hideOnMobiles {
+    display: none;
+
+    @include desktop {
+      display: block;
+    }
+  }
+}
+
+.statusFilter,
+.categoriesFilter {
+  @include hide-scrollbar;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 12px;
+}
+
+.categoriesFilter {
+  display: none;
+
+  @include desktop {
+    display: flex;
+  }
 }
