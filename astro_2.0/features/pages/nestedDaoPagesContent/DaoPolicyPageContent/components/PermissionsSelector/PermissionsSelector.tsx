@@ -71,7 +71,7 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
   });
 
   const [rows, setRows] = useState<SelectorRow[]>(
-    initialData.sort((a, b) => {
+    initialData?.sort((a, b) => {
       if (a.label > b.label) {
         return 1;
       }
@@ -81,7 +81,7 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
       }
 
       return 0;
-    })
+    }) ?? []
   );
 
   const handleUpdateData = useCallback(

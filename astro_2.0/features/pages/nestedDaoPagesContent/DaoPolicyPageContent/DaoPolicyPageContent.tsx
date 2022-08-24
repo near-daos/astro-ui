@@ -58,7 +58,11 @@ export const DaoPolicyPageContent: FC<Props> = ({
     initialValues?: Record<string, unknown>
   ) {
     if (toggleCreateProposal) {
-      toggleCreateProposal({ proposalVariant, initialValues });
+      toggleCreateProposal();
+
+      Promise.resolve().then(() =>
+        toggleCreateProposal({ proposalVariant, initialValues })
+      );
     }
   }
 
