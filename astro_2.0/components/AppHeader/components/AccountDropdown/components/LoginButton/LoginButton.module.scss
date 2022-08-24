@@ -1,6 +1,9 @@
+@import 'styles/typography';
+
 .loginButton {
+  @extend %body3;
   overflow: hidden;
-  padding: 0 4px;
+  padding: 0 8px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
