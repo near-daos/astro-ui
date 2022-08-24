@@ -34,7 +34,6 @@ export const DraftSettings: FC<Props> = ({ dao }) => {
 
   const {
     handleSubmit,
-    register,
     setValue,
     watch,
     reset,
@@ -83,7 +82,12 @@ export const DraftSettings: FC<Props> = ({ dao }) => {
                 variant="secondary"
                 capitalize
                 className={styles.cancelBtn}
-                onClick={() => reset({ allowCreateDraftByAnyUser: isChecked })}
+                onClick={() => {
+                  reset(
+                    { allowCreateDraftByAnyUser: isChecked },
+                    { keepDefaultValues: true }
+                  );
+                }}
               >
                 Cancel
               </Button>
@@ -99,12 +103,11 @@ export const DraftSettings: FC<Props> = ({ dao }) => {
       <div className={styles.option}>
         <Checkbox
           className={styles.checkbox}
-          defaultChecked={value}
+          checked={value}
           disabled={!isCouncil}
           label={t(
             'daoPolicy.settings.drafts.allowNonDaoMembersToCreateDrafts'
           )}
-          {...register('allowCreateDraftByAnyUser')}
           onClick={() =>
             setValue('allowCreateDraftByAnyUser', !value, {
               shouldDirty: true,
