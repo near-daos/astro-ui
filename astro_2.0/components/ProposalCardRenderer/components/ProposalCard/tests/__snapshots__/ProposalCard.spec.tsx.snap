@@ -184,6 +184,7 @@ exports[`Proposal Card Should render component 1`] = `
         >
           <button
             class="iconButton large icon"
+            disabled=""
             type="button"
           >
             <div>

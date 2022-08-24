@@ -10,6 +10,8 @@ import { DAO } from 'types/dao';
 import { ExternalLink } from 'components/ExternalLink';
 import { getSocialLinkIcon } from 'utils/getSocialLinkIcon';
 
+import { useAppVersion } from 'hooks/useAppVersion';
+
 import styles from './DaoPurpose.module.scss';
 
 interface Props {
@@ -21,6 +23,7 @@ interface Props {
 export const DaoPurpose: FC<Props> = ({ description, className, links }) => {
   const [isOpen, toggle] = useToggle(false);
   const isMobile = useMedia('(max-width: 1023px)');
+  const { appVersion } = useAppVersion();
 
   function renderContent() {
     return (
@@ -44,6 +47,10 @@ export const DaoPurpose: FC<Props> = ({ description, className, links }) => {
         )}
       </div>
     );
+  }
+
+  if (appVersion !== 3) {
+    return null;
   }
 
   if (!isMobile) {

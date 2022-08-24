@@ -16,6 +16,12 @@ jest.mock('next/router', () => {
   };
 });
 
+jest.mock('context/WalletContext', () => {
+  return {
+    useWalletContext: jest.fn().mockReturnValue({ accountId: 'jason' }),
+  };
+});
+
 jest.mock('next-i18next', () => ({
   Trans: ({
     i18nKey,

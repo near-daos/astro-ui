@@ -11,6 +11,8 @@ import { Proposal, ProposalType } from 'types/proposal';
 import { Button } from 'components/button/Button';
 import { DaoWarning } from 'astro_2.0/components/DaoWarning';
 
+import { useWalletContext } from 'context/WalletContext';
+
 import styles from './PolicyAffectedWarning.module.scss';
 
 export interface PolicyAffectedWarningProps {
@@ -24,6 +26,7 @@ export const PolicyAffectedWarning: FC<PolicyAffectedWarningProps> = ({
 }) => {
   const router = useRouter();
   const { t } = useTranslation();
+  const { accountId } = useWalletContext();
 
   const { id, daoId, kind } = useMemo(
     () => (first(data) || {}) as Proposal,
@@ -48,6 +51,10 @@ export const PolicyAffectedWarning: FC<PolicyAffectedWarningProps> = ({
 
   if (kind?.type === ProposalType.ChangePolicy) {
     title = t('votingPolicy');
+  }
+
+  if (!accountId) {
+    return null;
   }
 
   return (
