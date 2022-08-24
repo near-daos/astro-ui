@@ -21,14 +21,19 @@ import { shortenString } from 'utils/format';
 import { useDaoSettings } from 'context/DaoSettingsContext';
 import { useDraft } from 'hooks/useDraft';
 import { useWalletContext } from 'context/WalletContext';
-import { useAppVersion } from 'hooks/useAppVersion';
 
 import styles from './DaoDetailsMinimized.module.scss';
 
 export interface DaoDetailsMinimizedProps {
   dao: Pick<
     DAO,
-    'id' | 'flagCover' | 'flagLogo' | 'logo' | 'displayName' | 'stakingContract'
+    | 'id'
+    | 'flagCover'
+    | 'flagLogo'
+    | 'logo'
+    | 'displayName'
+    | 'stakingContract'
+    | 'daoMembersList'
   >;
   className?: string;
   onCreateProposalClick?: () => void;
@@ -52,8 +57,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   const { asPath } = router;
   const currentPath = asPath.split('?')[0];
   const draftData = useDraft(dao.id);
-  const { appVersion } = useAppVersion();
-  const isNextVersion = appVersion === 3;
 
   const daoHasGovernanceTokenConfigured =
     settings?.createGovernanceToken?.wizardCompleted;
@@ -87,18 +90,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
     return (
       <Link href={`/dao/${dao.id}`}>
         <a>
-          <section
-            className={cn(
-              {
-                [styles.paddingWithNoProposalButton]:
-                  !userPermissions.isCanCreateProposals,
-                [styles.paddingWithProposalButton]:
-                  userPermissions.isCanCreateProposals,
-                [styles.nextPadding]: isNextVersion,
-              },
-              styles.general
-            )}
-          >
+          <section className={cn(styles.nextPadding, styles.general)}>
             {!isMobile && (
               <div className={styles.flagWrapper}>
                 <DaoLogo size="md" src={dao.flagLogo} className={styles.logo} />
@@ -142,6 +134,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
         canCreateProposals={userPermissions.isCanCreateProposals}
         onCreateProposalClick={onCreateProposalClick}
         daoId={dao.id}
+        dao={dao}
       />
     );
   }

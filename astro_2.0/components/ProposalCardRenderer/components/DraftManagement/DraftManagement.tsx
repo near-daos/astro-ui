@@ -37,7 +37,7 @@ export const DraftManagement: FC<DraftManagementProps> = ({
     isCouncil = isCouncilUser(dao, accountId);
   }
 
-  const disabled = !(isCouncil || proposer === accountId);
+  const disabled = !isCouncil && proposer !== accountId;
 
   const renderConvertToProposalButton = () => {
     if (!userPermissions?.allowedProposalsToVote[proposalType]) {
@@ -62,7 +62,7 @@ export const DraftManagement: FC<DraftManagementProps> = ({
 
   return (
     <div className={styles.draftManagement}>
-      {state !== 'closed' && dao?.daoMembersList.includes(accountId) ? (
+      {state !== 'closed' && !disabled ? (
         <>
           <Button
             disabled={disabled}

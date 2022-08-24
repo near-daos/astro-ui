@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
 
 import styles from 'pages/dao/[dao]/drafts/[draft]/edit-draft/EditDraftPage.module.scss';
@@ -15,6 +15,7 @@ import { useWalletContext } from 'context/WalletContext';
 import { DaoContext } from 'types/context';
 import { DraftProposal } from 'types/draftProposal';
 import { useTranslation } from 'next-i18next';
+import { getMockPermissions } from 'features/daos/helpers';
 
 interface Props {
   daoContext: DaoContext;
@@ -27,6 +28,7 @@ export const EditDraftPageContent: FC<Props> = ({ daoContext, draft }) => {
   const { tokens } = useDaoCustomTokens();
   const { accountId } = useWalletContext();
   const { t } = useTranslation();
+  const draftProposalPermissions = useMemo(() => getMockPermissions(), []);
 
   useEffect(() => {
     const getInitialValues = async () => {
@@ -74,7 +76,7 @@ export const EditDraftPageContent: FC<Props> = ({ daoContext, draft }) => {
           daoTokens={tokens}
           onClose={() => undefined}
           initialValues={initialValues}
-          userPermissions={daoContext.userPermissions}
+          userPermissions={draftProposalPermissions}
           isDraft
           isEditDraft
         />

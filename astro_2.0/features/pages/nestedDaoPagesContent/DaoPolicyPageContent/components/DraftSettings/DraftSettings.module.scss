@@ -1,0 +1,67 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  margin-bottom: 48px;
+  padding: 24px;
+
+  width: 100%;
+
+  @include tablet-landscape {
+    padding: 36px 40px;
+  }
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  min-height: 40px;
+}
+
+.buttons {
+  display: flex;
+}
+
+.cancelBtn {
+  margin-right: 12px;
+}
+
+.label {
+  @extend %heading2;
+  line-height: 24px;
+  margin-bottom: 24px;
+
+  @include tablet-portrait {
+    margin-bottom: 0;
+    padding-right: 35px;
+  }
+}
+
+.option {
+  margin-top: 48px;
+  width: 100%;
+
+  @include tablet-landscape {
+    min-width: 300px;
+    width: auto;
+  }
+
+  @include large-desktop {
+    width: 100%;
+  }
+}
+
+.settingName {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+  padding-bottom: 23px;
+}
+
+.padding {
+  padding-bottom: 16px;
+}
