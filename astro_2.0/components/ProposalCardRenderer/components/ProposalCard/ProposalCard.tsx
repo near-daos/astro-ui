@@ -557,7 +557,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
                 return voteClickHandler('VoteReject', data.gas);
               }}
-              disableControls={voteLoading || !timeLeft || finalizeLoading}
+              disableControls={
+                voteLoading || !timeLeft || finalizeLoading || !accountId
+              }
               likes={likes}
               liked={liked}
               dislikes={dislikes}
@@ -583,7 +585,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
               !liked &&
               !disliked &&
               canApprove &&
-              canReject
+              canReject &&
+              !!accountId
             }
             onSelect={onSelect}
             selectedList={selectedList}

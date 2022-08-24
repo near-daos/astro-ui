@@ -8,6 +8,8 @@ import {
 import { SubmitHandler, useFormContext } from 'react-hook-form';
 import { kFormatter } from 'utils/format';
 import { TgasInput } from 'astro_2.0/components/TgasInput';
+import { useWalletContext } from 'context/WalletContext';
+
 import { ProposalControlButton } from './components/ProposalControlButton';
 
 import styles from './ProposalControlPanel.module.scss';
@@ -48,6 +50,7 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
   commentsCount,
   variant,
 }) => {
+  const { accountId } = useWalletContext();
   const { handleSubmit } = useFormContext();
   const { canApprove, canReject } = permissions;
   const voted =
@@ -92,7 +95,7 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
         type="button"
         times={kFormatter(commentsCount)}
         onClick={toggleInfoPanel}
-        disabled={false}
+        disabled={!accountId}
       />
     </form>
   );
