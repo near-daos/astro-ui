@@ -16,18 +16,24 @@ import { Icon, IconName } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 
+import { useCreateDraftPermissions } from 'hooks/useCreateDraftPermissions';
+
+import { DAO } from 'types/dao';
+
 import styles from './DaoAction.module.scss';
 
 interface Props {
   onCreateProposalClick?: () => void;
   daoId: string;
   canCreateProposals: boolean;
+  dao: Pick<DAO, 'daoMembersList'>;
 }
 
 export const DaoAction: FC<Props> = ({
   onCreateProposalClick,
   daoId,
   canCreateProposals,
+  dao,
 }) => {
   const router = useRouter();
   const flags = useFlags();
@@ -35,6 +41,7 @@ export const DaoAction: FC<Props> = ({
   const { accountId, login } = useWalletContext();
   const isMobile = useMedia('(max-width: 768px)');
   const [open, setOpen] = useState(false);
+  const { canCreateDrafts } = useCreateDraftPermissions(dao);
 
   const closeDropdown = useCallback(() => {
     setOpen(false);
@@ -88,7 +95,7 @@ export const DaoAction: FC<Props> = ({
     );
   }
 
-  if (flags.draftProposals && canCreateProposals) {
+  if (flags.draftProposals && canCreateDrafts && canCreateProposals) {
     return (
       <GenericDropdown
         isOpen={open}
@@ -141,7 +148,7 @@ export const DaoAction: FC<Props> = ({
     );
   }
 
-  if (!flags.draftProposals && canCreateProposals) {
+  if ((!flags.draftProposals || !canCreateDrafts) && canCreateProposals) {
     return (
       <Button
         capitalize
@@ -160,7 +167,12 @@ export const DaoAction: FC<Props> = ({
     );
   }
 
-  if (flags.draftProposals && accountId && !canCreateProposals) {
+  if (
+    flags.draftProposals &&
+    canCreateDrafts &&
+    accountId &&
+    !canCreateProposals
+  ) {
     return (
       <Button
         data-testid="createDraft"

@@ -45,11 +45,11 @@
 }
 
 .paddingWithNoProposalButton {
-  padding: 0 0 0 24px;
+  padding: 12px 0 0 24px;
 }
 
 .paddingWithProposalButton {
-  padding: 0 0 0 70px;
+  padding: 12px 0 0 70px;
 }
 
 .nextPadding.nextPadding {
@@ -71,17 +71,18 @@
 }
 
 .controls {
+  @include hide-scrollbar;
   align-items: center;
   display: flex;
   justify-content: space-around;
-  padding: 0 5px;
+  padding: 8px 5px 0;
 
   @media (min-width: 375px) {
-    padding: 0 16px;
+    padding: 8px 16px 0;
   }
 
   @include tablet-portrait {
-    padding: 0 32px;
+    padding: 8px 32px 0;
   }
 
   @include tablet-landscape {

@@ -12,7 +12,7 @@ exports[`dao details minimized Should render component 1`] = `
         href="/dao/default-flag-test.sputnikv2.testnet"
       >
         <section
-          class="paddingWithProposalButton general"
+          class="nextPadding general"
         >
           <div
             class="flagWrapper"

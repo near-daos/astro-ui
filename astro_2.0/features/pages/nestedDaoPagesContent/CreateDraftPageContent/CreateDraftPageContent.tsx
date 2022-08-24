@@ -8,6 +8,7 @@ import { DaoContext } from 'types/context';
 import { useDaoCustomTokens } from 'context/DaoTokensContext';
 import { getMockPermissions } from 'features/daos/helpers';
 import { useTranslation } from 'next-i18next';
+import { useCreateDraftPermissions } from 'hooks/useCreateDraftPermissions';
 
 interface Props {
   daoContext: DaoContext;
@@ -19,6 +20,12 @@ export const CreateDraftPageContent: FC<Props> = ({ daoContext }) => {
   const { tokens } = useDaoCustomTokens();
 
   const draftProposalPermissions = useMemo(() => getMockPermissions(), []);
+
+  const { canCreateDrafts } = useCreateDraftPermissions(dao);
+
+  if (!canCreateDrafts) {
+    return null;
+  }
 
   return (
     <>

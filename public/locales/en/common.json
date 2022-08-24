@@ -520,6 +520,7 @@
     }
   },
   "settingsPage": {
+    "drafts": "Drafts",
     "daoPolicy": "DAO Policy",
     "nameAndPurpose": "Name and Purpose",
     "legalStatusAndDoc": "Legal Status and doc",
@@ -729,6 +730,10 @@
       },
       "daoSettings": {
         "title": "Voting policy"
+      },
+      "drafts": {
+        "title": "Draft proposals",
+        "allowNonDaoMembersToCreateDrafts": "Allow non DAO members to create draft proposals in DAO"
       }
     }
   },

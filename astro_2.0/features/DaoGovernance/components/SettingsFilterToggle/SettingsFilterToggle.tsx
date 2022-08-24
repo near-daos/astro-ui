@@ -20,6 +20,7 @@ const POLICY_OPTIONS = [
   // 'votingPolicy',
   'bondAndDeadlines',
   'groups',
+  'drafts',
   'members',
   'daoRules',
 ];

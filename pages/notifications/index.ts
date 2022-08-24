@@ -10,20 +10,26 @@ import { getTranslations } from 'utils/getTranslations';
 export const getServerSideProps: GetServerSideProps = async ({
   locale = 'en',
 }) => {
-  const accountId = CookieService.get<string>(ACCOUNT_COOKIE);
+  try {
+    const accountId = CookieService.get<string>(ACCOUNT_COOKIE);
 
-  let config = {};
+    let config = {};
 
-  if (accountId) {
-    config = await NotificationsService.getUserContactConfig(accountId);
+    if (accountId) {
+      config = await NotificationsService.getUserContactConfig(accountId);
+    }
+
+    return {
+      props: {
+        config,
+        ...(await getTranslations(locale)),
+      },
+    };
+  } catch (e) {
+    return {
+      notFound: true,
+    };
   }
-
-  return {
-    props: {
-      config,
-      ...(await getTranslations(locale)),
-    },
-  };
 };
 
 export { default } from './NotificationsPage';

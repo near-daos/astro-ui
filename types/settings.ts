@@ -46,4 +46,7 @@ export type Settings = {
   };
   createGovernanceToken?: ProgressStatus;
   features: Record<string, boolean>;
+  drafts?: {
+    allowCreateDraftByAnyUser: boolean;
+  };
 };

@@ -26,6 +26,10 @@ import { formatYoktoValue } from 'utils/format';
 import { Icon } from 'components/Icon';
 
 import { Button } from 'components/button/Button';
+import { DraftSettings } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/components/DraftSettings';
+
+import { useDaoSettings } from 'context/DaoSettingsContext';
+
 import styles from './DaoPolicyPageContent.module.scss';
 
 interface Props {
@@ -42,6 +46,7 @@ export const DaoPolicyPageContent: FC<Props> = ({
   const router = useRouter();
   const { daoFilter } = router.query;
   const { userPermissions, dao } = daoContext;
+  const { settings } = useDaoSettings();
 
   const proposalPeriod = nanosToDays(daoContext.dao.policy.proposalPeriod);
   const bountyPeriod = nanosToDays(
@@ -236,6 +241,7 @@ export const DaoPolicyPageContent: FC<Props> = ({
             }
           />
         )}
+        {daoFilter === 'drafts' && settings && <DraftSettings dao={dao} />}
       </div>
     </div>
   );
