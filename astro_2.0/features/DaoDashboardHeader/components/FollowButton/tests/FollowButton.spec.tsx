@@ -63,7 +63,7 @@ describe('FollowButton', () => {
 
     it('Should render nothing if no subscriptions', () => {
       const { container } = render(
-        <FollowButton daoId={daoId} daoName="daoName" />
+        <FollowButton daoId={daoId} daoName="daoName" visible />
       );
 
       expect(container).toMatchSnapshot();
@@ -83,7 +83,7 @@ describe('FollowButton', () => {
       }));
 
       const { getByRole } = render(
-        <FollowButton daoId={daoId} daoName="daoName" />
+        <FollowButton daoId={daoId} daoName="daoName" visible />
       );
 
       fireEvent.click(getByRole('button'));
@@ -101,7 +101,7 @@ describe('FollowButton', () => {
       }));
 
       const { getByRole } = render(
-        <FollowButton daoId={daoId} daoName="daoName" />
+        <FollowButton daoId={daoId} daoName="daoName" visible />
       );
 
       fireEvent.click(getByRole('button'));

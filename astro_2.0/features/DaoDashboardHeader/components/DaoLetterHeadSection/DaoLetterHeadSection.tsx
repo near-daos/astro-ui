@@ -60,7 +60,11 @@ export const DaoLetterHeadSection: FC<Props> = ({
 
   function renderContent() {
     const content = (
-      <div className={styles.assetsWrapper}>
+      <div
+        className={cn(styles.assetsWrapper, {
+          [styles.fitContent]: isNextVersion,
+        })}
+      >
         <DaoDashboardLogo
           src={flagLogo}
           className={cn(styles.logo, {

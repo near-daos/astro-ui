@@ -57,7 +57,7 @@
   background-size: cover;
   grid-area: letterHeadSection;
   height: 134px;
-  margin: 0;
+  margin: 0 -24px;
   position: relative;
 
   @include tablet-landscape {
@@ -67,6 +67,7 @@
 
   &.fullWidth {
     border-radius: 0;
+    margin: 0;
   }
 
   &.editable:hover .uploader {
@@ -75,6 +76,14 @@
 
   .assetsWrapper {
     position: relative;
+    width: auto;
+
+    @include desktop {
+      width: auto;
+    }
+  }
+
+  .assetsWrapper.fitContent {
     width: fit-content;
 
     @include desktop {

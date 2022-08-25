@@ -105,15 +105,16 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
 
             {(showFollowButton || showJoinButton || !isMobileOrTablet) && (
               <section className={styles.followSection}>
-                {showJoinButton && (
-                  <JoinDaoButton
-                    onClick={onCreateProposal}
-                    className={styles.joinDao}
-                  />
-                )}
-                {showFollowButton && (
-                  <FollowButton daoId={id} daoName={displayName} />
-                )}
+                <JoinDaoButton
+                  visible={showJoinButton}
+                  onClick={onCreateProposal}
+                  className={styles.joinDao}
+                />
+                <FollowButton
+                  daoId={id}
+                  daoName={displayName}
+                  visible={showFollowButton}
+                />
                 {!isMobileOrTablet && (
                   <div className={styles.link}>
                     <ShowMoreLinks links={links} />
