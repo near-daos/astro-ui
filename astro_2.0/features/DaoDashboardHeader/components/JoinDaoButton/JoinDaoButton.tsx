@@ -17,14 +17,20 @@ interface JoinDaoButtonProps {
     initialValues: Record<string, string>
   ) => void;
   className?: string;
+  visible: boolean;
 }
 
 export const JoinDaoButton: FC<JoinDaoButtonProps> = ({
   onClick,
   className,
+  visible,
 }) => {
   const { t } = useTranslation();
   const { accountId } = useWalletContext();
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <Button

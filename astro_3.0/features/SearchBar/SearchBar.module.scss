@@ -84,9 +84,10 @@ $search-max-width: 768;
 }
 
 .expanded.expanded {
+  border-radius: 0;
   height: var(--app-header-height);
   left: 0;
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 0;
   z-index: 120;

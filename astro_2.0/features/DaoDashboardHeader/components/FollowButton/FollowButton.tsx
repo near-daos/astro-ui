@@ -11,6 +11,7 @@ import styles from './FollowButton.module.scss';
 interface FollowButtonProps {
   daoId: string;
   daoName: string;
+  visible: boolean;
 }
 
 interface ConfirmModalProps {
@@ -46,7 +47,11 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({
   );
 };
 
-export const FollowButton: FC<FollowButtonProps> = ({ daoId, daoName }) => {
+export const FollowButton: FC<FollowButtonProps> = ({
+  daoId,
+  daoName,
+  visible,
+}) => {
   const { t } = useTranslation();
   const { subscriptions, handleFollow, handleUnfollow, isLoading } =
     useDaoSubscriptions();
@@ -73,7 +78,7 @@ export const FollowButton: FC<FollowButtonProps> = ({ daoId, daoName }) => {
     }
   }, [daoId, handleFollow, isSubscribed, confirmUnfollow]);
 
-  if (!subscriptions) {
+  if (!subscriptions || !visible) {
     return null;
   }
 

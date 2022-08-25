@@ -17,7 +17,7 @@
     grid-template-areas:
       'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
       '. depositSection depositSection depositSection'
-      '. usersSection versionSection followSection'
+      '. usersSection versionSection versionSection'
       'warningSection warningSection warningSection warningSection';
     grid-template-columns: 200px 60px 1fr minmax(230px, 280px);
     padding-top: 24px;
@@ -125,6 +125,8 @@
   padding: 0 0 0 12px;
 
   @include tablet-landscape {
+    flex-direction: row;
+    justify-content: flex-start;
     margin-left: 12px;
     padding: 0;
   }
