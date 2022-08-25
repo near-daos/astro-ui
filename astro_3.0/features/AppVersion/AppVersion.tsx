@@ -6,6 +6,7 @@ import { Radio } from 'astro_2.0/components/inputs/radio/Radio';
 import { RadioGroup } from 'astro_2.0/components/inputs/radio/RadioGroup';
 import { useAppVersion } from 'hooks/useAppVersion';
 import { useRouter } from 'next/router';
+import { WarningMessage } from 'astro_2.0/components/WarningMessage';
 
 export const AppVersion: FC = () => {
   const router = useRouter();
@@ -27,6 +28,7 @@ export const AppVersion: FC = () => {
   return (
     <ConfigCard>
       <CardTitle>Application version</CardTitle>
+      <WarningMessage text="Feature is in beta" />
       <RadioGroup
         className={styles.radioGroup}
         itemClassName={styles.radio}

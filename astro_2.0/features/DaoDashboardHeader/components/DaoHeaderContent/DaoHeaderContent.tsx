@@ -117,16 +117,22 @@ export const DaoHeaderContent: FC<Props> = ({
         </section>
 
         {showFollowButton || showJoinButton ? (
-          <section className={styles.versionSection}>
-            {showJoinButton && (
-              <JoinDaoButton
-                onClick={onCreateProposal}
-                className={styles.joinDao}
-              />
-            )}
-            {showFollowButton && (
-              <FollowButton daoId={id} daoName={displayName} />
-            )}
+          <section
+            className={cn({
+              [styles.versionSection]: !isMobile,
+              [styles.followSection]: isMobile,
+            })}
+          >
+            <JoinDaoButton
+              visible={showJoinButton}
+              onClick={onCreateProposal}
+              className={styles.joinDao}
+            />
+            <FollowButton
+              visible={showFollowButton}
+              daoId={id}
+              daoName={displayName}
+            />
           </section>
         ) : (
           <section className={styles.versionSection}>
