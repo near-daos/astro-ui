@@ -13,21 +13,21 @@ $search-max-width: 768;
 
 .root {
   align-items: center;
+  background: var(--color-neutral-20);
   border-radius: 8px;
   display: flex;
   height: 40px;
   justify-content: flex-start;
   max-width: none;
   overflow: hidden;
+  padding-left: 12px;
   position: relative;
   transform: translateZ(0);
   transition: all 0.2s ease-out;
-  width: 40px;
+  width: 100%;
 
-  @include astro-desktop {
-    left: 200px;
-    max-width: $search-max-width + 1px;
-    position: absolute;
+  .iconHolder .icon {
+    color: var(--color-brand-purple);
   }
 }
 
@@ -67,7 +67,7 @@ $search-max-width: 768;
 }
 
 .input {
-  @extend %body2;
+  @extend %body1;
   @include ellipse-text;
 
   background: transparent;
@@ -80,34 +80,6 @@ $search-max-width: 768;
 
   @include placeholder {
     color: var(--color-neutral-60);
-  }
-}
-
-.expanded.expanded {
-  //border-radius: 0;
-  //height: var(--app-header-height);
-  //left: 0;
-  //position: fixed;
-  //right: 0;
-  //top: 0;
-  //z-index: 120;
-
-  @include astro-desktop {
-    height: unset;
-    left: unset;
-    position: relative;
-    right: unset;
-    top: unset;
-  }
-
-  &.root {
-    background: var(--color-neutral-20);
-    padding-left: 12px;
-    width: 100%;
-  }
-
-  .iconHolder .icon {
-    color: var(--color-brand-purple);
   }
 }
 
@@ -137,10 +109,5 @@ $search-max-width: 768;
   position: fixed;
   right: 0;
   top: 0;
-  //transition: transform 0.1s ease-out;
   z-index: 110;
-
-  //&.expanded {
-  //  transform: translateY(100%);
-  //}
 }

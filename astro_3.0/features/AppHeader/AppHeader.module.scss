@@ -27,22 +27,12 @@
   width: 100%;
 
   @include desktop {
-    max-width: 920px;
+    max-width: 620px;
     padding: 0 48px;
   }
 
   @include large-desktop {
     margin: auto;
-    max-width: 1140px;
-  }
-
-  @include large-x-desktop {
-    left: 50%;
-    margin: auto;
-    max-width: 1200px;
-    padding: 0 64px;
-    position: absolute;
-    transform: translateX(-50%);
   }
 }
 
