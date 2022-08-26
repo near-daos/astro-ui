@@ -271,6 +271,80 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
     return null;
   }
 
+  function renderInput() {
+    return (
+      <input
+        ref={inputRef}
+        tabIndex={0}
+        value={value}
+        onFocus={() => setFocused(true)}
+        onChange={handleChange}
+        className={cn(styles.input, 'body1')}
+        type="text"
+        placeholder={placeholder}
+        onKeyUp={handleKeys}
+      />
+    );
+  }
+
+  if (isMobile) {
+    return (
+      <>
+        <AnimatePresence>
+          {expanded && (
+            <motion.div
+              initial={{ opacity: 0, transform: 'translateY(-64px)' }}
+              animate={{ opacity: 1, transform: 'translateY(0px)' }}
+              exit={{ opacity: 0, transform: 'translateY(-64px)' }}
+              onAnimationComplete={() => {
+                inputRef.current?.focus();
+              }}
+              className={cn(styles.inputWrapper, {
+                [styles.expanded]: expanded,
+              })}
+            >
+              <div className={styles.iconHolder}>
+                <AnimatePresence>
+                  {loading ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <LoadingIndicator className={styles.loader} />
+                    </motion.div>
+                  ) : (
+                    <IconButton
+                      size="medium"
+                      icon="buttonSearch"
+                      className={styles.icon}
+                    />
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {renderInput()}
+              {renderCloseButton()}
+              <div
+                className={styles.anchor}
+                ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
+              />
+              {renderResultsDropdown()}
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <div className={styles.toggle}>
+          <IconButton
+            size="medium"
+            icon="buttonSearch"
+            className={styles.icon}
+            onClick={openSearch}
+          />
+        </div>
+      </>
+    );
+  }
+
   return (
     <div
       className={cn(styles.root, className, { [styles.expanded]: expanded })}
@@ -297,17 +371,7 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
         </AnimatePresence>
       </div>
 
-      <input
-        ref={inputRef}
-        tabIndex={0}
-        value={value}
-        onFocus={() => setFocused(true)}
-        onChange={handleChange}
-        className={cn(styles.input, 'body1')}
-        type="text"
-        placeholder={placeholder}
-        onKeyUp={handleKeys}
-      />
+      {renderInput()}
       {renderCloseButton()}
       <div
         className={styles.anchor}

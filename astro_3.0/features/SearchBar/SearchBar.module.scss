@@ -84,13 +84,13 @@ $search-max-width: 768;
 }
 
 .expanded.expanded {
-  border-radius: 0;
-  height: var(--app-header-height);
-  left: 0;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 120;
+  //border-radius: 0;
+  //height: var(--app-header-height);
+  //left: 0;
+  //position: fixed;
+  //right: 0;
+  //top: 0;
+  //z-index: 120;
 
   @include astro-desktop {
     height: unset;
@@ -126,4 +126,21 @@ $search-max-width: 768;
 .loader {
   color: var(--color-primary-50);
   margin: 0;
+}
+
+.inputWrapper {
+  align-items: center;
+  background-color: var(--color-neutral-10);
+  display: flex;
+  height: var(--app-header-height);
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  //transition: transform 0.1s ease-out;
+  z-index: 110;
+
+  //&.expanded {
+  //  transform: translateY(100%);
+  //}
 }
