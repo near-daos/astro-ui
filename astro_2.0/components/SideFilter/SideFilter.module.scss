@@ -21,7 +21,8 @@
     box-shadow: 0 7px 10px var(--color-black-opacity-1);
     display: flex;
     justify-content: flex-end;
-    margin: 0 0 32px;
+    margin-bottom: 32px;
+    margin-right: 8px;
     max-width: initial;
     top: 124px;
   }
@@ -31,7 +32,8 @@
     box-shadow: none;
     display: flex;
     justify-content: flex-end;
-    margin: 0 0 32px;
+    margin-bottom: 32px;
+    margin-right: 8px;
     max-width: initial;
 
     .categoriesList {
