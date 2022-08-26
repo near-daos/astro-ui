@@ -23,8 +23,6 @@ import {
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 import { SEARCH_PAGE_URL } from 'constants/routing';
 
-import { useWindowResize } from 'hooks/useWindowResize';
-
 import { useSearchResults } from 'features/search/search-results';
 import { useOnRouterChange } from 'hooks/useOnRouterChange';
 import { IconButton } from 'components/button/IconButton';
@@ -79,10 +77,6 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
 
   useOnRouterChange(setValueOnRouterChange);
 
-  const onWindowResize = useCallback(() => {
-    setExpanded(!isMobile || !!searchResults?.query);
-  }, [isMobile, searchResults?.query]);
-
   const onSearchStateToggle = useCallback(
     state => {
       if (isMobile) {
@@ -114,10 +108,8 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
     }
   );
 
-  useWindowResize(onWindowResize);
-
   useMount(() => {
-    setExpanded(!isMobile || !!searchResults?.query);
+    setExpanded(!!searchResults?.query);
   });
 
   useDebounceEffect(
@@ -128,12 +120,12 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
 
       const query = value?.trim() ?? '';
 
-      if (expanded && query.length >= 3) {
+      if (query.length >= 3) {
         toggleShowHint(false);
         handleSearch(query);
-      } else if (expanded && query.length > 0 && query.length < 3) {
+      } else if (query.length > 0 && query.length < 3) {
         toggleShowHint(true);
-      } else if (expanded) {
+      } else {
         toggleShowHint(false);
         handleClose();
       }
@@ -157,6 +149,7 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
   });
 
   const handleCancel = useCallback(() => {
+    setFocused(false);
     handleClose();
     setValue('');
     onSearchStateToggle(false);
@@ -214,7 +207,7 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
 
   function renderResultsDropdown() {
     const showResults =
-      !!searchResults && expanded && focused && !isSearchPage && !showHint;
+      !!searchResults && focused && !isSearchPage && !showHint;
 
     if (typeof document === 'undefined') {
       return null;
@@ -346,10 +339,7 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
   }
 
   return (
-    <div
-      className={cn(styles.root, className, { [styles.expanded]: expanded })}
-      ref={ref}
-    >
+    <div className={cn(styles.root, className)} ref={ref}>
       <div className={styles.iconHolder}>
         <AnimatePresence>
           {loading ? (
