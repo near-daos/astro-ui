@@ -159,17 +159,14 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
               {t('daoDetailsMinimized.delegates')}
             </ActionButton>
           )}
-          {flags.draftProposals && (
-            <ActionButton
-              notifications={draftsCount}
-              href={url.drafts}
-              iconName="sheet"
-              className={generateChapterStyle('drafts')}
-            >
-              {t('daoDetailsMinimized.drafts')}
-            </ActionButton>
-          )}
-
+          <ActionButton
+            notifications={draftsCount}
+            href={url.drafts}
+            iconName="sheet"
+            className={generateChapterStyle('drafts')}
+          >
+            {t('daoDetailsMinimized.drafts')}
+          </ActionButton>
           <ActionButton
             href={url.proposals}
             iconName="pencil"
