@@ -31,6 +31,20 @@ jest.mock('next-i18next', () => ({
   },
 }));
 
+jest.mock('context/DaoTokensContext', () => {
+  return {
+    useDaoCustomTokens: jest.fn().mockReturnValue({ tokens: {} }),
+  };
+});
+
+jest.mock('context/DaoSettingsContext', () => {
+  return {
+    useDaoSettings: jest
+      .fn()
+      .mockReturnValue({ settings: {}, update: jest.fn(), loading: false }),
+  };
+});
+
 const userPermissions = {
   isCanCreateProposals: true,
   isCanCreatePolicyProposals: true,
