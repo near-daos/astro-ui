@@ -1,4 +1,4 @@
-import { ConnectedWalletAccount } from 'near-api-js';
+import { ConnectedWalletAccount, providers } from 'near-api-js';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { KeyPairEd25519 } from 'near-api-js/lib/utils';
 import {
@@ -17,6 +17,9 @@ import { parseNearAmount } from 'near-api-js/lib/utils/format';
 import { httpService } from 'services/HttpService';
 import { KeyStore } from 'near-api-js/lib/key_stores';
 
+import { RpcService } from 'services/sputnik/SputnikNearService/walletServices/RpcService';
+import { NearConfig } from 'config/near';
+import { AccountView } from 'near-api-js/lib/providers/provider';
 import { SENDER_WALLET_METADATA } from './constants';
 
 export class SenderWalletService implements WalletService {
@@ -24,8 +27,25 @@ export class SenderWalletService implements WalletService {
 
   private readonly walletType = WalletType.SENDER;
 
-  constructor(walletInstance: SenderWalletInstance) {
+  private readonly rpcService: RpcService;
+
+  constructor(walletInstance: SenderWalletInstance, nearConfig: NearConfig) {
     this.walletInstance = walletInstance;
+    this.rpcService = new RpcService(
+      new providers.JsonRpcProvider(nearConfig.nodeUrl)
+    );
+  }
+
+  viewAccount(accountId: string): Promise<AccountView> {
+    return this.rpcService.viewAccount(accountId);
+  }
+
+  contractCall<T>(
+    accountId: string,
+    methodName: string,
+    argsAsBase64: string
+  ): Promise<T> {
+    return this.rpcService.contractCall(accountId, methodName, argsAsBase64);
   }
 
   isSignedIn(): Promise<boolean> {

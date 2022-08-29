@@ -1,44 +1,18 @@
-import { CreateDaoParams } from 'services/sputnik/types';
-import { CreateProposalParams } from 'types/proposal';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { ConnectedWalletAccount, transactions } from 'near-api-js';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { WalletType } from 'types/config';
 import { KeyStore } from 'near-api-js/lib/key_stores';
 import { Action } from '@near-wallet-selector/core/lib/wallet/transactions.types';
+import {
+  AccountView,
+  QueryResponseKind,
+} from 'near-api-js/lib/providers/provider';
 
-export interface DaoService {
-  createDao(params: CreateDaoParams): Promise<void>;
-
-  addProposal(params: CreateProposalParams): Promise<FinalExecutionOutcome[]>;
-
-  vote(
-    daoId: string,
-    proposalId: number,
-    action: 'VoteApprove' | 'VoteRemove' | 'VoteReject',
-    gas?: string | number
-  ): Promise<FinalExecutionOutcome[]>;
-
-  finalize(daoId: string, proposalId: number): Promise<FinalExecutionOutcome[]>;
-
-  claimBounty(
-    daoId: string,
-    args: {
-      bountyId: number;
-      deadline: string;
-      bountyBond: string;
-      gas?: string | number;
-      tokenId?: string;
-    }
-  ): Promise<FinalExecutionOutcome[]>;
-
-  nearAccountExist(account: string): Promise<boolean>;
-
-  unclaimBounty(
-    daoId: string,
-    bountyId: number,
-    gas?: string | number
-  ): Promise<FinalExecutionOutcome[]>;
+export interface RpcCallResult extends QueryResponseKind {
+  result: {
+    result: Uint8Array;
+  };
 }
 
 export interface WalletService {
@@ -47,11 +21,16 @@ export interface WalletService {
     receiverId: string,
     amount: number
   ): Promise<FinalExecutionOutcome[]>;
+  viewAccount(accountId: string): Promise<AccountView>;
+  contractCall<T>(
+    accountId: string,
+    methodName: string,
+    argsAsBase64: string
+  ): Promise<T>;
   getWalletType(): WalletType;
   getKeyStore(): KeyStore;
   logout(): Promise<void>;
   isSignedIn(): Promise<boolean>;
-  getAccount(): ConnectedWalletAccount;
   getAccountId(): Promise<string>;
   getAvailableAccounts(): Promise<string[]>;
   functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome[]>;

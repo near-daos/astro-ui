@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Contract } from 'near-api-js';
-import { DAO, DaoVersion } from 'types/dao';
+import { DAO } from 'types/dao';
 import { useAsyncFn } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
 import { Settings, UpgradeStatus, UpgradeSteps } from 'types/settings';
@@ -8,15 +7,6 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { configService } from 'services/ConfigService';
 import { useWalletContext } from 'context/WalletContext';
 import { useDaoSettings } from 'context/DaoSettingsContext';
-
-type RawMeta = [string, DaoVersion];
-
-interface ExtendedContract extends Contract {
-  // eslint-disable-next-line camelcase
-  get_default_code_hash: () => Promise<string>;
-  // eslint-disable-next-line camelcase
-  get_contracts_metadata: () => Promise<RawMeta[]>;
-}
 
 type Version = [string, { version: number[] }];
 
@@ -32,18 +22,17 @@ export function useCheckDaoUpgrade(dao: DAO): {
 
   const getUpgradeInfo = useCallback(async () => {
     try {
-      const account = nearService?.getAccount();
-
-      if (!appConfig || !account || dao.daoVersion?.version[0] === 2) {
+      if (!nearService) {
         return;
       }
 
-      const contract = new Contract(account, appConfig.NEAR_CONTRACT_NAME, {
-        viewMethods: ['get_default_code_hash', 'get_contracts_metadata'],
-        changeMethods: [],
-      }) as ExtendedContract;
+      const accountId = nearService.getAccountId();
 
-      const metadata = await contract.get_contracts_metadata();
+      if (!appConfig || !accountId || dao.daoVersion?.version[0] === 2) {
+        return;
+      }
+
+      const metadata = await nearService.getContractsMetadata();
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const sortedMeta = metadata.sort((v1, v2) => {

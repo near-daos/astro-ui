@@ -10,10 +10,10 @@ export function useAccountState(): number | null {
   const [storagePrice, setStoragePrice] = useState<number | null>(null);
 
   const [, getState] = useAsyncFn(async () => {
-    const res = nearService?.getAccount();
+    const accountId = await nearService?.getAccountId();
 
-    if (res) {
-      const state = await res.state();
+    if (accountId && nearService) {
+      const state = await nearService.viewAccount(accountId);
       const { storage_usage: storageUsage } = state;
 
       const nearPrice = (STORAGE_PRICE_PER_BYTE * storageUsage) / YOKTO_NEAR;

@@ -1,11 +1,10 @@
 import BN from 'bn.js';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import {
-  ConnectedWalletAccount,
-  Contract,
   KeyPair,
   keyStores,
   Near,
+  providers,
   transactions,
   utils,
 } from 'near-api-js';
@@ -23,12 +22,17 @@ import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 import { WalletType } from 'types/config';
 import { Transaction } from 'services/sputnik/SputnikNearService/walletServices/types';
 
-import { CreateDaoParams } from 'services/sputnik/types';
+import { CreateDaoParams, RawMeta } from 'services/sputnik/types';
 import { PublicKey } from 'near-api-js/lib/utils';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
-import { FunctionCallPermissionView } from 'near-api-js/lib/providers/provider';
+import {
+  AccessKeyList,
+  AccountView,
+  FunctionCallPermissionView,
+} from 'near-api-js/lib/providers/provider';
 import { AllowanceKey } from 'services/sputnik/SputnikNearService/types';
 
+import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 import { FINALIZE_PROPOSAL_GAS_VALUE, GAS_VALUE } from './constants';
 import { getPlainFunctionCallTransaction } from './utils/getPlainFunctionCallTransaction';
 import { getWalletSelectorStorageDepositTransaction } from './utils/getWalletSelectorStorageDepositTransaction';
@@ -51,10 +55,6 @@ export class NearService extends BaseService {
 
   isSignedIn(): Promise<boolean> {
     return this.walletService.isSignedIn();
-  }
-
-  getAccount(): ConnectedWalletAccount {
-    return this.walletService.getAccount();
   }
 
   functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome[]> {
@@ -317,7 +317,16 @@ export class NearService extends BaseService {
   }
 
   public async getAllowanceKeys(): Promise<AllowanceKey[]> {
-    const accessKeys = await this.getAccount().getAccessKeys();
+    const provider = new providers.JsonRpcProvider(this.nearConfig.nodeUrl);
+    const accountId = await this.getAccountId();
+
+    const accessKeys = await provider
+      .query<AccessKeyList>({
+        request_type: 'view_access_key_list',
+        account_id: accountId,
+        finality: 'final',
+      })
+      .then(list => list.keys);
 
     const permissionPredicate = (permission: FunctionCallPermissionView) => {
       return (
@@ -377,9 +386,14 @@ export class NearService extends BaseService {
       },
     ]);
 
-    await this.walletService
-      .getKeyStore()
-      .setKey(this.nearConfig.networkId, receiverId, accessKey);
+    if (
+      this.walletService.getWalletType() !== WalletType.SELECTOR_NEAR ||
+      this.walletService.getWalletType() !== WalletType.SELECTOR_SENDER
+    ) {
+      await this.walletService
+        .getKeyStore()
+        .setKey(this.nearConfig.networkId, receiverId, accessKey);
+    }
 
     return result;
   }
@@ -684,10 +698,89 @@ export class NearService extends BaseService {
     }
   }
 
-  getContract(contractId: string, viewMethods: string[]): Contract {
-    return new Contract(this.getAccount(), contractId, {
-      viewMethods,
-      changeMethods: [],
-    });
+  public async getContractsMetadata(): Promise<RawMeta[]> {
+    return this.callContract<RawMeta[]>(
+      this.appConfig.NEAR_CONTRACT_NAME,
+      'get_contracts_metadata',
+      ''
+    );
+  }
+
+  public async viewAccount(accountId: string): Promise<AccountView> {
+    return this.walletService.viewAccount(accountId);
+  }
+
+  public async getFactoryDefaultHash(): Promise<string> {
+    return this.callContract<string>(
+      this.appConfig.NEAR_CONTRACT_NAME,
+      'get_default_code_hash',
+      ''
+    );
+  }
+
+  public async getFtMetadata(
+    accountId: string
+  ): Promise<{
+    symbol: string;
+    decimals: number;
+  }> {
+    return this.callContract<{
+      symbol: string;
+      decimals: number;
+    }>(accountId, 'ft_metadata', '');
+  }
+
+  public async getDelegationTotalSupply(
+    stakingContract: string
+  ): Promise<string> {
+    return this.callContract<string>(
+      stakingContract,
+      'delegation_total_supply',
+      ''
+    );
+  }
+
+  public async getUserDelegation(
+    stakingContract: string,
+    accountId: string
+  ): Promise<{
+    // eslint-disable-next-line camelcase
+    delegated_amounts: [string, string][];
+    // eslint-disable-next-line camelcase
+    vote_amount: string;
+    // eslint-disable-next-line camelcase
+    next_action_timestamp: string;
+  }> {
+    return this.callContract<{
+      // eslint-disable-next-line camelcase
+      delegated_amounts: [string, string][];
+      // eslint-disable-next-line camelcase
+      vote_amount: string;
+      // eslint-disable-next-line camelcase
+      next_action_timestamp: string;
+    }>(stakingContract, 'get_user', jsonToBase64Str({ account_id: accountId }));
+  }
+
+  public async getFtBalance(
+    tokenContract: string,
+    accountId: string
+  ): Promise<string> {
+    return this.callContract<string>(
+      tokenContract,
+      'ft_metadata',
+      jsonToBase64Str({ accountId })
+    );
+  }
+
+  public callContract<T>(
+    accountId: string,
+    viewMethod: string,
+    argsAsBase64: string
+  ): Promise<T> {
+    return this.walletService.contractCall<T>(
+      accountId,
+      viewMethod,
+      argsAsBase64
+    );
   }
 }

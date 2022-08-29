@@ -3,12 +3,11 @@
 import BN from 'bn.js';
 import map from 'lodash/map';
 import first from 'lodash/first';
-import { KeyStore } from 'near-api-js/lib/key_stores';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
-import { ConnectedWalletAccount, providers } from 'near-api-js';
+import { providers } from 'near-api-js';
 import { BrowserWallet, WalletSelector } from '@near-wallet-selector/core';
-import { FinalExecutionOutcome, Provider } from 'near-api-js/lib/providers';
+import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { Wallet } from '@near-wallet-selector/core/lib/wallet/wallet.types';
 
 import { WalletType } from 'types/config';
@@ -24,6 +23,9 @@ import { SELECTOR_TRANSACTION_PAGE_URL } from 'constants/routing';
 
 import { configService } from 'services/ConfigService';
 
+import { AccountView } from 'near-api-js/lib/providers/provider';
+import { RpcService } from 'services/sputnik/SputnikNearService/walletServices/RpcService';
+import { KeyStore } from 'near-api-js/lib/key_stores';
 import { Transaction, SignInOptions, WalletMeta, WalletService } from './types';
 
 export class WalletSelectorService implements WalletService {
@@ -31,17 +33,18 @@ export class WalletSelectorService implements WalletService {
 
   private selector: WalletSelector;
 
-  private provider: Provider;
+  private rpcService: RpcService;
 
   private walletInfo: WalletMeta;
 
   constructor(wallet: Wallet, selector: WalletSelector) {
     const { nearConfig } = configService.get();
 
-    this.provider = new providers.JsonRpcProvider(nearConfig.nodeUrl);
+    this.rpcService = new RpcService(
+      new providers.JsonRpcProvider(nearConfig.nodeUrl)
+    );
 
     this.selector = selector;
-
     this.wallet = wallet;
 
     this.walletInfo =
@@ -58,6 +61,22 @@ export class WalletSelectorService implements WalletService {
             url: 'senderwallet.io',
             id: WalletType.SELECTOR_SENDER,
           };
+  }
+
+  getKeyStore(): KeyStore {
+    throw new Error('Method not implemented.');
+  }
+
+  async contractCall<T>(
+    accountId: string,
+    methodName: string,
+    argsAsBase64: string
+  ): Promise<T> {
+    return this.rpcService.contractCall(accountId, methodName, argsAsBase64);
+  }
+
+  viewAccount(accountId: string): Promise<AccountView> {
+    return this.rpcService.viewAccount(accountId);
   }
 
   private sendTransaction(transaction: unknown) {
@@ -127,12 +146,6 @@ export class WalletSelectorService implements WalletService {
     });
   }
 
-  // TODO implement after lib changes
-  getAccount(): ConnectedWalletAccount {
-    // @ts-ignore
-    return null;
-  }
-
   async getAccountId(): Promise<string> {
     const accounts = await this.wallet.getAccounts();
     const { accountId = '' } = first(accounts) || {};
@@ -147,20 +160,24 @@ export class WalletSelectorService implements WalletService {
     return Promise.resolve(accountIds);
   }
 
-  // TODO implement after lib changes
-  getKeyStore(): KeyStore {
-    // @ts-ignore
-    return null;
+  async getPublicKey(): Promise<string | null> {
+    const owner = await this.wallet.verifyOwner({ message: '' });
+
+    if (!owner) {
+      return null;
+    }
+
+    return owner.publicKey;
   }
 
-  // TODO implement after lib changes
-  getPublicKey(): Promise<string | null> {
-    return Promise.resolve(null);
-  }
+  async getSignature(): Promise<string | null> {
+    const owner = await this.wallet.verifyOwner({ message: '' });
 
-  // TODO implement after lib changes
-  getSignature(): Promise<string | null> {
-    return Promise.resolve(null);
+    if (!owner) {
+      return null;
+    }
+
+    return owner.signature;
   }
 
   getWalletType(): WalletType {

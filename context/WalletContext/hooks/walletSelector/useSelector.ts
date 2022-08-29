@@ -6,7 +6,6 @@ import {
 import { useRouter } from 'next/router';
 import { useState, useEffect, useCallback } from 'react';
 import { setupSender } from '@near-wallet-selector/sender';
-import { setupNearWallet } from '@near-wallet-selector/near-wallet';
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet';
 
 import { WalletType } from 'types/config';
@@ -72,7 +71,7 @@ export function useSelector(props: InputProps): ReturnType {
       const s = await setupWalletSelector({
         // debug: true,
         network: nearConfig.networkId as NetworkId,
-        modules: [setupNearWallet(), setupMyNearWallet(), setupSender()],
+        modules: [setupMyNearWallet(), setupSender()],
       });
 
       try {
