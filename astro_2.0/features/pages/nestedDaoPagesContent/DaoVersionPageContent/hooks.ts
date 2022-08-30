@@ -103,7 +103,7 @@ export function useUpgradeStatus(daoId: string): {
     versionHash: string;
   }) => Promise<void>;
 } {
-  const { accountId, nearService } = useWalletContext();
+  const { accountId, nearService, pkAndSignature } = useWalletContext();
   const [upgradeStatus, setUpgradeStatus] = useState<UpgradeStatus | null>(
     null
   );
@@ -121,7 +121,7 @@ export function useUpgradeStatus(daoId: string): {
 
   const [{ loading: updatingStatus }, update] = useAsyncFn(
     async ({ upgradeStep, proposalId, versionHash }) => {
-      if (!settings) {
+      if (!settings || !pkAndSignature) {
         return;
       }
 
@@ -135,8 +135,7 @@ export function useUpgradeStatus(daoId: string): {
           },
         };
 
-        const publicKey = await nearService?.getPublicKey();
-        const signature = await nearService?.getSignature();
+        const { publicKey, signature } = pkAndSignature;
 
         if (publicKey && signature && accountId) {
           const resp = await SputnikHttpService.updateDaoSettings(daoId, {
@@ -160,7 +159,7 @@ export function useUpgradeStatus(daoId: string): {
         });
       }
     },
-    [daoId, nearService]
+    [daoId, nearService, pkAndSignature]
   );
 
   return {

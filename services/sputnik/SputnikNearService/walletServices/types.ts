@@ -8,11 +8,10 @@ import {
   AccountView,
   QueryResponseKind,
 } from 'near-api-js/lib/providers/provider';
+import { PkAndSignature } from 'context/WalletContext/types';
 
 export interface RpcCallResult extends QueryResponseKind {
-  result: {
-    result: Uint8Array;
-  };
+  result: Uint8Array;
 }
 
 export interface WalletService {
@@ -34,11 +33,10 @@ export interface WalletService {
   getAccountId(): Promise<string>;
   getAvailableAccounts(): Promise<string[]>;
   functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome[]>;
-  getPublicKey(): Promise<string | null>;
-  getSignature(): Promise<string | null>;
+  getPkAndSignature(): Promise<PkAndSignature | null>;
   sendTransactions(
     transactions: Transaction[]
-  ): Promise<FinalExecutionOutcome[]>;
+  ): Promise<FinalExecutionOutcome[] | void>;
   walletMeta(): WalletMeta;
 }
 

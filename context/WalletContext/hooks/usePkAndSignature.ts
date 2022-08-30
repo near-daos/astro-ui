@@ -17,15 +17,9 @@ export const usePkAndSignature = (
     }
 
     const getPkAndSignature = async () => {
-      const [publicKey, signature] = await Promise.all([
-        currentWallet.getPublicKey(),
-        currentWallet.getSignature(),
-      ]);
+      const res = await currentWallet.getPkAndSignature();
 
-      setPkAndSignature({
-        publicKey,
-        signature,
-      });
+      setPkAndSignature(res);
     };
 
     getPkAndSignature().catch(console.error);

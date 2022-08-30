@@ -22,16 +22,20 @@ export class RpcService {
     methodName: string,
     argsAsBase64: string
   ): Promise<T> {
-    const {
-      result: { result },
-    } = await this.provider.query<RpcCallResult>({
-      request_type: 'call_function',
-      account_id: accountId,
-      method_name: methodName,
-      args_base64: argsAsBase64,
-      finality: 'final',
-    });
+    try {
+      const { result } = await this.provider.query<RpcCallResult>({
+        request_type: 'call_function',
+        account_id: accountId,
+        method_name: methodName,
+        args_base64: argsAsBase64,
+        finality: 'final',
+      });
 
-    return JSON.parse(Buffer.from(result).toString()) as T;
+      return JSON.parse(Buffer.from(result).toString()) as T;
+    } catch (e) {
+      console.error(e);
+
+      return Promise.reject();
+    }
   }
 }

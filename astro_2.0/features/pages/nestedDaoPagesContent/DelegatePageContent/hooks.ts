@@ -12,11 +12,8 @@ import {
 import { objectKeys } from 'utils/objects';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 import { useDaoSettings } from 'context/DaoSettingsContext';
-import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 
-export function useDelegatePageData(
-  dao: DAO
-): {
+export function useDelegatePageData(dao: DAO): {
   loadingTotalSupply: boolean;
   totalSupply: string | undefined;
   loadingTokenDetails: boolean;
@@ -45,108 +42,100 @@ export function useDelegatePageData(
   const [data, setData] = useState<DaoDelegation[]>([]);
   const [searchFilter, setSearchFilter] = useState('');
 
-  const {
-    loading: loadingTokenDetails,
-    value: tokenDetails,
-  } = useAsync(async () => {
-    if (!nearService) {
-      return undefined;
-    }
-
-    const contractAddress = settings?.createGovernanceToken?.contractAddress;
-
-    if (!contractAddress) {
-      return undefined;
-    }
-
-    const [meta, balance] = await Promise.all([
-      nearService.getFtMetadata(contractAddress),
-      nearService.getFtBalance(contractAddress, accountId),
-    ]);
-
-    return {
-      balance: Number(formatYoktoValue(balance, meta.decimals)),
-      symbol: meta.symbol,
-      decimals: meta.decimals,
-      contractAddress,
-    };
-  }, [nearService, ts, settings]);
-
-  const {
-    loading: loadingTotalSupply,
-    value: totalSupply,
-  } = useAsync(async () => {
-    if (!nearService) {
-      return undefined;
-    }
-
-    return nearService.getDelegationTotalSupply(daoId);
-  }, [daoId, nearService, ts]);
-
-  const {
-    loading: loadingDelegateByUser,
-    value: delegateByUser,
-  } = useAsync(async () => {
-    if (!nearService) {
-      return undefined;
-    }
-
-    try {
-      const stackingContract = nearService.getStackingContract(dao.name);
-
-      if (!stackingContract) {
+  const { loading: loadingTokenDetails, value: tokenDetails } =
+    useAsync(async () => {
+      if (!nearService) {
         return undefined;
       }
 
-      const userData = await nearService.getUserDelegation(
-        stackingContract,
-        accountId
-      );
+      const contractAddress = settings?.createGovernanceToken?.contractAddress;
 
-      if (!userData) {
+      if (!contractAddress) {
         return undefined;
       }
 
-      const {
-        delegatedTotal,
-        delegatedToUser,
-      } = userData.delegated_amounts.reduce<{
-        delegatedTotal: number;
-        delegatedToUser: Record<string, string>;
-      }>(
-        (res, item) => {
-          const [acc, balance] = item;
-
-          res.delegatedTotal += +balance;
-
-          res.delegatedToUser[acc] = formatYoktoValue(
-            balance,
-            tokenDetails?.decimals
-          );
-
-          return res;
-        },
-        { delegatedTotal: 0, delegatedToUser: {} }
-      );
+      const [meta, balance] = await Promise.all([
+        nearService.getFtMetadata(contractAddress),
+        nearService.getFtBalance(contractAddress, accountId),
+      ]);
 
       return {
-        accountId,
-        delegatedBalance: Number(
-          formatYoktoValue(delegatedTotal.toString(), tokenDetails?.decimals)
-        ),
-        stakedBalance: formatYoktoValue(
-          userData.vote_amount,
-          tokenDetails?.decimals
-        ),
-        nextActionTime: new Date(
-          Number(userData.next_action_timestamp) / 1000000
-        ),
-        delegatedToUser,
+        balance: Number(formatYoktoValue(balance, meta.decimals)),
+        symbol: meta.symbol,
+        decimals: meta.decimals,
+        contractAddress,
       };
-    } catch (e) {
-      return undefined;
-    }
-  }, [dao, nearService, accountId, ts, tokenDetails]);
+    }, [nearService, ts, settings]);
+
+  const { loading: loadingTotalSupply, value: totalSupply } =
+    useAsync(async () => {
+      if (!nearService) {
+        return undefined;
+      }
+
+      return nearService.getDelegationTotalSupply(daoId);
+    }, [daoId, nearService, ts]);
+
+  const { loading: loadingDelegateByUser, value: delegateByUser } =
+    useAsync(async () => {
+      if (!nearService || !accountId) {
+        return undefined;
+      }
+
+      try {
+        const stackingContract = nearService.getStackingContract(dao.name);
+
+        if (!stackingContract) {
+          return undefined;
+        }
+
+        const userData = await nearService.getUserDelegation(
+          stackingContract,
+          accountId
+        );
+
+        if (!userData) {
+          return undefined;
+        }
+
+        const { delegatedTotal, delegatedToUser } =
+          userData.delegated_amounts.reduce<{
+            delegatedTotal: number;
+            delegatedToUser: Record<string, string>;
+          }>(
+            (res, item) => {
+              const [acc, balance] = item;
+
+              res.delegatedTotal += +balance;
+
+              res.delegatedToUser[acc] = formatYoktoValue(
+                balance,
+                tokenDetails?.decimals
+              );
+
+              return res;
+            },
+            { delegatedTotal: 0, delegatedToUser: {} }
+          );
+
+        return {
+          accountId,
+          delegatedBalance: Number(
+            formatYoktoValue(delegatedTotal.toString(), tokenDetails?.decimals)
+          ),
+          stakedBalance: formatYoktoValue(
+            userData.vote_amount,
+            tokenDetails?.decimals
+          ),
+          nextActionTime: new Date(
+            Number(userData.next_action_timestamp) / 1000000
+          ),
+          delegatedToUser,
+        };
+      } catch (e) {
+        return undefined;
+      }
+    }, [dao, nearService, accountId, ts, tokenDetails]);
 
   const [, fetchData] = useAsyncFn(async () => {
     const res = await SputnikHttpService.getDelegations(daoId, governanceToken);
@@ -204,9 +193,7 @@ export function useDelegatePageData(
   };
 }
 
-export function useVotingPolicyDetails(
-  dao: DAO
-): {
+export function useVotingPolicyDetails(dao: DAO): {
   balance: string;
   threshold: string;
   quorum: string;
@@ -225,16 +212,10 @@ export function useVotingPolicyDetails(
         return undefined;
       }
 
-      const meta = await nearService.callContract<{
-        symbol: string;
-        decimals: number;
-      }>(contractAddress, 'ft_metadata', '');
-
-      const balance = await nearService.callContract<string>(
-        contractAddress,
-        'ft_balance_of',
-        jsonToBase64Str({ 'account:id': accountId })
-      );
+      const [meta, balance] = await Promise.all([
+        nearService.getFtMetadata(contractAddress),
+        nearService.getFtBalance(contractAddress, accountId),
+      ]);
 
       return {
         balance: Number(formatYoktoValue(balance, meta.decimals)),
@@ -245,7 +226,7 @@ export function useVotingPolicyDetails(
     } catch (e) {
       return undefined;
     }
-  }, [nearService, settings]);
+  }, [nearService, settings, accountId]);
 
   const holdersRole = dao.policy.roles.find(
     role => role.kind === 'Member' && role.name === 'TokenHolders'

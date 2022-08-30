@@ -40,6 +40,9 @@ import {
 import { httpService } from 'services/HttpService';
 
 import { RpcService } from 'services/sputnik/SputnikNearService/walletServices/RpcService';
+import { PkAndSignature } from 'context/WalletContext/types';
+import { configService } from 'services/ConfigService';
+
 import { NEAR_WALLET_METADATA } from './constants';
 
 export class SputnikWalletService implements WalletService {
@@ -79,6 +82,29 @@ export class SputnikWalletService implements WalletService {
     this.rpcService = new RpcService(
       new providers.JsonRpcProvider(nearConfig.nodeUrl)
     );
+  }
+
+  async getPkAndSignatureFromLocalKeyStore(): Promise<PkAndSignature | null> {
+    const accountId = await this.getAccountId();
+
+    const { nearConfig } = configService.get();
+
+    const keyPair = await this.keyStore.getKey(nearConfig.networkId, accountId);
+
+    const publicKey = keyPair.getPublicKey();
+
+    if (!publicKey) {
+      return null;
+    }
+
+    return {
+      publicKey: publicKey.toString(),
+      signature: await getSignature(keyPair),
+    };
+  }
+
+  getPkAndSignature(): Promise<PkAndSignature | null> {
+    return this.getPkAndSignatureFromLocalKeyStore();
   }
 
   viewAccount(accountId: string): Promise<AccountView> {

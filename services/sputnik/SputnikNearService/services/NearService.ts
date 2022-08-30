@@ -61,27 +61,9 @@ export class NearService extends BaseService {
     return this.walletService.functionCall(props);
   }
 
-  async getPublicKey(): Promise<string | null> {
-    const isSignedIn = await this.isSignedIn();
-
-    if (!isSignedIn) {
-      await this.walletService.signIn(this.nearConfig.contractName);
-    }
-
-    return this.walletService.getPublicKey();
-  }
-
-  async getSignature(): Promise<string | null> {
-    const isSignedIn = await this.isSignedIn();
-
-    if (!isSignedIn) {
-      await this.walletService.signIn(this.nearConfig.contractName);
-    }
-
-    return this.walletService.getSignature();
-  }
-
-  sendTransactions(txs: Transaction[]): Promise<FinalExecutionOutcome[]> {
+  sendTransactions(
+    txs: Transaction[]
+  ): Promise<FinalExecutionOutcome[] | void> {
     return this.walletService.sendTransactions(txs);
   }
 
@@ -168,7 +150,7 @@ export class NearService extends BaseService {
       gas?: string | number;
       tokenId?: string;
     }
-  ): Promise<FinalExecutionOutcome[]> {
+  ): Promise<FinalExecutionOutcome[] | void> {
     const isSignedIn = await this.isSignedIn();
 
     if (!isSignedIn) {
@@ -363,7 +345,7 @@ export class NearService extends BaseService {
   public async requestDaoAllowanceKey(
     daoId: string,
     allowance: string
-  ): Promise<FinalExecutionOutcome[]> {
+  ): Promise<FinalExecutionOutcome[] | void> {
     const accessKey = KeyPair.fromRandom('ed25519');
 
     const accessKeyTransaction = transactions.functionCallAccessKey(
@@ -485,7 +467,7 @@ export class NearService extends BaseService {
   public async multiVote(
     action: VoteAction,
     params: { daoId: string; proposalId: string }[]
-  ): Promise<FinalExecutionOutcome[]> {
+  ): Promise<FinalExecutionOutcome[] | void> {
     const isSignedIn = await this.isSignedIn();
 
     if (!isSignedIn) {
@@ -612,7 +594,7 @@ export class NearService extends BaseService {
 
   public async createTokensTransferProposal(
     proposalsData: CreateProposalParams[]
-  ): Promise<FinalExecutionOutcome[]> {
+  ): Promise<FinalExecutionOutcome[] | void> {
     const isSignedIn = await this.isSignedIn();
 
     if (!isSignedIn) {
@@ -628,7 +610,7 @@ export class NearService extends BaseService {
 
   public async createTokenTransferProposal(
     proposal: CreateProposalParams
-  ): Promise<FinalExecutionOutcome[]> {
+  ): Promise<FinalExecutionOutcome[] | void> {
     const isSignedIn = await this.isSignedIn();
 
     if (!isSignedIn) {
@@ -718,9 +700,7 @@ export class NearService extends BaseService {
     );
   }
 
-  public async getFtMetadata(
-    accountId: string
-  ): Promise<{
+  public async getFtMetadata(accountId: string): Promise<{
     symbol: string;
     decimals: number;
   }> {
@@ -767,8 +747,8 @@ export class NearService extends BaseService {
   ): Promise<string> {
     return this.callContract<string>(
       tokenContract,
-      'ft_metadata',
-      jsonToBase64Str({ accountId })
+      'ft_balance_of',
+      jsonToBase64Str({ account_id: accountId })
     );
   }
 
