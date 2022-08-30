@@ -1,0 +1,102 @@
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  background-color: var(--color-white);
+  border-radius: 5px;
+  box-shadow: 3px 2px 15px rgba(0, 0, 0, 0.05);
+
+  display: flex;
+
+  padding: 14px;
+  position: relative;
+
+  width: 100%;
+}
+
+.avatar {
+  @include centralize;
+  background-color: var(--color-neutral-40);
+  border-radius: 50%;
+  height: 58px;
+  margin-right: 16px;
+  width: 58px;
+}
+
+.avatarIcon {
+  color: var(--color-neutral-60);
+  width: 32px;
+}
+
+.titleIcon {
+  margin-right: 6px;
+  width: 18px;
+}
+
+.body {
+  flex: 1;
+}
+
+.title {
+  @extend %caption1;
+  align-items: center;
+  color: var(--color-neutral-60);
+  display: flex;
+}
+
+.info {
+  margin-left: 8px;
+
+  &:hover {
+    color: var(--color-primary-50);
+  }
+}
+
+.content {
+  align-items: center;
+  display: flex;
+  margin-top: 14px;
+  min-height: 32px;
+  width: 100%;
+}
+
+.combined {
+  align-items: baseline;
+  display: flex;
+}
+
+.primaryValue {
+  @include ellipse-text;
+  font-size: 24px;
+  font-weight: 600;
+  max-width: 90px;
+}
+
+.secondaryValue {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.sub {
+  @include ellipse-text;
+  font-size: 16px;
+  font-weight: 400;
+  max-width: 90px;
+}
+
+.power {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.progress.progress {
+  border-radius: 0;
+  height: 4px;
+  width: 100%;
+
+  > div {
+    border-radius: 0;
+  }
+}

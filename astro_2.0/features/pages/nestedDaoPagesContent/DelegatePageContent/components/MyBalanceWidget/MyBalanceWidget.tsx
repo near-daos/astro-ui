@@ -41,7 +41,7 @@ export const MyBalanceWidget: FC<Props> = ({
     <>
       <DelegatePageWidget
         title={`My delegated / staked balance (${symbol})`}
-        avatar="userAccount"
+        // avatar="userAccount"
         className={styles.widgetWrapper}
         titleClassName={styles.title}
       >
