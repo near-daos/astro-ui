@@ -1,7 +1,20 @@
 @import 'styles/typography';
+@import 'styles/mixins';
 
 .root {
   //width: 100%;
+  align-items: center;
+  display: flex;
+}
+
+.root.selected {
+  .items {
+    padding-left: 28px;
+  }
+
+  .close {
+    display: flex;
+  }
 }
 
 .items {
@@ -38,4 +51,41 @@
   border-color: var(--color-primary);
 
   color: var(--color-primary);
+}
+
+.itemLink.hidden {
+  display: none;
+}
+
+.close {
+  @include centralize;
+  background-color: var(--color-white);
+  display: none;
+  height: 34px;
+  left: 0;
+  position: absolute;
+  width: 24px;
+
+  &::before {
+    background-image: linear-gradient(
+      to right,
+      var(--color-white),
+      rgba(0, 0, 0, 0)
+    );
+    content: '';
+    height: 100%;
+    position: absolute;
+    right: -12px;
+    top: 0;
+    width: 12px;
+  }
+
+  .closeBtn {
+    @include centralize;
+    margin-right: 8px;
+  }
+
+  .closeIcon {
+    width: 16px;
+  }
 }
