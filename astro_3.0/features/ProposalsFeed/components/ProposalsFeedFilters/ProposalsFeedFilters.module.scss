@@ -98,10 +98,19 @@
   }
 }
 
+.scrollableFilter {
+  @include large-desktop {
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+}
+
 .statusFilter,
 .categoriesFilter {
   @include hide-scrollbar;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 0 12px;
+  padding: 0;
 }
