@@ -83,9 +83,7 @@ export class SenderWalletService implements WalletService {
     return Promise.resolve(this.walletInstance.accountId);
   }
 
-  async sendTransactions(
-    transactions: Transaction[]
-  ): Promise<FinalExecutionOutcome[]> {
+  async sendTransactions(transactions: Transaction[]): Promise<void> {
     const result = await this.walletInstance.requestSignTransactions({
       transactions,
     });
@@ -104,8 +102,6 @@ export class SenderWalletService implements WalletService {
     } catch (e) {
       console.error(e);
     }
-
-    return result.response;
   }
 
   async functionCall(
@@ -149,10 +145,7 @@ export class SenderWalletService implements WalletService {
     return this.walletType;
   }
 
-  async sendMoney(
-    receiverId: string,
-    amount: number
-  ): Promise<FinalExecutionOutcome[]> {
+  async sendMoney(receiverId: string, amount: number): Promise<void> {
     const parsedAmount = parseNearAmount(amount.toString());
 
     const result = await this.walletInstance.sendMoney({
@@ -163,8 +156,6 @@ export class SenderWalletService implements WalletService {
     if (isError(result.response)) {
       throw new Error(result.response.error.kind.ExecutionError);
     }
-
-    return result.response;
   }
 
   // eslint-disable-next-line class-methods-use-this

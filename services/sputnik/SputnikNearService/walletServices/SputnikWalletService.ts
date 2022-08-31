@@ -277,7 +277,7 @@ export class SputnikWalletService implements WalletService {
 
   public async sendTransactions(
     transactionsConf: Transaction[]
-  ): Promise<FinalExecutionOutcome[]> {
+  ): Promise<void> {
     const accountId = await this.getAccountId();
     const publicKey = await this.getPublicKey();
 
@@ -303,7 +303,7 @@ export class SputnikWalletService implements WalletService {
       )
     );
 
-    return account.sendTransactions(compact(trx));
+    await account.sendTransactions(compact(trx));
   }
 
   private async buildTransaction(
@@ -338,15 +338,12 @@ export class SputnikWalletService implements WalletService {
     return this.walletType;
   }
 
-  async sendMoney(
-    receiverId: string,
-    amount: number
-  ): Promise<FinalExecutionOutcome[]> {
+  async sendMoney(receiverId: string, amount: number): Promise<void> {
     const parsedNear = parseNearAmount(amount.toString());
 
     const nearAsBn = new BN(parsedNear ?? 0);
 
-    return this.sendTransactions([
+    await this.sendTransactions([
       { receiverId, actions: [transfer(nearAsBn)] },
     ]);
   }

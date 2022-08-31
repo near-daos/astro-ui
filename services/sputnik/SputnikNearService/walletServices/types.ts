@@ -16,10 +16,7 @@ export interface RpcCallResult extends QueryResponseKind {
 
 export interface WalletService {
   signIn(contractId: string, signInOptions?: SignInOptions): Promise<boolean>;
-  sendMoney(
-    receiverId: string,
-    amount: number
-  ): Promise<FinalExecutionOutcome[]>;
+  sendMoney(receiverId: string, amount: number): Promise<void>;
   viewAccount(accountId: string): Promise<AccountView>;
   contractCall<T>(
     accountId: string,
@@ -34,9 +31,7 @@ export interface WalletService {
   getAvailableAccounts(): Promise<string[]>;
   functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome[]>;
   getPkAndSignature(): Promise<PkAndSignature | null>;
-  sendTransactions(
-    transactions: Transaction[]
-  ): Promise<FinalExecutionOutcome[] | void>;
+  sendTransactions(transactions: Transaction[]): Promise<void>;
   walletMeta(): WalletMeta;
 }
 
