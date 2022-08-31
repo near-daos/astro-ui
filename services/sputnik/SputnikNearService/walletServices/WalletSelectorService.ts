@@ -208,17 +208,14 @@ export class WalletSelectorService implements WalletService {
   }
 
   // TODO works only for NEAR wallet. Has to be updated for Sender wallet
-  async sendMoney(
-    receiverId: string,
-    amount: number
-  ): Promise<FinalExecutionOutcome[]> {
+  async sendMoney(receiverId: string, amount: number): Promise<void> {
     const parsedNear = parseNearAmount(amount.toString());
 
     const nearAsBn = new BN(parsedNear ?? 0);
 
     const accountId = await this.getAccountId();
 
-    const res = await this.wallet.signAndSendTransaction({
+    await this.wallet.signAndSendTransaction({
       callbackUrl: `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
       receiverId,
       actions: [
@@ -230,13 +227,9 @@ export class WalletSelectorService implements WalletService {
         },
       ],
     });
-
-    return [res as FinalExecutionOutcome];
   }
 
-  async sendTransactions(
-    transactions: Transaction[]
-  ): Promise<FinalExecutionOutcome[] | void> {
+  async sendTransactions(transactions: Transaction[]): Promise<void> {
     const accountId = await this.getAccountId();
 
     const trx: SelectorTransaction[] = transactions.map(item => ({

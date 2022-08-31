@@ -42,10 +42,7 @@ import { BaseService } from './BaseService';
 const USN_TOKEN_CONTRACTS = ['usn', 'usdn.testnet'];
 
 export class NearService extends BaseService {
-  sendMoney(
-    receiverId: string,
-    amount: number
-  ): Promise<FinalExecutionOutcome[]> {
+  sendMoney(receiverId: string, amount: number): Promise<void> {
     return this.walletService.sendMoney(receiverId, amount);
   }
 
