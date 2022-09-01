@@ -1,5 +1,7 @@
 import { HOURS_IN_DAY, HOURS_IN_WEEK, ONE_HOUR } from './timeConstants';
 
+export const VOTE_ACTION_SOURCE_PAGE = 'astro-vote-action-source';
+
 export type VotePeriodKey =
   | 'lessThanHourProposals'
   | 'lessThanDayProposals'
