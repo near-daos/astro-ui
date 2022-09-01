@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useMount } from 'react-use';
+import { useLifecycles, useLocalStorage, useMount } from 'react-use';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 
@@ -77,6 +77,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   isDraft,
   isEditDraft,
 }) => {
+  const [, setNewProposalFlag] = useLocalStorage('astro-new-proposal');
   const { t } = useTranslation();
   const { accountId, nearService } = useWalletContext();
   const initialProposalVariant = !isDraft
@@ -103,6 +104,15 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     setSelectedProposalVariant(initialProposalVariant);
     setSchemaContext({ selectedProposalVariant: initialProposalVariant });
   }, [initialProposalVariant]);
+
+  useLifecycles(
+    () => {
+      setNewProposalFlag(1);
+    },
+    () => {
+      setNewProposalFlag(0);
+    }
+  );
 
   const proposalType = useMemo(
     () => mapProposalVariantToProposalType(selectedProposalVariant),

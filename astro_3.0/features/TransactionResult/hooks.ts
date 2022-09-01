@@ -5,7 +5,11 @@ import { useRouter } from 'next/router';
 import { TransactionResult, TransactionResultType } from 'types/transaction';
 import { WalletType } from 'types/config';
 
-import { SINGLE_DAO_PAGE, SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
+import {
+  MY_DAOS_URL,
+  SINGLE_DAO_PAGE,
+  SINGLE_PROPOSAL_PAGE_URL,
+} from 'constants/routing';
 import { VOTE_ACTION_SOURCE_PAGE } from 'constants/votingConstants';
 import { useWalletContext } from 'context/WalletContext';
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
@@ -30,6 +34,16 @@ export function useSelectorWalletTransactionResult(): void {
       const rawResults = searchParams.get('results');
 
       if (!rawResults) {
+        if (voteActionSource) {
+          const redirectUrl = voteActionSource as string;
+
+          setVoteActionSource(null);
+
+          router.push(redirectUrl);
+        } else {
+          router.push(MY_DAOS_URL);
+        }
+
         return;
       }
 
@@ -72,12 +86,15 @@ export function useSelectorWalletTransactionResult(): void {
             break;
           }
           default: {
+            router.push(MY_DAOS_URL);
+
             break;
           }
         }
       }
     } catch (e) {
       console.error(e);
+      router.push(MY_DAOS_URL);
     }
   }, [currentWallet, router, setVoteActionSource, voteActionSource]);
 }
