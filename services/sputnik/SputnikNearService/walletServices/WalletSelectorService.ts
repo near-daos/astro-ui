@@ -235,20 +235,14 @@ export class WalletSelectorService implements WalletService {
     const trx: SelectorTransaction[] = transactions.map(item => ({
       ...item,
       signerId: accountId,
-      actions: item.actions.map(
-        action =>
-          ({
-            type: 'FunctionCall',
-            params: {
-              ...action,
-            },
-          } as FunctionCallAction)
-      ),
+      actions: item.actions.map(action => action as FunctionCallAction),
     }));
 
-    await this.wallet.signAndSendTransactions({
-      callbackUrl: `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
-      transactions: trx,
+    return new Promise(() => {
+      this.wallet.signAndSendTransactions({
+        callbackUrl: `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
+        transactions: trx,
+      });
     });
   }
 

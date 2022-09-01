@@ -464,7 +464,7 @@ export class NearService extends BaseService {
   public async multiVote(
     action: VoteAction,
     params: { daoId: string; proposalId: string }[]
-  ): Promise<FinalExecutionOutcome[] | void> {
+  ): Promise<void> {
     const isSignedIn = await this.isSignedIn();
 
     if (!isSignedIn) {
