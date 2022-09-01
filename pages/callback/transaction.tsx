@@ -6,11 +6,12 @@ import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 import { getTranslations } from 'utils/getTranslations';
 import { useWalletContext } from 'context/WalletContext';
 import { WalletType } from 'types/config';
-import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
+import { SINGLE_DAO_PAGE, SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 import { useRouter } from 'next/router';
 
 enum TransactionResultType {
   PROPOSAL_CREATE = 'ProposalCreate',
+  DAO_CREATE = 'DaoCreate',
 }
 
 type TransactionResult = {
@@ -49,6 +50,16 @@ const Transaction: NextPage = () => {
                 query: {
                   dao: result.metadata.daoId,
                   proposal: result.metadata.proposalId,
+                },
+              });
+
+              break;
+            }
+            case TransactionResultType.DAO_CREATE: {
+              router.push({
+                pathname: SINGLE_DAO_PAGE,
+                query: {
+                  dao: result.metadata.daoId,
                 },
               });
 

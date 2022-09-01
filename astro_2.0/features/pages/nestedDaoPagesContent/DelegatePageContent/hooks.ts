@@ -78,7 +78,11 @@ export function useDelegatePageData(dao: DAO): {
 
   const { loading: loadingDelegateByUser, value: delegateByUser } =
     useAsync(async () => {
-      if (!nearService || !accountId) {
+      if (
+        !nearService ||
+        !accountId ||
+        !settings?.createGovernanceToken?.wizardCompleted
+      ) {
         return undefined;
       }
 
@@ -135,7 +139,7 @@ export function useDelegatePageData(dao: DAO): {
       } catch (e) {
         return undefined;
       }
-    }, [dao, nearService, accountId, ts, tokenDetails]);
+    }, [dao, nearService, accountId, ts, tokenDetails, settings]);
 
   const [, fetchData] = useAsyncFn(async () => {
     const res = await SputnikHttpService.getDelegations(daoId, governanceToken);

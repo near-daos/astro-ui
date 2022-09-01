@@ -112,8 +112,10 @@ export const DaoHeaderContent: FC<Props> = ({
     return (
       <>
         <section className={styles.usersSection}>
-          <div className={styles.label}>{t('members')}</div>
-          <div className={styles.value}>{members}</div>
+          <div className={styles.infoWrapper}>
+            <div className={styles.label}>{t('members')}</div>
+            <div className={styles.value}>{members}</div>
+          </div>
         </section>
 
         {showFollowButton || showJoinButton ? (
@@ -136,15 +138,17 @@ export const DaoHeaderContent: FC<Props> = ({
           </section>
         ) : (
           <section className={styles.versionSection}>
-            <div className={styles.label}>DAO Version</div>
-            <div className={styles.value}>
-              {daoVersion?.version.join('.')}{' '}
-              <CopyButton
-                defaultTooltip="Copy hash"
-                text={daoVersion.hash}
-                className={styles.copyHash}
-                iconClassName={styles.copyIcon}
-              />
+            <div className={styles.infoWrapper}>
+              <div className={styles.label}>DAO Version</div>
+              <div className={styles.value}>
+                {daoVersion?.version.join('.')}{' '}
+                <CopyButton
+                  defaultTooltip="Copy hash"
+                  text={daoVersion.hash}
+                  className={styles.copyHash}
+                  iconClassName={styles.copyIcon}
+                />
+              </div>
             </div>
           </section>
         )}
