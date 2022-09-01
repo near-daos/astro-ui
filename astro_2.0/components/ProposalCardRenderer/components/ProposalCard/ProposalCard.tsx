@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback } from 'react';
-import { useAsyncFn } from 'react-use';
+import { useAsyncFn, useLocalStorage, useLocation } from 'react-use';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -225,6 +225,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
   const router = useRouter();
+  const [, setVoteActionSource] = useLocalStorage('astro-vote-action-source');
+  const { pathname } = useLocation();
 
   const isDraftClosed = draftState === 'closed';
 
@@ -235,6 +237,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction, gas?: string | number) => {
       try {
+        setVoteActionSource(pathname);
+
         const res = await nearService?.vote(daoId, proposalId, vote, gas);
 
         sendGAEvent({
@@ -272,7 +276,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         // });
       }
     },
-    [daoId, proposalId, router, nearService]
+    [daoId, proposalId, router, nearService, pathname]
   );
 
   const [{ loading: finalizeLoading }, finalizeClickHandler] =

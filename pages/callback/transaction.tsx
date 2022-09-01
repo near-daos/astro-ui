@@ -8,10 +8,12 @@ import { useWalletContext } from 'context/WalletContext';
 import { WalletType } from 'types/config';
 import { SINGLE_DAO_PAGE, SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 import { useRouter } from 'next/router';
+import { useLocalStorage } from 'react-use';
 
 enum TransactionResultType {
   PROPOSAL_CREATE = 'ProposalCreate',
   DAO_CREATE = 'DaoCreate',
+  PROPOSAL_VOTE = 'ProposalVote',
 }
 
 type TransactionResult = {
@@ -22,6 +24,9 @@ type TransactionResult = {
 const Transaction: NextPage = () => {
   const router = useRouter();
   const { currentWallet } = useWalletContext();
+  const [voteActionSource, setVoteActionSource] = useLocalStorage(
+    'astro-vote-action-source'
+  );
 
   useEffect(() => {
     const { searchParams } = new URL(window.location.toString());
@@ -65,6 +70,17 @@ const Transaction: NextPage = () => {
 
               break;
             }
+            case TransactionResultType.PROPOSAL_VOTE: {
+              if (voteActionSource) {
+                const redirectUrl = voteActionSource as string;
+
+                setVoteActionSource(null);
+
+                router.push(redirectUrl);
+              }
+
+              break;
+            }
             default: {
               break;
             }
@@ -96,7 +112,7 @@ const Transaction: NextPage = () => {
     } else {
       window.close();
     }
-  }, [currentWallet, router]);
+  }, [currentWallet, router, setVoteActionSource, voteActionSource]);
 
   return null;
 };
