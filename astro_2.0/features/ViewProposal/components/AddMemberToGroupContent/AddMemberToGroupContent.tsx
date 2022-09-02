@@ -27,7 +27,10 @@ export const AddMemberToGroupContent: FC<AddMemberToGroupContentProps> = ({
         </FieldWrapper>
       </div>
       <div className={styles.row}>
-        <FieldWrapper label={t('proposalCard.proposalTarget')}>
+        <FieldWrapper
+          label={t('proposalCard.proposalTarget')}
+          className={styles.wrapperRoot}
+        >
           <FieldValue value={memberName} noWrap />
         </FieldWrapper>
       </div>
