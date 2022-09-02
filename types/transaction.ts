@@ -21,14 +21,3 @@ export type Receipt = {
   date: string;
   token: string;
 };
-
-export enum TransactionResultType {
-  PROPOSAL_CREATE = 'ProposalCreate',
-  DAO_CREATE = 'DaoCreate',
-  PROPOSAL_VOTE = 'ProposalVote',
-}
-
-export type TransactionResult = {
-  type: TransactionResultType;
-  metadata: Record<string, string>;
-};

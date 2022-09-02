@@ -112,8 +112,6 @@
   padding: 0 0 0 12px;
 
   @include tablet-landscape {
-    flex-direction: row;
-    justify-content: flex-start;
     padding: 0;
   }
 }
@@ -132,13 +130,6 @@
     margin-left: 12px;
     padding: 0;
   }
-}
-
-.infoWrapper {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .label {

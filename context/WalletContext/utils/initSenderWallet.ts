@@ -3,7 +3,6 @@ import {
   SenderWalletInstance,
 } from 'services/sputnik/SputnikNearService/walletServices/types';
 import { SenderWalletService } from 'services/sputnik/SputnikNearService/walletServices/SenderWalletService';
-import { configService } from 'services/ConfigService';
 
 export function initSenderWallet(reload: () => void): Promise<WalletService> {
   return new Promise((resolve, reject) => {
@@ -25,13 +24,9 @@ export function initSenderWallet(reload: () => void): Promise<WalletService> {
         });
 
         clearInterval(intervalId);
-
-        const { nearConfig } = configService.get();
-
         resolve(
           new SenderWalletService(
-            (window.near as unknown) as SenderWalletInstance,
-            nearConfig
+            window.near as unknown as SenderWalletInstance
           )
         );
       }

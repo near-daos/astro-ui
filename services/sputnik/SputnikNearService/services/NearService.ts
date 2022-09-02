@@ -1,10 +1,11 @@
 import BN from 'bn.js';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import {
+  ConnectedWalletAccount,
+  Contract,
   KeyPair,
   keyStores,
   Near,
-  providers,
   transactions,
   utils,
 } from 'near-api-js';
@@ -22,17 +23,12 @@ import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 import { WalletType } from 'types/config';
 import { Transaction } from 'services/sputnik/SputnikNearService/walletServices/types';
 
-import { CreateDaoParams, RawMeta } from 'services/sputnik/types';
+import { CreateDaoParams } from 'services/sputnik/types';
 import { PublicKey } from 'near-api-js/lib/utils';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
-import {
-  AccessKeyList,
-  AccountView,
-  FunctionCallPermissionView,
-} from 'near-api-js/lib/providers/provider';
+import { FunctionCallPermissionView } from 'near-api-js/lib/providers/provider';
 import { AllowanceKey } from 'services/sputnik/SputnikNearService/types';
 
-import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 import { FINALIZE_PROPOSAL_GAS_VALUE, GAS_VALUE } from './constants';
 import { getPlainFunctionCallTransaction } from './utils/getPlainFunctionCallTransaction';
 import { getWalletSelectorStorageDepositTransaction } from './utils/getWalletSelectorStorageDepositTransaction';
@@ -42,7 +38,10 @@ import { BaseService } from './BaseService';
 const USN_TOKEN_CONTRACTS = ['usn', 'usdn.testnet'];
 
 export class NearService extends BaseService {
-  sendMoney(receiverId: string, amount: number): Promise<void> {
+  sendMoney(
+    receiverId: string,
+    amount: number
+  ): Promise<FinalExecutionOutcome[]> {
     return this.walletService.sendMoney(receiverId, amount);
   }
 
@@ -54,13 +53,35 @@ export class NearService extends BaseService {
     return this.walletService.isSignedIn();
   }
 
+  getAccount(): ConnectedWalletAccount {
+    return this.walletService.getAccount();
+  }
+
   functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome[]> {
     return this.walletService.functionCall(props);
   }
 
-  sendTransactions(
-    txs: Transaction[]
-  ): Promise<FinalExecutionOutcome[] | void> {
+  async getPublicKey(): Promise<string | null> {
+    const isSignedIn = await this.isSignedIn();
+
+    if (!isSignedIn) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
+    return this.walletService.getPublicKey();
+  }
+
+  async getSignature(): Promise<string | null> {
+    const isSignedIn = await this.isSignedIn();
+
+    if (!isSignedIn) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
+    return this.walletService.getSignature();
+  }
+
+  sendTransactions(txs: Transaction[]): Promise<FinalExecutionOutcome[]> {
     return this.walletService.sendTransactions(txs);
   }
 
@@ -147,7 +168,7 @@ export class NearService extends BaseService {
       gas?: string | number;
       tokenId?: string;
     }
-  ): Promise<FinalExecutionOutcome[] | void> {
+  ): Promise<FinalExecutionOutcome[]> {
     const isSignedIn = await this.isSignedIn();
 
     if (!isSignedIn) {
@@ -296,16 +317,7 @@ export class NearService extends BaseService {
   }
 
   public async getAllowanceKeys(): Promise<AllowanceKey[]> {
-    const provider = new providers.JsonRpcProvider(this.nearConfig.nodeUrl);
-    const accountId = await this.getAccountId();
-
-    const accessKeys = await provider
-      .query<AccessKeyList>({
-        request_type: 'view_access_key_list',
-        account_id: accountId,
-        finality: 'final',
-      })
-      .then(list => list.keys);
+    const accessKeys = await this.getAccount().getAccessKeys();
 
     const permissionPredicate = (permission: FunctionCallPermissionView) => {
       return (
@@ -342,7 +354,7 @@ export class NearService extends BaseService {
   public async requestDaoAllowanceKey(
     daoId: string,
     allowance: string
-  ): Promise<FinalExecutionOutcome[] | void> {
+  ): Promise<FinalExecutionOutcome[]> {
     const accessKey = KeyPair.fromRandom('ed25519');
 
     const accessKeyTransaction = transactions.functionCallAccessKey(
@@ -365,14 +377,9 @@ export class NearService extends BaseService {
       },
     ]);
 
-    if (
-      this.walletService.getWalletType() !== WalletType.SELECTOR_NEAR ||
-      this.walletService.getWalletType() !== WalletType.SELECTOR_SENDER
-    ) {
-      await this.walletService
-        .getKeyStore()
-        .setKey(this.nearConfig.networkId, receiverId, accessKey);
-    }
+    await this.walletService
+      .getKeyStore()
+      .setKey(this.nearConfig.networkId, receiverId, accessKey);
 
     return result;
   }
@@ -464,7 +471,7 @@ export class NearService extends BaseService {
   public async multiVote(
     action: VoteAction,
     params: { daoId: string; proposalId: string }[]
-  ): Promise<void> {
+  ): Promise<FinalExecutionOutcome[]> {
     const isSignedIn = await this.isSignedIn();
 
     if (!isSignedIn) {
@@ -591,7 +598,7 @@ export class NearService extends BaseService {
 
   public async createTokensTransferProposal(
     proposalsData: CreateProposalParams[]
-  ): Promise<FinalExecutionOutcome[] | void> {
+  ): Promise<FinalExecutionOutcome[]> {
     const isSignedIn = await this.isSignedIn();
 
     if (!isSignedIn) {
@@ -607,7 +614,7 @@ export class NearService extends BaseService {
 
   public async createTokenTransferProposal(
     proposal: CreateProposalParams
-  ): Promise<FinalExecutionOutcome[] | void> {
+  ): Promise<FinalExecutionOutcome[]> {
     const isSignedIn = await this.isSignedIn();
 
     if (!isSignedIn) {
@@ -677,87 +684,10 @@ export class NearService extends BaseService {
     }
   }
 
-  public async getContractsMetadata(): Promise<RawMeta[]> {
-    return this.callContract<RawMeta[]>(
-      this.appConfig.NEAR_CONTRACT_NAME,
-      'get_contracts_metadata',
-      ''
-    );
-  }
-
-  public async viewAccount(accountId: string): Promise<AccountView> {
-    return this.walletService.viewAccount(accountId);
-  }
-
-  public async getFactoryDefaultHash(): Promise<string> {
-    return this.callContract<string>(
-      this.appConfig.NEAR_CONTRACT_NAME,
-      'get_default_code_hash',
-      ''
-    );
-  }
-
-  public async getFtMetadata(accountId: string): Promise<{
-    symbol: string;
-    decimals: number;
-  }> {
-    return this.callContract<{
-      symbol: string;
-      decimals: number;
-    }>(accountId, 'ft_metadata', '');
-  }
-
-  public async getDelegationTotalSupply(
-    stakingContract: string
-  ): Promise<string> {
-    return this.callContract<string>(
-      stakingContract,
-      'delegation_total_supply',
-      ''
-    );
-  }
-
-  public async getUserDelegation(
-    stakingContract: string,
-    accountId: string
-  ): Promise<{
-    // eslint-disable-next-line camelcase
-    delegated_amounts: [string, string][];
-    // eslint-disable-next-line camelcase
-    vote_amount: string;
-    // eslint-disable-next-line camelcase
-    next_action_timestamp: string;
-  }> {
-    return this.callContract<{
-      // eslint-disable-next-line camelcase
-      delegated_amounts: [string, string][];
-      // eslint-disable-next-line camelcase
-      vote_amount: string;
-      // eslint-disable-next-line camelcase
-      next_action_timestamp: string;
-    }>(stakingContract, 'get_user', jsonToBase64Str({ account_id: accountId }));
-  }
-
-  public async getFtBalance(
-    tokenContract: string,
-    accountId: string
-  ): Promise<string> {
-    return this.callContract<string>(
-      tokenContract,
-      'ft_balance_of',
-      jsonToBase64Str({ account_id: accountId })
-    );
-  }
-
-  public callContract<T>(
-    accountId: string,
-    viewMethod: string,
-    argsAsBase64: string
-  ): Promise<T> {
-    return this.walletService.contractCall<T>(
-      accountId,
-      viewMethod,
-      argsAsBase64
-    );
+  getContract(contractId: string, viewMethods: string[]): Contract {
+    return new Contract(this.getAccount(), contractId, {
+      viewMethods,
+      changeMethods: [],
+    });
   }
 }

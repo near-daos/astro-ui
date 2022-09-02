@@ -3,16 +3,13 @@
 import BN from 'bn.js';
 import map from 'lodash/map';
 import first from 'lodash/first';
+import { KeyStore } from 'near-api-js/lib/key_stores';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
-import { keyStores, providers, Signer } from 'near-api-js';
+import { ConnectedWalletAccount, providers } from 'near-api-js';
 import { BrowserWallet, WalletSelector } from '@near-wallet-selector/core';
-import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
+import { FinalExecutionOutcome, Provider } from 'near-api-js/lib/providers';
 import { Wallet } from '@near-wallet-selector/core/lib/wallet/wallet.types';
-import {
-  Transaction as SelectorTransaction,
-  FunctionCallAction,
-} from '@near-wallet-selector/core/lib/wallet';
 
 import { WalletType } from 'types/config';
 import { TransactionCompleted } from 'global';
@@ -22,32 +19,29 @@ import {
   SputnikWalletErrorCodes,
 } from 'errors/SputnikWalletError';
 
+import { TRANSACTIONS_KEY } from 'constants/localStorage';
+import { SELECTOR_TRANSACTION_PAGE_URL } from 'constants/routing';
+
 import { configService } from 'services/ConfigService';
 
-import { PkAndSignature } from 'context/WalletContext/types';
-import { AccountView } from 'near-api-js/lib/providers/provider';
-import { RpcService } from 'services/sputnik/SputnikNearService/walletServices/RpcService';
-import { KeyStore } from 'near-api-js/lib/key_stores';
-import { Transaction, WalletMeta, WalletService } from './types';
-import { getSignature } from './helpers';
+import { Transaction, SignInOptions, WalletMeta, WalletService } from './types';
 
 export class WalletSelectorService implements WalletService {
   private wallet: Wallet;
 
   private selector: WalletSelector;
 
-  private rpcService: RpcService;
+  private provider: Provider;
 
   private walletInfo: WalletMeta;
 
   constructor(wallet: Wallet, selector: WalletSelector) {
     const { nearConfig } = configService.get();
 
-    this.rpcService = new RpcService(
-      new providers.JsonRpcProvider(nearConfig.nodeUrl)
-    );
+    this.provider = new providers.JsonRpcProvider(nearConfig.nodeUrl);
 
     this.selector = selector;
+
     this.wallet = wallet;
 
     this.walletInfo =
@@ -66,20 +60,13 @@ export class WalletSelectorService implements WalletService {
           };
   }
 
-  getKeyStore(): KeyStore {
-    throw new Error('Method not implemented.');
-  }
+  private sendTransaction(transaction: unknown) {
+    const args = JSON.stringify(transaction);
 
-  async contractCall<T>(
-    accountId: string,
-    methodName: string,
-    argsAsBase64: string
-  ): Promise<T> {
-    return this.rpcService.contractCall(accountId, methodName, argsAsBase64);
-  }
-
-  viewAccount(accountId: string): Promise<AccountView> {
-    return this.rpcService.viewAccount(accountId);
+    window.open(
+      `${window.origin}${SELECTOR_TRANSACTION_PAGE_URL}?${TRANSACTIONS_KEY}=${args}`,
+      '_blank'
+    );
   }
 
   private getOnTransactionsCompleteHandler(
@@ -114,30 +101,36 @@ export class WalletSelectorService implements WalletService {
     return handler.bind(this);
   }
 
-  async functionCall(
-    props: FunctionCallOptions
-  ): Promise<FinalExecutionOutcome[]> {
-    const { args, contractId, gas, methodName, attachedDeposit } = props;
+  functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome[]> {
+    return new Promise((resolve, reject) => {
+      const { args, contractId, gas, methodName, attachedDeposit } = props;
 
-    const accountId = await this.getAccountId();
+      window.onTransaction = this.getOnTransactionsCompleteHandler(
+        resolve,
+        reject
+      );
 
-    const res = await this.wallet.signAndSendTransaction({
-      callbackUrl: `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
-      receiverId: contractId,
-      actions: [
-        {
-          type: 'FunctionCall',
-          params: {
-            methodName,
-            args,
-            gas: gas?.toString() ?? '0',
-            deposit: attachedDeposit?.toString() || '0',
+      this.sendTransaction({
+        receiverId: contractId,
+        actions: [
+          {
+            type: 'FunctionCall',
+            params: {
+              methodName,
+              args,
+              gas: gas?.toString(),
+              deposit: attachedDeposit?.toString() || '0',
+            },
           },
-        },
-      ],
+        ],
+      });
     });
+  }
 
-    return [res as FinalExecutionOutcome];
+  // TODO implement after lib changes
+  getAccount(): ConnectedWalletAccount {
+    // @ts-ignore
+    return null;
   }
 
   async getAccountId(): Promise<string> {
@@ -154,45 +147,20 @@ export class WalletSelectorService implements WalletService {
     return Promise.resolve(accountIds);
   }
 
-  getKeystore(): KeyStore | null {
-    if (this.walletInfo.id === WalletType.SELECTOR_NEAR) {
-      return new keyStores.BrowserLocalStorageKeyStore(window.localStorage);
-    }
-
-    const signer = window.near?.account()?.connection?.signer;
-
-    if (!signer) {
-      return null;
-    }
-
-    const { keyStore } = signer as { keyStore: KeyStore } & Signer;
-
-    return keyStore;
+  // TODO implement after lib changes
+  getKeyStore(): KeyStore {
+    // @ts-ignore
+    return null;
   }
 
-  async getPkAndSignatureFromLocalKeyStore(): Promise<PkAndSignature | null> {
-    const accountId = await this.getAccountId();
+  // TODO implement after lib changes
+  getPublicKey(): Promise<string | null> {
+    return Promise.resolve(null);
+  }
 
-    const { nearConfig } = configService.get();
-
-    const keyStore = this.getKeystore();
-
-    if (!keyStore) {
-      return null;
-    }
-
-    const keyPair = await keyStore.getKey(nearConfig.networkId, accountId);
-
-    const publicKey = keyPair.getPublicKey();
-
-    if (!publicKey) {
-      return null;
-    }
-
-    return {
-      publicKey: publicKey.toString(),
-      signature: await getSignature(keyPair),
-    };
+  // TODO implement after lib changes
+  getSignature(): Promise<string | null> {
+    return Promise.resolve(null);
   }
 
   getWalletType(): WalletType {
@@ -208,57 +176,59 @@ export class WalletSelectorService implements WalletService {
   }
 
   // TODO works only for NEAR wallet. Has to be updated for Sender wallet
-  async sendMoney(receiverId: string, amount: number): Promise<void> {
-    const parsedNear = parseNearAmount(amount.toString());
+  sendMoney(
+    receiverId: string,
+    amount: number
+  ): Promise<FinalExecutionOutcome[]> {
+    return new Promise((resolve, reject) => {
+      const parsedNear = parseNearAmount(amount.toString());
 
-    const nearAsBn = new BN(parsedNear ?? 0);
+      const nearAsBn = new BN(parsedNear ?? 0);
 
-    const accountId = await this.getAccountId();
+      window.onTransaction = this.getOnTransactionsCompleteHandler(
+        resolve,
+        reject
+      );
 
-    await this.wallet.signAndSendTransaction({
-      callbackUrl: `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
-      receiverId,
-      actions: [
-        {
-          type: 'Transfer',
-          params: {
-            deposit: nearAsBn.toString(),
+      this.sendTransaction({
+        receiverId,
+        actions: [
+          {
+            type: 'Transfer',
+            params: {
+              deposit: nearAsBn.toString(),
+            },
           },
-        },
-      ],
-    });
-  }
-
-  async sendTransactions(transactions: Transaction[]): Promise<void> {
-    const accountId = await this.getAccountId();
-
-    const trx: SelectorTransaction[] = transactions.map(item => ({
-      ...item,
-      signerId: accountId,
-      actions: item.actions.map(action => action as FunctionCallAction),
-    }));
-
-    return new Promise(() => {
-      this.wallet.signAndSendTransactions({
-        callbackUrl: `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
-        transactions: trx,
+        ],
       });
     });
   }
 
-  async signIn(contractId: string): Promise<boolean> {
+  sendTransactions(
+    transactions: Transaction[]
+  ): Promise<FinalExecutionOutcome[]> {
+    return new Promise((resolve, reject) => {
+      window.onTransaction = this.getOnTransactionsCompleteHandler(
+        resolve,
+        reject
+      );
+
+      this.sendTransaction(transactions);
+    });
+  }
+
+  async signIn(
+    contractId: string,
+    signInOptions?: SignInOptions
+  ): Promise<boolean> {
     const wallet = this.wallet as BrowserWallet;
 
-    await wallet.signIn({ contractId });
+    await wallet.signIn({ contractId, ...signInOptions });
 
     return Promise.resolve(true);
   }
 
   walletMeta(): WalletMeta {
     return this.walletInfo;
-  }
-
-  getPkAndSignature(): Promise<PkAndSignature | null> {
-    return this.getPkAndSignatureFromLocalKeyStore();
   }
 }
