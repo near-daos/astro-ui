@@ -11,7 +11,7 @@ export function useDaoSettingsData(daoId: string): {
   settings: Settings | null | undefined;
 } {
   const isMounted = useMountedState();
-  const { accountId, nearService, pkAndSignature } = useWalletContext();
+  const { accountId, nearService } = useWalletContext();
   const [settings, setSettings] = useState<Settings | null>(null);
 
   const [{ loading }, getSettings] = useAsyncFn(async () => {
@@ -24,10 +24,6 @@ export function useDaoSettingsData(daoId: string): {
 
   const [{ loading: updatingStatus }, update] = useAsyncFn(
     async updates => {
-      if (!pkAndSignature) {
-        return;
-      }
-
       try {
         const latestSettings =
           (await SputnikHttpService.getDaoSettings(daoId)) ?? ({} as Settings);
@@ -37,7 +33,8 @@ export function useDaoSettingsData(daoId: string): {
           ...updates,
         };
 
-        const { publicKey, signature } = pkAndSignature;
+        const publicKey = await nearService?.getPublicKey();
+        const signature = await nearService?.getSignature();
 
         if (publicKey && signature && accountId) {
           const res = await SputnikHttpService.updateDaoSettings(daoId, {

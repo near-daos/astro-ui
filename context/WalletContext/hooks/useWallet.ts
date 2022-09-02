@@ -12,19 +12,24 @@ import { CookieService } from 'services/CookieService';
 import { initNearWallet } from 'context/WalletContext/utils/initNearWallet';
 import { initSenderWallet } from 'context/WalletContext/utils/initSenderWallet';
 
-// import { useSelector } from './walletSelector/useSelector';
-import { initWalletSelector } from 'context/WalletContext/utils/initWalletSelector';
-import { configService } from 'services/ConfigService';
+import { useSelector } from './walletSelector/useSelector';
+
+type Props = {
+  setConnectingToWallet: (connecting: boolean) => void;
+};
 
 type ReturnVal = {
   removePersistedWallet: () => void;
   currentWallet: WalletService | null;
   setWallet: (walletService: WalletService) => void;
   getWallet: (walletType: WalletType) => Promise<WalletService | undefined>;
+  initiateSignInSelectorWallets: (walletId: WalletType) => Promise<unknown>;
 };
 
-export const useWallet = (): ReturnVal => {
+export const useWallet = (props: Props): ReturnVal => {
   const router = useRouter();
+
+  const { setConnectingToWallet } = props;
 
   const [persistedWallet, setPersistedWallet, removePersistedWallet] =
     useLocalStorage('selectedWallet');
@@ -40,10 +45,6 @@ export const useWallet = (): ReturnVal => {
           return initNearWallet();
         case WalletType.SENDER:
           return initSenderWallet(router.reload);
-        case WalletType.SELECTOR_NEAR:
-        case WalletType.SELECTOR_SENDER: {
-          return initWalletSelector(walletType);
-        }
         default:
           return Promise.resolve(undefined);
       }
@@ -65,9 +66,10 @@ export const useWallet = (): ReturnVal => {
     [setPersistedWallet]
   );
 
-  // const { initiateSignInSelectorWallets } = useSelector({
-  //   setWallet,
-  // });
+  const { initiateSignInSelectorWallets } = useSelector({
+    setWallet,
+    setConnectingToWallet,
+  });
 
   useEffect(() => {
     async function initWallet() {
@@ -76,27 +78,15 @@ export const useWallet = (): ReturnVal => {
       } else {
         const wallet = await getWallet(persistedWallet as WalletType);
 
-        if (!wallet) {
-          return;
+        if (wallet) {
+          const accountId = await wallet.getAccountId();
+
+          CookieService.set(ACCOUNT_COOKIE, accountId, {
+            path: '/',
+          });
+
+          setCurrentWallet(wallet);
         }
-
-        const isSignedIn = await wallet.isSignedIn();
-
-        if (!isSignedIn) {
-          const { nearConfig } = configService.get();
-
-          await wallet.signIn(nearConfig.contractName);
-
-          return;
-        }
-
-        const accountId = await wallet.getAccountId();
-
-        CookieService.set(ACCOUNT_COOKIE, accountId, {
-          path: '/',
-        });
-
-        setCurrentWallet(wallet);
       }
     }
 
@@ -108,5 +98,6 @@ export const useWallet = (): ReturnVal => {
     setWallet,
     currentWallet,
     removePersistedWallet,
+    initiateSignInSelectorWallets,
   };
 };

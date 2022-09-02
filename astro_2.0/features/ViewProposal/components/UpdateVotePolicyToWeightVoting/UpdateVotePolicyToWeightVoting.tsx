@@ -6,6 +6,7 @@ import {
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 
 import { useAsync } from 'react-use';
+import { CustomContract } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
 import { formatYoktoValue } from 'utils/format';
 import { useWalletContext } from 'context/WalletContext';
 import { useDaoSettingsData } from 'context/DaoSettingsContext';
@@ -39,7 +40,11 @@ export const UpdateVotePolicyToWeightVoting: FC<Props> = ({
       return undefined;
     }
 
-    const meta = await nearService.getFtMetadata(contractAddress);
+    const contract = nearService.getContract(contractAddress, [
+      'ft_metadata',
+    ]) as CustomContract;
+
+    const [meta] = await Promise.all([contract.ft_metadata()]);
 
     return {
       symbol: meta.symbol,
