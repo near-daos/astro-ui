@@ -58,7 +58,12 @@ export const DaoPolicyPageContent: FC<Props> = ({
     initialValues?: Record<string, unknown>
   ) {
     if (toggleCreateProposal) {
-      toggleCreateProposal();
+      const isCreateProposalFormOpen =
+        localStorage.getItem('astro-new-proposal') === '1';
+
+      if (isCreateProposalFormOpen) {
+        toggleCreateProposal();
+      }
 
       Promise.resolve().then(() =>
         toggleCreateProposal({ proposalVariant, initialValues })

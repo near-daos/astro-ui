@@ -1,6 +1,5 @@
-import { ConnectedWalletAccount } from 'near-api-js';
+import { ConnectedWalletAccount, providers, Signer } from 'near-api-js';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
-import { KeyPairEd25519 } from 'near-api-js/lib/utils';
 import {
   getSignature,
   isError,
@@ -17,6 +16,12 @@ import { parseNearAmount } from 'near-api-js/lib/utils/format';
 import { httpService } from 'services/HttpService';
 import { KeyStore } from 'near-api-js/lib/key_stores';
 
+import { RpcService } from 'services/sputnik/SputnikNearService/walletServices/RpcService';
+import { NearConfig } from 'config/near';
+import { AccountView } from 'near-api-js/lib/providers/provider';
+import { PkAndSignature } from 'context/WalletContext/types';
+import { configService } from 'services/ConfigService';
+
 import { SENDER_WALLET_METADATA } from './constants';
 
 export class SenderWalletService implements WalletService {
@@ -24,8 +29,25 @@ export class SenderWalletService implements WalletService {
 
   private readonly walletType = WalletType.SENDER;
 
-  constructor(walletInstance: SenderWalletInstance) {
+  private readonly rpcService: RpcService;
+
+  constructor(walletInstance: SenderWalletInstance, nearConfig: NearConfig) {
     this.walletInstance = walletInstance;
+    this.rpcService = new RpcService(
+      new providers.JsonRpcProvider(nearConfig.nodeUrl)
+    );
+  }
+
+  viewAccount(accountId: string): Promise<AccountView> {
+    return this.rpcService.viewAccount(accountId);
+  }
+
+  contractCall<T>(
+    accountId: string,
+    methodName: string,
+    argsAsBase64: string
+  ): Promise<T> {
+    return this.rpcService.contractCall(accountId, methodName, argsAsBase64);
   }
 
   isSignedIn(): Promise<boolean> {
@@ -61,28 +83,7 @@ export class SenderWalletService implements WalletService {
     return Promise.resolve(this.walletInstance.accountId);
   }
 
-  async getPublicKey(): Promise<string | null> {
-    if (
-      !this.walletInstance?.isSignedIn() ||
-      !this.walletInstance.authData?.accessKey
-    ) {
-      return null;
-    }
-
-    return this.walletInstance.authData.accessKey.publicKey;
-  }
-
-  async getSignature(): Promise<string | null> {
-    const privateKey = this.walletInstance.authData.accessKey.secretKey;
-
-    const keyPair = new KeyPairEd25519(privateKey);
-
-    return getSignature(keyPair);
-  }
-
-  async sendTransactions(
-    transactions: Transaction[]
-  ): Promise<FinalExecutionOutcome[]> {
+  async sendTransactions(transactions: Transaction[]): Promise<void> {
     const result = await this.walletInstance.requestSignTransactions({
       transactions,
     });
@@ -101,8 +102,6 @@ export class SenderWalletService implements WalletService {
     } catch (e) {
       console.error(e);
     }
-
-    return result.response;
   }
 
   async functionCall(
@@ -146,10 +145,7 @@ export class SenderWalletService implements WalletService {
     return this.walletType;
   }
 
-  async sendMoney(
-    receiverId: string,
-    amount: number
-  ): Promise<FinalExecutionOutcome[]> {
+  async sendMoney(receiverId: string, amount: number): Promise<void> {
     const parsedAmount = parseNearAmount(amount.toString());
 
     const result = await this.walletInstance.sendMoney({
@@ -160,8 +156,6 @@ export class SenderWalletService implements WalletService {
     if (isError(result.response)) {
       throw new Error(result.response.error.kind.ExecutionError);
     }
-
-    return result.response;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -177,5 +171,36 @@ export class SenderWalletService implements WalletService {
   getKeyStore(): KeyStore {
     // eslint-disable-next-line no-underscore-dangle
     return this.getAccount().walletConnection._keyStore;
+  }
+
+  async getPkAndSignatureFromLocalKeyStore(): Promise<PkAndSignature | null> {
+    const accountId = await this.getAccountId();
+
+    const { nearConfig } = configService.get();
+
+    const signer = window.near?.account()?.connection?.signer;
+
+    if (!signer) {
+      return null;
+    }
+
+    const { keyStore } = signer as { keyStore: KeyStore } & Signer;
+
+    const keyPair = await keyStore.getKey(nearConfig.networkId, accountId);
+
+    const publicKey = keyPair.getPublicKey();
+
+    if (!publicKey) {
+      return null;
+    }
+
+    return {
+      publicKey: publicKey.toString(),
+      signature: await getSignature(keyPair),
+    };
+  }
+
+  getPkAndSignature(): Promise<PkAndSignature | null> {
+    return this.getPkAndSignatureFromLocalKeyStore();
   }
 }

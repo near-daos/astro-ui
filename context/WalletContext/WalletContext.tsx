@@ -63,13 +63,8 @@ export const WrappedWalletContext: FC = ({ children }) => {
   const [, , removeSelectorLsAccount] = useSelectorLsAccount();
   const [connectingToWallet, setConnectingToWallet] = useBoolean(false);
 
-  const {
-    getWallet,
-    setWallet,
-    currentWallet,
-    removePersistedWallet,
-    initiateSignInSelectorWallets,
-  } = useWallet({ setConnectingToWallet });
+  const { getWallet, setWallet, currentWallet, removePersistedWallet } =
+    useWallet();
 
   const pkAndSignature = usePkAndSignature(currentWallet);
   const availableAccounts = useAvailableAccounts(currentWallet);
@@ -117,19 +112,15 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
   const login = useCallback(
     async (walletType: WalletType) => {
-      if (isSelectorWalletType(walletType)) {
-        await initiateSignInSelectorWallets(walletType);
-      } else {
-        const wallet = await getWallet(walletType);
+      const wallet = await getWallet(walletType);
 
-        if (!wallet) {
-          return;
-        }
-
-        await signIn(wallet, nearConfig.contractName);
+      if (!wallet) {
+        return;
       }
+
+      await signIn(wallet, nearConfig.contractName);
     },
-    [signIn, getWallet, nearConfig.contractName, initiateSignInSelectorWallets]
+    [signIn, getWallet, nearConfig.contractName]
   );
 
   const logout = useCallback(async () => {
@@ -140,7 +131,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
       accountId,
     });
 
-    CookieService.remove(ACCOUNT_COOKIE);
+    CookieService.remove(ACCOUNT_COOKIE, { path: '/' });
     removePersistedWallet();
 
     await currentWallet?.logout();

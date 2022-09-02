@@ -6,7 +6,6 @@ import { DAO, DaoDelegation } from 'types/dao';
 import { formatYoktoValue } from 'utils/format';
 import { useCallback, useEffect, useState } from 'react';
 import {
-  CustomContract,
   DelegateTokenDetails,
   UserDelegateDetails,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
@@ -55,14 +54,9 @@ export function useDelegatePageData(dao: DAO): {
         return undefined;
       }
 
-      const contract = nearService.getContract(contractAddress, [
-        'ft_balance_of',
-        'ft_metadata',
-      ]) as CustomContract;
-
       const [meta, balance] = await Promise.all([
-        contract.ft_metadata(),
-        contract.ft_balance_of({ account_id: accountId }),
+        nearService.getFtMetadata(contractAddress),
+        nearService.getFtBalance(contractAddress, accountId),
       ]);
 
       return {
@@ -79,16 +73,16 @@ export function useDelegatePageData(dao: DAO): {
         return undefined;
       }
 
-      const contract = nearService.getContract(daoId, [
-        'delegation_total_supply',
-      ]) as CustomContract;
-
-      return contract.delegation_total_supply();
+      return nearService.getDelegationTotalSupply(daoId);
     }, [daoId, nearService, ts]);
 
   const { loading: loadingDelegateByUser, value: delegateByUser } =
     useAsync(async () => {
-      if (!nearService) {
+      if (
+        !nearService ||
+        !accountId ||
+        !settings?.createGovernanceToken?.wizardCompleted
+      ) {
         return undefined;
       }
 
@@ -99,11 +93,10 @@ export function useDelegatePageData(dao: DAO): {
           return undefined;
         }
 
-        const contract = nearService.getContract(stackingContract, [
-          'get_user',
-        ]) as CustomContract;
-
-        const userData = await contract.get_user({ account_id: accountId });
+        const userData = await nearService.getUserDelegation(
+          stackingContract,
+          accountId
+        );
 
         if (!userData) {
           return undefined;
@@ -146,7 +139,7 @@ export function useDelegatePageData(dao: DAO): {
       } catch (e) {
         return undefined;
       }
-    }, [dao, nearService, accountId, ts, tokenDetails]);
+    }, [dao, nearService, accountId, ts, tokenDetails, settings]);
 
   const [, fetchData] = useAsyncFn(async () => {
     const res = await SputnikHttpService.getDelegations(daoId, governanceToken);
@@ -223,14 +216,9 @@ export function useVotingPolicyDetails(dao: DAO): {
         return undefined;
       }
 
-      const contract = nearService.getContract(contractAddress, [
-        'ft_balance_of',
-        'ft_metadata',
-      ]) as CustomContract;
-
       const [meta, balance] = await Promise.all([
-        contract.ft_metadata(),
-        contract.ft_balance_of({ account_id: accountId }),
+        nearService.getFtMetadata(contractAddress),
+        nearService.getFtBalance(contractAddress, accountId),
       ]);
 
       return {
@@ -242,7 +230,7 @@ export function useVotingPolicyDetails(dao: DAO): {
     } catch (e) {
       return undefined;
     }
-  }, [nearService, settings]);
+  }, [nearService, settings, accountId]);
 
   const holdersRole = dao.policy.roles.find(
     role => role.kind === 'Member' && role.name === 'TokenHolders'

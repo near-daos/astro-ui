@@ -3,6 +3,7 @@ import { useTranslation } from 'next-i18next';
 
 import { DaoContext } from 'types/context';
 import { ProposalType } from 'types/proposal';
+import { WalletType } from 'types/config';
 
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Loader } from 'components/loader';
@@ -30,7 +31,7 @@ export const CreateGovernanceTokenPageContent: VFC<
   const { daoContext } = props;
   const { t } = useTranslation();
   const { status, update, loading } = useCreateGovernanceTokenStatus();
-  const { accountId } = useWalletContext();
+  const { accountId, currentWallet } = useWalletContext();
   const { daoVersion } = daoContext.dao;
   const isSupportedVersion = daoVersion?.version[0] > 2;
   const isInProgress = status && status.step !== null;
@@ -42,6 +43,7 @@ export const CreateGovernanceTokenPageContent: VFC<
     daoContext.userPermissions.allowedProposalsToCreate[
       ProposalType.SetStakingContract
     ];
+  const isSupportedWallet = currentWallet !== WalletType.SELECTOR_NEAR;
   const showLowBalanceWarning =
     useLowBalanceWarning(daoContext.userPermissions, status?.step) &&
     !status?.wizardCompleted;
@@ -49,6 +51,12 @@ export const CreateGovernanceTokenPageContent: VFC<
   function renderContent() {
     if (!isPermitted && !isViewProposal) {
       return <NoResultsView title="You don't have permissions to proceed" />;
+    }
+
+    if (!isSupportedWallet) {
+      return (
+        <NoResultsView title="Create governance token is not supported with My NEAR Wallet" />
+      );
     }
 
     if (loading) {
