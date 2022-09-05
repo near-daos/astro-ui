@@ -14,7 +14,6 @@ import { PaginationResponse } from 'types/api';
 
 import { Feed as FeedList } from 'astro_2.0/components/Feed';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
-import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { Loader } from 'components/loader';
 import { ViewBounty } from 'astro_2.0/features/ViewBounty';
 import { SearchInput } from 'astro_2.0/components/SearchInput';
@@ -34,25 +33,6 @@ interface BountiesFeedProps {
   tokens?: Tokens;
 }
 
-const FEED_OPTIONS = [
-  {
-    label: 'Proposal Phase',
-    value: 'proposalPhase',
-  },
-  {
-    label: 'Available Bounty',
-    value: 'availableBounty',
-  },
-  {
-    label: 'In Progress',
-    value: 'inProgress',
-  },
-  {
-    label: 'Completed',
-    value: 'completed',
-  },
-];
-
 export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
   const { accountId } = useWalletContext();
   const { t } = useTranslation();
@@ -67,17 +47,13 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
     async (initData?: typeof data) => {
       let accumulatedListData = initData || null;
 
-      const res = await SputnikHttpService.getBountiesContext(
-        query.dao as string,
-        accountId,
-        {
-          offset: accumulatedListData?.data.length || 0,
-          limit: LIST_LIMIT_DEFAULT,
-          bountySort: query.bountySort as string,
-          bountyFilter: query.bountyFilter as string,
-          bountyPhase: query.bountyPhase as string,
-        }
-      );
+      const res = await SputnikHttpService.getBountiesContext('', accountId, {
+        offset: accumulatedListData?.data.length || 0,
+        limit: LIST_LIMIT_DEFAULT,
+        bountySort: query.bountySort as string,
+        bountyFilter: query.bountyFilter as string,
+        bountyPhase: query.bountyPhase as string,
+      });
 
       if (!res) {
         return null;
@@ -164,14 +140,6 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
           />
         </div>
         <div className={cn(styles.row, styles.content)}>
-          <SideFilter
-            shallowUpdate
-            hideAllOption
-            queryName="bountyPhase"
-            list={FEED_OPTIONS}
-            title={t('feed.filters.chooseAFilter')}
-            className={styles.filter}
-          />
           <div className={styles.container}>
             {loading ? (
               <Loader className={styles.loader} />
@@ -197,16 +165,15 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
                       key={bountyContext.id}
                       className={styles.bountyCardWrapper}
                     >
-                      {dao && (
-                        <ViewBounty
-                          contextId={bountyContext.id}
-                          commentsCount={bountyContext.commentsCount}
-                          daoId={dao.id}
-                          bounty={bountyContext.bounty}
-                          proposal={bountyContext.proposal}
-                          initialInfoPanelView={null}
-                        />
-                      )}
+                      <ViewBounty
+                        contextId={bountyContext.id}
+                        commentsCount={bountyContext.commentsCount}
+                        dao={dao}
+                        daoId={bountyContext.daoId}
+                        bounty={bountyContext.bounty}
+                        proposal={bountyContext.proposal}
+                        initialInfoPanelView={null}
+                      />
                     </div>
                   )}
                   className={styles.listWrapper}

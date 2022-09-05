@@ -27,7 +27,7 @@ export const UnclaimCompleteContent: FC<UnclaimCompleteContentProps> = ({
   className,
   completeHandler,
 }) => {
-  const { handleUnclaim } = useBountyControls(dao, bounty);
+  const { handleUnclaim } = useBountyControls(dao.id, bounty);
 
   return (
     <div className={cn(styles.root, className)}>

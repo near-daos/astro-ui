@@ -11,6 +11,8 @@ export const DISCOVER = '/discover';
 export const CFC_LIBRARY = '/cfc-library';
 export const CFC_LIBRARY_TEMPLATE_VIEW = `${CFC_LIBRARY}/[template]`;
 
+export const BOUNTIES = '/bounties';
+
 export const CREATE_DAO_URL = '/create-dao-new';
 
 export const SINGLE_DAO_PAGE = '/dao/[dao]';

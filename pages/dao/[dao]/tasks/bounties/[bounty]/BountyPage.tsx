@@ -69,7 +69,7 @@ const BountyPage: NextPage<BountyPageProps> = ({
       <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
         <ViewBounty
           contextId={bountyContext.id}
-          dao={dao}
+          daoId={dao.id}
           bounty={bounty}
           proposal={proposal}
           commentsCount={commentsCount}

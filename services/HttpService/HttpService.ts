@@ -75,11 +75,13 @@ export class HttpService {
               requestCustom.queryRequest?.params || {};
             const queryBuilder = RequestQueryBuilder.create();
 
-            queryBuilder.setFilter({
-              field: 'daoId',
-              operator: '$eq',
-              value: daoId,
-            });
+            if (daoId) {
+              queryBuilder.setFilter({
+                field: 'daoId',
+                operator: '$eq',
+                value: daoId,
+              });
+            }
 
             queryBuilder.setFilter({
               field: 'proposal.status',
@@ -600,11 +602,13 @@ export class HttpService {
 
             const queryBuilder = RequestQueryBuilder.create();
 
-            queryBuilder.setFilter({
-              field: 'daoId',
-              operator: '$eq',
-              value: daoId,
-            });
+            if (daoId) {
+              queryBuilder.setFilter({
+                field: 'daoId',
+                operator: '$eq',
+                value: daoId,
+              });
+            }
 
             queryBuilder.setFilter({
               field: 'proposal.description',

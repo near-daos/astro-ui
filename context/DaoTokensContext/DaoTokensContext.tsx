@@ -2,7 +2,9 @@ import { createContext, FC, useContext, useMemo } from 'react';
 import { useDaoCustomTokens as useDaoCustomTokensData } from 'hooks/useCustomTokens';
 import { TokensContext } from 'context/types';
 
-const DaoTokensContext = createContext<TokensContext | undefined>(undefined);
+export const DaoTokensContext = createContext<TokensContext | undefined>(
+  undefined
+);
 
 export const useDaoCustomTokens = (): TokensContext => {
   const context = useContext(DaoTokensContext);
