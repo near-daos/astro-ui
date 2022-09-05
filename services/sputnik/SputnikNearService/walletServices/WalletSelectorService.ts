@@ -67,7 +67,15 @@ export class WalletSelectorService implements WalletService {
   }
 
   getKeyStore(): KeyStore {
-    throw new Error('Method not implemented.');
+    if (this.walletInfo.id === WalletType.SELECTOR_NEAR) {
+      return new keyStores.BrowserLocalStorageKeyStore(window.localStorage);
+    }
+
+    const { signer } = window.near.account().connection;
+
+    const { keyStore } = signer as { keyStore: KeyStore } & Signer;
+
+    return keyStore;
   }
 
   async contractCall<T>(
@@ -154,32 +162,12 @@ export class WalletSelectorService implements WalletService {
     return Promise.resolve(accountIds);
   }
 
-  getKeystore(): KeyStore | null {
-    if (this.walletInfo.id === WalletType.SELECTOR_NEAR) {
-      return new keyStores.BrowserLocalStorageKeyStore(window.localStorage);
-    }
-
-    const signer = window.near?.account()?.connection?.signer;
-
-    if (!signer) {
-      return null;
-    }
-
-    const { keyStore } = signer as { keyStore: KeyStore } & Signer;
-
-    return keyStore;
-  }
-
   async getPkAndSignatureFromLocalKeyStore(): Promise<PkAndSignature | null> {
     const accountId = await this.getAccountId();
 
     const { nearConfig } = configService.get();
 
-    const keyStore = this.getKeystore();
-
-    if (!keyStore) {
-      return null;
-    }
+    const keyStore = this.getKeyStore();
 
     const keyPair = await keyStore.getKey(nearConfig.networkId, accountId);
 
