@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
+import cn from 'classnames';
 
 import {
   FieldValue,
@@ -24,6 +25,7 @@ interface CustomFunctionCallContentProps {
   methodName: string;
   json: string;
   deposit: string;
+  isLastItem: boolean;
 }
 
 export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
@@ -32,6 +34,7 @@ export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
   methodName,
   json,
   deposit,
+  isLastItem,
 }) => {
   const { tokens } = useAllCustomTokens();
   const { t } = useTranslation();
@@ -61,7 +64,7 @@ export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
   }
 
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, { [styles.withSeparator]: !isLastItem })}>
       {renderContent()}
       <div className={styles.deposit}>
         <div className={styles.row}>
