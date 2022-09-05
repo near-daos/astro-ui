@@ -15,6 +15,8 @@ import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { ProposalFeedItem } from 'types/proposal';
 import { MemberStats } from 'services/sputnik/mappers';
 
+import { useTimelineData } from 'features/proposal/components/VoteTimeline/hooks';
+
 import styles from './ProposalPageContent.module.scss';
 
 interface Props {
@@ -46,6 +48,8 @@ export const ProposalPageContent: FC<Props> = ({
     members
   );
 
+  const { lastVote } = useTimelineData(proposal, proposal.actions.length);
+
   return (
     <>
       <div className={styles.proposalInfo}>
@@ -64,6 +68,7 @@ export const ProposalPageContent: FC<Props> = ({
         <VoteCollapsableList
           data={votesDetails}
           votingPolicyByGroup={votingPolicyByGroup}
+          lastVoteId={lastVote?.action?.id}
         />
       </div>
     </>

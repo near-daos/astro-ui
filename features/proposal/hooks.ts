@@ -65,6 +65,7 @@ export function useProposalVotingDetails(
 
       if (!voted) {
         res.push({
+          id: item.id,
           name: item.name,
           groups: item.groups,
           vote: null,

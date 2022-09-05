@@ -174,18 +174,21 @@ export function getVoteDetails(
           name: item.accountId,
           vote,
           timestamp: item.timestamp,
+          id: item.id,
         };
       } else if (vote) {
         res[item.accountId] = {
           name: item.accountId,
           vote,
           timestamp: item.timestamp,
+          id: item.id,
         };
       } else {
         res[item.accountId] = {
           name: item.accountId,
           vote: null,
           timestamp: null,
+          id: item.id,
         };
       }
 
