@@ -67,10 +67,10 @@
   display: grid;
   grid-row-gap: 10px;
   grid-template-areas:
-    'status - saveFlag'
+    'status saveFlag actions'
     'title title title'
     'views replies date';
-  grid-template-columns: 50px 50px 1fr;
+  grid-template-columns: 50px 1fr 50px;
   padding: 8px 8px 15px 12px;
   @include tablet-landscape {
     grid-row-gap: 10px;
@@ -208,5 +208,43 @@
   justify-content: flex-end;
   .icon {
     margin: 0;
+  }
+}
+
+.actions {
+  display: flex;
+  grid-area: actions;
+  justify-content: flex-end;
+  left: unset;
+  //position: absolute;
+  //right: 12px;
+  //top: -36px;
+
+  @include tablet-landscape {
+    display: block;
+    grid-area: unset;
+    left: 100%;
+    position: absolute;
+    right: auto;
+    top: 0;
+  }
+}
+
+.checkbox {
+  color: var(--color-primary-50);
+  cursor: pointer;
+  transform: translateY(-1px);
+
+  @include tablet-landscape {
+    transform: translate(8px, 8px);
+  }
+}
+
+.actionIcon.actionIcon {
+  color: var(--color-neutral-85);
+  transform: translate(8px, -8px);
+
+  @include tablet-landscape {
+    transform: translate(0, -4px);
   }
 }
