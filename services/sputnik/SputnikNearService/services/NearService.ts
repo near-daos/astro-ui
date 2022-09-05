@@ -267,9 +267,10 @@ export class NearService extends BaseService {
       }
     }
 
-    const trx = tokenId
-      ? [storageDepositTransactionAction, claimAction]
-      : [claimAction];
+    const trx =
+      tokenId && !USN_TOKEN_CONTRACTS.includes(tokenId)
+        ? [storageDepositTransactionAction, claimAction]
+        : [claimAction];
 
     return this.walletService.sendTransactions(trx);
   }
