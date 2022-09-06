@@ -319,23 +319,26 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
         if (proposal.kind.type === ProposalType.FunctionCall) {
           try {
             const { kind } = proposal;
-            const data = kind.actions[0];
 
-            const json = JSON.parse(
-              Buffer.from(data.args, 'base64').toString('utf-8')
-            );
+            content = kind.actions.map((data, i) => {
+              const json = JSON.parse(
+                Buffer.from(data.args, 'base64').toString('utf-8')
+              );
 
-            content = (
-              <CustomFunctionCallContent
-                token="NEAR"
-                smartContractAddress={kind.receiverId}
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                methodName={data.methodName}
-                json={JSON.stringify(json, null, 2)}
-                deposit={data.deposit}
-              />
-            );
+              return (
+                <CustomFunctionCallContent
+                  token="NEAR"
+                  smartContractAddress={kind.receiverId}
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  methodName={data.methodName}
+                  json={JSON.stringify(json, null, 2)}
+                  deposit={data.deposit}
+                  isLastItem={i === kind.actions.length - 1}
+                />
+              );
+            });
+
             break;
           } catch (e) {
             content = null;
@@ -550,21 +553,28 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
         case ProposalType.FunctionCall: {
           try {
             const { kind } = proposal;
-            const data = kind.actions[0];
 
-            const json = Buffer.from(data.args, 'base64').toString('utf-8');
+            content = kind.actions.map((data, i) => {
+              const json = JSON.parse(
+                Buffer.from(data.args, 'base64').toString('utf-8')
+              );
 
-            content = (
-              <CustomFunctionCallContent
-                token="NEAR"
-                smartContractAddress={kind.receiverId}
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                methodName={data.methodName}
-                json={json}
-                deposit={data.deposit}
-              />
-            );
+              return (
+                <>
+                  <CustomFunctionCallContent
+                    token="NEAR"
+                    smartContractAddress={kind.receiverId}
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    methodName={data.methodName}
+                    json={JSON.stringify(json, null, 2)}
+                    deposit={data.deposit}
+                    isLastItem={i === kind.actions.length - 1}
+                  />
+                </>
+              );
+            });
+
             break;
           } catch (e) {
             content = null;
