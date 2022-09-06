@@ -25,10 +25,11 @@ import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsPro
 async function createProposal(
   variant: ProposalVariant,
   proposal: CreateProposalParams,
-  nearService: SputnikNearService | null
+  nearService: SputnikNearService | null,
+  opts?: Record<string, string>
 ) {
   if (variant === ProposalVariant.ProposeTransfer) {
-    return nearService?.createTokenTransferProposal(proposal);
+    return nearService?.createTokenTransferProposal(proposal, opts);
   }
 
   if (variant === ProposalVariant.ProposeStakingContractDeployment) {
@@ -43,7 +44,7 @@ async function createProposal(
     );
   }
 
-  return nearService?.addProposal(proposal);
+  return nearService?.addProposal(proposal, opts);
 }
 
 export function useSubmitProposal({
@@ -170,6 +171,10 @@ export function useSubmitProposal({
 
           const { variant, description } = newProposal || {};
 
+          const draftId = router.query.draft
+            ? (router.query.draft as string)
+            : null;
+
           try {
             const pVariant = variant ?? selectedProposalVariant;
 
@@ -196,7 +201,8 @@ export function useSubmitProposal({
             const resp = await createProposal(
               selectedProposalVariant,
               newProposal,
-              nearService
+              nearService,
+              draftId ? { draftId } : undefined
             );
 
             const newProposalId = resp
@@ -217,12 +223,10 @@ export function useSubmitProposal({
               return;
             }
 
-            if (router.query.draft && pkAndSignature) {
+            if (draftId && pkAndSignature) {
               const { publicKey, signature } = pkAndSignature;
 
               if (publicKey && signature) {
-                const draftId = router.query.draft as string;
-
                 await draftsService.updateDraftClose({
                   id: draftId,
                   proposalId: newProposalId,
