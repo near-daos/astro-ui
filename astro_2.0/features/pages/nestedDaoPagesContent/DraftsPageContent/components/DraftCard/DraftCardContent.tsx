@@ -15,17 +15,38 @@ import { DRAFT_PAGE_URL, SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
 import { useDraftsPageActions } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/hooks';
 
+import { BehaviorActions } from 'features/proposal/components/ProposalActions/components/BehaviorActions';
+import { Checkbox } from 'components/inputs/Checkbox';
+import { MAX_MULTI_VOTES } from 'constants/proposals';
+import { useModal } from 'components/modal';
+import { ConfirmModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/ConfirmModal';
+import { useWalletContext } from 'context/WalletContext';
+import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+
 import styles from './DraftCard.module.scss';
 
 interface Props {
   data: DraftProposalFeedItem;
   daoId: string;
+  onSelect: (id: string) => void;
+  selectedList: string[];
+  disableEdit: boolean;
 }
 
-export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
+export const DraftCardContent: FC<Props> = ({
+  data,
+  daoId,
+  onSelect,
+  selectedList,
+  disableEdit,
+}) => {
   const router = useRouter();
+  const { accountId, pkAndSignature } = useWalletContext();
+  const { draftsService } = useDraftsContext();
   const { t, i18n } = useTranslation();
   const dateLocale = useLoadDateLocale(i18n.language);
+  const [showModal] = useModal(ConfirmModal);
   const { id, title, views, replies, updatedAt, state, proposalId, isSaved } =
     data;
 
@@ -34,19 +55,66 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
 
   const { handleView } = useDraftsPageActions();
 
-  const handleCardClick = useCallback(async () => {
-    if (id && router.pathname !== DRAFT_PAGE_URL) {
-      await handleView(id);
+  const handleCardClick = useCallback(
+    async e => {
+      if (e?.target?.closest(`.${styles.actions}`)) {
+        return;
+      }
 
-      await router.push({
-        pathname: DRAFT_PAGE_URL,
-        query: {
-          dao: daoId,
-          draft: id,
-        },
-      });
+      if (selectedList?.length !== 0 && onSelect && id !== undefined) {
+        onSelect(id);
+
+        return;
+      }
+
+      if (id && router.pathname !== DRAFT_PAGE_URL) {
+        await handleView(id);
+
+        await router.push({
+          pathname: DRAFT_PAGE_URL,
+          query: {
+            dao: daoId,
+            draft: id,
+          },
+        });
+      }
+    },
+    [daoId, handleView, id, onSelect, router, selectedList?.length]
+  );
+
+  const handleRemove = useCallback(async () => {
+    if (!pkAndSignature) {
+      return;
     }
-  }, [daoId, handleView, id, router]);
+
+    const { publicKey, signature } = pkAndSignature;
+
+    if (!publicKey || !signature) {
+      return;
+    }
+
+    const res = await showModal({
+      title: t('drafts.editDraftPage.modalDeleteTitle'),
+      message: t('drafts.editDraftPage.modalDeleteMessage'),
+    });
+
+    if (res[0]) {
+      try {
+        await draftsService.deleteDraft({
+          id,
+          publicKey,
+          signature,
+          accountId,
+        });
+      } catch (e) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          lifetime: 20000,
+          description: e?.message,
+        });
+      }
+    }
+  }, [accountId, draftsService, id, pkAndSignature, showModal, t]);
 
   const renderDraftTitle = () => {
     if (isOpenStatus) {
@@ -77,6 +145,8 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
   };
 
   const updateDate = parseISO(updatedAt);
+
+  const isChecked = selectedList?.findIndex(item => item === id) !== -1;
 
   return (
     <div
@@ -123,6 +193,30 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
           className={styles.icon}
         />
       </div>
+      {!disableEdit && (
+        <div className={styles.actions}>
+          {selectedList && selectedList.length > 0 ? (
+            <Checkbox
+              disabled={!isChecked && selectedList.length === MAX_MULTI_VOTES}
+              className={styles.checkbox}
+              checked={isChecked}
+              onClick={() => onSelect && onSelect(id)}
+            />
+          ) : (
+            <BehaviorActions
+              allowSelect
+              removeCount={0}
+              removed={false}
+              onRemove={handleRemove}
+              hideSelect={!onSelect}
+              onSelect={() => onSelect && onSelect(id)}
+              disabled={false}
+              className={styles.actionsDropdown}
+              iconClassName={styles.actionIcon}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 };

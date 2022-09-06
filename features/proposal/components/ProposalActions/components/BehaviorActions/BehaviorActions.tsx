@@ -16,6 +16,8 @@ interface Props {
   disabled: boolean;
   allowSelect?: boolean;
   hideSelect?: boolean;
+  className?: string;
+  iconClassName?: string;
 }
 
 export const BehaviorActions: FC<Props> = ({
@@ -25,6 +27,8 @@ export const BehaviorActions: FC<Props> = ({
   disabled,
   allowSelect,
   hideSelect,
+  className,
+  iconClassName,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -33,8 +37,11 @@ export const BehaviorActions: FC<Props> = ({
       isOpen={open}
       onOpenUpdate={setOpen}
       parent={
-        <div className={styles.root}>
-          <IconButton icon="buttonMore" className={styles.rootIcon} />
+        <div className={cn(styles.root, className)}>
+          <IconButton
+            icon="buttonMore"
+            className={cn(styles.rootIcon, iconClassName)}
+          />
         </div>
       }
     >

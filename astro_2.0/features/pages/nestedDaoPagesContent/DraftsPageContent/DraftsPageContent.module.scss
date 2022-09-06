@@ -75,3 +75,74 @@
 .count {
   @extend %subtitle3;
 }
+
+.selection {
+  bottom: 84px;
+  left: 50%;
+  position: fixed;
+  transform: translateX(-50%);
+  z-index: 10;
+
+  @include tablet-landscape {
+    bottom: 24px;
+  }
+}
+
+.panel {
+  align-items: center;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-14);
+  display: flex;
+  justify-content: space-between;
+  min-width: 40vw;
+  padding: 20px;
+  width: 100%;
+
+  @include tablet-landscape {
+    padding: 20px 24px;
+  }
+}
+
+.details {
+  display: flex;
+  flex-direction: column-reverse;
+  margin-right: 12px;
+
+  @include tablet-landscape {
+    display: flex;
+    flex-direction: row;
+    margin-right: 24px;
+  }
+}
+
+.value {
+  @extend %title3;
+  margin-right: 4px;
+}
+
+.label {
+  @extend %body1;
+  white-space: nowrap;
+}
+
+.controls {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+}
+
+.controlButton {
+  min-width: 60px;
+}
+
+.dismiss {
+  color: var(--color-error-70);
+  padding-left: 8px;
+  padding-right: 8px;
+
+  @include tablet-landscape {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
