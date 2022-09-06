@@ -13,6 +13,7 @@ import styles from './VoteCollapsableList.module.scss';
 interface VoteCollapsableListProps {
   data: VoterDetail[];
   votingPolicyByGroup: Record<string, GroupPolicyDetails>;
+  lastVoteId?: string;
 }
 
 interface VoteGroups {
@@ -22,6 +23,7 @@ interface VoteGroups {
 export const VoteCollapsableList: FC<VoteCollapsableListProps> = ({
   data,
   votingPolicyByGroup,
+  lastVoteId,
 }) => {
   const { t } = useTranslation();
   const noGroupTranslate = t('proposalVotes.noGroup');
@@ -80,6 +82,7 @@ export const VoteCollapsableList: FC<VoteCollapsableListProps> = ({
             >
               <VotersList
                 data={list}
+                lastVoteId={lastVoteId}
                 showTokensInfo={votesGroupsKey === 'TokenHolders'}
               />
             </Collapsable>
