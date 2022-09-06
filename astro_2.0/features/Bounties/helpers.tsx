@@ -141,7 +141,7 @@ export function prepareBountiesPageContent(
           <VotingContent
             proposal={item.proposal}
             accountId={accountId}
-            dao={dao}
+            daoId={dao.id}
           />
         ),
       };

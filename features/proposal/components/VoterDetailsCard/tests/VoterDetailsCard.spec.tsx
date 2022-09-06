@@ -23,6 +23,7 @@ describe('VoterDetailsCard', () => {
         transactionHash="123"
         timestamp={null}
         groups={['GR1', 'GR2']}
+        isLastVote={false}
       />
     );
 

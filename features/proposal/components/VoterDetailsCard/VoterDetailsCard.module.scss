@@ -18,16 +18,30 @@
   grid-area: status;
   height: 100%;
 
+  position: relative;
+
   &.yes {
     background-color: var(--color-success-10);
+  }
+
+  &.yes .lastVoteIcon {
+    color: var(--color-success-50);
   }
 
   &.no {
     background-color: var(--color-error-10);
   }
 
+  &.no .lastVoteIcon {
+    color: var(--color-error-50);
+  }
+
   &.dismiss {
     background-color: var(--color-error-10);
+  }
+
+  &.dismiss .lastVoteIcon {
+    color: var(--color-error-20);
   }
 
   &.notVoted {
@@ -86,6 +100,15 @@
   display: flex;
   height: 24px;
   justify-content: center;
+  width: 24px;
+}
+
+.lastVoteIcon {
+  background-color: var(--color-white);
+  border-radius: 50%;
+  position: absolute;
+  right: 0;
+  top: 0;
   width: 24px;
 }
 

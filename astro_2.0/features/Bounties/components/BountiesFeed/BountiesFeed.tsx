@@ -201,7 +201,7 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
                         <ViewBounty
                           contextId={bountyContext.id}
                           commentsCount={bountyContext.commentsCount}
-                          dao={dao}
+                          daoId={dao.id}
                           bounty={bountyContext.bounty}
                           proposal={bountyContext.proposal}
                           initialInfoPanelView={null}

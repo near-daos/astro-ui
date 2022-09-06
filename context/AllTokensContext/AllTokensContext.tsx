@@ -2,7 +2,9 @@ import { createContext, FC, useContext, useMemo } from 'react';
 import { useAllCustomTokens as useAllCustomTokensData } from 'hooks/useCustomTokens';
 import { TokensContext } from 'context/types';
 
-const AllTokensContext = createContext<TokensContext | undefined>(undefined);
+export const AllTokensContext = createContext<TokensContext | undefined>(
+  undefined
+);
 
 export const useAllCustomTokens = (): TokensContext => {
   const context = useContext(AllTokensContext);

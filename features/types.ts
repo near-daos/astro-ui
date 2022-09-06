@@ -25,6 +25,7 @@ export type VoteStat = {
 };
 
 export type VoterDetail = {
+  id: string;
   name: string;
   vote: Vote | null;
   groups?: string[];

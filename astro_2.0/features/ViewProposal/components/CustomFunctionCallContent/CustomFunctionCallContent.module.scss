@@ -5,6 +5,12 @@
   grid-gap: 24px;
 }
 
+.withSeparator {
+  border-bottom: 1px solid var(--color-neutral-40);
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+}
+
 .row {
   align-items: center;
   display: flex;

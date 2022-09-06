@@ -1,7 +1,7 @@
 import { PaginationResponse } from 'types/api';
 import { DraftProposalFeedItem } from 'types/draftProposal';
 import { useRouter } from 'next/router';
-import { useAsyncFn, useMount, useMountedState } from 'react-use';
+import { useAsyncFn, useList, useMount, useMountedState } from 'react-use';
 import { useCallback, useState } from 'react';
 import { useWalletContext } from 'context/WalletContext';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
@@ -180,5 +180,78 @@ export function useDraftsPageActions(): {
 
   return {
     handleView,
+  };
+}
+
+export function useMultiDraftActions(): {
+  loading: boolean;
+  handleDelete: () => Promise<void>;
+  handleSelect: (id: string) => void;
+  handleDismiss: () => void;
+  list: string[];
+} {
+  const { draftsService } = useDraftsContext();
+  const { nearService, accountId, pkAndSignature } = useWalletContext();
+  const router = useRouter();
+  const [list, { push, removeAt, clear }] = useList<string>([]);
+
+  const handleSelect = useCallback(
+    id => {
+      const itemIndex = list.findIndex(item => item === id);
+
+      if (itemIndex !== -1) {
+        removeAt(itemIndex);
+      } else {
+        push(id);
+      }
+    },
+    [list, push, removeAt]
+  );
+
+  const handleDismiss = useCallback(() => {
+    clear();
+  }, [clear]);
+
+  const [{ loading }, handleDelete] = useAsyncFn(async () => {
+    if (!draftsService || !pkAndSignature) {
+      return;
+    }
+
+    const { publicKey, signature } = pkAndSignature;
+
+    if (!publicKey || !signature) {
+      return;
+    }
+
+    try {
+      await Promise.all(
+        list.map(item => {
+          return draftsService.deleteDraft({
+            id: item,
+            accountId,
+            publicKey,
+            signature,
+          });
+        })
+      );
+
+      await router.reload();
+    } catch (e) {
+      showNotification({
+        type: NOTIFICATION_TYPES.ERROR,
+        description: e.message,
+        lifetime: 20000,
+      });
+
+      await router.reload();
+    }
+  }, [router, nearService, list]);
+
+  return {
+    loading,
+    list,
+    handleDelete,
+    handleSelect,
+    handleDismiss,
   };
 }

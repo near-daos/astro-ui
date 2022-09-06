@@ -1,10 +1,11 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import useQuery from 'hooks/useQuery';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { DaoContext } from 'types/context';
 import { DraftProposalFeedItem } from 'types/draftProposal';
@@ -15,8 +16,14 @@ import { Button } from 'components/button/Button';
 import { DraftCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftCard';
 import { Loader } from 'components/loader';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
+import { isCouncilUser } from 'astro_2.0/features/DraftComments/helpers';
+import { useModal } from 'components/modal';
+import { ConfirmModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/ConfirmModal';
 
-import { useDraftsPageData } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/hooks';
+import {
+  useDraftsPageData,
+  useMultiDraftActions,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/hooks';
 import { useWalletContext } from 'context/WalletContext';
 
 import { CREATE_DRAFT_PAGE_URL } from 'constants/routing';
@@ -39,9 +46,32 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
   const { accountId } = useWalletContext();
   const { query } = useQuery<{ category: string; view: string }>();
   const { view, category } = query;
+  const isCouncil = isCouncilUser(dao, accountId);
+
+  const [showModal] = useModal(ConfirmModal);
 
   const { data, handleSearch, loading, loadMore, handleReset } =
     useDraftsPageData(dao.id);
+
+  const {
+    handleDelete,
+    handleDismiss,
+    handleSelect,
+    list: selectedList,
+  } = useMultiDraftActions();
+
+  const handleDeleteSelectedDrafts = useCallback(async () => {
+    const res = await showModal({
+      title: t('drafts.editDraftPage.modalDeleteTitle'),
+      message: `Do you want to delete ${selectedList.length} selected draft${
+        selectedList.length > 1 ? 's' : ''
+      }?`,
+    });
+
+    if (res[0]) {
+      await handleDelete();
+    }
+  }, [handleDelete, selectedList.length, showModal, t]);
 
   const { unreadDrafts, readDrafts } = useMemo(() => {
     const unread: DraftProposalFeedItem[] = [];
@@ -65,6 +95,11 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
         data={item}
         flag={dao.flagCover ?? ''}
         daoId={dao.id}
+        onSelect={handleSelect}
+        selectedList={selectedList}
+        disableEdit={
+          item.state === 'closed' || !(isCouncil || item.proposer === accountId)
+        }
       />
     );
   };
@@ -149,6 +184,48 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
                 {renderList(t('drafts.feed.allDrafts'), readDrafts)}
               </InfiniteScroll>
             ) : null}
+            <div className={styles.selection}>
+              <AnimatePresence>
+                {!!selectedList.length && (
+                  <motion.div
+                    initial={{ opacity: 0, transform: 'translateY(60px)' }}
+                    animate={{ opacity: 1, transform: 'translateY(0px)' }}
+                    exit={{ opacity: 0, transform: 'translateY(60px)' }}
+                  >
+                    <div className={styles.panel}>
+                      <span className={styles.details}>
+                        <span className={styles.value}>
+                          {selectedList.length}
+                        </span>
+                        <span className={styles.label}>
+                          Draft{selectedList.length > 1 ? 's' : ''} selected
+                        </span>
+                      </span>
+
+                      <span className={styles.controls}>
+                        <Button
+                          capitalize
+                          size="small"
+                          variant="primary"
+                          onClick={handleDeleteSelectedDrafts}
+                        >
+                          Delete
+                        </Button>
+                        <Button
+                          capitalize
+                          size="small"
+                          variant="tertiary"
+                          className={styles.dismiss}
+                          onClick={handleDismiss}
+                        >
+                          Dismiss
+                        </Button>
+                      </span>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         )}
       </div>

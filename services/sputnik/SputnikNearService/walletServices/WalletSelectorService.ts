@@ -71,11 +71,17 @@ export class WalletSelectorService implements WalletService {
       return new keyStores.BrowserLocalStorageKeyStore(window.localStorage);
     }
 
-    const { signer } = window.near.account().connection;
+    const connectionObj = window.near?.account()?.connection;
 
-    const { keyStore } = signer as { keyStore: KeyStore } & Signer;
+    if (connectionObj) {
+      const { signer } = connectionObj;
 
-    return keyStore;
+      const { keyStore } = signer as { keyStore: KeyStore } & Signer;
+
+      return keyStore;
+    }
+
+    return new keyStores.BrowserLocalStorageKeyStore(window.localStorage);
   }
 
   async contractCall<T>(

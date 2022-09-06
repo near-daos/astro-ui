@@ -108,7 +108,8 @@ export class NearService extends BaseService {
   }
 
   public async addProposal(
-    params: CreateProposalParams
+    params: CreateProposalParams,
+    opts: Record<string, string> = {}
   ): Promise<FinalExecutionOutcome[]> {
     const isSignedIn = await this.isSignedIn();
 
@@ -132,6 +133,7 @@ export class NearService extends BaseService {
           description,
           kind: kindData,
         },
+        ...opts,
       },
       gas: formatGasValue(gas ?? DEFAULT_PROPOSAL_GAS),
       attachedDeposit: new BN(bond),
@@ -246,9 +248,10 @@ export class NearService extends BaseService {
       }
     }
 
-    const trx = tokenId
-      ? [storageDepositTransactionAction, claimAction]
-      : [claimAction];
+    const trx =
+      tokenId && !USN_TOKEN_CONTRACTS.includes(tokenId)
+        ? [storageDepositTransactionAction, claimAction]
+        : [claimAction];
 
     return this.walletService.sendTransactions(trx);
   }
@@ -478,7 +481,10 @@ export class NearService extends BaseService {
     return this.walletService.sendTransactions(trx);
   }
 
-  private mapTokenTransferProposal(proposal: CreateProposalParams) {
+  private mapTokenTransferProposal(
+    proposal: CreateProposalParams,
+    opts: Record<string, string> = {}
+  ) {
     const { bond, daoId, description, kind, data } = proposal;
 
     const { token_id: tokenContract, receiver_id: recipient } =
@@ -516,6 +522,7 @@ export class NearService extends BaseService {
                     [kind]: data,
                   },
                 },
+                ...opts,
               },
               gas: GAS_VALUE.toString(),
               deposit: bond,
@@ -539,6 +546,7 @@ export class NearService extends BaseService {
                 [kind]: data,
               },
             },
+            ...opts,
           },
           deposit: bond,
         });
@@ -575,6 +583,7 @@ export class NearService extends BaseService {
                     [kind]: data,
                   },
                 },
+                ...opts,
               },
               GAS_VALUE,
               new BN(bond)
@@ -606,7 +615,8 @@ export class NearService extends BaseService {
   }
 
   public async createTokenTransferProposal(
-    proposal: CreateProposalParams
+    proposal: CreateProposalParams,
+    opts: Record<string, string> = {}
   ): Promise<FinalExecutionOutcome[] | void> {
     const isSignedIn = await this.isSignedIn();
 
@@ -614,7 +624,7 @@ export class NearService extends BaseService {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
-    const trx = this.mapTokenTransferProposal(proposal);
+    const trx = this.mapTokenTransferProposal(proposal, opts);
 
     return this.walletService.sendTransactions(trx);
   }

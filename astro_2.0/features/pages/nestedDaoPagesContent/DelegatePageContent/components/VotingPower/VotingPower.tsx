@@ -8,16 +8,28 @@ import styles from './VotingPower.module.scss';
 interface Props {
   progressPercent: number;
   inactiveVotingPower: boolean;
+  className?: string;
+  progressBarClassName?: string;
+  showValue?: boolean;
 }
 
 export const VotingPower: FC<Props> = ({
   progressPercent,
   inactiveVotingPower,
+  showValue = true,
+  className,
+  progressBarClassName,
 }) => {
   return (
-    <Tooltip placement="top" className={styles.root} overlay="Voting power">
-      <div className={styles.progressValue}>{progressPercent.toFixed()}%</div>
-      <div className={styles.progressBar}>
+    <Tooltip
+      placement="top"
+      className={cn(styles.root, className)}
+      overlay="Voting power"
+    >
+      {showValue && (
+        <div className={styles.progressValue}>{progressPercent.toFixed()}%</div>
+      )}
+      <div className={cn(styles.progressBar, progressBarClassName)}>
         <div
           className={cn(styles.progress, {
             [styles.inactive]: inactiveVotingPower,

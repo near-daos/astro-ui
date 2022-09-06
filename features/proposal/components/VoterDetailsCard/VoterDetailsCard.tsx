@@ -17,6 +17,7 @@ interface VoterDetailsCardProps {
   transactionHash: string | undefined;
   timestamp: string | null | undefined;
   tokensDetails?: TokenDetails | null;
+  isLastVote: boolean;
 }
 
 export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
@@ -25,6 +26,7 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
   transactionHash,
   timestamp,
   tokensDetails,
+  isLastVote,
 }) => {
   let icon;
   let iconSize = 40;
@@ -60,6 +62,9 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
         })}
       >
         <Icon width={iconSize} name={icon as IconName} />
+        {isLastVote && (
+          <Icon name="buttonCheck" className={styles.lastVoteIcon} />
+        )}
       </div>
       <div className={styles.name}>{name}</div>
       {tokensDetails && (

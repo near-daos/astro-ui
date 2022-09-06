@@ -31,6 +31,9 @@ import { useSubmitDraft } from 'astro_2.0/features/CreateProposal/hooks/useSubmi
 import { getFormInitialValues } from 'astro_2.0/features/CreateProposal/helpers/initialValues';
 import { getNonEditableGasValue } from 'astro_2.0/features/CreateProposal/helpers/proposalVariantsHelpers';
 import { resolver } from 'astro_2.0/features/CreateProposal/helpers/validation';
+
+import { CREATE_PROPOSAL_FORM } from 'constants/common';
+
 import {
   getFormContentNode,
   mapProposalVariantToProposalType,
@@ -77,7 +80,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   isDraft,
   isEditDraft,
 }) => {
-  const [, setNewProposalFlag] = useLocalStorage('astro-new-proposal');
+  const [, setNewProposalFlag] = useLocalStorage(CREATE_PROPOSAL_FORM);
   const { t } = useTranslation();
   const { accountId, nearService } = useWalletContext();
   const initialProposalVariant = !isDraft

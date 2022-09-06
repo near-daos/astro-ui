@@ -17,6 +17,7 @@ import { VotingThresholdWidget } from 'astro_2.0/features/pages/nestedDaoPagesCo
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { GoalChart } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/GoalChart';
 import { QuorumErrorWarning } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/QuorumErrorWarning';
+import { MyVotingPowerWidget } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/MyVotingPowerWidget';
 
 import {
   useDelegatePageData,
@@ -161,6 +162,9 @@ export const DelegatePageContent: FC<Props> = ({
     <DelegatePageContext.Provider value={contextValue}>
       <div className={styles.root}>
         <h1>Delegate Voting</h1>
+        <div className={styles.topWidgets}>
+          <MyVotingPowerWidget loading={loading} data={data} />
+        </div>
         <div
           className={cn(styles.widgets, {
             [styles.widgetExpanded]: showGoalChart,

@@ -1,6 +1,5 @@
 import React, { FC, useCallback } from 'react';
 import cn from 'classnames';
-import { useFlags } from 'launchdarkly-react-client-sdk';
 import { useTranslation } from 'next-i18next';
 import { useFormContext } from 'react-hook-form';
 import { useMedia } from 'react-use';
@@ -43,7 +42,6 @@ export const DaoHeaderContent: FC<Props> = ({
 }) => {
   const { id, displayName, daoMembersList, members, daoVersion } = dao;
   const isMobile = useMedia('(max-width: 768px)');
-  const flags = useFlags();
   const { accountId } = useWalletContext();
   const { t } = useTranslation();
   const { formState, reset, getValues } = useFormContext();
@@ -185,14 +183,11 @@ export const DaoHeaderContent: FC<Props> = ({
               className={styles.warning}
             />
           )}
-
-          {flags.cloneDaoFlow && (
-            <CloneDaoWarning
-              dao={dao}
-              className={styles.warning}
-              onCreateProposal={onCreateProposal}
-            />
-          )}
+          <CloneDaoWarning
+            dao={dao}
+            className={styles.warning}
+            onCreateProposal={onCreateProposal}
+          />
         </div>
       </div>
     </MainLayout>

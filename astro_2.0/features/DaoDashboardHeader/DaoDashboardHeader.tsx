@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import { useMedia } from 'react-use';
-import { useFlags } from 'launchdarkly-react-client-sdk';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { DAO } from 'types/dao';
@@ -55,7 +54,6 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
     description,
     links,
   } = dao;
-  const flags = useFlags();
   const { accountId } = useWalletContext();
   const { t } = useTranslation();
   const { appVersion } = useAppVersion();
@@ -156,14 +154,11 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
                   className={styles.warning}
                 />
               )}
-
-              {flags.cloneDaoFlow && (
-                <CloneDaoWarning
-                  dao={dao}
-                  className={styles.warning}
-                  onCreateProposal={onCreateProposal}
-                />
-              )}
+              <CloneDaoWarning
+                dao={dao}
+                className={styles.warning}
+                onCreateProposal={onCreateProposal}
+              />
             </div>
           </div>
         </MainLayout>

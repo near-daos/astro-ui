@@ -44,7 +44,7 @@ describe('UnclaimCompleteContent', () => {
       .mockImplementationOnce(() => '123456');
 
     const { container } = render(
-      <VotingContent proposal={proposal} accountId="accountId" dao={dao} />
+      <VotingContent proposal={proposal} accountId="accountId" daoId={dao.id} />
     );
 
     expect(container).toMatchSnapshot();
@@ -67,7 +67,7 @@ describe('UnclaimCompleteContent', () => {
     }));
 
     const { queryAllByRole } = render(
-      <VotingContent proposal={proposal} accountId="accountId" dao={dao} />
+      <VotingContent proposal={proposal} accountId="accountId" daoId={dao.id} />
     );
 
     const buttons = queryAllByRole('button');

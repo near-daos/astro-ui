@@ -2,7 +2,6 @@ import React, { FC, useCallback, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import cn from 'classnames';
 import { useRouter } from 'next/router';
-import { useFlags } from 'launchdarkly-react-client-sdk';
 import { useMedia } from 'react-use';
 
 import { WalletType } from 'types/config';
@@ -36,7 +35,6 @@ export const DaoAction: FC<Props> = ({
   dao,
 }) => {
   const router = useRouter();
-  const flags = useFlags();
   const { t } = useTranslation();
   const { accountId, login } = useWalletContext();
   const isMobile = useMedia('(max-width: 768px)');
@@ -95,7 +93,7 @@ export const DaoAction: FC<Props> = ({
     );
   }
 
-  if (flags.draftProposals && canCreateDrafts && canCreateProposals) {
+  if (canCreateDrafts && canCreateProposals) {
     return (
       <GenericDropdown
         isOpen={open}
@@ -148,7 +146,7 @@ export const DaoAction: FC<Props> = ({
     );
   }
 
-  if ((!flags.draftProposals || !canCreateDrafts) && canCreateProposals) {
+  if (!canCreateDrafts && canCreateProposals) {
     return (
       <Button
         capitalize
@@ -167,12 +165,7 @@ export const DaoAction: FC<Props> = ({
     );
   }
 
-  if (
-    flags.draftProposals &&
-    canCreateDrafts &&
-    accountId &&
-    !canCreateProposals
-  ) {
+  if (canCreateDrafts && accountId && !canCreateProposals) {
     return (
       <Button
         data-testid="createDraft"

@@ -21,10 +21,15 @@ export function useRoketoStreamCheck(json: string): {
       return null;
     }
   }, [json]);
-  const message = useMemo(
-    () => JSON.parse(parsedJson?.msg ?? '{}'),
-    [parsedJson]
-  );
+  const message = useMemo(() => {
+    try {
+      return JSON.parse(parsedJson?.msg ?? '{}');
+    } catch (e) {
+      console.error(e);
+
+      return null;
+    }
+  }, [parsedJson]);
   const config = configService.get();
   const streamingContract = config.appConfig.ROKETO_CONTRACT_NAME;
 

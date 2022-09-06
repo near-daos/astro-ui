@@ -93,6 +93,25 @@ exports[`dao details minimized Should render component 1`] = `
       >
         <a
           class="controlIcon noActiveLink"
+          href="/dao/default-flag-test.sputnikv2.testnet/drafts"
+          style="display: inline-block;"
+        >
+          <button
+            class="iconTextButton"
+            type="button"
+          >
+            <svg
+              class="icon"
+            >
+              <use
+                href="/_next/undefined"
+              />
+            </svg>
+            daoDetailsMinimized.drafts
+          </button>
+        </a>
+        <a
+          class="controlIcon noActiveLink"
           href="/dao/default-flag-test.sputnikv2.testnet/proposals"
           style="display: inline-block;"
         >

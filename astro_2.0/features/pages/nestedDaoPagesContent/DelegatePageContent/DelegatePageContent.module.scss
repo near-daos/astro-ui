@@ -8,6 +8,13 @@
   }
 }
 
+.topWidgets {
+  display: flex;
+  flex: 1;
+
+  margin-bottom: 12px;
+}
+
 .widgets {
   display: grid;
   grid-gap: 12px;
