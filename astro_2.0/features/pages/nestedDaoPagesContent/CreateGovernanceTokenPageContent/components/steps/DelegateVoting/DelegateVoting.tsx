@@ -13,7 +13,6 @@ import { AccountAmount } from 'astro_2.0/features/pages/nestedDaoPagesContent/Cr
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 
-import { CustomContract } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/types';
 import { DAO } from 'types/dao';
 
 import { formatValueToYokto, formatYoktoValue } from 'utils/format';
@@ -48,19 +47,9 @@ export const DelegateVoting: FC<Props> = ({
       return;
     }
 
-    const ftContract = nearService.getContract(contractAddress, [
-      'ft_balance_of',
-      'ft_metadata',
-    ]) as CustomContract;
-
-    const stContract = nearService.getContract(
-      nearService.getStackingContract(dao.name),
-      ['ft_balance_of']
-    ) as CustomContract;
-
     const [meta, balance] = await Promise.all([
-      ftContract.ft_metadata(),
-      stContract.ft_balance_of({ account_id: accountId }),
+      nearService.getFtMetadata(contractAddress),
+      nearService.getFtBalance(dao.name, accountId),
     ]);
 
     setTokenDetails({

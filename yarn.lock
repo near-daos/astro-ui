@@ -1985,56 +1985,36 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@near-wallet-selector/core@5.0.0", "@near-wallet-selector/core@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-5.0.0.tgz#76dd0c683b6daa01f3f20db3c4b5b707fb924937"
-  integrity sha512-xklVLDcV1/8FHrmZ9RtwHbTWgZFIoy68a/5mhXDnzFdN1ypTRkThRRdhJ/PvQbqsvl6h+fFV6sa0EQzSLJ297Q==
+"@near-wallet-selector/core@6.0.0", "@near-wallet-selector/core@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-6.0.0.tgz#4686d804fa408de257e7449b3e7aa86244f83f64"
+  integrity sha512-sKyfN6NoKuNP3TjGUNkNfcFrLV03Ddh1C1zZ+30D137EMAUAmteWD+eNgHYuFiUmxdFba/9joHci/Vv+m1QIyg==
   dependencies:
-    near-api-js "0.44.2"
-    rxjs "~7.4.0"
+    rxjs "^7.5.5"
 
-"@near-wallet-selector/my-near-wallet@5.0.0", "@near-wallet-selector/my-near-wallet@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/my-near-wallet/-/my-near-wallet-5.0.0.tgz#e6d6038ec7c86026335ae2e4a3c14be6d0cc2792"
-  integrity sha512-0sM7NVfLnuk4n5cB/IcLYB+St4GzWsR+hk4oXkqucsyV4ozjbCUE37SGBadLFv0bFKLOVfANsAuzJajjREH0yA==
+"@near-wallet-selector/my-near-wallet@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/my-near-wallet/-/my-near-wallet-6.0.0.tgz#363b11184c2a60a7c4e00a2b0289176343860c68"
+  integrity sha512-3u88vYrt2a1QXFMlMSqJ5jc+RBj81cqAMuiGZGsrEDQBi8pseSIunQwO5MzVLmNdHaZZ67RjDlTN7nanc2hykg==
   dependencies:
-    "@near-wallet-selector/core" "5.0.0"
-    "@near-wallet-selector/wallet-utils" "5.0.0"
+    "@near-wallet-selector/core" "6.0.0"
+    "@near-wallet-selector/wallet-utils" "6.0.0"
+
+"@near-wallet-selector/sender@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/sender/-/sender-6.0.0.tgz#734a6e4c52ec6d8280809fd91d69b45841593568"
+  integrity sha512-i5MF6W7PmZW3RMRCaSGee0mrCtPqaGx1/GuA3ydiu0pC208fuj9qG6g2Yw2C07mjKktsgtOSxLAnOCqkGUE0DQ==
+  dependencies:
+    "@near-wallet-selector/core" "6.0.0"
+    is-mobile "^3.1.1"
+
+"@near-wallet-selector/wallet-utils@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/wallet-utils/-/wallet-utils-6.0.0.tgz#d521eb66c6d8ad978e5dd911eac82f1a47e8d606"
+  integrity sha512-si2d7e6aKePJJDuh+Bmln0x6CHarePeZFBpMyXV/3JbyY4xHROhAh/NU77Bb/CE5N6JzG6r69qivHkJugTcVOA==
+  dependencies:
+    "@near-wallet-selector/core" "6.0.0"
     bn.js "^5.2.0"
-    near-api-js "0.44.2"
-    rxjs "~7.4.0"
-
-"@near-wallet-selector/near-wallet@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/near-wallet/-/near-wallet-5.0.0.tgz#9e2d8863e2ca302185d8f0f600ce902fe6ccbafa"
-  integrity sha512-0m3fhCuVS8crPHkvIoWLQU/pAmGJisi9t7X9WBAJO+vzSj4LO0d5i9+ijPoKBftu46G5YPf6QVl7XA1MQGoddg==
-  dependencies:
-    "@near-wallet-selector/core" "5.0.0"
-    "@near-wallet-selector/my-near-wallet" "5.0.0"
-    "@near-wallet-selector/wallet-utils" "5.0.0"
-    bn.js "^5.2.0"
-    near-api-js "0.44.2"
-    rxjs "~7.4.0"
-
-"@near-wallet-selector/sender@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/sender/-/sender-5.0.0.tgz#9b38a40db4a482c2c774a918682eee8cf9edbb50"
-  integrity sha512-OXoW9oiJx64gVIgc34/qVzjQ/XAG4HGI6HayB90SeKt5YlmgwdOT0ubJtxRzk75jdvWgOipyjeHBbZCXYceF/g==
-  dependencies:
-    "@near-wallet-selector/core" "5.0.0"
-    is-mobile "^3.0.0"
-    near-api-js "0.44.2"
-    rxjs "~7.4.0"
-
-"@near-wallet-selector/wallet-utils@5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/wallet-utils/-/wallet-utils-5.0.0.tgz#7d38c0c0f7d435eefd6ff74b4e8baf77a498a335"
-  integrity sha512-ZiXPFTEhog0N8Pdhbg6HB75QvLBFtKdk6Wvql/ZZAiebOmUcYFNKFywxQLK0DTRJc46RSxdsk+fXqB2trKZLBA==
-  dependencies:
-    "@near-wallet-selector/core" "5.0.0"
-    bn.js "^5.2.0"
-    near-api-js "0.44.2"
-    rxjs "~7.4.0"
 
 "@nestjsx/crud-request@^5.0.0-alpha.3":
   version "5.0.0-alpha.3"
@@ -10656,7 +10636,7 @@ is-map@^2.0.2:
   resolved "https://registry.npmjs.org/is-map/-/is-map-2.0.2.tgz"
   integrity sha512-cOZFQQozTha1f4MxLFzlgKYPTyj26picdZTx82hbc/Xf4K/tZOOXSCkMvU4pKioRXGDLJRn0GM7Upe7kR721yg==
 
-is-mobile@^3.0.0:
+is-mobile@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/is-mobile/-/is-mobile-3.1.1.tgz#3b9e48f40068e4ea2da411f5009779844ce8d6aa"
   integrity sha512-RRoXXR2HNFxNkUnxtaBdGBXtFlUMFa06S0NUKf/LCF+MuGLu13gi9iBCkoEmc6+rpXuwi5Mso5V8Zf7mNynMBQ==
@@ -12912,7 +12892,7 @@ natural-compare@^1.4.0:
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-near-api-js@0.44.2, near-api-js@^0.44.2:
+near-api-js@^0.44.2:
   version "0.44.2"
   resolved "https://registry.npmjs.org/near-api-js/-/near-api-js-0.44.2.tgz"
   integrity sha512-eMnc4V+geggapEUa3nU2p8HSHn/njtloI4P2mceHQWO8vDE1NGpnAw8FuTBrLmXSgIv9m6oocgFc9t3VNf5zwg==
@@ -15819,19 +15799,12 @@ rxjs@^6.4.0, rxjs@^6.6.7:
   dependencies:
     tslib "^1.9.0"
 
-rxjs@^7.5.6:
+rxjs@^7.5.5, rxjs@^7.5.6:
   version "7.5.6"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.5.6.tgz#0446577557862afd6903517ce7cae79ecb9662bc"
   integrity sha512-dnyv2/YsXhnm461G+R/Pe5bWP41Nm6LBXEYWI6eiFP4fiwx6WRI/CD0zbdVAudd9xwLEF2IDcKXLHit0FYjUzw==
   dependencies:
     tslib "^2.1.0"
-
-rxjs@~7.4.0:
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.4.0.tgz#a12a44d7eebf016f5ff2441b87f28c9a51cebc68"
-  integrity sha512-7SQDi7xeTMCJpqViXh8gL/lebcwlp3d831F05+9B44A4B0WfsEwUQHR64gsH1kvJ+Ep/J9K2+n1hVl1CsGN23w==
-  dependencies:
-    tslib "~2.1.0"
 
 safe-buffer@5.1.1:
   version "5.1.1"
@@ -17547,11 +17520,6 @@ tslib@^2.0.0, tslib@^2.0.1, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0:
   version "2.3.0"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.3.0.tgz"
   integrity sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==
-
-tslib@~2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
-  integrity sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==
 
 tsscmp@1.0.6:
   version "1.0.6"

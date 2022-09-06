@@ -1,9 +1,10 @@
-import { useAsyncFn, useList } from 'react-use';
+import { useAsyncFn, useList, useLocalStorage, useLocation } from 'react-use';
 import { useCallback } from 'react';
 import { VoteAction } from 'types/proposal';
 import { useWalletContext } from 'context/WalletContext';
 import { useRouter } from 'next/router';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { VOTE_ACTION_SOURCE_PAGE } from 'constants/votingConstants';
 
 export function useMultiVoteActions(): {
   loading: boolean;
@@ -14,6 +15,8 @@ export function useMultiVoteActions(): {
 } {
   const { nearService } = useWalletContext();
   const router = useRouter();
+  const [, setVoteActionSource] = useLocalStorage(VOTE_ACTION_SOURCE_PAGE);
+  const { pathname } = useLocation();
   const [list, { push, removeAt, clear }] = useList<string>([]);
 
   const handleSelect = useCallback(
@@ -43,6 +46,8 @@ export function useMultiVoteActions(): {
 
           return { daoId, proposalId };
         });
+
+        setVoteActionSource(pathname);
 
         await nearService?.multiVote(vote, paramsArr);
 
