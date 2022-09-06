@@ -14,11 +14,13 @@ import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { InfoPanel } from 'astro_2.0/features/ViewBounty/components/InfoPanel/InfoPanel';
 import { ClaimsInfo } from 'astro_2.0/features/ViewBounty/components/ClaimsInfo';
 import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments';
+import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 
 export interface ViewBountyProps {
   contextId: string;
   commentsCount: number;
-  dao: DAO | null;
+  dao?: DAO | null;
+  daoId: string;
   bounty: Bounty;
   proposal: BountyProposal;
   className?: string;
@@ -35,6 +37,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
   contextId,
   commentsCount,
   dao,
+  daoId,
   bounty,
   proposal,
   className,
@@ -47,7 +50,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
   const isCouncilUser = proposal.permissions?.isCouncil ?? false;
   const [commentsNum, setCommentsNum] = useState(commentsCount);
 
-  if (!dao || !(bounty || proposal)) {
+  if (!(bounty || proposal)) {
     return null;
   }
 
@@ -57,17 +60,24 @@ export const ViewBounty: FC<ViewBountyProps> = ({
     <div className={className}>
       <ProposalCardRenderer
         proposalId={null}
-        daoFlagNode={null}
+        daoFlagNode={
+          <DaoFlagWidget
+            daoName={daoId}
+            flagUrl={dao?.flagLogo}
+            daoId={daoId}
+            fallBack={dao?.logo}
+          />
+        }
         letterHeadNode={
           <LetterHeadWidget
             type={ProposalType.AddBounty}
-            coverUrl={dao.flagCover}
+            coverUrl={dao?.flagCover}
           />
         }
         proposalCardNode={
           <BountyCard
             contextId={contextId}
-            dao={dao}
+            daoId={daoId}
             bounty={bounty}
             proposal={proposal}
             completeHandler={() => {

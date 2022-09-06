@@ -123,7 +123,7 @@ export const ClaimRow: FC<ClaimRowProps> = ({
         <VotingContent
           proposal={proposal}
           accountId={accountId}
-          dao={dao}
+          daoId={dao.id}
           className={styles.controls}
         />
       )}

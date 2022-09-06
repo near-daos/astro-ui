@@ -1,0 +1,56 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+
+.root {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.row {
+  align-items: flex-start;
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 auto;
+  width: 100%;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    flex-direction: column;
+    padding: 0;
+  }
+}
+
+.additionalFilters {
+  margin: 12px 0 0;
+
+  @include tablet-landscape {
+    justify-content: right;
+  }
+}
+
+.content {
+  margin-top: 24px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.filter {
+  top: 71px;
+
+  @include tablet-landscape {
+    max-width: 160px;
+    top: 90px;
+    width: 160px;
+  }
+}
+
+.bountyCardWrapper {
+  margin-bottom: 36px;
+}

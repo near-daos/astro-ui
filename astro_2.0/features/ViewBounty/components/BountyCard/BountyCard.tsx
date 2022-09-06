@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { formatDistance, parseISO } from 'date-fns';
 
 import { Bounty, BountyProposal } from 'types/bounties';
-import { DAO } from 'types/dao';
 
 import { kFormatter } from 'utils/format';
 
@@ -34,7 +33,7 @@ export interface BountyCardProps {
   commentsCount: number;
   proposal: BountyProposal;
   activeInfoView: string | null;
-  dao: DAO;
+  daoId: string;
   completeHandler: () => void;
   contextId: string;
 }
@@ -47,7 +46,7 @@ function getTimestampLabel(createdAt: string) {
 
 export const BountyCard: React.FC<BountyCardProps> = ({
   contextId,
-  dao,
+  daoId,
   bounty,
   content,
   proposal,
@@ -68,19 +67,19 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   };
   const bountyData = kind.bounty;
 
-  const { handleUnclaim, handleClaim } = useBountyControls(dao, bounty);
+  const { handleUnclaim, handleClaim } = useBountyControls(daoId, bounty);
 
   const handleCardClick = useCallback(() => {
     if (canNavigateToBounty) {
       router.push({
         pathname: SINGLE_BOUNTY_PAGE_URL,
         query: {
-          dao: dao.id,
+          dao: daoId,
           bountyContext: contextId,
         },
       });
     }
-  }, [canNavigateToBounty, contextId, dao.id, router]);
+  }, [canNavigateToBounty, contextId, daoId, router]);
 
   function renderButtons() {
     if (!accountId) {
@@ -93,7 +92,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
           <VotingContent
             proposal={proposal}
             accountId={accountId}
-            dao={dao}
+            daoId={daoId}
             className={styles.voting}
           />
         </div>
@@ -298,7 +297,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
         <BountyActions
           description={description}
           contextId={contextId}
-          daoId={dao.id}
+          daoId={daoId}
         />
       </div>
     </div>

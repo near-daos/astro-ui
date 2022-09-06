@@ -23,6 +23,7 @@ import { WalletType } from 'types/config';
 import {
   ALL_DAOS_URL,
   ALL_FEED_URL,
+  BOUNTIES,
   CFC_LIBRARY,
   CREATE_DAO_URL,
   MY_FEED_URL,
@@ -70,7 +71,7 @@ export const Sidebar: FC = () => {
       {
         icon: 'sidebarBounties',
         label: 'Bounties area',
-        href: 'none',
+        href: BOUNTIES,
       },
       {
         icon: 'sidebarActionsLibrary',

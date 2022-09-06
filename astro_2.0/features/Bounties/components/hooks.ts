@@ -7,7 +7,6 @@ import { SputnikHttpService } from 'services/sputnik';
 import { useModal } from 'components/modal';
 import { ConfirmActionModal } from 'astro_2.0/components/ConfirmActionModal';
 
-import { DAO } from 'types/dao';
 import { Bounty, BountyContext, BountyProposal } from 'types/bounties';
 import { VoteAction } from 'types/proposal';
 
@@ -17,7 +16,7 @@ import { useWalletContext } from 'context/WalletContext';
 import { PaginationResponse } from 'types/api';
 
 export function useBountyControls(
-  dao: DAO,
+  daoId: string,
   bounty?: Bounty
 ): {
   handleClaim: () => void;
@@ -38,7 +37,13 @@ export function useBountyControls(
     });
 
     if (res?.length && bounty) {
-      await nearService?.claimBounty(dao.id, {
+      const dao = await SputnikHttpService.getDaoById(daoId);
+
+      if (!dao) {
+        return;
+      }
+
+      await nearService?.claimBounty(daoId, {
         bountyId: bounty?.bountyId,
         deadline: bounty?.maxDeadline,
         bountyBond: dao.policy.bountyBond,
@@ -48,14 +53,7 @@ export function useBountyControls(
 
       onSuccessHandler();
     }
-  }, [
-    showModal,
-    bounty,
-    dao.id,
-    dao.policy.bountyBond,
-    onSuccessHandler,
-    nearService,
-  ]);
+  }, [showModal, bounty, daoId, onSuccessHandler, nearService]);
 
   const handleUnclaim = useCallback(async () => {
     const res = await showModal({
@@ -63,10 +61,10 @@ export function useBountyControls(
     });
 
     if (res?.length && bounty) {
-      await nearService?.unclaimBounty(dao.id, bounty?.bountyId);
+      await nearService?.unclaimBounty(daoId, bounty?.bountyId);
       onSuccessHandler();
     }
-  }, [bounty, dao.id, onSuccessHandler, showModal, nearService]);
+  }, [bounty, daoId, onSuccessHandler, showModal, nearService]);
 
   return {
     handleClaim,
@@ -75,7 +73,7 @@ export function useBountyControls(
 }
 
 export function useBountyVoting(
-  dao: DAO,
+  daoId: string,
   proposal: BountyProposal
 ): {
   handleVote: (vote: VoteAction) => void;
@@ -92,11 +90,11 @@ export function useBountyVoting(
       });
 
       if (res?.length) {
-        await nearService?.vote(dao.id, proposal.proposalId, vote, res[0]);
+        await nearService?.vote(daoId, proposal.proposalId, vote, res[0]);
         await router.reload();
       }
     },
-    [dao, proposal, router, nearService]
+    [daoId, proposal, router, nearService]
   );
 
   return {
@@ -127,7 +125,7 @@ export function useBountySearch(): {
     cancelTokenRef.current = source;
 
     return SputnikHttpService.findBountyContext({
-      daoId,
+      daoId: daoId || '',
       accountId,
       query,
       cancelToken: source.token,

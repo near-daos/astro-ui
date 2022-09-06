@@ -25,7 +25,7 @@ export const ClaimsContent: FC<ClaimsContentProps> = ({
   slotsTotal,
   accountId,
 }) => {
-  const { handleClaim } = useBountyControls(dao, bounty);
+  const { handleClaim } = useBountyControls(dao.id, bounty);
 
   const claimedBy = bounty.bountyClaims.map(
     ({ accountId: claimedAccount }) => claimedAccount

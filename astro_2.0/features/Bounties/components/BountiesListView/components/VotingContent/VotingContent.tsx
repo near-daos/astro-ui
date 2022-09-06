@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 
-import { DAO } from 'types/dao';
 import { BountyProposal } from 'types/bounties';
 
 import { ProposalControlButton } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/ProposalControlPanel/components/ProposalControlButton';
@@ -18,17 +17,17 @@ import styles from './VotingContent.module.scss';
 interface VotingContentProps {
   proposal: BountyProposal;
   accountId: string;
-  dao: DAO;
+  daoId: string;
   className?: string;
 }
 
 export const VotingContent: FC<VotingContentProps> = ({
   proposal,
   accountId,
-  dao,
+  daoId,
   className,
 }) => {
-  const { handleVote, loading } = useBountyVoting(dao, proposal);
+  const { handleVote, loading } = useBountyVoting(daoId, proposal);
 
   const votesStat = getVotesStatistic(proposal);
 

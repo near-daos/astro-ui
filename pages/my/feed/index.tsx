@@ -33,15 +33,13 @@ const MyFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
         <title>My proposals feed</title>
       </Head>
       <AllTokensProvider>
-        <AllTokensProvider>
-          {appVersion === 3 ? (
-            <ProposalsFeed {...props} className={styles.root} />
-          ) : (
-            <MainLayout>
-              <Feed {...props} title={t('myProposalsFeed')} />
-            </MainLayout>
-          )}
-        </AllTokensProvider>
+        {appVersion === 3 ? (
+          <ProposalsFeed {...props} className={styles.root} />
+        ) : (
+          <MainLayout>
+            <Feed {...props} title={t('myProposalsFeed')} />
+          </MainLayout>
+        )}
       </AllTokensProvider>
     </>
   );
