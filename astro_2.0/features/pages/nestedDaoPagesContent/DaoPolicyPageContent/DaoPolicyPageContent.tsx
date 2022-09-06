@@ -30,6 +30,8 @@ import { DraftSettings } from 'astro_2.0/features/pages/nestedDaoPagesContent/Da
 
 import { useDaoSettings } from 'context/DaoSettingsContext';
 
+import { CREATE_PROPOSAL_FORM } from 'constants/common';
+
 import styles from './DaoPolicyPageContent.module.scss';
 
 interface Props {
@@ -58,7 +60,12 @@ export const DaoPolicyPageContent: FC<Props> = ({
     initialValues?: Record<string, unknown>
   ) {
     if (toggleCreateProposal) {
-      toggleCreateProposal();
+      const isCreateProposalFormOpen =
+        localStorage.getItem(CREATE_PROPOSAL_FORM) === '1';
+
+      if (isCreateProposalFormOpen) {
+        toggleCreateProposal();
+      }
 
       Promise.resolve().then(() =>
         toggleCreateProposal({ proposalVariant, initialValues })
