@@ -6,6 +6,8 @@ import { WalletWithAccounts } from 'astro_2.0/components/AppHeader/components/Ac
 import { WalletButton } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletButton';
 import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletsList/WalletsList.module.scss';
 import { useWalletContext } from 'context/WalletContext';
+import { useFlags } from 'launchdarkly-react-client-sdk';
+import { useTranslation } from 'next-i18next';
 
 interface WalletsListProps {
   closeDropdownHandler: () => void;
@@ -21,6 +23,8 @@ export const WalletsList: React.FC<WalletsListProps> = ({
     switchAccount,
     switchWallet,
   } = useWalletContext();
+  const { useWalletSelector } = useFlags();
+  const { t } = useTranslation();
 
   const switchAccountHandler = useCallback(
     (account: string) => () => {
@@ -66,6 +70,30 @@ export const WalletsList: React.FC<WalletsListProps> = ({
             url={wallet.url}
           />
         )
+      )}
+      {useWalletSelector && (
+        <>
+          <WalletButton
+            walletType={WalletType.SELECTOR_NEAR}
+            onClick={switchWalletHandler(WalletType.SELECTOR_NEAR)}
+            name="Selector NEAR"
+            type={t('header.wallets.near.type')}
+            url="mynearwallet.com"
+            className={styles.wallet}
+            isSelected={currentWallet === WalletType.SELECTOR_NEAR}
+          />
+          {availableWallets.find(item => item.id === WalletType.SENDER) && (
+            <WalletButton
+              walletType={WalletType.SENDER}
+              onClick={switchWalletHandler(WalletType.SELECTOR_SENDER)}
+              name="Selector Sender"
+              type={t('header.wallets.sender.type')}
+              url="senderwallet.io"
+              className={styles.wallet}
+              isSelected={currentWallet === WalletType.SELECTOR_SENDER}
+            />
+          )}
+        </>
       )}
       <div className={styles.delimiter} />
       <DisconnectButton />

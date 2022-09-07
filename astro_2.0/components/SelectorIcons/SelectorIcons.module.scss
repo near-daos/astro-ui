@@ -1,0 +1,88 @@
+@use 'sass:math';
+@import 'styles/mixins';
+
+$offset: 187;
+$duration: 1.4s;
+
+.root {
+  border-radius: 100px;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.image {
+  border: 1px solid var(--color-neutral-40);
+  border-radius: 50%;
+  height: 38px;
+  overflow: hidden;
+  width: 38px;
+}
+
+.circle {
+  fill: var(--color-white);
+  stroke: var(--color-brand-black);
+}
+
+.icon {
+  fill: var(--color-brand-black);
+}
+
+.black {
+  .circle {
+    fill: var(--color-brand-black);
+  }
+
+  .icon {
+    fill: var(--color-white);
+  }
+}
+
+.loading {
+  .root {
+    animation: rotator $duration linear infinite;
+    pointer-events: none;
+  }
+
+  .circle {
+    animation: dash $duration ease-in-out infinite,
+      colors ($duration * 4) ease-in-out infinite;
+    stroke-dasharray: $offset;
+    stroke-dashoffset: 0;
+    transform-origin: center;
+  }
+}
+
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+
+@keyframes colors {
+  0% {
+    stroke: var(--color-primary-50);
+  }
+  50% {
+    stroke: var(--color-success-50);
+  }
+  100% {
+    stroke: var(--color-error-70);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: $offset;
+  }
+  50% {
+    stroke-dashoffset: math.div($offset, 4);
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: $offset;
+    transform: rotate(450deg);
+  }
+}
