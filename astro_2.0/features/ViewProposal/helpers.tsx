@@ -327,6 +327,8 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
 
               return (
                 <CustomFunctionCallContent
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={i}
                   token="NEAR"
                   smartContractAddress={kind.receiverId}
                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -564,6 +566,8 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
                   <CustomFunctionCallContent
                     token="NEAR"
                     smartContractAddress={kind.receiverId}
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={i}
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     methodName={data.methodName}

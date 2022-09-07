@@ -4,6 +4,7 @@ import { NearIcon } from 'astro_2.0/components/NearIcon';
 import { SenderIcon } from 'astro_2.0/components/SenderIcon';
 import { Button } from 'components/button/Button';
 import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletIcon/WalletIcon.module.scss';
+import { SelectorNearIcon } from 'astro_2.0/components/SelectorIcons';
 
 interface WalletIconProps {
   walletType: WalletType;
@@ -37,8 +38,12 @@ export const WalletIcon: React.FC<WalletIconProps> = ({
     case WalletType.NEAR: {
       return renderIcon(<NearIcon showLoader={showLoader} />);
     }
+    case WalletType.SELECTOR_SENDER:
     case WalletType.SENDER: {
       return renderIcon(<SenderIcon showLoader={showLoader} />);
+    }
+    case WalletType.SELECTOR_NEAR: {
+      return renderIcon(<SelectorNearIcon showLoader={showLoader} />);
     }
     default:
       return renderIcon(<NearIcon />);
