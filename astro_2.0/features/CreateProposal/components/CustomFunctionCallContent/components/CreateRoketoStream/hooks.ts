@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Contract } from 'near-api-js';
 import Decimal from 'decimal.js';
 
 import { useWalletContext } from 'context/WalletContext';
@@ -22,8 +23,14 @@ interface RoketoDao {
   commission_non_payment_ft: string;
 }
 
-interface RoketoContract {
+interface RoketoContract extends Contract {
   get_dao: () => Promise<RoketoDao>;
+}
+
+interface FTContract extends Contract {
+  storage_balance_of: (options: {
+    account_id: string;
+  }) => Promise<{ total: string; available: string }>;
 }
 
 /* eslint-enable camelcase */
@@ -39,20 +46,16 @@ export function useRoketo(): {
 
   const getRoketo = useCallback(async () => {
     try {
-      const accountId = nearService?.getAccountId();
+      const account = nearService?.getAccount();
 
-      if (!appConfig || !accountId || !nearService) {
+      if (!appConfig || !account) {
         return;
       }
 
-      const contract = {
-        get_dao: async () =>
-          nearService.callContract<RoketoDao>(
-            appConfig.ROKETO_CONTRACT_NAME,
-            'get_dao',
-            ''
-          ),
-      };
+      const contract = new Contract(account, appConfig.ROKETO_CONTRACT_NAME, {
+        viewMethods: ['get_dao'],
+        changeMethods: [],
+      }) as RoketoContract;
 
       setRoketo(contract);
     } finally {
@@ -416,6 +419,7 @@ export function useRoketoStorageDeposit(
   const [loading, setLoading] = useState(false);
   const [hasStorage, setHasStorage] = useState(false);
   const accountToCheck = useDebounce(account, 500);
+  const nearAccount = nearService?.getAccount();
 
   const getIsRegistered = useCallback(
     async (accountId: string, tokenAccountId: string) => {
@@ -432,10 +436,18 @@ export function useRoketoStorageDeposit(
 
         setLoading(true);
 
-        const balance = await nearService?.callContract<{
-          total: string;
-          available: string;
-        }>(tokenAccountId, 'storage_balance_of', '');
+        if (!nearAccount) {
+          return;
+        }
+
+        const contract = new Contract(nearAccount, tokenAccountId, {
+          viewMethods: ['storage_balance_of'],
+          changeMethods: [],
+        }) as FTContract;
+
+        const balance = await contract.storage_balance_of({
+          account_id: accountId,
+        });
 
         setHasStorage(Boolean(balance && balance.total !== '0'));
       } catch (error) {
@@ -444,7 +456,7 @@ export function useRoketoStorageDeposit(
         setLoading(false);
       }
     },
-    [nearService]
+    [nearAccount]
   );
 
   useEffect(() => {

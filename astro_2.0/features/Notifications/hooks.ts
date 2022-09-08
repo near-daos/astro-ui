@@ -136,7 +136,7 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
 } {
   const router = useRouter();
   const { socket } = useSocket();
-  const { accountId, pkAndSignature } = useWalletContext();
+  const { accountId, nearService } = useWalletContext();
   const [notifications, setNotifications] = useState<PaginationResponse<
     Notification[]
   > | null>(null);
@@ -315,11 +315,8 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
 
   const handleUpdate = useCallback(
     async (id, { isRead, isMuted, isArchived }) => {
-      if (!pkAndSignature) {
-        return;
-      }
-
-      const { publicKey, signature } = pkAndSignature;
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
       if (accountId && publicKey && signature && isMounted() && notifications) {
         setNotifications({
@@ -361,16 +358,13 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
         triggerUpdate();
       }
     },
-    [accountId, isMounted, notifications, triggerUpdate, pkAndSignature]
+    [nearService, accountId, isMounted, notifications, triggerUpdate]
   );
 
   const handleUpdateAll = useCallback(
     async (action: 'READ' | 'ARCHIVE') => {
-      if (!pkAndSignature) {
-        return;
-      }
-
-      const { publicKey, signature } = pkAndSignature;
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
       if (accountId && publicKey && signature && isMounted()) {
         if (action === 'READ') {
@@ -391,16 +385,13 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
         await loadMore(0);
       }
     },
-    [accountId, isMounted, loadMore, triggerUpdate, pkAndSignature]
+    [nearService, accountId, isMounted, loadMore, triggerUpdate]
   );
 
   const handleRemove = useCallback(
     async (id: string, { isRead, isMuted, isArchived }) => {
-      if (!pkAndSignature) {
-        return;
-      }
-
-      const { publicKey, signature } = pkAndSignature;
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
       if (accountId && publicKey && signature && isMounted() && notifications) {
         const newData = notifications?.data.filter(item => item.id !== id);
@@ -425,7 +416,7 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
         triggerUpdate();
       }
     },
-    [pkAndSignature, accountId, isMounted, notifications, triggerUpdate]
+    [nearService, accountId, isMounted, notifications, triggerUpdate]
   );
 
   return {

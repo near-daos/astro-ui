@@ -1,7 +1,5 @@
-import { DaoVersion, PolicyTypeRequest } from 'types/dao';
+import { PolicyTypeRequest } from 'types/dao';
 import { BaseParams } from './api';
-
-export type RawMeta = [string, DaoVersion];
 
 export interface CreateDaoParams {
   name: string;

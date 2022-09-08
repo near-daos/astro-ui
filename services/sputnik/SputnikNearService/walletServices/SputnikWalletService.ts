@@ -3,7 +3,6 @@ import {
   InMemorySigner,
   keyStores,
   Near,
-  providers,
   transactions,
   utils,
 } from 'near-api-js';
@@ -34,14 +33,9 @@ import { NearConfig } from 'config/near';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
 import {
   AccessKeyInfoView,
-  AccountView,
   FunctionCallPermissionView,
 } from 'near-api-js/lib/providers/provider';
 import { httpService } from 'services/HttpService';
-
-import { RpcService } from 'services/sputnik/SputnikNearService/walletServices/RpcService';
-import { PkAndSignature } from 'context/WalletContext/types';
-import { configService } from 'services/ConfigService';
 
 import { NEAR_WALLET_METADATA } from './constants';
 
@@ -62,8 +56,6 @@ export class SputnikWalletService implements WalletService {
 
   private accessKeys: AccessKeyInfoView[] = [];
 
-  private rpcService: RpcService;
-
   constructor(nearConfig: NearConfig) {
     const keyStore = new keyStores.BrowserLocalStorageKeyStore(
       window.localStorage
@@ -78,45 +70,6 @@ export class SputnikWalletService implements WalletService {
     });
 
     this.walletConnection = new SputnikWalletConnection(this.near, 'sputnik');
-
-    this.rpcService = new RpcService(
-      new providers.JsonRpcProvider(nearConfig.nodeUrl)
-    );
-  }
-
-  async getPkAndSignatureFromLocalKeyStore(): Promise<PkAndSignature | null> {
-    const accountId = await this.getAccountId();
-
-    const { nearConfig } = configService.get();
-
-    const keyPair = await this.keyStore.getKey(nearConfig.networkId, accountId);
-
-    const publicKey = keyPair.getPublicKey();
-
-    if (!publicKey) {
-      return null;
-    }
-
-    return {
-      publicKey: publicKey.toString(),
-      signature: await getSignature(keyPair),
-    };
-  }
-
-  getPkAndSignature(): Promise<PkAndSignature | null> {
-    return this.getPkAndSignatureFromLocalKeyStore();
-  }
-
-  viewAccount(accountId: string): Promise<AccountView> {
-    return this.rpcService.viewAccount(accountId);
-  }
-
-  contractCall<T>(
-    accountId: string,
-    methodName: string,
-    argsAsBase64: string
-  ): Promise<T> {
-    return this.rpcService.contractCall<T>(accountId, methodName, argsAsBase64);
   }
 
   getKeyStore(): KeyStore {
@@ -277,7 +230,7 @@ export class SputnikWalletService implements WalletService {
 
   public async sendTransactions(
     transactionsConf: Transaction[]
-  ): Promise<void> {
+  ): Promise<FinalExecutionOutcome[]> {
     const accountId = await this.getAccountId();
     const publicKey = await this.getPublicKey();
 
@@ -303,7 +256,7 @@ export class SputnikWalletService implements WalletService {
       )
     );
 
-    await account.sendTransactions(compact(trx));
+    return account.sendTransactions(compact(trx));
   }
 
   private async buildTransaction(
@@ -338,12 +291,15 @@ export class SputnikWalletService implements WalletService {
     return this.walletType;
   }
 
-  async sendMoney(receiverId: string, amount: number): Promise<void> {
+  async sendMoney(
+    receiverId: string,
+    amount: number
+  ): Promise<FinalExecutionOutcome[]> {
     const parsedNear = parseNearAmount(amount.toString());
 
     const nearAsBn = new BN(parsedNear ?? 0);
 
-    await this.sendTransactions([
+    return this.sendTransactions([
       { receiverId, actions: [transfer(nearAsBn)] },
     ]);
   }
