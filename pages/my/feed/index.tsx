@@ -16,7 +16,6 @@ import { MainLayout } from 'astro_3.0/features/MainLayout';
 import { getAppVersion, useAppVersion } from 'hooks/useAppVersion';
 import { ProposalsFeed } from 'astro_3.0/features/ProposalsFeed';
 import { Page } from 'pages/_app';
-import { AllTokensProvider } from 'context/AllTokensContext';
 
 import { getTranslations } from 'utils/getTranslations';
 import { useTranslation } from 'next-i18next';
@@ -32,15 +31,13 @@ const MyFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
       <Head>
         <title>My proposals feed</title>
       </Head>
-      <AllTokensProvider>
-        {appVersion === 3 ? (
-          <ProposalsFeed {...props} className={styles.root} />
-        ) : (
-          <MainLayout>
-            <Feed {...props} title={t('myProposalsFeed')} />
-          </MainLayout>
-        )}
-      </AllTokensProvider>
+      {appVersion === 3 ? (
+        <ProposalsFeed {...props} className={styles.root} />
+      ) : (
+        <MainLayout>
+          <Feed {...props} title={t('myProposalsFeed')} />
+        </MainLayout>
+      )}
     </>
   );
 };

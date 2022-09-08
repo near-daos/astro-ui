@@ -27,7 +27,6 @@ import { ApplyToDaos } from 'astro_2.0/features/pages/nestedDaoPagesContent/Cust
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { OptionsList } from 'astro_2.0/features/pages/cfcLibrary/components/OptionsList';
-import { AllTokensProvider } from 'context/AllTokensContext';
 
 import { copyToClipboard } from 'utils/copyToClipboard';
 
@@ -241,17 +240,15 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
             />
           </div>
           <div className={styles.card}>
-            <AllTokensProvider>
-              <CustomFcTemplateCard
-                config={data.config}
-                className={styles.card}
-                disabled
-                editable={false}
-                name={data.name}
-                isEnabled={false}
-                defaultExpanded
-              />
-            </AllTokensProvider>
+            <CustomFcTemplateCard
+              config={data.config}
+              className={styles.card}
+              disabled
+              editable={false}
+              name={data.name}
+              isEnabled={false}
+              defaultExpanded
+            />
           </div>
         </div>
       </div>

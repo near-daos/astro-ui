@@ -27,6 +27,7 @@ import { FeatureFlagsProvider } from 'astro_2.0/features/FeatureFlagsProvider/Fe
 import 'styles/globals.scss';
 import { useAppVersion } from 'hooks/useAppVersion';
 import { MobileAppNavigation } from 'astro_3.0/features/MobileAppNavigation';
+import { AllTokensProvider } from 'context/AllTokensContext';
 
 type GetLayout = (page: ReactNode) => ReactNode;
 
@@ -63,21 +64,23 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
       <AppMonitoring />
       <WrappedWalletContext>
         <FeatureFlagsProvider>
-          <ModalProvider>
-            <SocketProvider>
-              <SearchResults>
-                <Head>
-                  <title>Astro</title>
-                </Head>
-                <PageLayout>
-                  <ErrorBoundary>
-                    {getLayout(<Component {...pageProps} />)}
-                  </ErrorBoundary>
-                </PageLayout>
-                {appVersion === 3 ? <MobileAppNavigation /> : <MobileNav />}
-              </SearchResults>
-            </SocketProvider>
-          </ModalProvider>
+          <AllTokensProvider>
+            <ModalProvider>
+              <SocketProvider>
+                <SearchResults>
+                  <Head>
+                    <title>Astro</title>
+                  </Head>
+                  <PageLayout>
+                    <ErrorBoundary>
+                      {getLayout(<Component {...pageProps} />)}
+                    </ErrorBoundary>
+                  </PageLayout>
+                  {appVersion === 3 ? <MobileAppNavigation /> : <MobileNav />}
+                </SearchResults>
+              </SocketProvider>
+            </ModalProvider>
+          </AllTokensProvider>
         </FeatureFlagsProvider>
       </WrappedWalletContext>
     </>
