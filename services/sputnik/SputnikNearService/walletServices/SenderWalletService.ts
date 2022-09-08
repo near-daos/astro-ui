@@ -83,7 +83,9 @@ export class SenderWalletService implements WalletService {
     return Promise.resolve(this.walletInstance.accountId);
   }
 
-  async sendTransactions(transactions: Transaction[]): Promise<void> {
+  async sendTransactions(
+    transactions: Transaction[]
+  ): Promise<FinalExecutionOutcome[]> {
     const result = await this.walletInstance.requestSignTransactions({
       transactions,
     });
@@ -102,6 +104,8 @@ export class SenderWalletService implements WalletService {
     } catch (e) {
       console.error(e);
     }
+
+    return result.response;
   }
 
   async functionCall(
