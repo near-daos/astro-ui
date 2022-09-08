@@ -36,9 +36,8 @@ export const DraftComments: FC<DraftCommentsProps> = ({ className, dao }) => {
   return (
     <div className={cn(styles.root, className)}>
       <NewComment onSubmit={addComment} />
-      <Loader className={cn({ [styles.hidden]: !loading })} />
+      {loading && <Loader className={cn(styles.loader)} title="Updating..." />}
       <Comments
-        className={cn({ [styles.hidden]: loading })}
         data={data}
         countComments={countComments}
         onDislike={dislikeComment}

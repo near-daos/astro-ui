@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import uniqBy from 'lodash/uniqBy';
 import { useAsyncFn, useMount, useMountedState } from 'react-use';
 import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider';
 import { DraftComment } from 'services/DraftsService/types';
@@ -261,7 +262,7 @@ export function useDraftComments(): {
           if (isMounted()) {
             setValue(prev => {
               return {
-                data: [comment, ...prev.data],
+                data: uniqBy([comment, ...prev.data], item => item.id),
                 countComments: prev.countComments + 1,
               };
             });

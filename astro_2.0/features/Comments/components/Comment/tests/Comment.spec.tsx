@@ -109,8 +109,6 @@ describe('Comment', () => {
     fireEvent.click(getByText('Send'));
 
     expect(onReply).toBeCalled();
-
-    expect(getByText('reply message')).toBeInTheDocument();
   });
 
   it('Should call onEdit', () => {

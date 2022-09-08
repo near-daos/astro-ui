@@ -59,20 +59,22 @@ export const Comment: FC<CommentProps> = ({
   const isDislikedByMe = dislikeAccounts.includes(accountId);
 
   const handlerReply = useCallback(
-    msg => {
-      onReply(msg, id);
+    async msg => {
+      setHTML(msg);
 
-      setHTML('');
+      await onReply(msg, id);
+
       setShowReplies(true);
     },
     [id, onReply]
   );
 
   const handlerEdit = useCallback(
-    msg => {
-      onEdit(msg, id);
+    async msg => {
+      setContentHtml(msg);
 
-      setContentHtml('');
+      await onEdit(msg, id);
+
       setEdit(false);
     },
     [id, onEdit]
@@ -83,7 +85,10 @@ export const Comment: FC<CommentProps> = ({
       <CommentActions
         id={id}
         isEditable={isEditable}
-        onEdit={() => setEdit(!edit)}
+        onEdit={() => {
+          setContentHtml(message);
+          setEdit(!edit);
+        }}
         onDelete={onDelete}
       />
       {edit ? (
@@ -92,7 +97,10 @@ export const Comment: FC<CommentProps> = ({
           html={contentHtml}
           setHTML={setContentHtml}
           handleSend={handlerEdit}
-          handleCancel={() => setEdit(!edit)}
+          handleCancel={() => {
+            setContentHtml(message);
+            setEdit(!edit);
+          }}
           placeholder={t('drafts.comments.placeholder')}
         />
       ) : (
@@ -111,7 +119,10 @@ export const Comment: FC<CommentProps> = ({
               capitalize
               size="small"
               variant="tertiary"
-              onClick={() => setShowReplies(!showReplies)}
+              onClick={() => {
+                setHTML('');
+                setShowReplies(!showReplies);
+              }}
             >
               {replies?.length}{' '}
               {replies?.length === 1
@@ -169,7 +180,10 @@ export const Comment: FC<CommentProps> = ({
             html={html}
             setHTML={setHTML}
             handleSend={handlerReply}
-            handleCancel={() => setShowReplyInput(!showReplyInput)}
+            handleCancel={() => {
+              setHTML('');
+              setShowReplyInput(!showReplyInput);
+            }}
             placeholder={t('drafts.comments.replyPlaceholder')}
           />
         </div>
