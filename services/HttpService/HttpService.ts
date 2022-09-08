@@ -325,7 +325,7 @@ export class HttpService {
                 $eq: 'InProgress',
               },
               votePeriodEnd: {
-                $gt: Date.now() * 1000000,
+                $gt: 'now',
               },
             });
 
@@ -380,7 +380,7 @@ export class HttpService {
                 $eq: 'InProgress',
               },
               votePeriodEnd: {
-                $gt: Date.now() * 1000000,
+                $gt: 'now',
               },
             });
 
@@ -762,7 +762,7 @@ export class HttpService {
                   $eq: 'InProgress',
                 },
                 votePeriodEnd: {
-                  $gt: Date.now() * 1000000,
+                  $gt: 'now',
                 },
                 voteStatus: {
                   $eq: 'Active',
@@ -791,7 +791,7 @@ export class HttpService {
                       $ne: 'Approved',
                     },
                     votePeriodEnd: {
-                      $lt: Date.now() * 1000000,
+                      $lt: 'now',
                     },
                   },
                 ],
