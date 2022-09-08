@@ -1,30 +1,15 @@
 import { GetServerSideProps, NextPage } from 'next';
-import { useEffect } from 'react';
-
-import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 
 import { getTranslations } from 'utils/getTranslations';
 
+import {
+  useSelectorWalletTransactionResult,
+  useWalletTransactionResult,
+} from 'astro_3.0/features/TransactionResult/hooks';
+
 const Transaction: NextPage = () => {
-  useEffect(() => {
-    const callback = window.opener?.sputnikRequestSignTransactionCompleted;
-
-    if (typeof callback === 'function') {
-      const { searchParams } = new URL(window.location.toString());
-      const transactionHashes =
-        searchParams.get('transactionHashes') || undefined;
-      const errorCode = (searchParams.get('errorCode') ||
-        undefined) as SputnikWalletErrorCodes;
-
-      callback?.({ transactionHashes, errorCode });
-
-      setTimeout(() => {
-        window.close();
-      }, 1000);
-    } else {
-      window.close();
-    }
-  }, []);
+  useSelectorWalletTransactionResult();
+  useWalletTransactionResult();
 
   return null;
 };

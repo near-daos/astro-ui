@@ -147,13 +147,16 @@ export function useHideBounty(): {
   const router = useRouter();
   const showHidden = router.query?.bountyFilter === 'hidden';
   const daoId = router.query.dao as string;
-  const { accountId, nearService } = useWalletContext();
+  const { accountId, nearService, pkAndSignature } = useWalletContext();
   const [selected, setSelected] = useState<string[]>([]);
 
   const [{ loading }, handleSubmit] = useAsyncFn(async () => {
+    if (!pkAndSignature) {
+      return;
+    }
+
     try {
-      const publicKey = await nearService?.getPublicKey();
-      const signature = await nearService?.getSignature();
+      const { publicKey, signature } = pkAndSignature;
 
       if (publicKey && signature) {
         await SputnikHttpService.toggleBountyContexts({
@@ -178,7 +181,15 @@ export function useHideBounty(): {
         description: err.message,
       });
     }
-  }, [selected, daoId, showHidden, accountId, router, nearService]);
+  }, [
+    selected,
+    daoId,
+    showHidden,
+    accountId,
+    router,
+    nearService,
+    pkAndSignature,
+  ]);
 
   const handleSelect = useCallback(
     (id: string) => {

@@ -8,7 +8,6 @@ import cn from 'classnames';
 import { Input } from 'components/inputs/Input';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { getInputWidth } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent/helpers';
-import { CustomContract } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/types';
 import { useWalletContext } from 'context/WalletContext';
 
 import styles from './UpdateVotePolicyToWeightVoting.module.scss';
@@ -28,11 +27,7 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
     }
 
     try {
-      const contract = nearService.getContract(contractAddress, [
-        'ft_metadata',
-      ]) as CustomContract;
-
-      const meta = await contract.ft_metadata();
+      const meta = await nearService.getFtMetadata(contractAddress);
 
       setValue('decimals', meta.decimals);
       setValue('symbol', meta.symbol);

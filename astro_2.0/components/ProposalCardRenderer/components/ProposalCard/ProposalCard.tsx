@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback } from 'react';
-import { useAsyncFn } from 'react-use';
+import { useAsyncFn, useLocalStorage, useLocation } from 'react-use';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -43,6 +43,7 @@ import {
   DEFAULT_UPGRADE_DAO_VOTE_GAS,
   DEFAULT_VOTE_GAS,
 } from 'services/sputnik/constants';
+import { VOTE_ACTION_SOURCE_PAGE } from 'constants/votingConstants';
 import { getGasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCountdown } from 'hooks/useCountdown';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
@@ -51,10 +52,10 @@ import { DraftInfo } from 'astro_2.0/components/ProposalCardRenderer/components/
 import { DraftManagement } from 'astro_2.0/components/ProposalCardRenderer/components/DraftManagement';
 import { ProposalControlPanel } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/ProposalControlPanel';
 import { DAO } from 'types/dao';
+
 import { UserPermissions } from 'types/context';
 
 import { formatISODate } from 'utils/format';
-
 import styles from './ProposalCard.module.scss';
 
 export interface ProposalCardProps {
@@ -226,6 +227,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
   const router = useRouter();
+  const [, setVoteActionSource] = useLocalStorage(VOTE_ACTION_SOURCE_PAGE);
+  const { pathname } = useLocation();
 
   const isDraftClosed = draftState === 'closed';
 
@@ -236,6 +239,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction, gas?: string | number) => {
       try {
+        setVoteActionSource(pathname);
+
         const res = await nearService?.vote(daoId, proposalId, vote, gas);
 
         sendGAEvent({
@@ -273,7 +278,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         // });
       }
     },
-    [daoId, proposalId, router, nearService]
+    [daoId, proposalId, router, nearService, pathname]
   );
 
   const [{ loading: finalizeLoading }, finalizeClickHandler] =

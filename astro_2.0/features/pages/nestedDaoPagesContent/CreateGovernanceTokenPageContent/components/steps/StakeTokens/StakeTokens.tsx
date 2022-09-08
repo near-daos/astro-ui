@@ -11,8 +11,6 @@ import { useAsync } from 'react-use';
 import cn from 'classnames';
 import { formatValueToYokto, formatYoktoValue } from 'utils/format';
 
-import { CustomContract } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/types';
-
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 
 import { getInputWidth } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent/helpers';
@@ -47,14 +45,9 @@ export const StakeTokens: FC<Props> = ({
       return;
     }
 
-    const contract = nearService.getContract(contractAddress, [
-      'ft_balance_of',
-      'ft_metadata',
-    ]) as CustomContract;
-
     const [meta, balance] = await Promise.all([
-      contract.ft_metadata(),
-      contract.ft_balance_of({ account_id: accountId }),
+      nearService.getFtMetadata(contractAddress),
+      nearService.getFtBalance(contractAddress, accountId),
     ]);
 
     setTokenDetails({
