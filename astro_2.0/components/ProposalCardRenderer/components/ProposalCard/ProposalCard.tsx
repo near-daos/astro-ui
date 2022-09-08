@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import { useTranslation } from 'next-i18next';
 import { TFunction } from 'react-i18next';
 import Link from 'next/link';
+import Tooltip from 'react-tooltip';
 
 import {
   SINGLE_PROPOSAL_PAGE_URL,
@@ -502,7 +503,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           <>
             {renderProposer()}
             {renderDescription()}
+            <div className={styles.proposalGroupCell} />
             <div className={styles.contentCell}>{content}</div>
+            <Tooltip effect="solid" />
           </>
         );
       }
