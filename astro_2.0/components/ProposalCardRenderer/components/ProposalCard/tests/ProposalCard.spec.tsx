@@ -120,12 +120,6 @@ describe('Proposal Card', () => {
     );
   }
 
-  it('Should render component', () => {
-    const { container } = renderProposalCard();
-
-    expect(container).toMatchSnapshot();
-  });
-
   it('Should render "Finalize" button', () => {
     const { getAllByText } = renderProposalCard({
       voteStatus: 'Expired',

@@ -156,6 +156,7 @@
 
 .contentCell {
   grid-area: content;
+  overflow: hidden;
 }
 
 .proposalGroupCell {
