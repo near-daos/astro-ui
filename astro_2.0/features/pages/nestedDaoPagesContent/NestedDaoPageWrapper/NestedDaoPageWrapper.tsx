@@ -24,7 +24,6 @@ import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 
 import { DaoSettingsProvider } from 'context/DaoSettingsContext';
 import { DaoTokensProvider } from 'context/DaoTokensContext';
-import { AllTokensProvider } from 'context/AllTokensContext';
 
 import { MainLayout } from 'astro_3.0/features/MainLayout';
 
@@ -98,35 +97,33 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
 
   return (
     <DaoSettingsProvider>
-      <AllTokensProvider>
-        <DaoTokensProvider>
-          {header && header(onCreateProposal)}
-          <MainLayout>
-            <div className={cn(styles.root, className)}>
-              {renderBreadcrumbs()}
-              <DaoDetailsMinimized
-                dao={dao}
-                className={styles.dao}
-                userPermissions={userPermissions}
-                onCreateProposalClick={onCreateProposal}
-              />
-              <DaoCreateProposal
-                daoContext={daoContext}
-                defaultProposalType={defaultProposalType}
-                CreateProposal={CreateProposal}
-                toggleCreateProposal={toggleCreateProposal}
-              />
-              <CreateExternalProposal onCreateProposal={onCreateProposal} />
-              <DaoLowBalanceWarning />
-              <PolicyAffectedWarning
-                data={policyAffectsProposals}
-                className={styles.warningWrapper}
-              />
-              {renderChildren()}
-            </div>
-          </MainLayout>
-        </DaoTokensProvider>
-      </AllTokensProvider>
+      <DaoTokensProvider>
+        {header && header(onCreateProposal)}
+        <MainLayout>
+          <div className={cn(styles.root, className)}>
+            {renderBreadcrumbs()}
+            <DaoDetailsMinimized
+              dao={dao}
+              className={styles.dao}
+              userPermissions={userPermissions}
+              onCreateProposalClick={onCreateProposal}
+            />
+            <DaoCreateProposal
+              daoContext={daoContext}
+              defaultProposalType={defaultProposalType}
+              CreateProposal={CreateProposal}
+              toggleCreateProposal={toggleCreateProposal}
+            />
+            <CreateExternalProposal onCreateProposal={onCreateProposal} />
+            <DaoLowBalanceWarning />
+            <PolicyAffectedWarning
+              data={policyAffectsProposals}
+              className={styles.warningWrapper}
+            />
+            {renderChildren()}
+          </div>
+        </MainLayout>
+      </DaoTokensProvider>
     </DaoSettingsProvider>
   );
 };
