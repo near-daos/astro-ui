@@ -26,6 +26,7 @@ export enum TransactionResultType {
   PROPOSAL_CREATE = 'ProposalCreate',
   DAO_CREATE = 'DaoCreate',
   PROPOSAL_VOTE = 'ProposalVote',
+  BOUNTY_CLAIM = 'BountyClaim',
 }
 
 export type TransactionResult = {
