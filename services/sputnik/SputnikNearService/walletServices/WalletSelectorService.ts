@@ -223,7 +223,9 @@ export class WalletSelectorService implements WalletService {
     });
   }
 
-  async sendTransactions(transactions: Transaction[]): Promise<void> {
+  async sendTransactions(
+    transactions: Transaction[]
+  ): Promise<FinalExecutionOutcome[]> {
     const accountId = await this.getAccountId();
 
     const trx: SelectorTransaction[] = transactions.map(item => ({

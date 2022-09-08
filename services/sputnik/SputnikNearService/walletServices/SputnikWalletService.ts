@@ -277,7 +277,7 @@ export class SputnikWalletService implements WalletService {
 
   public async sendTransactions(
     transactionsConf: Transaction[]
-  ): Promise<void> {
+  ): Promise<FinalExecutionOutcome[]> {
     const accountId = await this.getAccountId();
     const publicKey = await this.getPublicKey();
 
@@ -303,7 +303,7 @@ export class SputnikWalletService implements WalletService {
       )
     );
 
-    await account.sendTransactions(compact(trx));
+    return account.sendTransactions(compact(trx));
   }
 
   private async buildTransaction(

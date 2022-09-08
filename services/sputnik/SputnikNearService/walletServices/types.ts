@@ -31,7 +31,9 @@ export interface WalletService {
   getAvailableAccounts(): Promise<string[]>;
   functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome[]>;
   getPkAndSignature(): Promise<PkAndSignature | null>;
-  sendTransactions(transactions: Transaction[]): Promise<void>;
+  sendTransactions(
+    transactions: Transaction[]
+  ): Promise<FinalExecutionOutcome[]>;
   walletMeta(): WalletMeta;
 }
 
