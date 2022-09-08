@@ -66,11 +66,8 @@ export function useProposalComments(
   const [, reportComment] = useAsyncFn(
     async params => {
       try {
-        if (!pkAndSignature) {
-          return;
-        }
-
-        const { publicKey, signature } = pkAndSignature;
+        const publicKey = await nearService?.getPublicKey();
+        const signature = await nearService?.getSignature();
 
         if (publicKey && signature && accountId) {
           await SputnikHttpService.reportProposalComment({
@@ -89,17 +86,14 @@ export function useProposalComments(
         });
       }
     },
-    [proposalId, nearService, pkAndSignature]
+    [proposalId, nearService]
   );
 
   const [, deleteComment] = useAsyncFn(
     async (commentId, reason) => {
       try {
-        if (!pkAndSignature) {
-          return;
-        }
-
-        const { publicKey, signature } = pkAndSignature;
+        const publicKey = await nearService?.getPublicKey();
+        const signature = await nearService?.getSignature();
 
         if (publicKey && signature && accountId) {
           await SputnikHttpService.deleteProposalComment(commentId, {
@@ -117,7 +111,7 @@ export function useProposalComments(
         });
       }
     },
-    [proposalId, nearService, pkAndSignature]
+    [proposalId, nearService]
   );
 
   useEffect(() => {

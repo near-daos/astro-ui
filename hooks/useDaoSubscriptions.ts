@@ -27,7 +27,7 @@ export function useDaoSubscriptions(): {
   handleUnfollow: (id: string) => void;
   isLoading: boolean;
 } {
-  const { accountId, nearService, pkAndSignature } = useWalletContext();
+  const { accountId, nearService } = useWalletContext();
   const [subscriptions, setSubscriptions] = useState<Record<
     string,
     { subscriptionId: string; dao: DAO }
@@ -53,11 +53,8 @@ export function useDaoSubscriptions(): {
 
   const [{ loading }, handleFollow] = useAsyncFn(
     async daoId => {
-      if (!pkAndSignature) {
-        return;
-      }
-
-      const { publicKey, signature } = pkAndSignature;
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
       if (publicKey && signature && accountId) {
         const result = await SputnikHttpService.updateAccountSubscription({
@@ -72,16 +69,13 @@ export function useDaoSubscriptions(): {
         }
       }
     },
-    [nearService, pkAndSignature]
+    [nearService]
   );
 
   const [{ loading: loadingUnfollow }, handleUnfollow] = useAsyncFn(
     async subscriptionId => {
-      if (!pkAndSignature) {
-        return;
-      }
-
-      const { publicKey, signature } = pkAndSignature;
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
       if (publicKey && signature && accountId) {
         await SputnikHttpService.deleteAccountSubscription(subscriptionId, {
@@ -93,7 +87,7 @@ export function useDaoSubscriptions(): {
         await getSubscriptions();
       }
     },
-    [accountId, getSubscriptions, nearService, pkAndSignature]
+    [accountId, getSubscriptions, nearService]
   );
 
   useEffect(() => {

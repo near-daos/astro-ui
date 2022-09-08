@@ -104,18 +104,11 @@ export class GovernanceTokenService extends BaseService {
     const { GENERIC_FACTORY_CONTRACT_NAME, STAKING_CONTRACT_BINARY_HASH } =
       this.appConfig;
 
-    const pkAndSignature = await this.walletService.getPkAndSignature();
-    const accountId = await this.walletService.getAccountId();
+    const currentAccountPublicKey = await this.walletService.getPublicKey();
 
-    if (!pkAndSignature) {
-      console.error('no public key found for account', accountId);
+    if (!currentAccountPublicKey) {
+      const accountId = await this.walletService.getAccountId();
 
-      return [];
-    }
-
-    const { publicKey } = pkAndSignature;
-
-    if (!publicKey) {
       console.error('no public key found for account', accountId);
 
       return [];
@@ -132,7 +125,7 @@ export class GovernanceTokenService extends BaseService {
     const encodedFactoryContractArgs = jsonToBase64Str({
       name: stakingContractName,
       hash: STAKING_CONTRACT_BINARY_HASH,
-      access_keys: [publicKey],
+      access_keys: [currentAccountPublicKey],
       method_name: 'new',
       args: encodedStakingContractArgs,
     });
@@ -315,7 +308,7 @@ export class GovernanceTokenService extends BaseService {
     tokenContract,
     stakingContract,
     amount,
-  }: StakeTokensParams): Promise<FinalExecutionOutcome[] | void> {
+  }: StakeTokensParams): Promise<FinalExecutionOutcome[]> {
     const isSignedIn = await this.walletService.isSignedIn();
 
     if (!isSignedIn) {
@@ -435,7 +428,7 @@ export class GovernanceTokenService extends BaseService {
     tokenContract,
     stakingContract,
     amount,
-  }: StakeTokensParams): Promise<FinalExecutionOutcome[] | void> {
+  }: StakeTokensParams): Promise<FinalExecutionOutcome[]> {
     const isSignedIn = await this.walletService.isSignedIn();
 
     if (!isSignedIn) {
@@ -569,7 +562,7 @@ export class GovernanceTokenService extends BaseService {
   async delegateVoting(
     stakingContract: string,
     params: DelegateVotingParams[]
-  ): Promise<FinalExecutionOutcome[] | void> {
+  ): Promise<FinalExecutionOutcome[]> {
     const isSignedIn = await this.walletService.isSignedIn();
 
     if (!isSignedIn) {
@@ -586,7 +579,7 @@ export class GovernanceTokenService extends BaseService {
   async undelegateVoting(
     stakingContract: string,
     params: DelegateVotingParams[]
-  ): Promise<FinalExecutionOutcome[] | void> {
+  ): Promise<FinalExecutionOutcome[]> {
     const isSignedIn = await this.walletService.isSignedIn();
 
     if (!isSignedIn) {

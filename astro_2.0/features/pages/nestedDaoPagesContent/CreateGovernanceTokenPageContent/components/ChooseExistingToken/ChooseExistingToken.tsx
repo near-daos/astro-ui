@@ -21,6 +21,7 @@ import {
   ProgressStatus,
 } from 'types/settings';
 
+import { CustomContract } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
 import { SputnikNearService } from 'services/sputnik';
 
 import { useWalletContext } from 'context/WalletContext';
@@ -55,7 +56,11 @@ async function validateTokenAccount(
   try {
     const contractAddress = value.trim();
 
-    const meta = await nearService.getFtMetadata(contractAddress);
+    const contract = nearService.getContract(contractAddress, [
+      'ft_metadata',
+    ]) as CustomContract;
+
+    const meta = await contract.ft_metadata();
 
     return !!meta;
   } catch (e) {
@@ -84,7 +89,12 @@ export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
             'tokenExists',
             'You should use a valid token address',
             async address => {
-              return validateTokenAccount(address, nearService || undefined);
+              const exists = await validateTokenAccount(
+                address,
+                nearService || undefined
+              );
+
+              return exists;
             }
           ),
       })
