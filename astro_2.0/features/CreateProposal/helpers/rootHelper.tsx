@@ -975,18 +975,21 @@ export function getValidationSchema(
         balance: yup
           .number()
           .typeError(t('validation.mustBeAValidNumber'))
+          .integer()
           .positive()
           .min(1)
           .required(t('validation.required')),
         threshold: yup
           .number()
           .typeError(t('validation.mustBeAValidNumber'))
+          .integer()
           .positive()
           .min(1)
           .required(t('validation.required')),
         quorum: yup
           .number()
           .typeError(t('validation.mustBeAValidNumber'))
+          .integer()
           .min(0)
           .required(t('validation.required')),
       });

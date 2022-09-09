@@ -54,6 +54,9 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
             <Input
               className={cn(styles.inputWrapper, styles.detailsInput)}
               placeholder="1"
+              type="number"
+              min={1}
+              step={1}
               isBorderless
               size="auto"
               inputStyles={{
@@ -83,6 +86,9 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
               className={cn(styles.inputWrapper, styles.detailsInput)}
               placeholder="0"
               isBorderless
+              type="number"
+              min={1}
+              step={1}
               size="auto"
               inputStyles={{
                 padding: '10.5px 0',
@@ -109,6 +115,9 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
             <Input
               className={cn(styles.inputWrapper, styles.detailsInput)}
               placeholder="0"
+              type="number"
+              min={0}
+              step={1}
               isBorderless
               size="auto"
               inputStyles={{
