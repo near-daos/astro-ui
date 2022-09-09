@@ -63,7 +63,7 @@ export const DelegateVoting: FC<Props> = ({
     mode: 'onChange',
     defaultValues: {
       accounts: dao.groups
-        .filter(group => group.slug === 'council')
+        .filter(group => group.slug?.toLowerCase() === 'council')
         .reduce<AccountAmountDetails[]>((res, group) => {
           const members = group.members.map(member => ({
             name: member,

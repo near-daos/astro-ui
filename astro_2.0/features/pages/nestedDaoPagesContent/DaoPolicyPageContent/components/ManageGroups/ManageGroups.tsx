@@ -290,6 +290,7 @@ export const ManageGroups: React.FC<Props> = ({
 
         {activeGroup && (
           <EditGroup
+            groupsNames={groups.map(group => group.name.toLowerCase())}
             group={activeGroup}
             onChange={handleUpdateGroup}
             onReset={handleResetGroupUpdates}
