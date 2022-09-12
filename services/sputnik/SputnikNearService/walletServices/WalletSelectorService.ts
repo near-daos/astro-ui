@@ -177,6 +177,10 @@ export class WalletSelectorService implements WalletService {
 
     const keyPair = await keyStore.getKey(nearConfig.networkId, accountId);
 
+    if (!keyPair) {
+      return null;
+    }
+
     const publicKey = keyPair.getPublicKey();
 
     if (!publicKey) {
