@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAsyncFn } from 'react-use';
+import { useAsyncFn, useLocalStorage, useLocation } from 'react-use';
 import axios, { CancelTokenSource } from 'axios';
 
 import { SputnikHttpService } from 'services/sputnik';
@@ -14,6 +14,7 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import { useWalletContext } from 'context/WalletContext';
 import { PaginationResponse } from 'types/api';
+import { VOTE_ACTION_SOURCE_PAGE } from 'constants/votingConstants';
 
 export function useBountyControls(
   daoId: string,
@@ -24,6 +25,8 @@ export function useBountyControls(
 } {
   const router = useRouter();
   const { nearService } = useWalletContext();
+  const [, setVoteActionSource] = useLocalStorage(VOTE_ACTION_SOURCE_PAGE);
+  const { pathname } = useLocation();
 
   const [showModal] = useModal(ConfirmActionModal);
 
@@ -43,6 +46,8 @@ export function useBountyControls(
         return;
       }
 
+      setVoteActionSource(pathname);
+
       await nearService?.claimBounty(daoId, {
         bountyId: bounty?.bountyId,
         deadline: bounty?.maxDeadline,
@@ -53,7 +58,15 @@ export function useBountyControls(
 
       onSuccessHandler();
     }
-  }, [showModal, bounty, daoId, onSuccessHandler, nearService]);
+  }, [
+    showModal,
+    bounty,
+    daoId,
+    setVoteActionSource,
+    pathname,
+    nearService,
+    onSuccessHandler,
+  ]);
 
   const handleUnclaim = useCallback(async () => {
     const res = await showModal({
@@ -61,10 +74,19 @@ export function useBountyControls(
     });
 
     if (res?.length && bounty) {
+      setVoteActionSource(pathname);
       await nearService?.unclaimBounty(daoId, bounty?.bountyId);
       onSuccessHandler();
     }
-  }, [bounty, daoId, onSuccessHandler, showModal, nearService]);
+  }, [
+    showModal,
+    bounty,
+    setVoteActionSource,
+    pathname,
+    nearService,
+    daoId,
+    onSuccessHandler,
+  ]);
 
   return {
     handleClaim,
@@ -82,6 +104,8 @@ export function useBountyVoting(
   const router = useRouter();
   const [showModal] = useModal(ConfirmActionModal);
   const { nearService } = useWalletContext();
+  const [, setVoteActionSource] = useLocalStorage(VOTE_ACTION_SOURCE_PAGE);
+  const { pathname } = useLocation();
 
   const [{ loading }, handleVote] = useAsyncFn(
     async (vote: VoteAction) => {
@@ -90,11 +114,12 @@ export function useBountyVoting(
       });
 
       if (res?.length) {
+        setVoteActionSource(pathname);
         await nearService?.vote(daoId, proposal.proposalId, vote, res[0]);
         await router.reload();
       }
     },
-    [daoId, proposal, router, nearService]
+    [daoId, proposal, router, nearService, pathname, setVoteActionSource]
   );
 
   return {

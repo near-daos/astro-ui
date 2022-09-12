@@ -7,6 +7,8 @@ import { WalletType } from 'types/config';
 
 import {
   MY_DAOS_URL,
+  MY_FEED_URL,
+  SINGLE_BOUNTY_PAGE_URL,
   SINGLE_DAO_PAGE,
   SINGLE_PROPOSAL_PAGE_URL,
 } from 'constants/routing';
@@ -76,17 +78,49 @@ export function useSelectorWalletTransactionResult(): void {
           }
           case TransactionResultType.PROPOSAL_VOTE: {
             if (voteActionSource) {
-              const redirectUrl = voteActionSource as string;
+              router.push(voteActionSource as string);
 
               setVoteActionSource(null);
+            } else {
+              router.push({
+                pathname: SINGLE_PROPOSAL_PAGE_URL,
+                query: {
+                  dao: result.metadata.daoId,
+                  proposal: result.metadata.proposalId,
+                },
+              });
+            }
 
-              router.push(redirectUrl);
+            break;
+          }
+          case TransactionResultType.BOUNTY_CLAIM: {
+            if (voteActionSource) {
+              router.push(voteActionSource as string);
+
+              setVoteActionSource(null);
+            } else {
+              router.push({
+                pathname: SINGLE_BOUNTY_PAGE_URL,
+                query: {
+                  dao: result.metadata.daoId,
+                  bountyContext: result.metadata.bountyContextId,
+                },
+              });
             }
 
             break;
           }
           default: {
-            router.push(MY_DAOS_URL);
+            if (result.metadata.daoId) {
+              router.push({
+                pathname: SINGLE_DAO_PAGE,
+                query: {
+                  dao: result.metadata.daoId,
+                },
+              });
+            } else {
+              router.push(MY_FEED_URL);
+            }
 
             break;
           }
@@ -94,7 +128,7 @@ export function useSelectorWalletTransactionResult(): void {
       }
     } catch (e) {
       console.error(e);
-      router.push(MY_DAOS_URL);
+      router.push(MY_FEED_URL);
     }
   }, [currentWallet, router, setVoteActionSource, voteActionSource]);
 }
