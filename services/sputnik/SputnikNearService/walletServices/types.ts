@@ -62,6 +62,13 @@ export type FinalExecutionError = {
   };
 };
 
+export type SenderWalletExtensionResult = {
+  actionType: string;
+  error: string;
+  notificationId: number;
+  type: string;
+};
+
 export type SenderWalletTransactionResult = {
   actionType: string;
   method: string;
@@ -92,7 +99,7 @@ export type SenderWalletInstance = {
   }) => Promise<SenderWalletTransactionResult>;
   requestSignTransactions: (transactions: {
     transactions: Transaction[];
-  }) => Promise<SenderWalletTransactionResult>;
+  }) => Promise<SenderWalletTransactionResult | SenderWalletExtensionResult>;
   signOut: () => void;
   authData: {
     accountId: string;

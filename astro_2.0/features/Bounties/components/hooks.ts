@@ -46,17 +46,25 @@ export function useBountyControls(
         return;
       }
 
-      setVoteActionSource(pathname);
+      try {
+        setVoteActionSource(pathname);
 
-      await nearService?.claimBounty(daoId, {
-        bountyId: bounty?.bountyId,
-        deadline: bounty?.maxDeadline,
-        bountyBond: dao.policy.bountyBond,
-        gas: res[0],
-        tokenId: bounty?.token,
-      });
+        await nearService?.claimBounty(daoId, {
+          bountyId: bounty?.bountyId,
+          deadline: bounty?.maxDeadline,
+          bountyBond: dao.policy.bountyBond,
+          gas: res[0],
+          tokenId: bounty?.token,
+        });
 
-      onSuccessHandler();
+        onSuccessHandler();
+      } catch (err) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          lifetime: 5000,
+          description: err.message,
+        });
+      }
     }
   }, [
     showModal,
@@ -74,9 +82,18 @@ export function useBountyControls(
     });
 
     if (res?.length && bounty) {
-      setVoteActionSource(pathname);
-      await nearService?.unclaimBounty(daoId, bounty?.bountyId);
-      onSuccessHandler();
+      try {
+        setVoteActionSource(pathname);
+        await nearService?.unclaimBounty(daoId, bounty?.bountyId);
+
+        onSuccessHandler();
+      } catch (err) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          lifetime: 5000,
+          description: err.message,
+        });
+      }
     }
   }, [
     showModal,

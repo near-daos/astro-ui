@@ -29,7 +29,7 @@ import { AccountView } from 'near-api-js/lib/providers/provider';
 import { RpcService } from 'services/sputnik/SputnikNearService/walletServices/RpcService';
 import { KeyStore } from 'near-api-js/lib/key_stores';
 import { Transaction, WalletMeta, WalletService } from './types';
-import { getSignature } from './helpers';
+import { getSignature, isFinalExecutionOutcomeResponse } from './helpers';
 
 export class WalletSelectorService implements WalletService {
   private wallet: Wallet;
@@ -234,11 +234,24 @@ export class WalletSelectorService implements WalletService {
       actions: item.actions.map(action => action as FunctionCallAction),
     }));
 
-    return new Promise(() => {
-      this.wallet.signAndSendTransactions({
-        callbackUrl: `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
-        transactions: trx,
-      });
+    return new Promise((resolve, reject) => {
+      this.wallet
+        .signAndSendTransactions({
+          callbackUrl: `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
+          transactions: trx,
+        })
+        .then(resp => {
+          if (isFinalExecutionOutcomeResponse(resp)) {
+            resolve(resp);
+
+            return;
+          }
+
+          resolve([]);
+        })
+        .catch(err => {
+          reject(err);
+        });
     });
   }
 
