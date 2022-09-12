@@ -611,6 +611,7 @@ export function getValidationSchema(
               .required(t('validation.canNotBeEmpty')),
           })
         ),
+        gas: getGasValidation(t),
       });
       break;
     }
@@ -845,6 +846,7 @@ export function getValidationSchema(
             targetDao: yup.string().required(gerErr('targetDao')),
             proposal: yup.string().required(gerErr('proposal')),
             vote: yup.string().required(gerErr('vote')),
+            gas: getGasValidation(t),
           });
           break;
         }
@@ -936,6 +938,7 @@ export function getValidationSchema(
             }),
             details: yup.string().required(t('validation.required')),
             externalUrl: yup.string().url(),
+            gas: getGasValidation(t),
           });
           break;
         }
@@ -1029,6 +1032,7 @@ export function getValidationSchema(
           .integer()
           .min(0)
           .required(t('validation.required')),
+        gas: getGasValidation(t),
       });
       break;
     }

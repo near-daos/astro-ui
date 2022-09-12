@@ -209,7 +209,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
           </div>
         )}
         <div className={styles.time}>
-          {formatISODate(createdAt, 'h:mm aaa')}
+          {createdAt ? formatISODate(createdAt, 'h:mm aaa') : ''}
         </div>
         <div className={styles.control}>{renderControls()}</div>
       </div>
