@@ -21,17 +21,11 @@ type Group = { group: string; slug?: string };
 
 type Form = { groups: Group[] };
 
-yup.addMethod(
-  yup.array,
-  'unique',
-  function validate(message, mapper = (val: unknown) => val) {
-    return this.test(
-      'unique',
-      message,
-      (list = []) => list.length === new Set(list.map(mapper)).size
-    );
-  }
-);
+yup.addMethod(yup.array, 'unique', function validate(message, mapper) {
+  return this.test('unique', message, (list = []) => {
+    return list.length === new Set(list.map(mapper)).size;
+  });
+});
 
 export const DaoGroupsForm: VFC = () => {
   const { t } = useTranslation();
@@ -72,7 +66,7 @@ export const DaoGroupsForm: VFC = () => {
           )
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          .unique('Group name must be unique', val => val?.group),
+          .unique('Group name must be unique', val => val?.group.toLowerCase()),
       })
     ),
   });
@@ -107,7 +101,7 @@ export const DaoGroupsForm: VFC = () => {
   };
 
   const checkUniqError = (): boolean => {
-    const list = getValues('groups').map(field => field.group);
+    const list = getValues('groups').map(field => field.group.toLowerCase());
 
     return list.length !== new Set(list).size;
   };

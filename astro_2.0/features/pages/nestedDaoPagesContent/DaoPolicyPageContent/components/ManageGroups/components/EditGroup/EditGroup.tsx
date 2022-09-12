@@ -33,6 +33,7 @@ type Props = {
   onChange: (group: TLocalGroup) => void;
   onReset: () => void;
   onDelete: () => void;
+  groupsNames: string[];
 };
 
 type TLocalGroup = Omit<TGroup, 'votePolicy'> & {
@@ -52,6 +53,7 @@ export const EditGroup: React.FC<Props> = ({
   onChange,
   onReset,
   onDelete,
+  groupsNames,
 }) => {
   const { t } = useTranslation();
   const { nearService } = useWalletContext();
@@ -122,7 +124,10 @@ export const EditGroup: React.FC<Props> = ({
 
     onChange({
       ...group,
-      name: newGroupName,
+      name:
+        newGroupName.trim().toLowerCase() === 'council'
+          ? 'council'
+          : newGroupName.trim(),
     });
   };
 
@@ -203,7 +208,8 @@ export const EditGroup: React.FC<Props> = ({
 
             <Button
               variant="transparent"
-              className={styles.headerEditViewSubmit}
+              className={cn(styles.headerEditViewSubmit)}
+              disabled={groupsNames.includes(newGroupName.trim().toLowerCase())}
               onClick={handleNewGroupName}
             >
               <Icon name="check" />

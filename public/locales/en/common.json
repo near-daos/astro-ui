@@ -742,6 +742,7 @@
     "required": "Required",
     "onlyFiveOptDecimals": "Only numbers with five optional decimal place please.",
     "onlyValidNearAccounts": "Only valid near accounts are allowed.",
+    "groupAlreadyExists": "Group already exists",
     "validUrl": "Must be a valid URL",
     "canNotBeEmpty": "Cannot be empty",
     "daoCanNotBeSpecifiedInThisField": "Current DAO can not be specified in this field",

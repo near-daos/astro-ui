@@ -136,7 +136,7 @@ export function getChangePolicyProposal(
         roles: [
           ...policy.roles.map(dataRoleToContractRole),
           {
-            name: group,
+            name: group.toLowerCase() === 'council' ? 'council' : group,
             kind: {
               Group: members,
             },
