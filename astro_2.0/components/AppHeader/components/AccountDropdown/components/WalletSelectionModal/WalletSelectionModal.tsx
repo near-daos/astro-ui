@@ -52,14 +52,14 @@ export const WalletSelectionModal: React.FC<WalletSelectionModal> = ({
       {useWalletSelector && (
         <>
           <WalletButton
-            walletType={WalletType.NEAR}
+            walletType={WalletType.SELECTOR_NEAR}
             onClick={() => {
               signIn(WalletType.SELECTOR_NEAR);
               onClose();
             }}
             name="Selector NEAR"
             type={t('header.wallets.near.type')}
-            url="wallet.near.org"
+            url="mynearwallet.com"
             className={styles.wallet}
           />
           <WalletButton
