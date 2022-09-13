@@ -1,6 +1,11 @@
 import { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAsyncFn, useLocalStorage, useLocation } from 'react-use';
+import {
+  useAsyncFn,
+  useLocalStorage,
+  useLocation,
+  useMountedState,
+} from 'react-use';
 import axios, { CancelTokenSource } from 'axios';
 
 import { SputnikHttpService } from 'services/sputnik';
@@ -22,17 +27,24 @@ export function useBountyControls(
 ): {
   handleClaim: () => void;
   handleUnclaim: () => void;
+  loading: boolean;
 } {
   const router = useRouter();
+  const isMounted = useMountedState();
   const { nearService } = useWalletContext();
   const [, setVoteActionSource] = useLocalStorage(VOTE_ACTION_SOURCE_PAGE);
   const { pathname } = useLocation();
+  const [loading, setLoading] = useState(false);
 
   const [showModal] = useModal(ConfirmActionModal);
 
   const onSuccessHandler = useCallback(async () => {
-    await router.reload();
-  }, [router]);
+    setTimeout(() => {
+      if (isMounted()) {
+        router.reload();
+      }
+    }, 2000);
+  }, [isMounted, router]);
 
   const handleClaim = useCallback(async () => {
     const res = await showModal({
@@ -40,6 +52,8 @@ export function useBountyControls(
     });
 
     if (res?.length && bounty) {
+      setLoading(true);
+
       const dao = await SputnikHttpService.getDaoById(daoId);
 
       if (!dao) {
@@ -57,8 +71,9 @@ export function useBountyControls(
           tokenId: bounty?.token,
         });
 
-        onSuccessHandler();
+        await onSuccessHandler();
       } catch (err) {
+        setLoading(false);
         showNotification({
           type: NOTIFICATION_TYPES.ERROR,
           lifetime: 5000,
@@ -83,11 +98,13 @@ export function useBountyControls(
 
     if (res?.length && bounty) {
       try {
+        setLoading(true);
         setVoteActionSource(pathname);
         await nearService?.unclaimBounty(daoId, bounty?.bountyId);
 
-        onSuccessHandler();
+        await onSuccessHandler();
       } catch (err) {
+        setLoading(false);
         showNotification({
           type: NOTIFICATION_TYPES.ERROR,
           lifetime: 5000,
@@ -108,6 +125,7 @@ export function useBountyControls(
   return {
     handleClaim,
     handleUnclaim,
+    loading,
   };
 }
 

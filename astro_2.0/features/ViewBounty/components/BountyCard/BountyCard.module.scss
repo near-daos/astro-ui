@@ -42,6 +42,18 @@
   }
 }
 
+.signingTransactionState {
+  @extend %title3;
+  @include centralize;
+  backdrop-filter: blur(3px);
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 5;
+}
+
 .controlValue {
   @extend %title3;
   font-size: 12px;

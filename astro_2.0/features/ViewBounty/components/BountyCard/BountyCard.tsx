@@ -2,6 +2,7 @@ import React, { ReactNode, useCallback } from 'react';
 import cn from 'classnames';
 import { useRouter } from 'next/router';
 import { formatDistance, parseISO } from 'date-fns';
+import { useTranslation } from 'next-i18next';
 
 import { Bounty, BountyProposal } from 'types/bounties';
 
@@ -16,6 +17,7 @@ import { Button } from 'components/button/Button';
 import { VotingContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/VotingContent';
 import { BountyActions } from 'astro_2.0/features/ViewBounty/components/BountyActions';
 import { Icon } from 'components/Icon';
+import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 
 import { useBountyControls } from 'astro_2.0/features/Bounties/components/hooks';
 import { useWalletContext } from 'context/WalletContext';
@@ -56,6 +58,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   completeHandler,
 }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { accountId } = useWalletContext();
   const canNavigateToBounty = !router.query.bounty;
 
@@ -67,7 +70,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   };
   const bountyData = kind.bounty;
 
-  const { handleUnclaim, handleClaim } = useBountyControls(daoId, bounty);
+  const { handleUnclaim, handleClaim, loading } = useBountyControls(
+    daoId,
+    bounty
+  );
 
   const handleCardClick = useCallback(() => {
     if (canNavigateToBounty) {
@@ -204,6 +210,12 @@ export const BountyCard: React.FC<BountyCardProps> = ({
       })}
       onClick={handleCardClick}
     >
+      {loading && (
+        <div className={styles.signingTransactionState}>
+          <LoadingIndicator />
+          {t('proposalCard.signingTransaction')}
+        </div>
+      )}
       <div className={styles.proposalCell}>
         <InfoBlockWidget
           valueFontSize="L"
