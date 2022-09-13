@@ -1,6 +1,10 @@
 import { KeyPair } from 'near-api-js';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
-import { FinalExecutionError } from 'services/sputnik/SputnikNearService/walletServices/types';
+import {
+  FinalExecutionError,
+  SenderWalletExtensionResult,
+  SenderWalletTransactionResult,
+} from 'services/sputnik/SputnikNearService/walletServices/types';
 
 export const getSignature = async (
   keyPair: KeyPair
@@ -22,6 +26,20 @@ export const getSignature = async (
 
   return signatureBase64;
 };
+
+export function isFinalExecutionOutcomeResponse(
+  _params: FinalExecutionOutcome[] | void
+): _params is FinalExecutionOutcome[] {
+  const resp = _params as FinalExecutionOutcome[];
+
+  return resp?.length > 0 && !!resp[0]?.transaction;
+}
+
+export function isExtensionError(
+  _params: SenderWalletTransactionResult | SenderWalletExtensionResult
+): _params is SenderWalletExtensionResult {
+  return (_params as SenderWalletExtensionResult)?.error !== undefined;
+}
 
 export function isError(
   _params: FinalExecutionOutcome[] | FinalExecutionError

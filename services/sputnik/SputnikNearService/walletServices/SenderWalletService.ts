@@ -3,6 +3,7 @@ import { FunctionCallOptions } from 'near-api-js/lib/account';
 import {
   getSignature,
   isError,
+  isExtensionError,
 } from 'services/sputnik/SputnikNearService/walletServices/helpers';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import {
@@ -90,6 +91,10 @@ export class SenderWalletService implements WalletService {
       transactions,
     });
 
+    if (isExtensionError(result)) {
+      throw new Error(result.error);
+    }
+
     if (isError(result.response)) {
       throw new Error(result.response.error.kind.ExecutionError);
     }
@@ -125,6 +130,10 @@ export class SenderWalletService implements WalletService {
       ],
     };
     const result = await this.walletInstance.signAndSendTransaction(tx);
+
+    if (isExtensionError(result)) {
+      throw new Error(result.error);
+    }
 
     if (isError(result.response)) {
       throw new Error(result.response.error.kind.ExecutionError);

@@ -207,7 +207,7 @@ export class NearService extends BaseService {
             id,
             deadline,
           },
-          gas,
+          gas: (gas ? formatGasValue(gas) : GAS_VALUE).toString(),
           deposit: bountyBond,
         });
 
