@@ -1,11 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import {
-  useAsyncFn,
-  useLocalStorage,
-  useLocation,
-  useMountedState,
-} from 'react-use';
+import { useAsyncFn, useLocalStorage, useLocation } from 'react-use';
 import axios, { CancelTokenSource } from 'axios';
 
 import { SputnikHttpService } from 'services/sputnik';
@@ -30,7 +25,6 @@ export function useBountyControls(
   loading: boolean;
 } {
   const router = useRouter();
-  const isMounted = useMountedState();
   const { nearService } = useWalletContext();
   const [, setVoteActionSource] = useLocalStorage(VOTE_ACTION_SOURCE_PAGE);
   const { pathname } = useLocation();
@@ -39,12 +33,8 @@ export function useBountyControls(
   const [showModal] = useModal(ConfirmActionModal);
 
   const onSuccessHandler = useCallback(async () => {
-    setTimeout(() => {
-      if (isMounted()) {
-        router.reload();
-      }
-    }, 2000);
-  }, [isMounted, router]);
+    router.reload();
+  }, [router]);
 
   const handleClaim = useCallback(async () => {
     const res = await showModal({

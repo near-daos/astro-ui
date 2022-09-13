@@ -10,8 +10,8 @@ import { BrowserWallet, WalletSelector } from '@near-wallet-selector/core';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { Wallet } from '@near-wallet-selector/core/lib/wallet/wallet.types';
 import {
-  Transaction as SelectorTransaction,
   FunctionCallAction,
+  Transaction as SelectorTransaction,
 } from '@near-wallet-selector/core/lib/wallet';
 
 import { WalletType } from 'types/config';
@@ -29,7 +29,12 @@ import { AccountView } from 'near-api-js/lib/providers/provider';
 import { RpcService } from 'services/sputnik/SputnikNearService/walletServices/RpcService';
 import { KeyStore } from 'near-api-js/lib/key_stores';
 import { Transaction, WalletMeta, WalletService } from './types';
-import { getSignature, isFinalExecutionOutcomeResponse } from './helpers';
+import {
+  getSignature,
+  isFinalExecutionOutcome,
+  isFinalExecutionOutcomeResponse,
+  triggerTransactionCallback,
+} from './helpers';
 
 export class WalletSelectorService implements WalletService {
   private wallet: Wallet;
@@ -151,6 +156,14 @@ export class WalletSelectorService implements WalletService {
       ],
     });
 
+    // In case of Selector sender wallet we have to manually notify BE about transaction results
+    if (
+      this.walletInfo.id === WalletType.SELECTOR_SENDER &&
+      isFinalExecutionOutcome(res)
+    ) {
+      await triggerTransactionCallback(res);
+    }
+
     return [res as FinalExecutionOutcome];
   }
 
@@ -244,14 +257,13 @@ export class WalletSelectorService implements WalletService {
           callbackUrl: `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
           transactions: trx,
         })
-        .then(resp => {
+        .then(async resp => {
+          // In case of Selector sender wallet we have to manually notify BE about transaction results
           if (isFinalExecutionOutcomeResponse(resp)) {
+            await triggerTransactionCallback(resp[0]);
+
             resolve(resp);
-
-            return;
           }
-
-          resolve([]);
         })
         .catch(err => {
           reject(err);
