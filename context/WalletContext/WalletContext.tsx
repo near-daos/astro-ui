@@ -87,11 +87,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
       setConnectingToWallet(true);
 
       try {
-        const isSignedIn = await wallet.isSignedIn();
-
-        if (!isSignedIn) {
-          await wallet.signIn(contractName);
-        }
+        await wallet.signIn(contractName);
 
         setWallet(wallet);
 

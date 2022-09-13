@@ -5,6 +5,7 @@ import {
   SenderWalletExtensionResult,
   SenderWalletTransactionResult,
 } from 'services/sputnik/SputnikNearService/walletServices/types';
+import { httpService } from 'services/HttpService';
 
 export const getSignature = async (
   keyPair: KeyPair
@@ -27,12 +28,29 @@ export const getSignature = async (
   return signatureBase64;
 };
 
+export async function triggerTransactionCallback(
+  resp: FinalExecutionOutcome
+): Promise<void> {
+  const transactionHashes = resp.transaction.hash;
+  const signerId = resp.transaction.signer_id;
+
+  await httpService.get(
+    `/transactions/wallet/callback/${signerId}?transactionHashes=${transactionHashes}&noRedirect=true`
+  );
+}
+
 export function isFinalExecutionOutcomeResponse(
   _params: FinalExecutionOutcome[] | void
 ): _params is FinalExecutionOutcome[] {
   const resp = _params as FinalExecutionOutcome[];
 
   return resp?.length > 0 && !!resp[0]?.transaction;
+}
+
+export function isFinalExecutionOutcome(
+  _params: FinalExecutionOutcome | void
+): _params is FinalExecutionOutcome {
+  return (_params as FinalExecutionOutcome)?.transaction !== undefined;
 }
 
 export function isExtensionError(
