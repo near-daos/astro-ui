@@ -14,6 +14,7 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { getAppVersion, useAppVersion } from 'hooks/useAppVersion';
 
+import { CreateProposalSelector } from 'astro_3.0/components/CreateProposalSelector';
 import { FeedLayout } from 'astro_3.0/features/FeedLayout';
 import { MainLayout } from 'astro_3.0/features/MainLayout';
 import { ProposalsFeed } from 'astro_3.0/features/ProposalsFeed';
@@ -34,7 +35,9 @@ const GlobalFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
         <title>My proposals feed</title>
       </Head>
       {appVersion === 3 ? (
-        <ProposalsFeed {...props} className={styles.root} />
+        <ProposalsFeed {...props} className={styles.root}>
+          <CreateProposalSelector />
+        </ProposalsFeed>
       ) : (
         <MainLayout>
           <Feed {...props} title={t('globalFeed')} />
