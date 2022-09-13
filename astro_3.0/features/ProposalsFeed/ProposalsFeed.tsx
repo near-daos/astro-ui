@@ -2,7 +2,7 @@ import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { useAsyncFn, useMountedState } from 'react-use';
 import { useRouter } from 'next/router';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactElement, ReactNode, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
 
@@ -48,6 +48,7 @@ interface Props {
   category?: ProposalCategories;
   initialProposals: PaginationResponse<ProposalFeedItem[]> | null;
   initialProposalsStatusFilterValue: ProposalsFeedStatuses;
+  children?: ReactElement;
 }
 
 export const ProposalsFeed = ({
@@ -58,6 +59,7 @@ export const ProposalsFeed = ({
   showFlag = true,
   initialProposals,
   initialProposalsStatusFilterValue,
+  children,
 }: Props): JSX.Element => {
   const { query, pathname } = useRouter();
   const { t } = useTranslation();
@@ -166,6 +168,7 @@ export const ProposalsFeed = ({
 
       <MainLayout>
         <div className={styles.container}>
+          {children}
           {loading ? (
             <Loader className={styles.loader} />
           ) : (

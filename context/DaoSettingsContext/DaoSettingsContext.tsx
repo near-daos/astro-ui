@@ -11,7 +11,7 @@ interface IDaoSettingContext {
   settings: Settings | null | undefined;
 }
 
-const DaoSettingsContext = createContext<IDaoSettingContext | undefined>(
+export const DaoSettingsContext = createContext<IDaoSettingContext | undefined>(
   undefined
 );
 

@@ -1,0 +1,235 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-white);
+  border-radius: 0 8px 8px 0;
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-row-gap: 22px;
+  grid-template-areas:
+    'proposalType'
+    'proposer'
+    'description'
+    'content'
+    'group'
+    'voteControl';
+  grid-template-columns: 1fr;
+  padding: 22px 30px;
+  position: relative;
+  z-index: 20;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'proposalType proposalType countdown'
+      'proposer proposer proposer'
+      'description description description'
+      'group group group'
+      'content content voteControl';
+    grid-template-columns: 5fr 3fr 2fr;
+  }
+}
+
+.voteControlCell {
+  align-items: flex-end;
+  display: flex;
+  grid-area: voteControl;
+  justify-content: flex-end;
+
+  .voteIcon {
+    opacity: 0.5;
+    width: 40px;
+  }
+
+  .voteIcon:first-of-type {
+    margin-right: 24px;
+  }
+}
+
+.countdownCell {
+  @extend %title4;
+  display: none;
+
+  @include tablet-landscape {
+    color: var(--color-brand-purple);
+    grid-area: countdown;
+    justify-self: end;
+    text-align: right;
+  }
+}
+
+.proposalCell {
+  display: flex;
+  grid-area: proposalType;
+}
+
+.proposalContentCell {
+  grid-area: content;
+}
+
+.proposalGroupCell {
+  grid-area: group;
+}
+
+.proposalTypeAndLink {
+  align-items: center;
+  display: flex;
+}
+
+.proposalValue {
+  @extend %title1;
+}
+
+.proposalWalletLink {
+  padding-left: 15px;
+}
+
+.proposerCell {
+  display: flex;
+  grid-area: proposer;
+}
+
+.proposerLabel {
+  @extend %caption1;
+  padding-bottom: 6px;
+}
+
+.text {
+  @extend %title3;
+}
+
+.contentCell {
+  grid-area: content;
+}
+
+.descriptionCell {
+  grid-area: description;
+}
+
+.label {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+  padding-bottom: 4px;
+}
+
+.error {
+  color: var(--color-error);
+}
+
+.descriptionValue {
+  @extend %body2;
+  padding-bottom: 10px;
+}
+
+.proposalExternalLink {
+  @extend %body2;
+  align-items: center;
+  color: var(--color-brand-purple);
+  display: flex;
+  gap: 4px;
+  transition: text-shadow 0.4s, box-shadow 0.4s;
+  width: 100%;
+}
+
+.iconWrapper {
+  @include centralize;
+  background-color: var(--color-primary-20);
+  border-radius: 100%;
+  height: 24px;
+  width: 24px;
+}
+
+.externalLink {
+  padding-left: 10px;
+}
+
+.icon {
+  color: var(--color-primary-50);
+  height: 14px;
+  width: 14px;
+}
+
+.proposalExternalLink:hover {
+  cursor: pointer;
+}
+
+.iconWrapper {
+  box-shadow: 3px 2px 12px var(--color-primary-30);
+}
+
+.externalLink {
+  text-shadow: 3px 2px 12px var(--color-primary-30);
+}
+
+.textArea.textArea {
+  margin-top: 2px;
+
+  &::-webkit-scrollbar {
+    display: none !important;
+  }
+}
+
+.dropdown {
+  input {
+    border: 0;
+    color: var(--color-neutral-90);
+    font-family: var(--font-family-primary);
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 28px;
+    text-align: left;
+  }
+  li {
+    font-size: 12px;
+  }
+  button {
+    right: -4px;
+  }
+  ul {
+    min-width: 300px;
+  }
+}
+
+.linkInput {
+  input {
+    @extend %caption1;
+    color: var(--color-primary-50);
+
+    @include placeholder {
+      color: var(--color-primary-50);
+      opacity: 0.4;
+    }
+  }
+}
+
+.actionBar {
+  @include centralize;
+  height: 36px;
+  position: absolute;
+  right: 4px;
+  top: -38px;
+  width: 36px;
+
+  @include tablet-landscape {
+    right: -40px;
+    top: 8px;
+  }
+}
+
+.action {
+  color: var(--color-white);
+
+  @include tablet-landscape {
+    color: var(--color-neutral-50);
+  }
+}
+
+.customContent {
+  margin-top: 24px;
+}
+
+.editable {
+  grid-area: description;
+}

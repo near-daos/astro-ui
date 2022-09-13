@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { SputnikHttpService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
-export function useDaoSettingsData(daoId: string): {
+export function useDaoSettingsData(daoId: string | undefined): {
   loading: boolean;
   update: (updates: Record<string, unknown>) => Promise<void>;
   settings: Settings | null | undefined;
@@ -15,6 +15,10 @@ export function useDaoSettingsData(daoId: string): {
   const [settings, setSettings] = useState<Settings | null>(null);
 
   const [{ loading }, getSettings] = useAsyncFn(async () => {
+    if (!daoId) {
+      return;
+    }
+
     const res = await SputnikHttpService.getDaoSettings(daoId);
 
     if (res && isMounted()) {
@@ -24,6 +28,10 @@ export function useDaoSettingsData(daoId: string): {
 
   const [{ loading: updatingStatus }, update] = useAsyncFn(
     async updates => {
+      if (!daoId) {
+        return;
+      }
+
       if (!pkAndSignature) {
         return;
       }

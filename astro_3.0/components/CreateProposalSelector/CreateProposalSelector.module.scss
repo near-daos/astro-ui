@@ -1,0 +1,52 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  margin-bottom: 24px;
+}
+
+.dummyCard {
+  margin-bottom: 36px;
+}
+
+.dropdown {
+  margin-bottom: 12px;
+  margin-left: 6px;
+  width: fit-content;
+}
+
+.placeholder {
+  @extend %subtitle2;
+  color: var(--color-black);
+}
+
+.row {
+  align-items: center;
+  display: flex;
+}
+
+.avatar {
+  @include centralize;
+  background-color: var(--color-neutral-20);
+  background-position: center;
+  background-size: contain;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  height: 40px;
+  margin-right: 12px;
+  width: 40px;
+}
+
+.icon {
+  color: var(--color-primary);
+  width: 24px;
+}
+
+.name {
+  @extend %subtitle3;
+  @include ellipse-text;
+  color: var(--color-black);
+  display: block;
+  position: relative;
+  transition: opacity 0.2s ease-out;
+}

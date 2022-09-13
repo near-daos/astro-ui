@@ -18,7 +18,7 @@ export interface DropdownSelectProps {
   label?: string;
   defaultValue?: string;
   onChange: (value?: string) => void;
-  placeholder?: string;
+  placeholder?: string | ReactNode;
   controlIcon?: ReactNode;
   disabled?: boolean;
   isBorderless?: boolean;

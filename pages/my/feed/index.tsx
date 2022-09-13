@@ -16,10 +16,11 @@ import { MainLayout } from 'astro_3.0/features/MainLayout';
 import { getAppVersion, useAppVersion } from 'hooks/useAppVersion';
 import { ProposalsFeed } from 'astro_3.0/features/ProposalsFeed';
 import { Page } from 'pages/_app';
+import { CreateProposalSelector } from 'astro_3.0/components/CreateProposalSelector';
 
 import { getTranslations } from 'utils/getTranslations';
-import { useTranslation } from 'next-i18next';
 
+import { useTranslation } from 'next-i18next';
 import styles from './MyFeedPage.module.scss';
 
 const MyFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
@@ -32,7 +33,9 @@ const MyFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
         <title>My proposals feed</title>
       </Head>
       {appVersion === 3 ? (
-        <ProposalsFeed {...props} className={styles.root} />
+        <ProposalsFeed {...props} className={styles.root}>
+          <CreateProposalSelector />
+        </ProposalsFeed>
       ) : (
         <MainLayout>
           <Feed {...props} title={t('myProposalsFeed')} />

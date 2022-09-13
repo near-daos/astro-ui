@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useMount, useMountedState } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
 import { useRouter } from 'next/router';
@@ -38,7 +38,9 @@ function normalizeTokens(tkns: Token[]): Tokens {
   );
 }
 
-export function useDaoCustomTokens(): { tokens: Record<string, Token> } {
+export function useDaoCustomTokens(daoId?: string): {
+  tokens: Record<string, Token>;
+} {
   const isMounted = useMountedState();
   const router = useRouter();
   const [tokens, setTokens] = useState<Record<string, Token>>({});
@@ -52,8 +54,8 @@ export function useDaoCustomTokens(): { tokens: Record<string, Token> } {
     [isMounted]
   );
 
-  useMount(() => {
-    SputnikHttpService.getAccountTokens(router.query.dao as string)
+  useEffect(() => {
+    SputnikHttpService.getAccountTokens(daoId ?? (router.query.dao as string))
       .then(data => {
         prepareTokens(data);
       })
@@ -64,7 +66,7 @@ export function useDaoCustomTokens(): { tokens: Record<string, Token> } {
           description: err.message,
         });
       });
-  });
+  }, [daoId, prepareTokens, router.query.dao]);
 
   return { tokens };
 }

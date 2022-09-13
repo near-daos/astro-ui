@@ -8,6 +8,9 @@ import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 
 import { useWalletContext } from 'context/WalletContext';
+import { dispatchCustomEvent } from 'utils/dispatchCustomEvent';
+
+import { SHOW_PROPOSAL_SELECTOR } from 'constants/common';
 
 import styles from './FeedLayout.module.scss';
 
@@ -25,6 +28,9 @@ export const FeedLayout: FC = () => {
               variant="green"
               className={styles.createProposalButton}
               capitalize
+              onClick={() => {
+                dispatchCustomEvent(SHOW_PROPOSAL_SELECTOR, true);
+              }}
             >
               <Icon name="plus" className={styles.icon} />
               <span>{t('daoDetailsMinimized.createProposal')}</span>
