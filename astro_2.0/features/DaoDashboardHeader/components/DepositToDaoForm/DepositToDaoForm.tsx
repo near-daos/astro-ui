@@ -1,10 +1,11 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import React from 'react';
+import { useRouter } from 'next/router';
 import { DepositInput } from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm/components/DepositInput';
 import { DepositButton } from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm/components/DepositButton';
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import styles from './DepositToDaoForm.module.scss';
@@ -27,6 +28,7 @@ interface DepositToDaoForm {
 }
 
 export const DepositToDaoForm: React.FC<DepositToDaoForm> = ({ daoId }) => {
+  const router = useRouter();
   const methods = useForm<{ depositAmount: number }>({
     mode: 'all',
     reValidateMode: 'onChange',
@@ -40,6 +42,7 @@ export const DepositToDaoForm: React.FC<DepositToDaoForm> = ({ daoId }) => {
   const submitHandler = async (data: { depositAmount: number }) => {
     try {
       await nearService?.sendMoney(daoId, data.depositAmount);
+      await router.reload();
     } catch (e) {
       showNotification({
         type: NOTIFICATION_TYPES.ERROR,

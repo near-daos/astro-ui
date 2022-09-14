@@ -338,12 +338,15 @@ export class SputnikWalletService implements WalletService {
     return this.walletType;
   }
 
-  async sendMoney(receiverId: string, amount: number): Promise<void> {
+  async sendMoney(
+    receiverId: string,
+    amount: number
+  ): Promise<FinalExecutionOutcome[]> {
     const parsedNear = parseNearAmount(amount.toString());
 
     const nearAsBn = new BN(parsedNear ?? 0);
 
-    await this.sendTransactions([
+    return this.sendTransactions([
       { receiverId, actions: [transfer(nearAsBn)] },
     ]);
   }

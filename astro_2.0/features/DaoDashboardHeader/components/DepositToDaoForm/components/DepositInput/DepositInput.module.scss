@@ -39,7 +39,10 @@
 }
 
 .valueHolder {
+  align-items: center;
+  display: flex;
   height: 15px;
+  line-height: 0.9;
   max-width: 14ch;
   overflow: hidden;
   padding: 0 8px 0 0;
@@ -62,6 +65,7 @@
 
 .tokenCaption {
   @extend %caption1;
+  display: none;
   width: 40px;
   word-break: keep-all;
 }

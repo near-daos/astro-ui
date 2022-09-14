@@ -158,7 +158,10 @@ export class SenderWalletService implements WalletService {
     return this.walletType;
   }
 
-  async sendMoney(receiverId: string, amount: number): Promise<void> {
+  async sendMoney(
+    receiverId: string,
+    amount: number
+  ): Promise<FinalExecutionOutcome[]> {
     const parsedAmount = parseNearAmount(amount.toString());
 
     const result = await this.walletInstance.sendMoney({
@@ -169,6 +172,8 @@ export class SenderWalletService implements WalletService {
     if (isError(result.response)) {
       throw new Error(result.response.error.kind.ExecutionError);
     }
+
+    return result.response;
   }
 
   // eslint-disable-next-line class-methods-use-this
