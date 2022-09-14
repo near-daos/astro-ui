@@ -62,6 +62,19 @@
   border-color: var(--color-error-70);
 }
 
+.globalError {
+  align-items: flex-start;
+  color: var(--color-error-70);
+  display: flex;
+  margin: 24px 0;
+
+  .errorIcon {
+    margin-right: 6px;
+    min-width: 24px;
+    width: 24px;
+  }
+}
+
 .controls {
   align-items: center;
   display: flex;

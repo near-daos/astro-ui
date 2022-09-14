@@ -101,6 +101,7 @@ export const DelegateVoting: FC<Props> = ({
   const {
     control,
     handleSubmit,
+    watch,
     formState: { isValid },
   } = methods;
 
@@ -108,6 +109,12 @@ export const DelegateVoting: FC<Props> = ({
     control,
     name: 'accounts',
   });
+
+  const accounts = watch('accounts');
+  const total = accounts.reduce((res, item) => {
+    return res + +item.amount;
+  }, 0);
+  const isValidDelegatedAmount = tokenDetails && total <= tokenDetails?.balance;
 
   const submitHandler = async (data: Form) => {
     if (!nearService || !tokenDetails) {
@@ -171,12 +178,20 @@ export const DelegateVoting: FC<Props> = ({
                 </div>
               </Button>
             </div>
-            <AmountBalanceCard
-              label="Stake Balance"
-              value={tokenDetails?.balance}
-              suffix={tokenDetails?.symbol}
-              loading={loadingAmount}
-            />
+            <div>
+              <AmountBalanceCard
+                label="Stake Balance"
+                value={tokenDetails?.balance}
+                suffix={tokenDetails?.symbol}
+                loading={loadingAmount}
+              />
+              {!isValidDelegatedAmount && !!tokenDetails?.balance && (
+                <div className={styles.globalError}>
+                  <Icon name="alertTriangle" className={styles.errorIcon} />
+                  Total delegated amount cannot exceed staked balance
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <div className={styles.controls}>
@@ -184,7 +199,7 @@ export const DelegateVoting: FC<Props> = ({
             className={styles.controlBtn}
             type="submit"
             variant="black"
-            disabled={!isValid}
+            disabled={!isValid || !isValidDelegatedAmount}
           >
             Finalize
           </Button>
