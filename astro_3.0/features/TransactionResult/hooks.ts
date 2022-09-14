@@ -76,6 +76,7 @@ export function useSelectorWalletTransactionResult(): void {
 
             break;
           }
+          case TransactionResultType.FINALIZE:
           case TransactionResultType.PROPOSAL_VOTE: {
             if (voteActionSource) {
               router.push(voteActionSource as string);
