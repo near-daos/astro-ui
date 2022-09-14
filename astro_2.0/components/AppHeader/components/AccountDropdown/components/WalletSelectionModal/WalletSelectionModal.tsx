@@ -63,6 +63,7 @@ export const WalletSelectionModal: React.FC<WalletSelectionModal> = ({
             className={styles.wallet}
           />
           <WalletButton
+            disabled={!(window.near !== undefined && window.near.isSender)}
             walletType={WalletType.SENDER}
             onClick={() => {
               signIn(WalletType.SELECTOR_SENDER);
