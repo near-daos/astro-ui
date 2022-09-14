@@ -18,5 +18,13 @@ export async function initWalletSelector(
 
   const wallet = await s.wallet(walletType as string);
 
+  // In case we are logged in using Sender wallet - listen for an updates and reload
+  // the app so wallet will be reinitialized
+  if (window.near) {
+    window.near.on('accountChanged', async () => {
+      window.location.reload();
+    });
+  }
+
   return new WalletSelectorService(wallet, s);
 }
