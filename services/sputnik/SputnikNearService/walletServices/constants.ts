@@ -9,7 +9,7 @@ export const NEAR_WALLET_METADATA: WalletMeta = {
 };
 
 export const SENDER_WALLET_METADATA: WalletMeta = {
-  name: 'Sender (beta)',
+  name: 'Sender',
   type: 'extension',
   url: 'senderwallet.io',
   id: WalletType.SENDER,
