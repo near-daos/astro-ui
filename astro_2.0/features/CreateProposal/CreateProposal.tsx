@@ -246,6 +246,13 @@ export const CreateProposal: FC<CreateProposalProps> = ({
                 onSubmit={onSubmit}
                 buttonLabel={t('propose')}
                 bond={{ value: dao.policy.proposalBond }}
+                bondInfo={
+                  selectedProposalVariant === ProposalVariant.ProposeTransfer ||
+                  selectedProposalVariant ===
+                    ProposalVariant.ProposeCreateBounty
+                    ? 'Extra 0.1N fee may be used as a storage deposit to register an account in case FT is used'
+                    : undefined
+                }
               />
             )
           }

@@ -10,6 +10,9 @@ import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/Input
 import { formatYoktoValue } from 'utils/format';
 import { TgasInput } from 'astro_2.0/components/TgasInput';
 
+import { Icon } from 'components/Icon';
+import Tooltip from 'react-tooltip';
+
 import styles from './TransactionDetailsWidget.module.scss';
 
 interface InfoWidgetProps {
@@ -25,6 +28,7 @@ interface CreateProposalWidgetProps {
   warning?: string;
   buttonLabel?: string;
   standAloneMode?: boolean;
+  bondInfo?: string;
 }
 
 export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
@@ -34,6 +38,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
   standAloneMode = false,
   buttonLabel = 'Purpose',
   warning,
+  bondInfo,
 }) => {
   const {
     handleSubmit,
@@ -74,7 +79,20 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
               className={styles.detailsItem}
               labelClassName={styles.inputLabel}
               fieldName="bond"
-              label={t('components.transactionDetailsWidget.bond')}
+              label={
+                bondInfo ? (
+                  <span
+                    data-tip={bondInfo}
+                    data-place="top"
+                    data-delay-show="700"
+                  >
+                    {t('components.transactionDetailsWidget.bond')}
+                    <Icon name="info" width={12} className={styles.bondInfo} />
+                  </span>
+                ) : (
+                  t('components.transactionDetailsWidget.bond')
+                )
+              }
             >
               <div className={styles.row}>
                 <Input
@@ -111,6 +129,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
           </Button>
         </div>
       </div>
+      <Tooltip effect="solid" />
     </form>
   );
 };

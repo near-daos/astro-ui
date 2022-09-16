@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import { Icon } from 'components/Icon';
@@ -8,7 +8,7 @@ import styles from './InputWrapper.module.scss';
 
 interface InputWrapperProps {
   fieldName: string;
-  label: string;
+  label: string | ReactElement;
   fullWidth?: boolean;
   alignRight?: boolean;
   flex?: boolean;
