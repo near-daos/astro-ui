@@ -99,11 +99,13 @@ export const WrappedWalletContext: FC = ({ children }) => {
           name: GA_EVENTS.SIGN_IN,
           accountId,
         });
+
+        await router.reload();
       } catch (e) {
         setConnectingToWallet(false);
       }
     },
-    [setWallet, setConnectingToWallet]
+    [setConnectingToWallet, setWallet, router]
   );
 
   const login = useCallback(

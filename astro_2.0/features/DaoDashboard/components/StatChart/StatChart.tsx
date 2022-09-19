@@ -68,6 +68,7 @@ export const StatChart: FC<StatChartProps> = ({ data }) => {
               dataKey="y"
               type="monotone"
               stroke="#6038d0"
+              isAnimationActive={false}
             />
           </LineChart>
         </div>
