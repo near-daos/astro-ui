@@ -55,6 +55,10 @@ export function useDaoCustomTokens(daoId?: string): {
   );
 
   useEffect(() => {
+    if (!daoId && !router.query.dao) {
+      return;
+    }
+
     SputnikHttpService.getAccountTokens(daoId ?? (router.query.dao as string))
       .then(data => {
         prepareTokens(data);
