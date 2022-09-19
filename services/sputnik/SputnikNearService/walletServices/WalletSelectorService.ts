@@ -219,14 +219,17 @@ export class WalletSelectorService implements WalletService {
   }
 
   // TODO works only for NEAR wallet. Has to be updated for Sender wallet
-  async sendMoney(receiverId: string, amount: number): Promise<void> {
+  async sendMoney(
+    receiverId: string,
+    amount: number
+  ): Promise<FinalExecutionOutcome[]> {
     const parsedNear = parseNearAmount(amount.toString());
 
     const nearAsBn = new BN(parsedNear ?? 0);
 
     const accountId = await this.getAccountId();
 
-    await this.wallet.signAndSendTransaction({
+    const res = await this.wallet.signAndSendTransaction({
       callbackUrl: `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
       receiverId,
       actions: [
@@ -238,6 +241,16 @@ export class WalletSelectorService implements WalletService {
         },
       ],
     });
+
+    // In case of Selector sender wallet we have to manually notify BE about transaction results
+    if (
+      this.walletInfo.id === WalletType.SELECTOR_SENDER &&
+      isFinalExecutionOutcome(res)
+    ) {
+      await triggerTransactionCallback(res);
+    }
+
+    return [res as FinalExecutionOutcome];
   }
 
   async sendTransactions(
