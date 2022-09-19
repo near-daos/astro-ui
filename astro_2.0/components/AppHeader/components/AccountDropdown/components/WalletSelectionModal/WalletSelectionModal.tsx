@@ -44,7 +44,7 @@ export const WalletSelectionModal: React.FC<WalletSelectionModal> = ({
           signIn(WalletType.SENDER);
           onClose();
         }}
-        name={`Sender (${t('header.wallets.sender.beta')})`}
+        name="Sender"
         type={t('header.wallets.sender.type')}
         url="senderwallet.io"
         className={styles.wallet}
