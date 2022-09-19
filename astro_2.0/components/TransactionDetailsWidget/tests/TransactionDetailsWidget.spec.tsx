@@ -17,6 +17,10 @@ jest.mock('react-hook-form', () => {
   };
 });
 
+jest.mock('crypto', () => ({
+  randomBytes: (num: number) => new Array(num).fill(0),
+}));
+
 describe('Transaction details widget', () => {
   it('Should render component', () => {
     const { container } = render(
