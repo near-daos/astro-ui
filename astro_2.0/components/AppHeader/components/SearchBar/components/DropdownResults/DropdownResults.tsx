@@ -4,10 +4,16 @@ import { useTranslation } from 'next-i18next';
 import React, { VFC, useCallback } from 'react';
 import { useWalletContext } from 'context/WalletContext';
 
-import { SEARCH_PAGE_URL } from 'constants/routing';
+import {
+  DRAFT_PAGE_URL,
+  SEARCH_PAGE_URL,
+  SINGLE_PROPOSAL_PAGE_URL,
+} from 'constants/routing';
 
 import { useSearchResults } from 'features/search/search-results';
 import { NoSearchResultsView } from 'features/search/search-results/components/NoSearchResultsView';
+import { SearchResultDraftProposalLine } from 'astro_2.0/components/AppHeader/components/SearchBar/components/DropdownResults/components/ResultSection/components/SearchResultDraftProposalLine';
+import { SearchResultCommentLine } from 'astro_2.0/components/AppHeader/components/SearchBar/components/DropdownResults/components/ResultSection/components/SearchResultCommentLine';
 
 import {
   ResultSection,
@@ -32,6 +38,8 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
   const DAOS_TAB_IDNEX = 0;
   const PROPOSAL_TAB_INDEX = 1;
   const PEOPLE_TAB_INDEX = 2;
+  const DRAFTS_TAB_INDEX = 3;
+  const COMMENTS_TAB_INDEX = 4;
 
   const { accountId } = useWalletContext();
   const { t } = useTranslation('common');
@@ -39,7 +47,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
   const router = useRouter();
   const { searchResults } = useSearchResults();
 
-  const { daos, proposals, members } = searchResults || {};
+  const { daos, proposals, members, comments, drafts } = searchResults || {};
 
   const goToSearchPage = useCallback(
     (tabIndex: number) => {
@@ -68,9 +76,55 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
     goToSearchPage(PROPOSAL_TAB_INDEX);
   }, [goToSearchPage]);
 
+  const goToDraftsTabOnSearchPage = useCallback(() => {
+    goToSearchPage(DRAFTS_TAB_INDEX);
+  }, [goToSearchPage]);
+
+  const goToCommentsTabOnSearchPage = useCallback(() => {
+    goToSearchPage(COMMENTS_TAB_INDEX);
+  }, [goToSearchPage]);
+
   const goToPeopleTabOnSearchPage = useCallback(() => {
     goToSearchPage(PEOPLE_TAB_INDEX);
   }, [goToSearchPage]);
+
+  const goToDraft = useCallback(
+    (dao: string, draft: string) => {
+      router.push(
+        {
+          pathname: DRAFT_PAGE_URL,
+          query: {
+            dao,
+            draft,
+          },
+        },
+        undefined,
+        {
+          shallow: true,
+        }
+      );
+    },
+    [router]
+  );
+
+  const goToProposal = useCallback(
+    (dao: string, proposal: string) => {
+      router.push(
+        {
+          pathname: SINGLE_PROPOSAL_PAGE_URL,
+          query: {
+            dao,
+            proposal,
+          },
+        },
+        undefined,
+        {
+          shallow: true,
+        }
+      );
+    },
+    [router]
+  );
 
   function renderNoResults() {
     if (
@@ -132,7 +186,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
           <SearchResultProposalLine
             data={proposal}
             key={proposal.id}
-            onClick={goToProposalsTabOnSearchPage}
+            onClick={goToProposal}
           />
         ))}
       </ResultSection>
@@ -159,12 +213,55 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
     );
   }
 
+  function renderDrafts() {
+    const draftsToRender = getThreeFirstResults(drafts);
+
+    return (
+      <ResultSection
+        title={t('header.search.draftProposals')}
+        data={drafts}
+        onSeeAll={goToDraftsTabOnSearchPage}
+        contentClassName={styles.proposalsContent}
+      >
+        {draftsToRender.map(proposal => (
+          <SearchResultDraftProposalLine
+            data={proposal}
+            key={proposal.id}
+            onClick={goToDraft}
+          />
+        ))}
+      </ResultSection>
+    );
+  }
+
+  function renderComments() {
+    const itemsToRender = getThreeFirstResults(comments);
+
+    return (
+      <ResultSection
+        title={t('header.search.comments')}
+        data={drafts}
+        onSeeAll={goToCommentsTabOnSearchPage}
+        contentClassName={styles.proposalsContent}
+      >
+        {itemsToRender.map(item => (
+          <SearchResultCommentLine
+            data={item}
+            key={item.id}
+            onClick={goToProposal}
+          />
+        ))}
+      </ResultSection>
+    );
+  }
+
   return (
     <div className={styles.root} style={{ width }}>
       {renderDaos()}
       {renderProposals()}
       {renderPeople()}
-
+      {renderDrafts()}
+      {renderComments()}
       {renderNoResults()}
     </div>
   );

@@ -1,32 +1,31 @@
 import isEmpty from 'lodash/isEmpty';
 import { ReactNode, VFC } from 'react';
+import DOMPurify from 'dompurify';
 
-import { Proposal } from 'types/proposal';
+import { ProposalComment } from 'types/proposal';
 
 import { useSearchResults } from 'features/search/search-results';
 
-import styles from './SearchResultProposalLine.module.scss';
+import styles from './SearchResultCommentLine.module.scss';
 
-interface SearchResultProposalLineProps {
-  data: Pick<Proposal, 'description' | 'daoId' | 'id'>;
+interface Props {
+  data: Pick<ProposalComment, 'message' | 'daoId' | 'contextId'>;
   onClick: (dao: string, proposalId: string) => void;
 }
 
-export const SearchResultProposalLine: VFC<SearchResultProposalLineProps> = ({
-  data,
-  onClick,
-}) => {
+export const SearchResultCommentLine: VFC<Props> = ({ data, onClick }) => {
   const { searchResults } = useSearchResults();
 
   const query = searchResults?.query || '';
-  const { description } = data;
+  const { message } = data;
+  const title = DOMPurify.sanitize(message, { FORBID_TAGS: ['p'] });
 
   const reg = new RegExp(query, 'gi');
-  const matchingParts = description.match(reg) || [];
+  const matchingParts = title.match(reg) || [];
 
   // Highlights search entries in a string
   const result = isEmpty(matchingParts)
-    ? { res: description }
+    ? { res: title }
     : matchingParts.reduce(
         (acc: { str: string; res: ReactNode[] }, part, index) => {
           const partIndex = acc.str.indexOf(part);
@@ -49,7 +48,7 @@ export const SearchResultProposalLine: VFC<SearchResultProposalLineProps> = ({
           return acc;
         },
         {
-          str: description,
+          str: title,
           res: [],
         }
       );
@@ -58,8 +57,8 @@ export const SearchResultProposalLine: VFC<SearchResultProposalLineProps> = ({
     <div
       tabIndex={0}
       role="button"
-      onClick={() => onClick(data.daoId, data.id)}
-      onKeyPress={() => onClick(data.daoId, data.id)}
+      onClick={() => onClick(data.daoId, data.contextId)}
+      onKeyPress={() => onClick(data.daoId, data.contextId)}
       className={styles.root}
     >
       {result.res}

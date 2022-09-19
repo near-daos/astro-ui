@@ -5,12 +5,18 @@ import { useTranslation } from 'next-i18next';
 
 import { DaoFeedItem, Member } from 'types/dao';
 import { ProposalFeedItem } from 'types/proposal';
+import { DraftProposalFeedItem } from 'types/draftProposal';
 
 import styles from './ResultSection.module.scss';
 
 interface ResultSectionProps {
   title: string;
-  data: DaoFeedItem[] | ProposalFeedItem[] | Member[] | undefined;
+  data:
+    | DaoFeedItem[]
+    | ProposalFeedItem[]
+    | Member[]
+    | DraftProposalFeedItem[]
+    | undefined;
   onSeeAll: () => void;
   contentClassName?: string;
 }

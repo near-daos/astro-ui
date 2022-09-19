@@ -642,7 +642,9 @@
       "minimalChars": "Please enter at least 3 characters to search",
       "daos": "DAOS",
       "proposals": "Proposals",
-      "people": "People"
+      "people": "People",
+      "comments": "Comments",
+      "drafts": "Drafts"
     },
     "myAccount": "My Account",
     "disconnect": "Disconnect",

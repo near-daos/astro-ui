@@ -40,6 +40,7 @@ import {
   // ProposalVariant,
 } from 'types/proposal';
 import { DaoFeedItem } from 'types/dao';
+import { mapOpenSearchResults } from 'services/SearchService/mappers/search';
 
 interface Mapper {
   name: ApiMappers | string;
@@ -734,6 +735,15 @@ export class HttpService {
               $and: [],
             };
 
+            // ids in the list
+            if (query.ids) {
+              search.$and?.push({
+                id: {
+                  $inL: query.ids,
+                },
+              });
+            }
+
             // specific DAO
             if (query.daoId) {
               search.$and?.push({
@@ -1019,6 +1029,19 @@ export class HttpService {
           };
           break;
         }
+        case API_QUERIES.OPEN_SEARCH_AUTHORIZATION: {
+          const { username, password } = requestCustom.queryRequest.params as {
+            username: string;
+            password: string;
+          };
+
+          const buff = Buffer.from(`${username}:${password}`);
+
+          request.headers = {
+            Authorization: `Basic ${buff.toString('base64')}`,
+          };
+          break;
+        }
         default:
           break;
       }
@@ -1112,6 +1135,13 @@ export class HttpService {
             responseConfig?.responseMapper?.params?.dao
           );
           break;
+        case API_MAPPERS.MAP_OPEN_SEARCH_RESULTS: {
+          response.data = mapOpenSearchResults(
+            responseConfig.params.query,
+            response.data
+          );
+          break;
+        }
         default:
           break;
       }

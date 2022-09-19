@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { useUpdateEffect } from 'react-use';
+import { useAsync, useUpdateEffect } from 'react-use';
 import { useTranslation } from 'next-i18next';
 
 import { Highlighter } from 'features/search/search-results/components/highlighter';
@@ -11,6 +11,9 @@ import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { ProposalFilter } from 'astro_2.0/features/Proposals/components/ProposalFilter';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
+
+import { SputnikHttpService } from 'services/sputnik';
+import { Loader } from 'components/loader';
 
 import styles from './ProposalsTabView.module.scss';
 
@@ -28,7 +31,19 @@ export const ProposalsTabView: React.FC = () => {
   const { t } = useTranslation();
 
   const { searchResults } = useSearchResults();
-  const { query, proposals } = searchResults || {};
+  const { query, proposals: foundProposals } = searchResults || {};
+
+  const { loading, value: proposals } = useAsync(async () => {
+    if (!foundProposals) {
+      return undefined;
+    }
+
+    const data = await SputnikHttpService.getProposalsList({
+      ids: foundProposals.map(item => item.id),
+    });
+
+    return data?.data;
+  }, [foundProposals]);
 
   const { filteredProposals, filter, setFilter, onFilterChange } =
     useFilteredProposalsData(
@@ -68,80 +83,86 @@ export const ProposalsTabView: React.FC = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.statusFilterWrapper}>
-        <ProposalFilter
-          title={`${t('filterByProposalStatus')}:`}
-          shortTitle={`${t('filterByStatus')}:`}
-          value={filter.show}
-          onChange={value => {
-            window.scroll(0, 0);
-            onFilterChange('show', value || statusFilterOptions[0].value);
-          }}
-          list={[
-            {
-              value: statusFilterOptions[0].value,
-              label: 'All',
-            },
-            {
-              value: statusFilterOptions[1].value,
-              label: 'Active',
-            },
-            {
-              value: statusFilterOptions[2].value,
-              label: 'Approved',
-              className: styles.statusFilterRadioRootSuccess,
-            },
-            {
-              value: statusFilterOptions[3].value,
-              label: 'Failed',
-              className: styles.statusFilterRadioRootError,
-            },
-          ]}
-        />
-      </div>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <div className={styles.statusFilterWrapper}>
+            <ProposalFilter
+              title={`${t('filterByProposalStatus')}:`}
+              shortTitle={`${t('filterByStatus')}:`}
+              value={filter.show}
+              onChange={value => {
+                window.scroll(0, 0);
+                onFilterChange('show', value || statusFilterOptions[0].value);
+              }}
+              list={[
+                {
+                  value: statusFilterOptions[0].value,
+                  label: 'All',
+                },
+                {
+                  value: statusFilterOptions[1].value,
+                  label: 'Active',
+                },
+                {
+                  value: statusFilterOptions[2].value,
+                  label: 'Approved',
+                  className: styles.statusFilterRadioRootSuccess,
+                },
+                {
+                  value: statusFilterOptions[3].value,
+                  label: 'Failed',
+                  className: styles.statusFilterRadioRootError,
+                },
+              ]}
+            />
+          </div>
 
-      <div className={styles.listWrapper}>
-        <SideFilter
-          queryName="category"
-          list={[
-            {
-              label: 'Tasks',
-              value: 'tasks',
-            },
-            {
-              label: 'Groups',
-              value: 'groups',
-            },
-            {
-              label: 'Treasury',
-              value: 'treasury',
-            },
-            {
-              label: 'Governance',
-              value: 'governance',
-            },
-          ]}
-          title="Choose a type"
-        />
+          <div className={styles.listWrapper}>
+            <SideFilter
+              queryName="category"
+              list={[
+                {
+                  label: 'Tasks',
+                  value: 'tasks',
+                },
+                {
+                  label: 'Groups',
+                  value: 'groups',
+                },
+                {
+                  label: 'Treasury',
+                  value: 'treasury',
+                },
+                {
+                  label: 'Governance',
+                  value: 'governance',
+                },
+              ]}
+              title="Choose a type"
+            />
 
-        {filteredProposals?.length ? (
-          <Highlighter className={styles.highlighterRoot}>
-            {filteredProposals.map(item => {
-              return (
-                <div className={styles.cardWrapper} key={item.id}>
-                  <ViewProposal proposal={item} showFlag />
-                </div>
-              );
-            })}
-          </Highlighter>
-        ) : (
-          <NoResultsView
-            title={query ? `No results for ${query}` : 'No results'}
-            subTitle="We couldn't find anything matching your search. Try again with a
+            {filteredProposals?.length ? (
+              <Highlighter className={styles.highlighterRoot}>
+                {filteredProposals.map(item => {
+                  return (
+                    <div className={styles.cardWrapper} key={item.id}>
+                      <ViewProposal proposal={item} showFlag />
+                    </div>
+                  );
+                })}
+              </Highlighter>
+            ) : (
+              <NoResultsView
+                title={query ? `No results for ${query}` : 'No results'}
+                subTitle="We couldn't find anything matching your search. Try again with a
         different term."
-          />
-        )}
-      </div>
+              />
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

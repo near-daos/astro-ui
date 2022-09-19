@@ -6,12 +6,15 @@ import React, {
   useRef,
   useState,
 } from 'react';
-
-import { SputnikHttpService } from 'services/sputnik';
-
-import { SearchResultsData } from 'types/search';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 import { useAsyncFn } from 'react-use';
 import axios, { CancelTokenSource } from 'axios';
+
+import { SputnikHttpService } from 'services/sputnik';
+import { searchService } from 'services/SearchService';
+
+import { SearchResultsData } from 'types/search';
+
 import { useWalletContext } from 'context/WalletContext';
 
 interface SearchResultsContextProps {
@@ -42,25 +45,32 @@ export const SearchResults: FC = ({ children }) => {
     null
   );
   const cancelTokenRef = useRef<CancelTokenSource | null>(null);
+  const { useOpenSearch } = useFlags();
+  const searchServiceInstance = useOpenSearch
+    ? searchService
+    : SputnikHttpService;
 
-  const [{ loading }, handleSearch] = useAsyncFn(async query => {
-    if (cancelTokenRef.current) {
-      cancelTokenRef.current?.cancel('Cancelled by new req');
-    }
+  const [{ loading }, handleSearch] = useAsyncFn(
+    async query => {
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current?.cancel('Cancelled by new req');
+      }
 
-    const { CancelToken } = axios;
-    const source = CancelToken.source();
+      const { CancelToken } = axios;
+      const source = CancelToken.source();
 
-    cancelTokenRef.current = source;
+      cancelTokenRef.current = source;
 
-    const res = await SputnikHttpService.search({
-      query,
-      cancelToken: source.token,
-      accountId: accountId ?? '',
-    });
+      const res = await searchServiceInstance.search({
+        query,
+        cancelToken: source.token,
+        accountId: accountId ?? '',
+      });
 
-    setSearchResults(res);
-  }, []);
+      setSearchResults(res);
+    },
+    [searchServiceInstance]
+  );
 
   const handleClose = useCallback(() => {
     setSearchResults(null);

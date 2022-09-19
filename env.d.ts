@@ -18,6 +18,7 @@ declare global {
       API_URL: string;
       STATS_API_URL;
       DRAFTS_API_URL: string;
+      SEARCH_API_URL: string;
       APP_DOMAIN: string;
       LOCAL_WALLET_REDIRECT: boolean;
 
@@ -32,6 +33,9 @@ declare global {
 
       NEXT_PUBLIC_LAUNCHDARKLY_ID: string;
       NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY: string;
+
+      OPEN_SEARCH_USERNAME: string;
+      OPEN_SEARCH_PASSWORD: string;
 
       GENERIC_FACTORY_CONTRACT_NAME: string;
       STAKING_CONTRACT_BINARY_HASH: string;

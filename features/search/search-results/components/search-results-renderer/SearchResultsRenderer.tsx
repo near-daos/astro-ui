@@ -6,6 +6,8 @@ import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { DaosTabView } from 'features/search/search-results/components/daos-tab-view';
 import { ProposalsTabView } from 'features/search/search-results/components/proposals-tab-view';
 import { MembersTabView } from 'features/search/search-results/components/MembersTabView';
+import { CommentsTabView } from 'features/search/search-results/components/CommentsTabView';
+import { DraftsTabView } from 'features/search/search-results/components/DraftsTabView';
 
 import styles from './search-results-renderer.module.scss';
 
@@ -29,6 +31,18 @@ export const SearchResultsRenderer: FC = () => {
       id: 2,
       label: `Members (${searchResults?.members.length ?? 0})`,
       content: <MembersTabView />,
+      className: styles.tabsListItem,
+    },
+    {
+      id: 3,
+      label: `Drafts (${searchResults?.drafts?.length ?? 0})`,
+      content: <DraftsTabView />,
+      className: styles.tabsListItem,
+    },
+    {
+      id: 4,
+      label: `Comments (${searchResults?.comments?.length ?? 0})`,
+      content: <CommentsTabView />,
       className: styles.tabsListItem,
     },
   ];
