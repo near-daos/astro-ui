@@ -1,5 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import React, { FC, useCallback } from 'react';
+import uniqBy from 'lodash/uniqBy';
 
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Highlighter } from 'features/search/search-results/components/highlighter';
@@ -51,7 +52,7 @@ export const MembersTabView: FC = () => {
               votes={item.votes}
               tokens={item.tokens}
             >
-              {item.groups.map(grp => (
+              {uniqBy(item.groups, grp => grp).map(grp => (
                 <Badge
                   key={grp}
                   size="small"

@@ -1,12 +1,18 @@
 import { DaoFeedItem, Member } from 'types/dao';
-import { ProposalComment, ProposalFeedItem } from 'types/proposal';
+import { ProposalComment, ProposalDetails } from 'types/proposal';
 import { DraftProposalFeedItem } from 'types/draftProposal';
 
 export interface SearchResultsData {
   query: string;
   daos: DaoFeedItem[];
-  proposals: ProposalFeedItem[];
+  proposals: ProposalDetails[];
   members: Member[];
-  comments?: ProposalComment[];
-  drafts?: DraftProposalFeedItem[];
+  comments: ProposalComment[];
+  drafts: DraftProposalFeedItem[];
+  totals: {
+    daos: number;
+    proposals: number;
+    drafts: number;
+    comments: number;
+  };
 }

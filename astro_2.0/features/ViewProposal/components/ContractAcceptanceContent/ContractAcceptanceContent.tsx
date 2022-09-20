@@ -20,6 +20,11 @@ export const ContractAcceptanceContent: FC<ContractAcceptanceContentProps> = ({
   proposal,
 }) => {
   const base64 = get(proposal, 'kind.actions.0.args');
+
+  if (!base64) {
+    return null;
+  }
+
   const { args } = fromBase64ToObj(base64);
 
   // eslint-disable-next-line

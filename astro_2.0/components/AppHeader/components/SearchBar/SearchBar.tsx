@@ -159,7 +159,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 
       if (expanded && query.length >= 3) {
         toggleShowHint(false);
-        handleSearch(query);
+        handleSearch(query, isSearchPage ? 3000 : 3);
       } else if (expanded && query.length > 0 && query.length < 3) {
         toggleShowHint(true);
       } else if (expanded) {

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useMount } from 'react-use';
 
 import Head from 'next/head';
 import { Tabs } from 'components/Tabs';
@@ -12,18 +13,30 @@ import { DraftsTabView } from 'features/search/search-results/components/DraftsT
 import styles from './search-results-renderer.module.scss';
 
 export const SearchResultsRenderer: FC = () => {
-  const { searchResults } = useSearchResults();
+  const { searchResults, handleSearch } = useSearchResults();
+
+  useMount(() => {
+    const query = searchResults?.query;
+
+    if (query) {
+      handleSearch(query, 3000);
+    }
+  });
 
   const TABS = [
     {
       id: 0,
-      label: `DAOs (${searchResults?.daos.length ?? 0})`,
+      label: `DAOs (${
+        searchResults?.totals?.daos ?? searchResults?.daos.length ?? 0
+      })`,
       content: <DaosTabView />,
       className: styles.tabsListItem,
     },
     {
       id: 1,
-      label: `Proposals (${searchResults?.proposals.length ?? 0})`,
+      label: `Proposals (${
+        searchResults?.totals?.proposals ?? searchResults?.proposals.length ?? 0
+      })`,
       content: <ProposalsTabView />,
       className: styles.tabsListItem,
     },
@@ -35,13 +48,17 @@ export const SearchResultsRenderer: FC = () => {
     },
     {
       id: 3,
-      label: `Drafts (${searchResults?.drafts?.length ?? 0})`,
+      label: `Drafts (${
+        searchResults?.totals?.drafts ?? searchResults?.drafts?.length ?? 0
+      })`,
       content: <DraftsTabView />,
       className: styles.tabsListItem,
     },
     {
       id: 4,
-      label: `Comments (${searchResults?.comments?.length ?? 0})`,
+      label: `Comments (${
+        searchResults?.totals?.comments ?? searchResults?.comments?.length ?? 0
+      })`,
       content: <CommentsTabView />,
       className: styles.tabsListItem,
     },

@@ -3,6 +3,7 @@ import React, {
   FC,
   useCallback,
   useContext,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -11,7 +12,7 @@ import { useAsyncFn } from 'react-use';
 import axios, { CancelTokenSource } from 'axios';
 
 import { SputnikHttpService } from 'services/sputnik';
-import { searchService } from 'services/SearchService';
+import { SearchService } from 'services/SearchService';
 
 import { SearchResultsData } from 'types/search';
 
@@ -19,7 +20,7 @@ import { useWalletContext } from 'context/WalletContext';
 
 interface SearchResultsContextProps {
   searchResults: SearchResultsData | null;
-  handleSearch: (query: string) => void;
+  handleSearch: (query: string, size?: number) => void;
   handleClose: () => void;
   setSearchResults: (res: null) => void;
   loading: boolean;
@@ -46,12 +47,17 @@ export const SearchResults: FC = ({ children }) => {
   );
   const cancelTokenRef = useRef<CancelTokenSource | null>(null);
   const { useOpenSearch } = useFlags();
-  const searchServiceInstance = useOpenSearch
-    ? searchService
-    : SputnikHttpService;
+
+  const searchServiceInstance = useMemo(() => {
+    if (useOpenSearch) {
+      return new SearchService();
+    }
+
+    return SputnikHttpService;
+  }, [useOpenSearch]);
 
   const [{ loading }, handleSearch] = useAsyncFn(
-    async query => {
+    async (query, size) => {
       if (cancelTokenRef.current) {
         cancelTokenRef.current?.cancel('Cancelled by new req');
       }
@@ -65,6 +71,7 @@ export const SearchResults: FC = ({ children }) => {
         query,
         cancelToken: source.token,
         accountId: accountId ?? '',
+        size,
       });
 
       setSearchResults(res);
