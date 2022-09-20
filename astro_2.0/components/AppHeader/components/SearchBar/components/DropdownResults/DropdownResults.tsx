@@ -47,7 +47,8 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
   const router = useRouter();
   const { searchResults } = useSearchResults();
 
-  const { daos, proposals, members, comments, drafts } = searchResults || {};
+  const { daos, proposals, members, comments, drafts, totals } =
+    searchResults || {};
 
   const goToSearchPage = useCallback(
     (tabIndex: number) => {
@@ -164,6 +165,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
         data={sorted}
         title={t('header.search.daos')}
         onSeeAll={goToDaosTabOnSearchPage}
+        total={totals?.daos}
       >
         {dataToRender.map(dao => (
           <SearchResultDaoCard data={dao} key={dao.id} onClick={closeSearch} />
@@ -181,6 +183,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
         data={proposals}
         onSeeAll={goToProposalsTabOnSearchPage}
         contentClassName={styles.proposalsContent}
+        total={totals?.proposals}
       >
         {proposalsToRender.map(proposal => (
           <SearchResultProposalLine
@@ -222,6 +225,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
         data={drafts}
         onSeeAll={goToDraftsTabOnSearchPage}
         contentClassName={styles.proposalsContent}
+        total={totals?.drafts}
       >
         {draftsToRender.map(proposal => (
           <SearchResultDraftProposalLine
@@ -243,6 +247,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
         data={drafts}
         onSeeAll={goToCommentsTabOnSearchPage}
         contentClassName={styles.proposalsContent}
+        total={totals?.comments}
       >
         {itemsToRender.map(item => (
           <SearchResultCommentLine

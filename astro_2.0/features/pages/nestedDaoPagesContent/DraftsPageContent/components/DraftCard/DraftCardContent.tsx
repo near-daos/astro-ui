@@ -29,8 +29,8 @@ import styles from './DraftCard.module.scss';
 interface Props {
   data: DraftProposalFeedItem;
   daoId: string;
-  onSelect: (id: string) => void;
-  selectedList: string[];
+  onSelect?: (id: string) => void;
+  selectedList?: string[];
   disableEdit: boolean;
 }
 

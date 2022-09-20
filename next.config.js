@@ -49,6 +49,9 @@ module.exports = (phase, { defaultConfig }) => {
         shouldUseExternalAssetUrl: process.env.NODE_ENV === 'production',
         assetUrl: '/_next/static/sprite.svg',
       },
+      api: {
+        responseLimit: false,
+      },
     }
   );
 

@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import { useTranslation } from 'next-i18next';
 
 import { DaoFeedItem, Member } from 'types/dao';
-import { ProposalFeedItem } from 'types/proposal';
+import { ProposalDetails } from 'types/proposal';
 import { DraftProposalFeedItem } from 'types/draftProposal';
 
 import styles from './ResultSection.module.scss';
@@ -13,16 +13,17 @@ interface ResultSectionProps {
   title: string;
   data:
     | DaoFeedItem[]
-    | ProposalFeedItem[]
+    | ProposalDetails[]
     | Member[]
     | DraftProposalFeedItem[]
     | undefined;
   onSeeAll: () => void;
   contentClassName?: string;
+  total?: number;
 }
 
 export const ResultSection: FC<ResultSectionProps> = props => {
-  const { title, data, onSeeAll, children, contentClassName } = props;
+  const { title, data, onSeeAll, children, contentClassName, total } = props;
 
   const { t } = useTranslation('common');
 
@@ -41,7 +42,7 @@ export const ResultSection: FC<ResultSectionProps> = props => {
           onClick={onSeeAll}
           onKeyPress={onSeeAll}
         >
-          {t('header.search.seeAll')} ({data?.length})
+          {t('header.search.seeAll')} ({total ?? data?.length})
         </div>
       </div>
       <div className={cn(styles.content, contentClassName)}>{children}</div>

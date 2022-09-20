@@ -1,6 +1,8 @@
-import { Proposal, ProposalType } from 'types/proposal';
+import { ProposalDetails, ProposalType } from 'types/proposal';
 
-export function isTaskProposal(proposal: Pick<Proposal, 'kind'>): boolean {
+export function isTaskProposal(
+  proposal: Pick<ProposalDetails, 'kind'>
+): boolean {
   const { type } = proposal.kind;
 
   return (
@@ -12,7 +14,7 @@ export function isTaskProposal(proposal: Pick<Proposal, 'kind'>): boolean {
 }
 
 export function isGovernanceProposal(
-  proposal: Pick<Proposal, 'kind'>
+  proposal: Pick<ProposalDetails, 'kind'>
 ): boolean {
   const { type } = proposal.kind;
 
@@ -24,7 +26,9 @@ export function isGovernanceProposal(
   );
 }
 
-export function isGroupProposal(proposal: Pick<Proposal, 'kind'>): boolean {
+export function isGroupProposal(
+  proposal: Pick<ProposalDetails, 'kind'>
+): boolean {
   const { type } = proposal.kind;
 
   return (
@@ -33,7 +37,9 @@ export function isGroupProposal(proposal: Pick<Proposal, 'kind'>): boolean {
   );
 }
 
-export function isTreasuryProposal(proposal: Pick<Proposal, 'kind'>): boolean {
+export function isTreasuryProposal(
+  proposal: Pick<ProposalDetails, 'kind'>
+): boolean {
   const { type } = proposal.kind;
 
   return (

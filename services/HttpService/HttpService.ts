@@ -40,7 +40,6 @@ import {
   // ProposalVariant,
 } from 'types/proposal';
 import { DaoFeedItem } from 'types/dao';
-import { mapOpenSearchResults } from 'services/SearchService/mappers/search';
 
 interface Mapper {
   name: ApiMappers | string;
@@ -1135,13 +1134,6 @@ export class HttpService {
             responseConfig?.responseMapper?.params?.dao
           );
           break;
-        case API_MAPPERS.MAP_OPEN_SEARCH_RESULTS: {
-          response.data = mapOpenSearchResults(
-            responseConfig.params.query,
-            response.data
-          );
-          break;
-        }
         default:
           break;
       }

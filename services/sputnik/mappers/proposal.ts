@@ -10,6 +10,7 @@ import {
   ProposalActionData,
   DaoConfig,
   ProposalFeedItem,
+  ProposalDetails,
 } from 'types/proposal';
 import {
   DaoDTO,
@@ -147,6 +148,29 @@ export const mapProposalDTOToProposal = (
       ? new Date(Number(proposalDTO.updateTimestamp) / 1000000).toISOString()
       : null,
     actions: proposalDTO.actions,
+  };
+};
+
+export const mapProposalFeedItemResponseToProposalDetails = (
+  item: ProposalFeedItemResponse
+): ProposalDetails => {
+  const [description, , proposalVariant = ProposalVariant.ProposeDefault] =
+    item.description.split(DATA_SEPARATOR);
+
+  const config = get(item.dao, 'config');
+  const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
+
+  return {
+    daoId: item.daoId,
+    id: item.id,
+    description,
+    proposalVariant: proposalVariant as ProposalVariant,
+    type: item.type as ProposalType,
+    status: item.status,
+    kind: {
+      type: item.type as ProposalType,
+    },
+    flag: meta ? getAwsImageUrl(meta.flagCover) : '',
   };
 };
 

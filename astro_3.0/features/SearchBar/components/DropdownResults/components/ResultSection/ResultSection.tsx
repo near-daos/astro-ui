@@ -4,13 +4,13 @@ import isEmpty from 'lodash/isEmpty';
 import { useTranslation } from 'next-i18next';
 
 import { DaoFeedItem, Member } from 'types/dao';
-import { ProposalFeedItem } from 'types/proposal';
+import { ProposalDetails } from 'types/proposal';
 
 import styles from './ResultSection.module.scss';
 
 interface ResultSectionProps {
   title: string;
-  data: DaoFeedItem[] | ProposalFeedItem[] | Member[] | undefined;
+  data: DaoFeedItem[] | ProposalDetails[] | Member[] | undefined;
   onSeeAll: () => void;
   contentClassName?: string;
 }
