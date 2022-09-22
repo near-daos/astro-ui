@@ -294,22 +294,23 @@ class SputnikHttpServiceClass {
     accountId?: string
   ): Promise<ProposalFeedItem | null> {
     try {
-      const { data } = await this.httpService.get<
-        PaginationResponse<ProposalFeedItem[]>
-      >('/proposals', {
-        responseMapper: {
-          name: API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
-        },
-        queryRequest: {
-          name: API_QUERIES.GET_PROPOSAL_BY_ID,
-          params: {
-            proposalId,
-            accountId,
+      const { data } = await this.httpService.get<ProposalFeedItem>(
+        '/proposals',
+        {
+          responseMapper: {
+            name: API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
           },
-        },
-      });
+          queryRequest: {
+            name: API_QUERIES.GET_PROPOSAL_BY_ID,
+            params: {
+              proposalId,
+              accountId,
+            },
+          },
+        }
+      );
 
-      return data.data[0];
+      return data;
     } catch (error) {
       console.error(error);
 

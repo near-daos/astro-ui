@@ -290,17 +290,8 @@ export class HttpService {
               value: proposalId,
             });
 
-            queryString
-              .setLimit(1)
-              .setOffset(0)
-              .sortBy({
-                field: 'createdAt',
-                order: 'DESC',
-              })
-              .query();
-
-            request.url = `/proposals?${queryString.queryString}${
-              accountId ? `&accountId=${accountId}` : ''
+            request.url = `/proposals/${proposalId}${
+              accountId ? `?accountId=${accountId}` : ''
             }`;
           }
           break;
