@@ -20,7 +20,12 @@ import { useWalletContext } from 'context/WalletContext';
 
 interface SearchResultsContextProps {
   searchResults: SearchResultsData | null;
-  handleSearch: (query: string, size?: number) => void;
+  handleSearch: (
+    query: string,
+    size?: number,
+    field?: string,
+    index?: string
+  ) => void;
   handleClose: () => void;
   setSearchResults: (res: null) => void;
   loading: boolean;
@@ -57,7 +62,7 @@ export const SearchResults: FC = ({ children }) => {
   }, [useOpenSearch]);
 
   const [{ loading }, handleSearch] = useAsyncFn(
-    async (query, size) => {
+    async (query, size, field, index) => {
       if (cancelTokenRef.current) {
         cancelTokenRef.current?.cancel('Cancelled by new req');
       }
@@ -72,6 +77,8 @@ export const SearchResults: FC = ({ children }) => {
         cancelToken: source.token,
         accountId: accountId ?? '',
         size,
+        field,
+        index,
       });
 
       setSearchResults(res);

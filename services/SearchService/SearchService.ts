@@ -11,6 +11,7 @@ import { mapOpenSearchResponseToSearchResult } from 'services/SearchService/mapp
 import { DaoFeedItem } from 'types/dao';
 import { ProposalComment, ProposalDetails } from 'types/proposal';
 import { DraftProposalFeedItem } from 'types/draftProposal';
+import { mapIndexToResultKey } from 'services/SearchService/helpers';
 
 export class SearchService {
   private readonly httpService;
@@ -27,6 +28,7 @@ export class SearchService {
     query: string,
     index: SearchResponseIndex,
     size: number | undefined,
+    field: string | undefined,
     cancelToken: CancelToken | undefined
   ): Promise<AxiosResponse<OpenSearchResponse | null>> {
     return this.httpService.post<
@@ -36,8 +38,9 @@ export class SearchService {
       `/${index}/_search`,
       {
         query: {
-          multi_match: {
+          simple_query_string: {
             query,
+            fields: field ? [field] : [],
           },
         },
         size,
@@ -54,29 +57,70 @@ export class SearchService {
     }
 
     try {
+      if (params.index) {
+        const resRaw = await this.fetchResultsByIndex(
+          params.query,
+          params.index as SearchResponseIndex,
+          params.size,
+          params.field,
+          params.cancelToken
+        );
+
+        const res = mapOpenSearchResponseToSearchResult(
+          params.query,
+          params.index as SearchResponseIndex,
+          resRaw.data
+        );
+
+        const resultKey = mapIndexToResultKey(
+          params.index as SearchResponseIndex
+        );
+
+        return {
+          query: params.query,
+          daos: [],
+          proposals: [],
+          drafts: [],
+          comments: [],
+          members: [],
+          [resultKey]: res.data,
+          totals: {
+            daos: 0,
+            proposals: 0,
+            drafts: 0,
+            comments: 0,
+            [resultKey]: res.total,
+          },
+        };
+      }
+
       const [daos, proposals, drafts, comments] = await Promise.all([
         this.fetchResultsByIndex(
           params.query,
           SearchResponseIndex.DAO,
           params.size,
+          params.field,
           params.cancelToken
         ),
         this.fetchResultsByIndex(
           params.query,
           SearchResponseIndex.PROPOSAL,
           params.size,
+          params.field,
           params.cancelToken
         ),
         this.fetchResultsByIndex(
           params.query,
           SearchResponseIndex.DRAFT_PROPOSAL,
           params.size,
+          params.field,
           params.cancelToken
         ),
         this.fetchResultsByIndex(
           params.query,
           SearchResponseIndex.COMMENT,
           params.size,
+          params.field,
           params.cancelToken
         ),
       ]);

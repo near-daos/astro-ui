@@ -14,7 +14,6 @@ import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import { usePopper } from 'react-popper';
 import { useClickAway, useMount, useMountedState, useToggle } from 'react-use';
-import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 import { SEARCH_PAGE_URL } from 'constants/routing';
 
 import { useWindowResize } from 'hooks/useWindowResize';
@@ -24,6 +23,7 @@ import { useOnRouterChange } from 'hooks/useOnRouterChange';
 import { IconButton } from 'components/button/IconButton';
 import { DropdownResults } from 'astro_2.0/components/AppHeader/components/SearchBar/components/DropdownResults';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
+import { SearchHints } from 'astro_2.0/components/AppHeader/components/SearchBar/components/SearchHints';
 
 import styles from './SearchBar.module.scss';
 
@@ -64,7 +64,7 @@ export const SearchBar: FC<SearchBarProps> = ({
   const [value, setValue] = useState(
     searchResults?.query || (router.query.search as string) || ''
   );
-  const [showHint, toggleShowHint] = useToggle(false);
+  const [showHint] = useToggle(false);
 
   const setValueOnRouterChange = () => {
     if (isSearchPage) {
@@ -149,28 +149,6 @@ export const SearchBar: FC<SearchBarProps> = ({
     setExpanded(isDesktopResolution() || !!searchResults?.query);
   });
 
-  useDebounceEffect(
-    async ({ isInitialCall, depsHaveChanged }) => {
-      if (isInitialCall || !depsHaveChanged) {
-        return;
-      }
-
-      const query = value?.trim() ?? '';
-
-      if (expanded && query.length >= 3) {
-        toggleShowHint(false);
-        handleSearch(query, isSearchPage ? 3000 : 3);
-      } else if (expanded && query.length > 0 && query.length < 3) {
-        toggleShowHint(true);
-      } else if (expanded) {
-        toggleShowHint(false);
-        handleClose();
-      }
-    },
-    750,
-    [value, handleClose]
-  );
-
   useClickAway(ref, e => {
     if (!searchResults) {
       onSearchStateToggle(false);
@@ -189,6 +167,7 @@ export const SearchBar: FC<SearchBarProps> = ({
     handleClose();
     setValue('');
     onSearchStateToggle(false);
+    setFocused(false);
 
     if (isSearchPage) {
       router.back();
@@ -200,22 +179,30 @@ export const SearchBar: FC<SearchBarProps> = ({
       return;
     }
 
-    if (value.trim()) {
-      router.push(
-        { pathname: SEARCH_PAGE_URL, query: router.query },
-        undefined,
-        {
-          shallow: true,
-        }
-      );
-    } else {
-      handleCancel();
-    }
-  }, [handleCancel, isSearchPage, router, value]);
+    const [_index, _field, _input] = value.split(':');
+    const index = _index?.trim();
+    const field = _field?.trim();
+    const input = _input?.trim();
 
-  const handleChange = useCallback(e => {
-    setValue(e.target.value);
-  }, []);
+    if (index && field && input) {
+      handleSearch(input, isSearchPage ? 300 : 3, field, index);
+    } else if (index && field) {
+      handleSearch(field, isSearchPage ? 300 : 3, undefined, index);
+    } else if (index) {
+      handleSearch(index, isSearchPage ? 300 : 3);
+    }
+  }, [handleSearch, isSearchPage, value]);
+
+  const handleChange = useCallback(
+    e => {
+      if (!focused) {
+        setFocused(true);
+      }
+
+      setValue(e.target.value);
+    },
+    [focused]
+  );
 
   const handleKeys: KeyboardEventHandler<HTMLInputElement> = e => {
     if (e.key === 'Enter') {
@@ -251,7 +238,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 
     return ReactDOM.createPortal(
       <AnimatePresence>
-        {(showHint || showResults) && (
+        {(showHint || showResults || focused) && (
           <div
             id="astro_search-results"
             ref={setPopperElement}
@@ -268,6 +255,14 @@ export const SearchBar: FC<SearchBarProps> = ({
                   {t('header.search.minimalChars')}
                 </div>
               )}
+              <SearchHints
+                value={value}
+                visible={focused}
+                onSelect={(newValue: string) => {
+                  setValue(newValue);
+                  inputRef?.current?.focus();
+                }}
+              />
               {showResults && (
                 <DropdownResults
                   query={value}

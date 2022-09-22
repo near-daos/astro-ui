@@ -132,6 +132,8 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
       isEmpty(daos) &&
       isEmpty(proposals) &&
       isEmpty(members) &&
+      isEmpty(drafts) &&
+      isEmpty(comments) &&
       query !== ''
     ) {
       return <NoSearchResultsView query={query} />;
@@ -244,7 +246,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
     return (
       <ResultSection
         title={t('header.search.comments')}
-        data={drafts}
+        data={comments}
         onSeeAll={goToCommentsTabOnSearchPage}
         contentClassName={styles.proposalsContent}
         total={totals?.comments}

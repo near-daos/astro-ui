@@ -18,6 +18,8 @@ export type SearchParams = {
   cancelToken?: CancelToken;
   accountId?: string;
   size?: number;
+  field?: string;
+  index?: string;
 } & BaseParams;
 
 export enum SearchResponseIndex {

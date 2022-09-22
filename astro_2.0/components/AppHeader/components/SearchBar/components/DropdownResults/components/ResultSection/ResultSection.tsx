@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import { useTranslation } from 'next-i18next';
 
 import { DaoFeedItem, Member } from 'types/dao';
-import { ProposalDetails } from 'types/proposal';
+import { ProposalComment, ProposalDetails } from 'types/proposal';
 import { DraftProposalFeedItem } from 'types/draftProposal';
 
 import styles from './ResultSection.module.scss';
@@ -16,6 +16,7 @@ interface ResultSectionProps {
     | ProposalDetails[]
     | Member[]
     | DraftProposalFeedItem[]
+    | ProposalComment[]
     | undefined;
   onSeeAll: () => void;
   contentClassName?: string;
