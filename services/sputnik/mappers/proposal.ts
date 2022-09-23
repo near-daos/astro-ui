@@ -10,6 +10,7 @@ import {
   ProposalActionData,
   DaoConfig,
   ProposalFeedItem,
+  ProposalDetails,
 } from 'types/proposal';
 import {
   DaoDTO,
@@ -150,6 +151,29 @@ export const mapProposalDTOToProposal = (
   };
 };
 
+export const mapProposalFeedItemResponseToProposalDetails = (
+  item: ProposalFeedItemResponse
+): ProposalDetails => {
+  const [description, , proposalVariant = ProposalVariant.ProposeDefault] =
+    item.description.split(DATA_SEPARATOR);
+
+  const config = get(item.dao, 'config');
+  const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
+
+  return {
+    daoId: item.daoId,
+    id: item.id,
+    description,
+    proposalVariant: proposalVariant as ProposalVariant,
+    type: item.type as ProposalType,
+    status: item.status,
+    kind: {
+      type: item.type as ProposalType,
+    },
+    flag: meta ? getAwsImageUrl(meta.flagCover) : '',
+  };
+};
+
 export const mapProposalFeedItemResponseToProposalFeedItem = (
   proposalDTO: ProposalFeedItemResponse
 ): ProposalFeedItem => {
@@ -157,7 +181,7 @@ export const mapProposalFeedItemResponseToProposalFeedItem = (
     proposalDTO.description.split(DATA_SEPARATOR);
 
   const config = get(proposalDTO.dao, 'config');
-  const meta = config.metadata ? fromBase64ToMetadata(config.metadata) : null;
+  const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
 
   const votePeriodEnd = new Date(
     toMillis(proposalDTO.votePeriodEnd)
@@ -181,19 +205,19 @@ export const mapProposalFeedItemResponseToProposalFeedItem = (
     txHash: proposalDTO.transactionHash ?? '',
     createdAt: proposalDTO.createdAt,
     dao: {
-      id: proposalDTO.dao.id,
-      name: proposalDTO.dao.config.name ?? '',
+      id: proposalDTO.dao?.id,
+      name: proposalDTO.dao?.config.name ?? '',
       logo: meta?.flag
         ? getAwsImageUrl(meta.flag)
         : '/flags/defaultDaoFlag.png',
       flagCover: getAwsImageUrl(meta?.flagCover),
       flagLogo: getAwsImageUrl(meta?.flagLogo),
       legal: meta?.legal || {},
-      numberOfMembers: proposalDTO.dao.numberOfMembers,
-      policy: proposalDTO.dao.policy,
+      numberOfMembers: proposalDTO.dao?.numberOfMembers,
+      policy: proposalDTO.dao?.policy,
     },
     daoDetails: {
-      name: proposalDTO.dao.config.name ?? '',
+      name: proposalDTO.dao?.config.name ?? '',
       displayName: meta?.displayName || '',
       logo: meta?.flag
         ? getAwsImageUrl(meta.flag)

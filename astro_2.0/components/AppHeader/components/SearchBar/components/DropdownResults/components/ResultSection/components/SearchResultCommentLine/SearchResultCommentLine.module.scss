@@ -1,0 +1,19 @@
+.root {
+  cursor: pointer;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  height: 32px;
+  letter-spacing: 0;
+  line-height: 32px;
+  overflow: hidden;
+  padding: 0 16px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+
+  &:hover {
+    background-color: rgba(24, 177, 63, 0.05);
+  }
+}

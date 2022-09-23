@@ -1,0 +1,213 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  margin-bottom: 24px;
+  transition: box-shadow 0.2s ease-out;
+
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-14);
+  }
+}
+
+.card {
+  grid-template-areas:
+    'header header'
+    'letterHead proposal'
+    'infoPanel infoPanel';
+  grid-template-columns: 30px 1fr;
+  position: relative;
+  &::before {
+    background: var(--color-neutral-30);
+    content: '';
+    height: 1px;
+    left: 0;
+    position: absolute;
+    top: 36px;
+    width: 100%;
+    z-index: 1;
+    @include tablet-landscape {
+      content: none;
+    }
+  }
+}
+
+.letterhead {
+  align-items: flex-start;
+  border-radius: 8px 0 0 8px;
+  height: 100%;
+  justify-content: center;
+  padding-left: 0;
+  width: 30px;
+}
+
+.letterBackground {
+  height: 100%;
+  width: 30px;
+}
+
+.letterheadIcon {
+  display: flex;
+  height: 14px;
+  margin: 0;
+  width: 14px;
+}
+
+.letterheadIconWrapper {
+  height: 14px;
+  padding-top: 22px;
+  width: 14px;
+}
+
+.content {
+  background-color: var(--color-white);
+  border-radius: 0 8px 8px 0;
+  display: grid;
+  grid-row-gap: 10px;
+  grid-template-areas:
+    '. status'
+    'title title'
+    'description description';
+  grid-template-columns: 1fr 50px;
+  padding: 8px 8px 15px 12px;
+  @include tablet-landscape {
+    grid-row-gap: 10px;
+    grid-template-areas:
+      'title status'
+      'description description';
+    grid-template-columns: 1fr 150px;
+    padding: 16px;
+  }
+}
+
+.title {
+  @extend %title3;
+  grid-area: title;
+
+  @include tablet-landscape {
+    @include ellipse-text;
+  }
+}
+
+.description {
+  @extend %body3;
+  grid-area: description;
+}
+
+.icon {
+  color: var(--color-neutral-80);
+  display: flex;
+  flex-shrink: 0;
+  height: 24px;
+  margin-right: 4px;
+  width: 24px;
+}
+
+.linkToProposal {
+  flex-shrink: 1;
+}
+
+.linkToProposalIcon {
+  height: 20px;
+  width: 20px;
+  &:hover {
+    color: var(--color-primary-50);
+  }
+}
+
+.inputWrapper {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+  grid-area: title;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.status {
+  align-items: center;
+  color: var(--color-brand-black);
+  display: flex;
+  font-family: var(--font-family-primary);
+  font-size: 12px;
+  font-weight: 500;
+  grid-area: status;
+  justify-content: flex-start;
+  line-height: 12px;
+  white-space: nowrap;
+  @include tablet-landscape {
+    justify-content: flex-end;
+    line-height: 28px;
+  }
+  &::before {
+    border: 2px solid;
+    border-radius: 50%;
+    content: '';
+    display: block;
+    flex-shrink: 0;
+    height: 8px;
+    margin-right: 6px;
+    width: 8px;
+  }
+}
+
+.openStatus {
+  &::before {
+    border-color: var(--color-primary-50);
+  }
+}
+
+.closedStatus {
+  &::before {
+    border-color: var(--color-success-60);
+  }
+}
+
+.saveFlag {
+  display: flex;
+  grid-area: saveFlag;
+  justify-content: flex-end;
+  .icon {
+    margin: 0;
+  }
+}
+
+.actions {
+  display: flex;
+  grid-area: actions;
+  justify-content: flex-end;
+  left: unset;
+  //position: absolute;
+  //right: 12px;
+  //top: -36px;
+
+  @include tablet-landscape {
+    display: block;
+    grid-area: unset;
+    left: 100%;
+    position: absolute;
+    right: auto;
+    top: 0;
+  }
+}
+
+.checkbox {
+  color: var(--color-primary-50);
+  cursor: pointer;
+  transform: translateY(-1px);
+
+  @include tablet-landscape {
+    transform: translate(8px, 8px);
+  }
+}
+
+.actionIcon.actionIcon {
+  color: var(--color-neutral-85);
+  transform: translate(8px, -8px);
+
+  @include tablet-landscape {
+    transform: translate(0, -4px);
+  }
+}

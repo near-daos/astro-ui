@@ -13,8 +13,8 @@ interface Props {
   data: DraftProposalFeedItem;
   flag: string;
   daoId: string;
-  onSelect: (id: string) => void;
-  selectedList: string[];
+  onSelect?: (id: string) => void;
+  selectedList?: string[];
   disableEdit: boolean;
 }
 

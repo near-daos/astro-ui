@@ -435,3 +435,16 @@ export interface CustomFcTemplatePayload {
   actionsGas: string | number;
   token: string;
 }
+
+export interface ProposalDetails {
+  id: string;
+  daoId: string;
+  description: string;
+  proposalVariant: ProposalVariant;
+  type: ProposalType;
+  status: ProposalStatus;
+  kind: {
+    type: ProposalType;
+  };
+  flag: string;
+}

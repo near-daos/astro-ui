@@ -180,7 +180,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
           selectedList={selectedList}
           userPermissions={userPermissions}
           voteDetails={
-            proposal.dao.policy.defaultVotePolicy.ratio
+            proposal.dao.policy.defaultVotePolicy?.ratio
               ? getVoteDetails(
                   proposal.dao.numberOfMembers,
                   proposal.dao.policy.defaultVotePolicy,

@@ -31,6 +31,7 @@ export const API_MAPPERS = {
   MAP_PROPOSALS_OVERTIME_TO_CHART_DATA: 'mapProposalsOvertimeToChartData',
   MAP_OVERTIME_TO_CHART_DATA: 'mapOvertimeToChartData',
   MAP_DRAFT_TO_PROPOSAL_DRAFT: 'mapDraftToProposalDraft',
+  MAP_OPEN_SEARCH_RESULTS: 'mapOpenSearchResults',
 };
 
 export type ApiMappers = keyof typeof API_MAPPERS;
@@ -73,6 +74,7 @@ export const API_QUERIES = {
   UPDATE_NOTIFICATION_SETTINGS: 'updateNotificationsSettings',
   FIND_TRANSFER_PROPOSALS: 'findTransferProposals',
   ADD_AUTHORIZATION: 'addAuthorization',
+  OPEN_SEARCH_AUTHORIZATION: 'openSearchAuthorization',
 };
 
 export type ApiQueries = keyof typeof API_QUERIES;

@@ -96,15 +96,59 @@ $search-max-width: 768;
 }
 
 .hint {
-  @extend %caption2;
+  //@extend %caption1;
   background: var(--color-neutral-10);
   border-radius: 8px;
   box-shadow: 0 8.89583px 30px rgba(0, 0, 0, 0.14);
   color: var(--color-neutral-60);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
   max-height: 50vh;
   overflow: auto;
-  padding: 12px 24px;
+  padding: 8px 16px;
   width: 100%;
+
+  .hintTitle {
+    @extend %subtitle4;
+    color: var(--color-neutral-80);
+    margin: 8px 0;
+  }
+
+  .hintButton {
+    @extend %caption1;
+    height: 30px;
+    min-height: 30px;
+    padding: 4px;
+    text-align: left;
+  }
+
+  .hintButton:hover {
+    background-color: var(--color-neutral-20);
+  }
+}
+
+.legend {
+  border-top: 1px solid var(--color-neutral-40);
+  margin-top: 4px;
+  padding-top: 4px;
+  .legendTitle {
+    @extend %subtitle5;
+    padding-bottom: 8px;
+  }
+
+  .legendItem {
+    @extend %caption2;
+    align-items: center;
+    display: flex;
+  }
+
+  .legendItem > div:first-of-type {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    width: 18px;
+  }
 }
 
 .loader {

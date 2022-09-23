@@ -23,6 +23,7 @@ export type FilteredProposalsParams = {
 
 export type ProposalsListParams = {
   accountId?: string;
+  ids?: string[];
 } & ProposalsQueries &
   DaosParams &
   BaseParams;

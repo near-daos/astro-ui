@@ -8,8 +8,8 @@ import { useSearchResults } from 'features/search/search-results';
 import styles from './SearchResultProposalLine.module.scss';
 
 interface SearchResultProposalLineProps {
-  data: Pick<Proposal, 'description'>;
-  onClick: () => void;
+  data: Pick<Proposal, 'description' | 'daoId' | 'id'>;
+  onClick: (dao: string, proposalId: string) => void;
 }
 
 export const SearchResultProposalLine: VFC<SearchResultProposalLineProps> = ({
@@ -58,8 +58,8 @@ export const SearchResultProposalLine: VFC<SearchResultProposalLineProps> = ({
     <div
       tabIndex={0}
       role="button"
-      onClick={onClick}
-      onKeyPress={onClick}
+      onClick={() => onClick(data.daoId, data.id)}
+      onKeyPress={() => onClick(data.daoId, data.id)}
       className={styles.root}
     >
       {result.res}

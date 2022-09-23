@@ -16,6 +16,7 @@ jest.mock('react-text-truncate', () => {
 jest.mock('features/search/search-results/SearchResults', () => {
   return {
     useSearchResults: () => ({
+      handleSearch: jest.fn(),
       searchResults: {
         query: 'hello',
         daos: [

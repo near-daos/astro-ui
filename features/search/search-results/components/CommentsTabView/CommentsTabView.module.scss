@@ -1,0 +1,189 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 44px;
+
+  .statusFilterRadioRootSuccess {
+    --color-checkmark-active: var(--color-success-50);
+  }
+
+  .statusFilterRadioRootError {
+    --color-checkmark-active: var(--color-error-60);
+  }
+}
+
+.statusFilterWrapper {
+  @include wide-background;
+  background: var(--color-neutral-10);
+  display: flex;
+  justify-content: flex-end;
+  padding: 32px 0 12px;
+  position: sticky;
+  top: 48px;
+  z-index: 11;
+
+  @include tablet-landscape {
+    padding: 32px 0;
+    top: 64px;
+  }
+}
+
+.votingEnds {
+  @extend %body1;
+  align-self: center;
+  display: flex;
+  padding: 0;
+  text-transform: unset;
+
+  &:first-child {
+    margin-top: 40px;
+  }
+
+  .bold {
+    @extend %title3;
+  }
+
+  .icon {
+    transition: transform 0.5s;
+  }
+
+  .rotate {
+    transform: rotate(90deg);
+  }
+}
+
+.daoDivider {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  margin: 0 0 12px;
+  padding-left: 46px;
+  position: relative;
+
+  .daoLink {
+    align-items: center;
+    display: flex;
+  }
+
+  .flag {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100px;
+    left: -44px;
+    position: absolute;
+    width: 100px;
+  }
+
+  h3 {
+    width: fit-content;
+    word-break: normal;
+  }
+
+  .divider {
+    background: var(--color-primary-20);
+    flex: 1;
+    height: 1.5px;
+  }
+
+  button {
+    min-width: unset;
+    padding: 0;
+  }
+}
+
+.cardWrapper {
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 40px;
+  }
+}
+
+.collapseControl {
+  margin-bottom: 12px;
+}
+
+.toggle {
+  @extend %title5;
+  color: var(--color-primary);
+  text-align: right;
+  text-transform: capitalize;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .daoDivider {
+    gap: 12px;
+    margin: 12px 0;
+    h3 {
+      @include ellipse-text;
+    }
+    button {
+      min-width: unset;
+    }
+  }
+
+  .votingEnds {
+    &:first-child {
+      margin-top: 20px;
+    }
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
+  .root {
+    padding-top: 20px;
+  }
+}
+
+.typeRoot {
+  align-items: center;
+  color: var(--color-main-gray);
+  display: flex;
+  font-family: var(--font-family-secondary);
+  font-size: 14px;
+  line-height: 19px;
+  margin-left: auto;
+  max-width: 800px;
+  min-height: 40px;
+  padding: 0 27px 0 20px;
+}
+
+.typeLabel {
+  display: inline-block;
+  font-size: 14px;
+  margin: 0 148px 0 18px;
+}
+
+.checkboxRoot {
+  margin: 0 8px;
+
+  &:nth-of-type(1) {
+    margin-right: 18px;
+  }
+  &:nth-of-type(2) {
+    margin-right: 0;
+  }
+  &:nth-of-type(3) {
+    margin-right: 16px;
+  }
+}
+
+.listWrapper {
+  display: flex;
+  justify-content: space-between;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    flex-direction: column;
+    padding: 0;
+  }
+}
+
+.highlighterRoot {
+  width: 100%;
+}

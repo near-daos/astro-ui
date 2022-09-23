@@ -27,6 +27,11 @@ export const ViewVoteInOtherDao: VFC<ViewVoteInOtherDaoProps> = ({
 
   const { kind } = proposal;
   const { actions, receiverId } = kind as FunctionCallProposalType;
+
+  if (!actions || actions.length === 0) {
+    return null;
+  }
+
   const { id, action } = fromBase64ToObj(get(actions, '0.args')) || {};
 
   const getLabel = (field: string) =>

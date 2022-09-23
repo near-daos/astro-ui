@@ -725,6 +725,15 @@ export class HttpService {
               $and: [],
             };
 
+            // ids in the list
+            if (query.ids) {
+              search.$and?.push({
+                id: {
+                  $inL: query.ids,
+                },
+              });
+            }
+
             // specific DAO
             if (query.daoId) {
               search.$and?.push({
@@ -1007,6 +1016,19 @@ export class HttpService {
 
           request.headers = {
             'X-Authorization': `Bearer ${buff.toString('base64')}`,
+          };
+          break;
+        }
+        case API_QUERIES.OPEN_SEARCH_AUTHORIZATION: {
+          const { username, password } = requestCustom.queryRequest.params as {
+            username: string;
+            password: string;
+          };
+
+          const buff = Buffer.from(`${username}:${password}`);
+
+          request.headers = {
+            Authorization: `Basic ${buff.toString('base64')}`,
           };
           break;
         }
