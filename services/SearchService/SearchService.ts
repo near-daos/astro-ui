@@ -29,7 +29,8 @@ export class SearchService {
     index: SearchResponseIndex,
     size: number | undefined,
     field: string | undefined,
-    cancelToken: CancelToken | undefined
+    cancelToken: CancelToken | undefined,
+    from = 0
   ): Promise<AxiosResponse<OpenSearchResponse | null>> {
     return this.httpService.post<
       unknown,
@@ -44,6 +45,7 @@ export class SearchService {
           },
         },
         size,
+        from,
       },
       {
         cancelToken,
@@ -90,6 +92,11 @@ export class SearchService {
             drafts: 0,
             comments: 0,
             [resultKey]: res.total,
+          },
+          opts: {
+            query: params.query,
+            field: params.field,
+            index: params.index,
           },
         };
       }
@@ -162,7 +169,35 @@ export class SearchService {
           drafts: draftsRes.total,
           comments: commentsRes.total,
         },
+        opts: {
+          query: params.query,
+          field: params.field,
+          index: params.index,
+        },
       };
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  }
+
+  public async searchPaginated(
+    params: SearchParams & { from: number }
+  ): Promise<AxiosResponse<OpenSearchResponse | null> | null> {
+    if (!this.httpService) {
+      return null;
+    }
+
+    try {
+      return await this.fetchResultsByIndex(
+        params.query,
+        params.index as SearchResponseIndex,
+        params.size,
+        params.field,
+        params.cancelToken,
+        params.from
+      );
     } catch (error) {
       console.error(error);
 

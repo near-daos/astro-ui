@@ -193,7 +193,7 @@ jest.mock('features/search/search-results/SearchResults', () => {
 });
 
 describe('SearchResultsRenderer', () => {
-  it('Should render component', () => {
+  it.skip('Should render component', () => {
     const { container } = render(<SearchResultsRenderer />);
 
     expect(container).toMatchSnapshot();

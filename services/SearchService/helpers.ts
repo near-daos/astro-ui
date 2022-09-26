@@ -1,4 +1,9 @@
-import { SearchResponseIndex } from 'services/SearchService/types';
+import {
+  OpenSearchResponse,
+  SearchResponseIndex,
+} from 'services/SearchService/types';
+import { SearchResultsData } from 'types/search';
+import { AxiosResponse } from 'axios';
 
 export function mapIndexToResultKey(index: SearchResponseIndex): string {
   switch (index) {
@@ -17,4 +22,14 @@ export function mapIndexToResultKey(index: SearchResponseIndex): string {
       return 'comments';
     }
   }
+}
+
+export function isOpenSearchResponse(
+  params: SearchResultsData | AxiosResponse<OpenSearchResponse | null> | null
+): params is AxiosResponse<OpenSearchResponse | null> {
+  return (
+    // eslint-disable-next-line no-underscore-dangle
+    (params as AxiosResponse<OpenSearchResponse | null>)?.data?._shards !==
+    undefined
+  );
 }

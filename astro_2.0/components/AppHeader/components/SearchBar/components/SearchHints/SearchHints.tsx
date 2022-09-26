@@ -127,7 +127,7 @@ export const SearchHints: FC<Props> = ({ value, visible, onSelect }) => {
           </div>
           {LEGEND.map(item => {
             return (
-              <div className={styles.legendItem}>
+              <div key={item.char} className={styles.legendItem}>
                 <div>{item.char}</div>
                 <div>{item.desc}</div>
               </div>

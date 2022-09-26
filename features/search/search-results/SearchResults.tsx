@@ -29,6 +29,7 @@ interface SearchResultsContextProps {
   handleClose: () => void;
   setSearchResults: (res: null) => void;
   loading: boolean;
+  searchServiceInstance: SearchService | typeof SputnikHttpService;
 }
 
 const SearchResultsContext = createContext<SearchResultsContextProps>({
@@ -40,6 +41,7 @@ const SearchResultsContext = createContext<SearchResultsContextProps>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSearchResults: () => {},
   loading: false,
+  searchServiceInstance: new SearchService(),
 });
 
 export const useSearchResults = (): SearchResultsContextProps =>
@@ -98,6 +100,7 @@ export const SearchResults: FC = ({ children }) => {
         handleClose,
         setSearchResults,
         loading,
+        searchServiceInstance,
       }}
     >
       {children}

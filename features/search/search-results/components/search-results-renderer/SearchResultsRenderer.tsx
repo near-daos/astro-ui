@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useMount } from 'react-use';
 
 import Head from 'next/head';
 import { Tabs } from 'components/Tabs';
@@ -13,15 +12,7 @@ import { DraftsTabView } from 'features/search/search-results/components/DraftsT
 import styles from './search-results-renderer.module.scss';
 
 export const SearchResultsRenderer: FC = () => {
-  const { searchResults, handleSearch } = useSearchResults();
-
-  useMount(() => {
-    const query = searchResults?.query;
-
-    if (query) {
-      handleSearch(query, 3000);
-    }
-  });
+  const { searchResults } = useSearchResults();
 
   const TABS = [
     {

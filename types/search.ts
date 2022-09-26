@@ -15,4 +15,9 @@ export interface SearchResultsData {
     drafts: number;
     comments: number;
   };
+  opts: {
+    query: string;
+    field?: string;
+    index?: string;
+  };
 }
