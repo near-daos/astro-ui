@@ -13,14 +13,14 @@ import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { ProposalFilter } from 'astro_2.0/features/Proposals/components/ProposalFilter';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 
-import { ProposalDetailsCard } from 'features/search/search-results/components/proposals-tab-view/ProposalDetailsCard';
-
 import { useWalletContext } from 'context/WalletContext';
-import { ProposalDetails } from 'types/proposal';
+import { ProposalFeedItem } from 'types/proposal';
 
 import { SearchResponseIndex } from 'services/SearchService/types';
 import { isOpenSearchResponse } from 'services/SearchService/helpers';
 import { mapOpenSearchResponseToSearchResult } from 'services/SearchService/mappers/search';
+
+import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 
 import styles from './ProposalsTabView.module.scss';
 
@@ -40,7 +40,7 @@ export const ProposalsTabView: React.FC = () => {
   const { searchResults, searchServiceInstance } = useSearchResults();
   const { accountId } = useWalletContext();
   const isMounted = useMountedState();
-  const [data, setData] = useState<ProposalDetails[]>([]);
+  const [data, setData] = useState<ProposalFeedItem[]>([]);
 
   const cancelTokenRef = useRef<CancelTokenSource | null>(null);
 
@@ -95,7 +95,7 @@ export const ProposalsTabView: React.FC = () => {
         const newData = await search();
 
         if (isMounted()) {
-          setData(newData as ProposalDetails[]);
+          setData(newData as ProposalFeedItem[]);
         }
       } else if (isMounted()) {
         setData([]);
@@ -111,7 +111,7 @@ export const ProposalsTabView: React.FC = () => {
     const newData = await search(data);
 
     if (isMounted()) {
-      setData(newData as ProposalDetails[]);
+      setData(newData as ProposalFeedItem[]);
     }
   };
 
@@ -217,18 +217,14 @@ export const ProposalsTabView: React.FC = () => {
             hasMore={data.length < (searchResults?.totals?.proposals ?? 0)}
             loader={<h4 className={styles.loading}>Loading...</h4>}
             style={{ overflow: 'initial', width: '100%' }}
-            endMessage={
-              <p className={styles.loading}>
-                <b>{t('youHaveSeenItAll')}</b>
-              </p>
-            }
+            endMessage={<div />}
           >
             {filteredProposals?.length ? (
               <Highlighter className={styles.highlighterRoot}>
                 {filteredProposals.map(item => {
                   return (
                     <div className={styles.cardWrapper} key={item.id}>
-                      <ProposalDetailsCard data={item} />
+                      <ViewProposal proposal={item} showFlag />
                     </div>
                   );
                 })}

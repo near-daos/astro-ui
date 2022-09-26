@@ -49,6 +49,7 @@ import { ChangePermissionsContent } from 'astro_2.0/features/ViewProposal/compon
 import { UpdateGroupContent } from 'astro_2.0/features/CreateProposal/components/UpdateGroupContent';
 import { CreateDaoContent } from 'astro_2.0/features/ViewProposal/components/CreateDaoContent';
 import { Token } from 'types/token';
+import { getAllowedProposalsToVote } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 
 import { ViewVoteInOtherDao } from './components/CustomFunctionCallContent/components/ViewVoteInOtherDao';
 
@@ -1174,4 +1175,37 @@ export function getProposalUpdatedDate(
 
     return proposal.updatedAt;
   }
+}
+
+export function getProposalPermissions(
+  proposal: ProposalFeedItem,
+  accountId: string
+): {
+  canApprove: boolean;
+  canReject: boolean;
+  isCouncil: boolean;
+} {
+  const { dao, permissions } = proposal;
+
+  if (permissions) {
+    return {
+      ...permissions,
+    };
+  }
+
+  const isCouncil = !!dao.policy?.roles?.find(
+    item =>
+      item.name.toLowerCase() === 'council' &&
+      item.accountIds?.includes(accountId)
+  );
+
+  const allowedToVoteOn = getAllowedProposalsToVote(accountId, dao);
+
+  const isPermitted = allowedToVoteOn[proposal.kind.type];
+
+  return {
+    canApprove: isPermitted,
+    canReject: isPermitted,
+    isCouncil,
+  };
 }

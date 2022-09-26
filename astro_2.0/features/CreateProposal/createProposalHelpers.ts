@@ -119,7 +119,7 @@ export function getAllowedProposalsToCreate(
 
 export function getAllowedProposalsToVote(
   accountId: string | null | undefined,
-  dao: DAO | null
+  dao: Pick<DAO, 'policy'> | null
 ): ProposalPermissions {
   // Restrict create by default
   const result: getAllowedProposalsResultType = {
