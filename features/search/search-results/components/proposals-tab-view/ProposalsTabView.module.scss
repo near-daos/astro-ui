@@ -16,6 +16,10 @@
   }
 }
 
+.scrollContainer {
+  width: 100%;
+}
+
 .statusFilterWrapper {
   @include wide-background;
   background: var(--color-neutral-10);
@@ -176,6 +180,10 @@
 .listWrapper {
   display: flex;
   justify-content: space-between;
+
+  > div:last-of-type {
+    width: 100%;
+  }
 
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
     flex-direction: column;

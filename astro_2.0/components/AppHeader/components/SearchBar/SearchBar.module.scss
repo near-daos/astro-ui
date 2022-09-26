@@ -115,6 +115,12 @@ $search-max-width: 768;
     margin: 8px 0;
   }
 
+  .hintText {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+    margin: 8px 0;
+  }
+
   .hintButton {
     @extend %caption1;
     height: 30px;

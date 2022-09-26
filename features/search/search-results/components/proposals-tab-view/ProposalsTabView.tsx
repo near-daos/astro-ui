@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useUpdateEffect } from 'react-use';
+import { useAsyncFn, useMountedState, useUpdateEffect } from 'react-use';
 import { useTranslation } from 'next-i18next';
+import axios, { CancelTokenSource } from 'axios';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useFilteredProposalsData } from 'features/search/search-results/components/proposals-tab-view/helpers';
@@ -12,6 +14,13 @@ import { ProposalFilter } from 'astro_2.0/features/Proposals/components/Proposal
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 
 import { ProposalDetailsCard } from 'features/search/search-results/components/proposals-tab-view/ProposalDetailsCard';
+
+import { useWalletContext } from 'context/WalletContext';
+import { ProposalDetails } from 'types/proposal';
+
+import { SearchResponseIndex } from 'services/SearchService/types';
+import { isOpenSearchResponse } from 'services/SearchService/helpers';
+import { mapOpenSearchResponseToSearchResult } from 'services/SearchService/mappers/search';
 
 import styles from './ProposalsTabView.module.scss';
 
@@ -28,12 +37,87 @@ export const ProposalsTabView: React.FC = () => {
   const { query: queries } = useRouter();
   const { t } = useTranslation();
 
-  const { searchResults } = useSearchResults();
-  const { query, proposals } = searchResults || {};
+  const { searchResults, searchServiceInstance } = useSearchResults();
+  const { accountId } = useWalletContext();
+  const isMounted = useMountedState();
+  const [data, setData] = useState<ProposalDetails[]>([]);
+
+  const cancelTokenRef = useRef<CancelTokenSource | null>(null);
+
+  const [{ loading }, search] = useAsyncFn(
+    async (initialData?: typeof data) => {
+      const accumulatedListData = initialData || [];
+      const opts = searchResults?.opts;
+
+      if (!opts) {
+        return accumulatedListData;
+      }
+
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current?.cancel('Cancelled by new req');
+      }
+
+      const { CancelToken } = axios;
+      const source = CancelToken.source();
+
+      cancelTokenRef.current = source;
+
+      const res = await searchServiceInstance.searchPaginated({
+        query: opts.query,
+        size: 20,
+        field: opts.field,
+        accountId: accountId ?? '',
+        index: SearchResponseIndex.PROPOSAL,
+        cancelToken: source.token,
+        from: accumulatedListData.length || 0,
+      });
+
+      if (isOpenSearchResponse(res)) {
+        const newData = mapOpenSearchResponseToSearchResult(
+          opts.query,
+          SearchResponseIndex.PROPOSAL,
+          res.data
+        );
+
+        return [...accumulatedListData, ...newData.data];
+      }
+
+      return accumulatedListData;
+    },
+    [searchResults, accountId]
+  );
+
+  useEffect(() => {
+    (async () => {
+      const opts = searchResults?.opts;
+
+      if (opts?.query) {
+        const newData = await search();
+
+        if (isMounted()) {
+          setData(newData as ProposalDetails[]);
+        }
+      } else if (isMounted()) {
+        setData([]);
+      }
+    })();
+  }, [isMounted, search, searchResults?.opts]);
+
+  const loadMore = async () => {
+    if (loading) {
+      return;
+    }
+
+    const newData = await search(data);
+
+    if (isMounted()) {
+      setData(newData as ProposalDetails[]);
+    }
+  };
 
   const { filteredProposals, filter, setFilter, onFilterChange } =
     useFilteredProposalsData(
-      proposals || [],
+      data || [],
       queries.category
         ? {
             ...FILTER_DEFAULT_STATE,
@@ -126,23 +210,41 @@ export const ProposalsTabView: React.FC = () => {
             title="Choose a type"
           />
 
-          {filteredProposals?.length ? (
-            <Highlighter className={styles.highlighterRoot}>
-              {filteredProposals.map(item => {
-                return (
-                  <div className={styles.cardWrapper} key={item.id}>
-                    <ProposalDetailsCard data={item} />
-                  </div>
-                );
-              })}
-            </Highlighter>
-          ) : (
-            <NoResultsView
-              title={query ? `No results for ${query}` : 'No results'}
-              subTitle="We couldn't find anything matching your search. Try again with a
+          <InfiniteScroll
+            className={styles.scrollContainer}
+            dataLength={data.length}
+            next={loadMore}
+            hasMore={data.length < (searchResults?.totals?.proposals ?? 0)}
+            loader={<h4 className={styles.loading}>Loading...</h4>}
+            style={{ overflow: 'initial', width: '100%' }}
+            endMessage={
+              <p className={styles.loading}>
+                <b>{t('youHaveSeenItAll')}</b>
+              </p>
+            }
+          >
+            {filteredProposals?.length ? (
+              <Highlighter className={styles.highlighterRoot}>
+                {filteredProposals.map(item => {
+                  return (
+                    <div className={styles.cardWrapper} key={item.id}>
+                      <ProposalDetailsCard data={item} />
+                    </div>
+                  );
+                })}
+              </Highlighter>
+            ) : (
+              <NoResultsView
+                title={
+                  searchResults?.query
+                    ? `No results for ${searchResults?.query}`
+                    : 'No results'
+                }
+                subTitle="We couldn't find anything matching your search. Try again with a
         different term."
-            />
-          )}
+              />
+            )}
+          </InfiniteScroll>
         </div>
       </>
     </div>

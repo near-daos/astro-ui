@@ -160,6 +160,12 @@ class SputnikHttpServiceClass {
     }
   }
 
+  public async searchPaginated(
+    params: SearchParams
+  ): Promise<SearchResultsData | null> {
+    return this.search(params);
+  }
+
   /* Proposals API */
   public async getActiveProposals({
     daoIds,

@@ -192,5 +192,8 @@ export const mapSearchResultsDTOToDataObject = (
       comments: 0,
       drafts: 0,
     },
+    opts: {
+      query,
+    },
   };
 };
