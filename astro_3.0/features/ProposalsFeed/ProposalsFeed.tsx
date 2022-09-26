@@ -84,26 +84,39 @@ export const ProposalsFeed = ({
     async (initialData?: typeof proposalsData) => {
       let accumulatedListData = initialData || null;
 
-      const res = dao
-        ? await SputnikHttpService.getProposalsList({
+      let res;
+
+      if (dao) {
+        res = await SputnikHttpService.getProposalsList({
+          offset: accumulatedListData?.data.length || 0,
+          limit: LIST_LIMIT_DEFAULT,
+          daoId: dao?.id,
+          category: category || queries.category,
+          status,
+          accountId,
+        });
+      } else if (isMyFeed && accountId) {
+        res = await SputnikHttpService.getProposalsListByAccountId(
+          {
             offset: accumulatedListData?.data.length || 0,
             limit: LIST_LIMIT_DEFAULT,
-            daoId: dao?.id,
-            category: category || queries.category,
+            category: queries.category,
             status,
+            daoFilter: 'All DAOs',
             accountId,
-          })
-        : await SputnikHttpService.getProposalsListByAccountId(
-            {
-              offset: accumulatedListData?.data.length || 0,
-              limit: LIST_LIMIT_DEFAULT,
-              category: queries.category,
-              status,
-              daoFilter: 'All DAOs',
-              accountId,
-            },
-            isMyFeed && accountId ? accountId : undefined
-          );
+          },
+          accountId
+        );
+      } else {
+        res = await SputnikHttpService.getProposalsList({
+          offset: accumulatedListData?.data.length || 0,
+          limit: LIST_LIMIT_DEFAULT,
+          category: queries.category,
+          status,
+          daoFilter: 'All DAOs',
+          accountId,
+        });
+      }
 
       if (!res) {
         return null;
