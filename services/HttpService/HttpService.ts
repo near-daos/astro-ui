@@ -282,13 +282,9 @@ export class HttpService {
             const { proposalId, accountId } =
               requestCustom.queryRequest?.params || {};
 
-            const queryString = RequestQueryBuilder.create();
+            const queryString = new URLSearchParams();
 
-            queryString.setFilter({
-              field: 'id',
-              operator: '$eq',
-              value: proposalId,
-            });
+            queryString.append('id', proposalId);
 
             request.url = `/proposals/${proposalId}${
               accountId ? `?accountId=${accountId}` : ''
@@ -299,54 +295,22 @@ export class HttpService {
           {
             const { daoId } = requestCustom.queryRequest?.params || {};
 
-            const queryString = RequestQueryBuilder.create();
+            const queryString = new URLSearchParams();
 
-            const search: SFields | SConditionAND = {
-              $and: [
-                {
-                  daoId: {
-                    $eq: daoId,
-                  },
-                },
-              ],
-            };
+            queryString.append('daoId', daoId);
 
-            search.$and?.push({
-              status: {
-                $eq: 'InProgress',
-              },
-              votePeriodEnd: {
-                $gt: 'now',
-              },
-            });
+            queryString.append('active', 'true');
 
-            search.$and?.push({
-              $or: [
-                {
-                  kind: {
-                    $cont: ProposalType.ChangeConfig,
-                  },
-                },
-                {
-                  kind: {
-                    $cont: ProposalType.ChangePolicy,
-                  },
-                },
-              ],
-            });
+            queryString.append(
+              'type',
+              `${ProposalType.ChangeConfig},${ProposalType.ChangePolicy}`
+            );
 
-            queryString.search(search);
+            queryString.append('limit', `${LIST_LIMIT_DEFAULT}`);
+            queryString.append('offset', `${0}`);
+            queryString.append('sortBy', 'createdAt,DESC');
 
-            queryString
-              .setLimit(1000)
-              .setOffset(0)
-              .sortBy({
-                field: 'createdAt',
-                order: 'DESC',
-              })
-              .query();
-
-            request.url = `/proposals?${queryString.queryString}`;
+            request.url = `/proposals?${queryString}`;
           }
           break;
         case API_QUERIES.GET_JOINING_DAO_PROPOSALS:
@@ -536,36 +500,16 @@ export class HttpService {
           {
             const { limit, daoId, offset } =
               requestCustom.queryRequest?.params || {};
-            const queryString = RequestQueryBuilder.create();
+            const queryString = new URLSearchParams();
 
-            const search: SFields | SConditionAND = {
-              $and: [
-                {
-                  daoId: {
-                    $eq: daoId,
-                  },
-                },
-                {
-                  kind: {
-                    $cont: ProposalType.Vote,
-                    $excl: ProposalType.ChangePolicy,
-                  },
-                },
-              ],
-            };
+            queryString.append('daoId', daoId);
+            queryString.append('type', ProposalType.Vote);
 
-            queryString.search(search);
+            queryString.append('limit', limit ?? LIST_LIMIT_DEFAULT);
+            queryString.append('offset', offset ?? 0);
+            queryString.append('sortBy', 'createdAt,DESC');
 
-            queryString
-              .setLimit(limit ?? 1000)
-              .setOffset(offset ?? 0)
-              .sortBy({
-                field: 'createdAt',
-                order: 'DESC',
-              })
-              .query();
-
-            request.url = `/proposals?${queryString.queryString}`;
+            request.url = `/proposals?${queryString}`;
           }
           break;
         case API_QUERIES.GET_BOUNTY_CONTEXT_BY_ID:
@@ -713,230 +657,298 @@ export class HttpService {
 
           break;
         }
-        case API_QUERIES.GET_PROPOSALS_LIST:
-        case API_QUERIES.GET_PROPOSALS_LIST_BY_ACCOUNT_ID:
-          {
-            const { query, accountId } =
-              requestCustom.queryRequest?.params || {};
+        case API_QUERIES.GET_PROPOSALS_LIST_BY_ACCOUNT_ID: {
+          const { query, accountId } = requestCustom.queryRequest?.params || {};
 
-            const queryString = RequestQueryBuilder.create();
+          const queryString = RequestQueryBuilder.create();
 
-            const search: SFields | SConditionAND = {
-              $and: [],
-            };
+          const search: SFields | SConditionAND = {
+            $and: [],
+          };
 
-            // ids in the list
-            if (query.ids) {
-              search.$and?.push({
-                id: {
-                  $inL: query.ids,
-                },
-              });
-            }
-
-            // specific DAO
-            if (query.daoId) {
-              search.$and?.push({
-                daoId: {
-                  $eq: query.daoId,
-                },
-              });
-            }
-
-            // Proposers
-            if (query?.proposers) {
-              search.$and?.push({
-                proposer: {
-                  $in: query.proposers.split(','),
-                },
-              });
-            }
-
-            // Statuses
-            if (
-              query?.status === ProposalsFeedStatuses.Active ||
-              query?.status === ProposalsFeedStatuses.VoteNeeded
-            ) {
-              search.$and?.push({
-                status: {
-                  $eq: 'InProgress',
-                },
-                votePeriodEnd: {
-                  $gt: 'now',
-                },
-                voteStatus: {
-                  $eq: 'Active',
-                },
-              });
-            }
-
-            if (query?.status === ProposalsFeedStatuses.Approved) {
-              search.$and?.push({
-                status: {
-                  $eq: 'Approved',
-                },
-              });
-            }
-
-            if (query?.status === ProposalsFeedStatuses.Failed) {
-              search.$and?.push({
-                $or: [
-                  {
-                    status: {
-                      $in: ['Rejected', 'Expired', 'Moved', 'Removed'],
-                    },
-                  },
-                  {
-                    status: {
-                      $ne: 'Approved',
-                    },
-                    votePeriodEnd: {
-                      $lt: 'now',
-                    },
-                  },
-                ],
-              });
-            }
-
-            // Categories
-            if (query.category === ProposalCategories.Polls) {
-              search.$and?.push({
-                kind: {
-                  $cont: ProposalType.Vote,
-                  $excl: ProposalType.ChangePolicy,
-                },
-              });
-            }
-
-            if (query.category === ProposalCategories.Governance) {
-              search.$and?.push({
-                $or: [
-                  {
-                    kind: {
-                      $cont: ProposalType.ChangeConfig,
-                    },
-                  },
-                  {
-                    kind: {
-                      $cont: ProposalType.ChangePolicy,
-                    },
-                  },
-                ],
-              });
-            }
-
-            if (query.category === ProposalCategories.Bounties) {
-              search.$and?.push({
-                $or: [
-                  {
-                    kind: {
-                      $cont: ProposalType.AddBounty,
-                    },
-                  },
-                  {
-                    kind: {
-                      $cont: ProposalType.BountyDone,
-                    },
-                  },
-                ],
-              });
-            }
-
-            if (query.category === ProposalCategories.Financial) {
-              search.$and?.push({
-                kind: {
-                  $cont: ProposalType.Transfer,
-                },
-              });
-            }
-
-            if (query.category === ProposalCategories.FunctionCalls) {
-              search.$and?.push({
-                kind: {
-                  $cont: ProposalType.FunctionCall,
-                },
-              });
-            }
-
-            if (query.category === ProposalCategories.Members) {
-              search.$and?.push({
-                $or: [
-                  {
-                    kind: {
-                      $cont: ProposalType.AddMemberToRole,
-                    },
-                  },
-                  {
-                    kind: {
-                      $cont: ProposalType.RemoveMemberFromRole,
-                    },
-                  },
-                ],
-              });
-            }
-
-            // // Exclude proposals related to DAO upgrade as they are available only in settings upgrade wizard
-            // search.$and?.push({
-            //   $and: [
-            //     {
-            //       description: {
-            //         $exclL: ProposalVariant.ProposeUpgradeSelf,
-            //       },
-            //     },
-            //     {
-            //       description: {
-            //         $exclL: ProposalVariant.ProposeGetUpgradeCode,
-            //       },
-            //     },
-            //     {
-            //       description: {
-            //         $exclL: ProposalVariant.ProposeRemoveUpgradeCode,
-            //       },
-            //     },
-            //   ],
-            // });
-
-            if (search.$and?.length) {
-              queryString.search(search);
-            }
-
-            // DaosIds
-            if (query.daosIdsFilter) {
-              queryString.setFilter({
-                field: 'daoId',
-                operator: '$in',
-                value: query.daosIdsFilter,
-              });
-            }
-
-            queryString
-              .setLimit(query.limit ?? LIST_LIMIT_DEFAULT)
-              .setOffset(query.offset ?? 0)
-              .sortBy({
-                field: 'createdAt',
-                order: 'DESC',
-              })
-              .query();
-
-            if (accountId) {
-              request.url = `/proposals/account-proposals/${accountId}?${
-                queryString.queryString
-              }${query.accountId ? `&accountId=${query.accountId}` : ''}${
-                query?.status === ProposalsFeedStatuses.VoteNeeded
-                  ? '&filter=permissions.canApprove||$eq||true&filter=permissions.canReject||$eq||true&voted=false'
-                  : ''
-              }`;
-            } else {
-              request.url = `/proposals?${queryString.queryString}${
-                query.accountId ? `&accountId=${query.accountId}` : ''
-              }${
-                query?.status === ProposalsFeedStatuses.VoteNeeded
-                  ? '&filter=permissions.canApprove||$eq||true&filter=permissions.canReject||$eq||true&voted=false'
-                  : ''
-              }`;
-            }
+          // ids in the list
+          if (query.ids) {
+            search.$and?.push({
+              id: {
+                $inL: query.ids,
+              },
+            });
           }
+
+          // specific DAO
+          if (query.daoId) {
+            search.$and?.push({
+              daoId: {
+                $eq: query.daoId,
+              },
+            });
+          }
+
+          // Proposers
+          if (query?.proposers) {
+            search.$and?.push({
+              proposer: {
+                $in: query.proposers.split(','),
+              },
+            });
+          }
+
+          // Statuses
+          if (
+            query?.status === ProposalsFeedStatuses.Active ||
+            query?.status === ProposalsFeedStatuses.VoteNeeded
+          ) {
+            search.$and?.push({
+              status: {
+                $eq: 'InProgress',
+              },
+              votePeriodEnd: {
+                $gt: 'now',
+              },
+              voteStatus: {
+                $eq: 'Active',
+              },
+            });
+          }
+
+          if (query?.status === ProposalsFeedStatuses.Approved) {
+            search.$and?.push({
+              status: {
+                $eq: 'Approved',
+              },
+            });
+          }
+
+          if (query?.status === ProposalsFeedStatuses.Failed) {
+            search.$and?.push({
+              $or: [
+                {
+                  status: {
+                    $in: ['Rejected', 'Expired', 'Moved', 'Removed'],
+                  },
+                },
+                {
+                  status: {
+                    $ne: 'Approved',
+                  },
+                  votePeriodEnd: {
+                    $lt: 'now',
+                  },
+                },
+              ],
+            });
+          }
+
+          // Categories
+          if (query.category === ProposalCategories.Polls) {
+            search.$and?.push({
+              kind: {
+                $cont: ProposalType.Vote,
+                $excl: ProposalType.ChangePolicy,
+              },
+            });
+          }
+
+          if (query.category === ProposalCategories.Governance) {
+            search.$and?.push({
+              $or: [
+                {
+                  kind: {
+                    $cont: ProposalType.ChangeConfig,
+                  },
+                },
+                {
+                  kind: {
+                    $cont: ProposalType.ChangePolicy,
+                  },
+                },
+              ],
+            });
+          }
+
+          if (query.category === ProposalCategories.Bounties) {
+            search.$and?.push({
+              $or: [
+                {
+                  kind: {
+                    $cont: ProposalType.AddBounty,
+                  },
+                },
+                {
+                  kind: {
+                    $cont: ProposalType.BountyDone,
+                  },
+                },
+              ],
+            });
+          }
+
+          if (query.category === ProposalCategories.Financial) {
+            search.$and?.push({
+              kind: {
+                $cont: ProposalType.Transfer,
+              },
+            });
+          }
+
+          if (query.category === ProposalCategories.FunctionCalls) {
+            search.$and?.push({
+              kind: {
+                $cont: ProposalType.FunctionCall,
+              },
+            });
+          }
+
+          if (query.category === ProposalCategories.Members) {
+            search.$and?.push({
+              $or: [
+                {
+                  kind: {
+                    $cont: ProposalType.AddMemberToRole,
+                  },
+                },
+                {
+                  kind: {
+                    $cont: ProposalType.RemoveMemberFromRole,
+                  },
+                },
+              ],
+            });
+          }
+
+          if (search.$and?.length) {
+            queryString.search(search);
+          }
+
+          // DaosIds
+          if (query.daosIdsFilter) {
+            queryString.setFilter({
+              field: 'daoId',
+              operator: '$in',
+              value: query.daosIdsFilter,
+            });
+          }
+
+          queryString
+            .setLimit(query.limit ?? LIST_LIMIT_DEFAULT)
+            .setOffset(query.offset ?? 0)
+            .sortBy({
+              field: 'createdAt',
+              order: 'DESC',
+            })
+            .query();
+
+          if (accountId) {
+            request.url = `/proposals/account-proposals/${accountId}?${
+              queryString.queryString
+            }${query.accountId ? `&accountId=${query.accountId}` : ''}${
+              query?.status === ProposalsFeedStatuses.VoteNeeded
+                ? '&filter=permissions.canApprove||$eq||true&filter=permissions.canReject||$eq||true&voted=false'
+                : ''
+            }`;
+          } else {
+            request.url = `/proposals?${queryString.queryString}${
+              query.accountId ? `&accountId=${query.accountId}` : ''
+            }${
+              query?.status === ProposalsFeedStatuses.VoteNeeded
+                ? '&filter=permissions.canApprove||$eq||true&filter=permissions.canReject||$eq||true&voted=false'
+                : ''
+            }`;
+          }
+
           break;
+        }
+        case API_QUERIES.GET_PROPOSALS_LIST: {
+          const { query } = requestCustom.queryRequest?.params || {};
+
+          const queryString = new URLSearchParams();
+
+          // ids in the list
+          if (query.ids) {
+            queryString.append('id', query.ids.join(','));
+          }
+
+          // specific DAO
+          if (query.daoId) {
+            queryString.append('daoId', query.daoId);
+          }
+
+          // Proposers
+          if (query?.proposers) {
+            queryString.append('proposer', query.proposers);
+          }
+
+          // Statuses
+          if (query?.status === ProposalsFeedStatuses.VoteNeeded) {
+            queryString.append('active', 'true');
+            queryString.append('voted', 'false');
+          }
+
+          if (query?.status === ProposalsFeedStatuses.Active) {
+            queryString.append('active', 'true');
+          }
+
+          if (query?.status === ProposalsFeedStatuses.Approved) {
+            queryString.append('status', 'Approved');
+          }
+
+          if (query?.status === ProposalsFeedStatuses.Failed) {
+            queryString.append('failed', 'true');
+          }
+
+          // Categories
+          if (query.category === ProposalCategories.Polls) {
+            queryString.append('type', ProposalType.Vote);
+          }
+
+          if (query.category === ProposalCategories.Governance) {
+            queryString.append(
+              'type',
+              `${ProposalType.ChangeConfig},${ProposalType.ChangePolicy}`
+            );
+          }
+
+          if (query.category === ProposalCategories.Bounties) {
+            queryString.append(
+              'type',
+              `${ProposalType.AddBounty},${ProposalType.BountyDone}`
+            );
+          }
+
+          if (query.category === ProposalCategories.Financial) {
+            queryString.append('type', `${ProposalType.Transfer}`);
+          }
+
+          if (query.category === ProposalCategories.FunctionCalls) {
+            queryString.append('type', `${ProposalType.FunctionCall}`);
+          }
+
+          if (query.category === ProposalCategories.Members) {
+            queryString.append(
+              'type',
+              `${ProposalType.AddMemberToRole},${ProposalType.AddMemberToRole}`
+            );
+          }
+
+          // DaosIds
+          if (query.daosIdsFilter) {
+            queryString.append('daoId', query.daosIdsFilter.join(','));
+          }
+
+          queryString.append('limit', query.limit ?? LIST_LIMIT_DEFAULT);
+          queryString.append('offset', query.offset ?? 0);
+          queryString.append('sortBy', 'createdAt,DESC');
+
+          request.url = `/proposals?${queryString}${
+            query.accountId ? `&accountId=${query.accountId}` : ''
+          }${
+            query?.status === ProposalsFeedStatuses.VoteNeeded
+              ? '&filter=permissions.canApprove||$eq||true&filter=permissions.canReject||$eq||true&voted=false'
+              : ''
+          }`;
+
+          break;
+        }
         case API_QUERIES.FIND_TRANSFER_PROPOSALS: {
           const { daoId, targetDaoId } =
             requestCustom.queryRequest?.params || {};

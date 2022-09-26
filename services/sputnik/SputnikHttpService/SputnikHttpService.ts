@@ -344,6 +344,7 @@ class SputnikHttpServiceClass {
     }
   }
 
+  // Deprecated
   public async getFilteredProposals(
     filter: FilteredProposalsParams,
     accountDaos?: DaoFeedItem[]
@@ -373,6 +374,7 @@ class SputnikHttpServiceClass {
     }
   }
 
+  // Deprecated
   public async getProposals({
     daoId,
     offset = 0,
@@ -456,6 +458,7 @@ class SputnikHttpServiceClass {
     }
   }
 
+  // Deprecated
   public async getPolls({
     daoId,
     offset = 0,
