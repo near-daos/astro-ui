@@ -41,7 +41,7 @@ const SearchResultsContext = createContext<SearchResultsContextProps>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSearchResults: () => {},
   loading: false,
-  searchServiceInstance: new SearchService(),
+  searchServiceInstance: SputnikHttpService,
 });
 
 export const useSearchResults = (): SearchResultsContextProps =>

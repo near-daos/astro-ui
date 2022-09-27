@@ -29,6 +29,8 @@ import { DropdownResults } from 'astro_2.0/components/AppHeader/components/Searc
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { SearchHints } from 'astro_2.0/components/AppHeader/components/SearchBar/components/SearchHints';
 
+import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
+
 import styles from './SearchBar.module.scss';
 
 export interface SearchBarProps {
@@ -63,7 +65,7 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
   const [value, setValue] = useState(
     searchResults?.query || (router.query.search as string) || ''
   );
-  const [showHint] = useToggle(false);
+  const [showHint, toggleHint] = useToggle(false);
 
   const setValueOnRouterChange = () => {
     if (isSearchPage) {
@@ -138,23 +140,19 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
   }, [handleClose, router, isSearchPage, onSearchStateToggle]);
 
   const handleSubmit = useCallback(() => {
-    if (isSearchPage) {
-      return;
-    }
-
     const [_index, _field, _input] = value.split(':');
     const index = _index?.trim();
     const field = _field?.trim();
     const input = _input?.trim();
 
     if (index && field && input) {
-      handleSearch(input, isSearchPage ? 300 : 3, field, index);
+      handleSearch(input, 3, field, index);
     } else if (index && field) {
-      handleSearch(field, isSearchPage ? 300 : 3, undefined, index);
+      handleSearch(field, 3, undefined, index);
     } else if (index) {
-      handleSearch(index, isSearchPage ? 300 : 3);
+      handleSearch(index, 3);
     }
-  }, [handleSearch, isSearchPage, value]);
+  }, [handleSearch, value]);
 
   const handleChange = useCallback(
     e => {
@@ -176,6 +174,31 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
       handleCancel();
     }
   };
+
+  useDebounceEffect(
+    async ({ isInitialCall, depsHaveChanged }) => {
+      if (isInitialCall || !depsHaveChanged) {
+        return;
+      }
+
+      const query = value?.trim() ?? '';
+
+      if (query.length >= 3 && query[query.length - 1] !== ':') {
+        if (showHint) {
+          toggleHint(false);
+        }
+
+        handleSubmit();
+      } else if (query.length >= 1 && query.length < 3 && focused) {
+        toggleHint(true);
+      } else {
+        toggleHint(false);
+        handleClose();
+      }
+    },
+    750,
+    [value, handleClose, focused, showHint]
+  );
 
   const openSearch = useCallback(() => {
     onSearchStateToggle(true);
@@ -215,7 +238,9 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
             >
               {showHint && (
                 <div className={styles.hint}>
-                  {t('header.search.minimalChars')}
+                  <span className={styles.hintText}>
+                    {t('header.search.minimalChars')}
+                  </span>
                 </div>
               )}
               <SearchHints
