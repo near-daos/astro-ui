@@ -18,6 +18,7 @@ import { getVoteDetails } from 'features/vote-policy/helpers';
 import {
   getContentNode,
   getInitialFormValuesFromDraft,
+  getProposalPermissions,
   getProposalUpdatedDate,
   isSaveTemplateActionAvailable,
 } from 'astro_2.0/features/ViewProposal/helpers';
@@ -66,7 +67,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   const { accountId } = useWalletContext();
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
   const [commentsCount, setCommentsCount] = useState(proposal?.commentsCount);
-  const isCouncilUser = proposal?.permissions?.isCouncil ?? false;
+  // const isCouncilUser = proposal?.permissions?.isCouncil ?? false;
   const showOptionalControl = isSaveTemplateActionAvailable(
     proposal,
     accountId
@@ -97,7 +98,12 @@ export const ViewProposal: FC<ViewProposalProps> = ({
 
   const contentNode = getContentNode(proposal);
 
-  const { canApprove, canReject } = proposal.permissions;
+  // const { canApprove, canReject } = proposal.permissions;
+
+  const { canApprove, canReject, isCouncil } = getProposalPermissions(
+    proposal,
+    accountId
+  );
 
   const voted =
     proposal.votes[accountId] === 'Yes' ||
@@ -206,7 +212,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
               <ProposalComments
                 contextId={proposal.id}
                 contextType="Proposal"
-                isCouncilUser={isCouncilUser}
+                isCouncilUser={isCouncil}
                 isCommentsAllowed
                 updateCommentsCount={setCommentsCount}
               />

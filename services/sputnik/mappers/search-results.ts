@@ -11,7 +11,7 @@ import {
   MemberStats,
 } from './dao';
 import {
-  mapProposalFeedItemResponseToProposalDetails,
+  mapProposalFeedItemResponseToProposalFeedItem,
   ProposalFeedItemResponse,
 } from './proposal';
 
@@ -175,7 +175,7 @@ export const mapSearchResultsDTOToDataObject = (
 
   const daos = mapDaoFeedItemResponseToDaoFeedItemList(daosResults);
   const proposals = proposalsResults.map(
-    mapProposalFeedItemResponseToProposalDetails
+    mapProposalFeedItemResponseToProposalFeedItem
   );
   const members = membersResults.map(mapMemberDTOToMember);
 

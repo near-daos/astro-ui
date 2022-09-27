@@ -24,6 +24,8 @@ import { ChartDataElement } from 'components/AreaChartRenderer/types';
 import { CommonOverTime } from 'types/stats';
 import { PaginationResponse } from 'types/api';
 
+import { DaoPolicy } from 'services/sputnik/types/policy';
+
 import { getAwsImageUrl } from './utils/getAwsImageUrl';
 
 export type ProposalDTO = {
@@ -357,15 +359,7 @@ export type ProposalFeedItemResponse = {
     id: string;
     config: DaoConfig;
     numberOfMembers: number;
-    policy: {
-      daoId: string;
-      defaultVotePolicy: {
-        weightKind: string;
-        kind: string;
-        ratio: number[];
-        quorum: string;
-      };
-    };
+    policy: DaoPolicy;
   };
   actions: ProposalActionData[];
   commentsCount: number;

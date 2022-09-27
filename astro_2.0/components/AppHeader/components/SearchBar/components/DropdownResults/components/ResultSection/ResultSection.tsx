@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import { useTranslation } from 'next-i18next';
 
 import { DaoFeedItem, Member } from 'types/dao';
-import { ProposalComment, ProposalDetails } from 'types/proposal';
+import { ProposalComment, ProposalFeedItem } from 'types/proposal';
 import { DraftProposalFeedItem } from 'types/draftProposal';
 
 import styles from './ResultSection.module.scss';
@@ -13,7 +13,7 @@ interface ResultSectionProps {
   title: string;
   data:
     | DaoFeedItem[]
-    | ProposalDetails[]
+    | ProposalFeedItem[]
     | Member[]
     | DraftProposalFeedItem[]
     | ProposalComment[]

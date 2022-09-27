@@ -9,7 +9,7 @@ import { configService } from 'services/ConfigService';
 import { AxiosResponse, CancelToken } from 'axios';
 import { mapOpenSearchResponseToSearchResult } from 'services/SearchService/mappers/search';
 import { DaoFeedItem } from 'types/dao';
-import { ProposalComment, ProposalDetails } from 'types/proposal';
+import { ProposalComment, ProposalFeedItem } from 'types/proposal';
 import { DraftProposalFeedItem } from 'types/draftProposal';
 import { mapIndexToResultKey } from 'services/SearchService/helpers';
 
@@ -159,7 +159,7 @@ export class SearchService {
       return {
         query: params.query,
         daos: daosRes.data as DaoFeedItem[],
-        proposals: proposalsRes.data as ProposalDetails[],
+        proposals: proposalsRes.data as ProposalFeedItem[],
         drafts: draftsRes.data as DraftProposalFeedItem[],
         comments: commentsRes.data as ProposalComment[],
         members: [],
