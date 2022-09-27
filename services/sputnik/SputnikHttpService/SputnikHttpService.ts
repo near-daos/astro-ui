@@ -167,6 +167,7 @@ class SputnikHttpServiceClass {
   }
 
   /* Proposals API */
+  // Deprecated
   public async getActiveProposals({
     daoIds,
     offset = 0,

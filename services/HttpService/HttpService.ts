@@ -202,24 +202,14 @@ export class HttpService {
             const { daoIds, limit, offset } =
               requestCustom.queryRequest?.params || {};
 
-            const queryString = RequestQueryBuilder.create()
-              .setFilter({
-                field: 'daoId',
-                operator: '$in',
-                value: daoIds,
-              })
-              .setFilter({
-                field: 'status',
-                operator: '$eq',
-                value: 'InProgress',
-              })
-              .setLimit(limit)
-              .setOffset(offset)
-              .sortBy({
-                field: 'createdAt',
-                order: 'DESC',
-              })
-              .query();
+            const queryString = new URLSearchParams();
+
+            queryString.append('dao', daoIds.join(','));
+            queryString.append('active', 'true');
+
+            queryString.append('limit', limit || `${LIST_LIMIT_DEFAULT}`);
+            queryString.append('offset', offset || `${0}`);
+            queryString.append('sortBy', 'createdAt,DESC');
 
             request.url = `/proposals?${queryString}`;
           }
@@ -228,15 +218,13 @@ export class HttpService {
           {
             const { accountId } = requestCustom.queryRequest?.params || {};
 
-            const queryString = RequestQueryBuilder.create()
-              .setFilter({
-                field: 'proposer',
-                operator: '$eq',
-                value: accountId,
-              })
-              .setLimit(500)
-              .setOffset(0)
-              .query();
+            const queryString = new URLSearchParams();
+
+            queryString.append('proposer', accountId);
+
+            queryString.append('limit', `${LIST_LIMIT_DEFAULT}`);
+            queryString.append('offset', `${0}`);
+            queryString.append('sortBy', 'createdAt,DESC');
 
             request.url = `/proposals?${queryString}`;
           }
@@ -245,34 +233,16 @@ export class HttpService {
           const { proposers, accountId, daoId } =
             requestCustom.queryRequest?.params || {};
 
-          const queryString = RequestQueryBuilder.create();
+          const queryString = new URLSearchParams();
 
-          const search: SFields | SConditionAND = {
-            $and: [
-              {
-                daoId: {
-                  $eq: daoId,
-                },
-              },
-              {
-                proposer: {
-                  $starts: proposers,
-                },
-              },
-            ],
-          };
+          queryString.append('dao', daoId);
+          queryString.append('proposer', `${proposers}`);
 
-          queryString
-            .search(search)
-            .setLimit(1000)
-            .setOffset(0)
-            .sortBy({
-              field: 'createdAt',
-              order: 'DESC',
-            })
-            .query();
+          queryString.append('limit', `${LIST_LIMIT_DEFAULT}`);
+          queryString.append('offset', `${0}`);
+          queryString.append('sortBy', 'createdAt,DESC');
 
-          request.url = `/proposals?${queryString.queryString}${
+          request.url = `/proposals?${queryString}${
             accountId ? `&accountId=${accountId}` : ''
           }`;
           break;
@@ -297,7 +267,7 @@ export class HttpService {
 
             const queryString = new URLSearchParams();
 
-            queryString.append('daoId', daoId);
+            queryString.append('dao', daoId);
 
             queryString.append('active', 'true');
 
@@ -502,7 +472,7 @@ export class HttpService {
               requestCustom.queryRequest?.params || {};
             const queryString = new URLSearchParams();
 
-            queryString.append('daoId', daoId);
+            queryString.append('dao', daoId);
             queryString.append('type', ProposalType.Vote);
 
             queryString.append('limit', limit ?? LIST_LIMIT_DEFAULT);
@@ -870,7 +840,7 @@ export class HttpService {
 
           // specific DAO
           if (query.daoId) {
-            queryString.append('daoId', query.daoId);
+            queryString.append('dao', query.daoId);
           }
 
           // Proposers
@@ -932,7 +902,7 @@ export class HttpService {
 
           // DaosIds
           if (query.daosIdsFilter) {
-            queryString.append('daoId', query.daosIdsFilter.join(','));
+            queryString.append('dao', query.daosIdsFilter.join(','));
           }
 
           queryString.append('limit', query.limit ?? LIST_LIMIT_DEFAULT);
