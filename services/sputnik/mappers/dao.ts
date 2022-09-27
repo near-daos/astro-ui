@@ -5,7 +5,6 @@ import {
   DAO,
   DaoFeedItem,
   DaoSubscription,
-  DaoVotePolicy,
   RolesRequest,
   VotePolicyRequest,
 } from 'types/dao';
@@ -16,18 +15,9 @@ import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 import { fromBase64ToObj } from 'utils/fromBase64ToObj';
 
-import { getAwsImageUrl } from './utils/getAwsImageUrl';
+import { DaoPolicy } from 'services/sputnik/types/policy';
 
-export type DaoPolicy = {
-  createdAt: string;
-  daoId: string;
-  proposalBond: string;
-  bountyBond: string;
-  proposalPeriod: string;
-  bountyForgivenessPeriod: string;
-  defaultVotePolicy: DaoVotePolicy;
-  roles: DaoRole[];
-};
+import { getAwsImageUrl } from './utils/getAwsImageUrl';
 
 type DaoConfig = {
   name: string;

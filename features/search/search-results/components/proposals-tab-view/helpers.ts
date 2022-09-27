@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 
-import { ProposalDetails } from 'types/proposal';
+import { ProposalFeedItem } from 'types/proposal';
 
 import { Indexed, ProposalByDao } from 'types/memberHome';
 
@@ -37,7 +37,7 @@ interface SearchFilter {
 
 export interface FilteredProposalsData {
   filteredProposalsData: FilteredData;
-  filteredProposals: ProposalDetails[];
+  filteredProposals: ProposalFeedItem[];
   filter: SearchFilter;
   onFilterChange: (
     name: FilterName,
@@ -47,7 +47,7 @@ export interface FilteredProposalsData {
 }
 
 export const useFilteredProposalsData = (
-  proposals: ProposalDetails[],
+  proposals: ProposalFeedItem[],
   initialFilter?: SearchFilter
 ): FilteredProposalsData => {
   const router = useRouter();

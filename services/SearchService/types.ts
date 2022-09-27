@@ -1,5 +1,10 @@
 import { CancelToken } from 'axios';
-import { ProposalComment, ProposalType } from 'types/proposal';
+import {
+  AddBountyRequest,
+  FunctionCallAction,
+  ProposalComment,
+  ProposalType,
+} from 'types/proposal';
 import { DraftProposalFeedItem } from 'types/draftProposal';
 import { SearchResultsData } from 'types/search';
 
@@ -57,6 +62,7 @@ export interface DaoIndex {
   totalProposalCount: number;
   totalSupply: string;
   transactionHash: string;
+  policy: string;
 }
 
 export interface ProposalIndex {
@@ -85,6 +91,19 @@ export interface ProposalIndex {
   votePeriodEnd: string;
   voteStatus: 'Active';
   votes: string;
+
+  // type specifics
+  bounty: AddBountyRequest;
+  policy: string;
+  config: { metadata: string; name: string; purpose: string };
+  memberId: string;
+  role: string;
+  actions: FunctionCallAction[];
+  stakingId: string;
+  hash: string;
+  methodName: string;
+  bountyId: string;
+  completeDate: string;
 }
 
 /* eslint-disable camelcase */
