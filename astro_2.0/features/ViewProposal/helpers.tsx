@@ -563,20 +563,18 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
               );
 
               return (
-                <>
-                  <CustomFunctionCallContent
-                    token="NEAR"
-                    smartContractAddress={kind.receiverId}
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={i}
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    methodName={data.methodName}
-                    json={JSON.stringify(json, null, 2)}
-                    deposit={data.deposit}
-                    isLastItem={i === kind.actions.length - 1}
-                  />
-                </>
+                <CustomFunctionCallContent
+                  token="NEAR"
+                  smartContractAddress={kind.receiverId}
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={i}
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  methodName={data.methodName}
+                  json={JSON.stringify(json, null, 2)}
+                  deposit={data.deposit}
+                  isLastItem={i === kind.actions.length - 1}
+                />
               );
             });
 

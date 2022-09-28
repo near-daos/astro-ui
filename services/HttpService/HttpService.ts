@@ -209,7 +209,8 @@ export class HttpService {
 
             queryString.append('limit', limit || `${LIST_LIMIT_DEFAULT}`);
             queryString.append('offset', offset || `${0}`);
-            queryString.append('sortBy', 'createdAt,DESC');
+            queryString.append('orderBy', 'createdAt');
+            queryString.append('order', 'DESC');
 
             request.url = `/proposals?${queryString}`;
           }
@@ -224,7 +225,8 @@ export class HttpService {
 
             queryString.append('limit', `${LIST_LIMIT_DEFAULT}`);
             queryString.append('offset', `${0}`);
-            queryString.append('sortBy', 'createdAt,DESC');
+            queryString.append('orderBy', 'createdAt');
+            queryString.append('order', 'DESC');
 
             request.url = `/proposals?${queryString}`;
           }
@@ -240,7 +242,8 @@ export class HttpService {
 
           queryString.append('limit', `${LIST_LIMIT_DEFAULT}`);
           queryString.append('offset', `${0}`);
-          queryString.append('sortBy', 'createdAt,DESC');
+          queryString.append('orderBy', 'createdAt');
+          queryString.append('order', 'DESC');
 
           request.url = `/proposals?${queryString}${
             accountId ? `&accountId=${accountId}` : ''
@@ -278,7 +281,8 @@ export class HttpService {
 
             queryString.append('limit', `${LIST_LIMIT_DEFAULT}`);
             queryString.append('offset', `${0}`);
-            queryString.append('sortBy', 'createdAt,DESC');
+            queryString.append('orderBy', 'createdAt');
+            queryString.append('order', 'DESC');
 
             request.url = `/proposals?${queryString}`;
           }
@@ -477,7 +481,8 @@ export class HttpService {
 
             queryString.append('limit', limit ?? LIST_LIMIT_DEFAULT);
             queryString.append('offset', offset ?? 0);
-            queryString.append('sortBy', 'createdAt,DESC');
+            queryString.append('orderBy', 'createdAt');
+            queryString.append('order', 'DESC');
 
             request.url = `/proposals?${queryString}`;
           }
@@ -907,7 +912,8 @@ export class HttpService {
 
           queryString.append('limit', query.limit ?? LIST_LIMIT_DEFAULT);
           queryString.append('offset', query.offset ?? 0);
-          queryString.append('sortBy', 'createdAt,DESC');
+          queryString.append('orderBy', 'createdAt');
+          queryString.append('order', 'DESC');
 
           request.url = `/proposals?${queryString}${
             query.accountId ? `&accountId=${query.accountId}` : ''

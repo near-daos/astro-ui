@@ -21,7 +21,7 @@ export const useSortMembers = ({
           group === 'all' ||
           item.groups
             .map(grp => grp.toLowerCase())
-            .includes((group as string).replace('-', ' ').toLowerCase())
+            .includes((group as string).toLowerCase())
       )
       .sort((a, b) => {
         let sortField = '';
