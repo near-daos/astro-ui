@@ -4,6 +4,7 @@ import { useAsyncFn, useMountedState, useUpdateEffect } from 'react-use';
 import { useTranslation } from 'next-i18next';
 import axios, { CancelTokenSource } from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useFilteredProposalsData } from 'features/search/search-results/components/proposals-tab-view/helpers';
@@ -36,6 +37,7 @@ const FILTER_DEFAULT_STATE = {
 export const ProposalsTabView: React.FC = () => {
   const { query: queries } = useRouter();
   const { t } = useTranslation();
+  const { useOpenSearch } = useFlags();
 
   const { searchResults, searchServiceInstance } = useSearchResults();
   const { accountId } = useWalletContext();
@@ -91,6 +93,12 @@ export const ProposalsTabView: React.FC = () => {
     (async () => {
       const opts = searchResults?.opts;
 
+      if (!useOpenSearch) {
+        setData(searchResults?.proposals as ProposalFeedItem[]);
+
+        return;
+      }
+
       if (opts?.query) {
         const newData = await search();
 
@@ -101,7 +109,13 @@ export const ProposalsTabView: React.FC = () => {
         setData([]);
       }
     })();
-  }, [isMounted, search, searchResults?.opts]);
+  }, [
+    isMounted,
+    search,
+    searchResults?.opts,
+    searchResults?.proposals,
+    useOpenSearch,
+  ]);
 
   const loadMore = async () => {
     if (loading) {
@@ -150,6 +164,20 @@ export const ProposalsTabView: React.FC = () => {
       treasury: true,
     });
   }, [queries.category]);
+
+  if (!data) {
+    return (
+      <NoResultsView
+        title={
+          searchResults?.query
+            ? `No results for ${searchResults?.query}`
+            : 'No results'
+        }
+        subTitle="We couldn't find anything matching your search. Try again with a
+        different term."
+      />
+    );
+  }
 
   return (
     <div className={styles.root}>

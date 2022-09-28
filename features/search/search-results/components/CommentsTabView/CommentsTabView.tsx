@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTranslation } from 'next-i18next';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
@@ -18,6 +19,7 @@ import styles from './CommentsTabView.module.scss';
 
 export const CommentsTabView: React.FC = () => {
   const { t } = useTranslation();
+  const { useOpenSearch } = useFlags();
   const { searchResults, searchServiceInstance } = useSearchResults();
   const { accountId } = useWalletContext();
   const isMounted = useMountedState();
@@ -72,6 +74,10 @@ export const CommentsTabView: React.FC = () => {
     (async () => {
       const opts = searchResults?.opts;
 
+      if (!useOpenSearch) {
+        return;
+      }
+
       if (opts?.query) {
         const newData = await search();
 
@@ -82,7 +88,7 @@ export const CommentsTabView: React.FC = () => {
         setData([]);
       }
     })();
-  }, [isMounted, search, searchResults?.opts]);
+  }, [isMounted, search, searchResults?.opts, useOpenSearch]);
 
   const loadMore = async () => {
     if (loading) {

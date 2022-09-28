@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+import { useFlags } from 'launchdarkly-react-client-sdk';
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
@@ -21,6 +21,7 @@ import styles from './DraftsTabView.module.scss';
 
 export const DraftsTabView: React.FC = () => {
   const { t } = useTranslation();
+  const { useOpenSearch } = useFlags();
   const { searchResults, searchServiceInstance } = useSearchResults();
   const { accountId } = useWalletContext();
   const isMounted = useMountedState();
@@ -75,6 +76,10 @@ export const DraftsTabView: React.FC = () => {
     (async () => {
       const opts = searchResults?.opts;
 
+      if (!useOpenSearch) {
+        return;
+      }
+
       if (opts?.query) {
         const newData = await search();
 
@@ -85,7 +90,7 @@ export const DraftsTabView: React.FC = () => {
         setData([]);
       }
     })();
-  }, [isMounted, search, searchResults?.opts]);
+  }, [isMounted, search, searchResults?.opts, useOpenSearch]);
 
   const loadMore = async () => {
     if (loading) {
@@ -110,6 +115,20 @@ export const DraftsTabView: React.FC = () => {
       />
     );
   };
+
+  if (!data) {
+    return (
+      <NoResultsView
+        title={
+          searchResults?.query
+            ? `No results for ${searchResults?.query}`
+            : 'No results'
+        }
+        subTitle="We couldn't find anything matching your search. Try again with a
+        different term."
+      />
+    );
+  }
 
   return (
     <div className={styles.root}>

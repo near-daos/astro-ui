@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
@@ -20,6 +21,7 @@ import styles from './dao-tab-view.module.scss';
 
 export const DaosTabView = (): JSX.Element => {
   const { t } = useTranslation();
+  const { useOpenSearch } = useFlags();
   const { searchResults, searchServiceInstance } = useSearchResults();
   const { accountId } = useWalletContext();
   const isMounted = useMountedState();
@@ -74,6 +76,12 @@ export const DaosTabView = (): JSX.Element => {
     (async () => {
       const opts = searchResults?.opts;
 
+      if (!useOpenSearch) {
+        setData(searchResults?.daos as DaoFeedItem[]);
+
+        return;
+      }
+
       if (opts?.query) {
         const newData = await search();
 
@@ -84,7 +92,7 @@ export const DaosTabView = (): JSX.Element => {
         setData([]);
       }
     })();
-  }, [isMounted, search, searchResults?.opts]);
+  }, [isMounted, search, searchResults, searchResults?.opts, useOpenSearch]);
 
   const loadMore = async () => {
     if (loading) {
@@ -98,7 +106,7 @@ export const DaosTabView = (): JSX.Element => {
     }
   };
 
-  if (!data.length && !loading) {
+  if (!data?.length && !loading) {
     return (
       <NoResultsView
         title={
