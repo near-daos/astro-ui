@@ -94,6 +94,7 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
     referenceElement,
     popperElement,
     {
+      strategy: 'fixed',
       placement: 'bottom-start',
       modifiers: [
         {

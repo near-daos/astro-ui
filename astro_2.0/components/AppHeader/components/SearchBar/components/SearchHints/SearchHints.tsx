@@ -40,9 +40,9 @@ function getSuggestionLabel(item: keyof typeof INDEX) {
     case 'dao': {
       return 'DAOs';
     }
-    case 'comment': {
-      return 'Comments';
-    }
+    // case 'comment': {
+    //   return 'Comments';
+    // }
     case 'proposal': {
       return 'Proposals';
     }

@@ -41,6 +41,8 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
   const DRAFTS_TAB_INDEX = 3;
   const COMMENTS_TAB_INDEX = 4;
 
+  const hideComments = true;
+
   const { accountId } = useWalletContext();
   const { t } = useTranslation('common');
 
@@ -91,6 +93,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
 
   const goToDraft = useCallback(
     (dao: string, draft: string) => {
+      closeSearch();
       router.push(
         {
           pathname: DRAFT_PAGE_URL,
@@ -105,11 +108,12 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
         }
       );
     },
-    [router]
+    [closeSearch, router]
   );
 
   const goToProposal = useCallback(
     (dao: string, proposal: string) => {
+      closeSearch();
       router.push(
         {
           pathname: SINGLE_PROPOSAL_PAGE_URL,
@@ -124,7 +128,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
         }
       );
     },
-    [router]
+    [closeSearch, router]
   );
 
   function renderNoResults() {
@@ -133,6 +137,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
       isEmpty(proposals) &&
       isEmpty(members) &&
       isEmpty(drafts) &&
+      !hideComments &&
       isEmpty(comments) &&
       query !== ''
     ) {
@@ -223,7 +228,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
 
     return (
       <ResultSection
-        title={t('header.search.draftProposals')}
+        title={t('header.search.drafts')}
         data={drafts}
         onSeeAll={goToDraftsTabOnSearchPage}
         contentClassName={styles.proposalsContent}
@@ -241,6 +246,10 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
   }
 
   function renderComments() {
+    if (hideComments) {
+      return null;
+    }
+
     const itemsToRender = getThreeFirstResults(comments);
 
     return (
