@@ -2,7 +2,6 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 import { APP_CONFIG } from 'config/fetchConfig';
-// import { TYPE_FORM_FEEDBACK } from 'constants/integrations';
 
 export default class MyDocument extends Document {
   render(): JSX.Element {
@@ -24,6 +23,7 @@ export default class MyDocument extends Document {
           />
           {/* eslint-disable-next-line @next/next/no-sync-scripts */}
           <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" />
+          <script>window.APP_CONFIG = {};</script>
         </Head>
         <body>
           <Main />
