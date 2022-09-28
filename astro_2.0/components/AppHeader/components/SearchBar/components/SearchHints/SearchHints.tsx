@@ -35,8 +35,28 @@ const LEGEND = [
   },
 ];
 
+function getSuggestionLabel(item: keyof typeof INDEX) {
+  switch (item) {
+    case 'dao': {
+      return 'DAOs';
+    }
+    case 'comment': {
+      return 'Comments';
+    }
+    case 'proposal': {
+      return 'Proposals';
+    }
+    case 'draftproposal': {
+      return 'Draft proposals';
+    }
+    default: {
+      return '';
+    }
+  }
+}
+
 export const SearchHints: FC<Props> = ({ value, visible, onSelect }) => {
-  if (typeof document === 'undefined' || !visible) {
+  if (typeof document === 'undefined' || !visible || value === undefined) {
     return null;
   }
 
@@ -64,7 +84,7 @@ export const SearchHints: FC<Props> = ({ value, visible, onSelect }) => {
               onSelect(`${item}:`);
             }}
           >
-            {item}
+            {getSuggestionLabel(item as keyof typeof INDEX)}
           </Button>
         );
       });

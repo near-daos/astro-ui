@@ -6,6 +6,7 @@ import React, {
   MutableRefObject,
   KeyboardEventHandler,
 } from 'react';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 import { useTranslation } from 'next-i18next';
 import ReactDOM from 'react-dom';
 import cn from 'classnames';
@@ -44,6 +45,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 }) => {
   const router = useRouter();
   const isMounted = useMountedState();
+  const { useOpenSearch } = useFlags();
   const POPUP_LEFT_MARGIN = 20;
   const POPUP_RIGHT_MARGIN = 20;
   const isSearchPage = router.pathname.includes(SEARCH_PAGE_URL);
@@ -276,14 +278,16 @@ export const SearchBar: FC<SearchBarProps> = ({
                   </span>
                 </div>
               )}
-              <SearchHints
-                value={value}
-                visible={focused}
-                onSelect={(newValue: string) => {
-                  setValue(newValue);
-                  inputRef?.current?.focus();
-                }}
-              />
+              {useOpenSearch && (
+                <SearchHints
+                  value={value}
+                  visible={focused}
+                  onSelect={(newValue: string) => {
+                    setValue(newValue);
+                    inputRef?.current?.focus();
+                  }}
+                />
+              )}
               {showResults && (
                 <DropdownResults
                   query={value}
