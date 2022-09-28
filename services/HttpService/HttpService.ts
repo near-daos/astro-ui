@@ -1063,14 +1063,14 @@ export class HttpService {
           );
           break;
         case API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM:
-          response.data = {
-            ...response.data,
-            data: response.data.data
-              ? response.data.data.map(
+          response.data = response.data.data
+            ? {
+                ...response.data,
+                data: response.data.data.map(
                   mapProposalFeedItemResponseToProposalFeedItem
-                )
-              : mapProposalFeedItemResponseToProposalFeedItem(response.data),
-          };
+                ),
+              }
+            : mapProposalFeedItemResponseToProposalFeedItem(response.data);
           break;
         case API_MAPPERS.MAP_SUBSCRIPTIONS_DTOS_TO_DAO_SUBSCRIPTIONS:
           response.data = mapSubscriptionsDTOsToDaoSubscriptions(response.data);
