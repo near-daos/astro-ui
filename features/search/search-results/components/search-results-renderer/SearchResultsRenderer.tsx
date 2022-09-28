@@ -6,7 +6,7 @@ import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { DaosTabView } from 'features/search/search-results/components/daos-tab-view';
 import { ProposalsTabView } from 'features/search/search-results/components/proposals-tab-view';
 import { MembersTabView } from 'features/search/search-results/components/MembersTabView';
-import { CommentsTabView } from 'features/search/search-results/components/CommentsTabView';
+// import { CommentsTabView } from 'features/search/search-results/components/CommentsTabView';
 import { DraftsTabView } from 'features/search/search-results/components/DraftsTabView';
 
 import styles from './search-results-renderer.module.scss';
@@ -45,14 +45,14 @@ export const SearchResultsRenderer: FC = () => {
       content: <DraftsTabView />,
       className: styles.tabsListItem,
     },
-    {
-      id: 4,
-      label: `Comments (${
-        searchResults?.totals?.comments ?? searchResults?.comments?.length ?? 0
-      })`,
-      content: <CommentsTabView />,
-      className: styles.tabsListItem,
-    },
+    // {
+    //   id: 4,
+    //   label: `Comments (${
+    //     searchResults?.totals?.comments ?? searchResults?.comments?.length ?? 0
+    //   })`,
+    //   content: <CommentsTabView />,
+    //   className: styles.tabsListItem,
+    // },
   ];
 
   return (
