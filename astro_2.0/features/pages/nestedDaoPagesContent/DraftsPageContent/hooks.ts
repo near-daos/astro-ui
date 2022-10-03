@@ -12,6 +12,14 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 type PageData = PaginationResponse<DraftProposalFeedItem[]>;
 
+const defaultData: PageData = {
+  data: [],
+  total: 0,
+  page: 0,
+  count: 0,
+  pageCount: 0,
+};
+
 export function useDraftsPageData(daoId: string): {
   loading: boolean;
   loadMore: () => void;
@@ -27,7 +35,7 @@ export function useDraftsPageData(daoId: string): {
   const { query } = router;
   const { sort, category, state, view } = query;
 
-  const [data, setData] = useState<PageData | null>(null);
+  const [data, setData] = useState<PageData | null>(defaultData);
 
   const [{ loading }, fetchData] = useAsyncFn(
     async (_initialData?: PageData | null, search?: string) => {
@@ -49,7 +57,7 @@ export function useDraftsPageData(daoId: string): {
       });
 
       if (!res) {
-        return null;
+        return defaultData;
       }
 
       accumulatedListData = {
@@ -66,7 +74,7 @@ export function useDraftsPageData(daoId: string): {
     async searchInput => {
       const newData = await fetchData(null, searchInput);
 
-      if (isMounted()) {
+      if (isMounted() && newData?.data) {
         setData(newData);
       }
 
@@ -80,7 +88,7 @@ export function useDraftsPageData(daoId: string): {
   const handleReset = useCallback(async () => {
     const newData = await fetchData();
 
-    if (isMounted()) {
+    if (isMounted() && newData?.data) {
       setData(newData);
     }
   }, [fetchData, isMounted]);
@@ -93,7 +101,7 @@ export function useDraftsPageData(daoId: string): {
 
       const newData = await fetchData();
 
-      if (isMounted()) {
+      if (isMounted() && newData?.data) {
         setData(newData);
       }
 
@@ -110,7 +118,7 @@ export function useDraftsPageData(daoId: string): {
 
     const newData = await fetchData(data);
 
-    if (isMounted()) {
+    if (isMounted() && newData?.data) {
       setData(newData);
     }
   };
