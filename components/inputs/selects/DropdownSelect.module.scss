@@ -33,11 +33,17 @@
   flex: 1 0 40%;
   padding: 6.5px 6px;
   user-select: none;
+  width: 100%;
 
   .container {
     align-items: center;
     display: flex;
     justify-content: space-between;
+  }
+
+  .selected {
+    overflow: hidden;
+    width: 100%;
   }
 
   .selectedMeasure {
