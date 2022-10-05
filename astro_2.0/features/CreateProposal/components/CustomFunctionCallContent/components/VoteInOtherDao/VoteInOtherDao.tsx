@@ -63,9 +63,9 @@ export const VoteInOtherDao: VFC<VoteInOtherDaoProps> = ({ dao }) => {
       setValue('vote', '');
       setShowLoader(true);
 
-      SputnikHttpService.getProposalsListByAccountId({
+      SputnikHttpService.getProposalsList({
         offset: 0,
-        limit: 100,
+        limit: 50,
         category: ProposalCategories.All,
         status: ProposalsFeedStatuses.Active,
         daoId: selectedDao,
