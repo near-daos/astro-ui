@@ -252,6 +252,7 @@ export const ManageGroups: React.FC<Props> = ({
             variant="tertiary"
             className={styles.createGroup}
             onClick={handleCreateNewGroup}
+            disabled={disableNewProposal}
           >
             <Icon name="buttonAddGroup" />
             Create new group
@@ -295,6 +296,7 @@ export const ManageGroups: React.FC<Props> = ({
             onChange={handleUpdateGroup}
             onReset={handleResetGroupUpdates}
             onDelete={handleDeleteGroup}
+            disabled={disableNewProposal}
           />
         )}
       </div>

@@ -108,3 +108,8 @@
   height: 14px;
   width: 14px;
 }
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
