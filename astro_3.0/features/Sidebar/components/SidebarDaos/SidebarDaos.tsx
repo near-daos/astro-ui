@@ -4,11 +4,13 @@ import cn from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Tooltip from 'react-tooltip';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { SputnikHttpService } from 'services/sputnik';
 import { useWalletContext } from 'context/WalletContext';
 import { SidebarMarker } from 'astro_3.0/features/Sidebar/components/SidebarMarker';
 import { SINGLE_DAO_PAGE } from 'constants/routing';
+import { OpenSearchApiService } from 'services/SearchService';
 
 import { getDaoAvatar } from 'astro_3.0/features/Sidebar/helpers';
 
@@ -17,13 +19,16 @@ import styles from './SidebarDaos.module.scss';
 export const SidebarDaos: FC = () => {
   const router = useRouter();
   const { accountId } = useWalletContext();
+  const { useOpenSearchDataApi } = useFlags();
 
   const { value: daos } = useAsync(async () => {
     if (!accountId) {
       return null;
     }
 
-    return SputnikHttpService.getAccountDaos(accountId);
+    return useOpenSearchDataApi
+      ? OpenSearchApiService.instance.getAccountDaos(accountId)
+      : SputnikHttpService.getAccountDaos(accountId);
   }, [accountId]);
 
   useEffect(() => {

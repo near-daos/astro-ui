@@ -27,23 +27,23 @@ function getSortOptions(t: TFunction) {
   return [
     {
       label: t('allDAOsFilter.mostActive'),
-      value: 'totalProposalCount,DESC',
+      value: 'totalProposalCount:DESC',
     },
     {
       label: t('allDAOsFilter.newest'),
-      value: 'createdAt,DESC',
+      value: 'createdAt:DESC',
     },
     {
       label: t('allDAOsFilter.oldest'),
-      value: 'createdAt,ASC',
+      value: 'createdAt:ASC',
     },
     {
       label: t('allDAOsFilter.biggestFunds'),
-      value: 'totalDaoFunds,DESC',
+      value: 'totalDaoFunds:DESC',
     },
     {
       label: t('allDAOsFilter.numberOfMembers'),
-      value: 'numberOfMembers,DESC',
+      value: 'numberOfMembers:DESC',
     },
   ];
 }
@@ -81,10 +81,7 @@ const AllDaosPage: Page<BrowseAllDaosProps> = ({
         offset: initData ? initData.data.length : 0,
         limit: 20,
         sort,
-        filter:
-          view === 'active'
-            ? 'status||$eq||Active'
-            : 'status||$in||Active,Inactive',
+        filter: view === 'active' ? 'Active' : 'Active Inactive',
       });
 
       accumulatedListData = {

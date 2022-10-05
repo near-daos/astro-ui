@@ -7,6 +7,7 @@ import {
 } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 import { ProposalType } from 'types/proposal';
 import { getClient } from 'utils/launchdarkly-server-client';
+import { OpenSearchApiService } from 'services/SearchService';
 
 interface GetDaoListProps {
   sort?: string;
@@ -14,6 +15,39 @@ interface GetDaoListProps {
   limit?: number;
   filter?: string;
   createdBy?: string;
+}
+
+export async function getDaosListFromOpenSearch({
+  sort,
+  offset,
+  limit,
+  filter,
+}: GetDaoListProps): Promise<{
+  daos: DaoFeedItem[];
+  total: number;
+}> {
+  const response = await OpenSearchApiService.instance.getDaoList({
+    sort,
+    offset,
+    limit,
+    filter,
+  });
+
+  if (!response) {
+    return {
+      daos: [],
+      total: 0,
+    };
+  }
+
+  return {
+    daos: response.data.map(rec => ({
+      ...rec,
+      council: rec.council || null,
+      isCouncil: rec.isCouncil || false,
+    })),
+    total: response.total,
+  };
 }
 
 export async function getDaosList({
