@@ -25,6 +25,7 @@ import { DATA_SEPARATOR } from 'constants/common';
 import { SINGLE_BOUNTY_PAGE_URL } from 'constants/routing';
 
 import { AddBountyRequest, ProposalType } from 'types/proposal';
+import { UserPermissions } from 'types/context';
 
 import styles from './BountyCard.module.scss';
 
@@ -38,6 +39,7 @@ export interface BountyCardProps {
   daoId: string;
   completeHandler: () => void;
   contextId: string;
+  permissions?: UserPermissions;
 }
 
 function getTimestampLabel(createdAt: string) {
@@ -56,6 +58,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   commentsCount,
   activeInfoView,
   completeHandler,
+  permissions,
 }) => {
   const router = useRouter();
   const { t } = useTranslation();
@@ -174,25 +177,27 @@ export const BountyCard: React.FC<BountyCardProps> = ({
             </div>
           )}
 
-          {hasInProgressClaims && !hasPendingProposals && (
-            <div className={cn(styles.controlItem, styles.btnWrapper)}>
-              <Button
-                variant="black"
-                size="block"
-                onClick={e => {
-                  e.stopPropagation();
-                  completeHandler();
-                }}
-                className={cn(
-                  styles.complete,
-                  styles.button,
-                  styles.completeBtn
-                )}
-              >
-                Complete
-              </Button>
-            </div>
-          )}
+          {hasInProgressClaims &&
+            !hasPendingProposals &&
+            permissions?.allowedProposalsToCreate[ProposalType.BountyDone] && (
+              <div className={cn(styles.controlItem, styles.btnWrapper)}>
+                <Button
+                  variant="black"
+                  size="block"
+                  onClick={e => {
+                    e.stopPropagation();
+                    completeHandler();
+                  }}
+                  className={cn(
+                    styles.complete,
+                    styles.button,
+                    styles.completeBtn
+                  )}
+                >
+                  Complete
+                </Button>
+              </div>
+            )}
         </>
       );
     }

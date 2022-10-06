@@ -15,6 +15,7 @@ import { InfoPanel } from 'astro_2.0/features/ViewBounty/components/InfoPanel/In
 import { ClaimsInfo } from 'astro_2.0/features/ViewBounty/components/ClaimsInfo';
 import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments';
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
+import { DaoContext } from 'types/context';
 
 export interface ViewBountyProps {
   contextId: string;
@@ -26,6 +27,7 @@ export interface ViewBountyProps {
   className?: string;
   toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
   initialInfoPanelView: string | null;
+  daoContext?: DaoContext;
 }
 
 const variants = {
@@ -43,6 +45,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
   className,
   toggleCreateProposal,
   initialInfoPanelView,
+  daoContext,
 }) => {
   const [showInfoPanel, setShowInfoPanel] = useState<string | null>(
     initialInfoPanelView
@@ -92,6 +95,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
             content={<ErrorBoundary>{contentNode}</ErrorBoundary>}
             commentsCount={commentsNum}
             toggleInfoPanel={setShowInfoPanel}
+            permissions={daoContext?.userPermissions}
           />
         }
         infoPanelNode={
