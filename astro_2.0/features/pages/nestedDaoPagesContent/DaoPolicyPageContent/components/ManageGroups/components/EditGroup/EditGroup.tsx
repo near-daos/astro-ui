@@ -34,6 +34,7 @@ type Props = {
   onReset: () => void;
   onDelete: () => void;
   groupsNames: string[];
+  disabled: boolean;
 };
 
 type TLocalGroup = Omit<TGroup, 'votePolicy'> & {
@@ -54,6 +55,7 @@ export const EditGroup: React.FC<Props> = ({
   onReset,
   onDelete,
   groupsNames,
+  disabled,
 }) => {
   const { t } = useTranslation();
   const { nearService } = useWalletContext();
@@ -221,6 +223,7 @@ export const EditGroup: React.FC<Props> = ({
 
             <Button
               variant="transparent"
+              disabled={disabled}
               className={styles.headerEdit}
               onClick={() => {
                 setNewGroupName(group.name);
@@ -247,6 +250,7 @@ export const EditGroup: React.FC<Props> = ({
           )}
           {allowedFeatures.canDelete && (
             <Button
+              disabled={disabled}
               variant="tertiary"
               className={styles.headerDelete}
               size="small"
@@ -307,7 +311,7 @@ export const EditGroup: React.FC<Props> = ({
             )}
             <input
               type="text"
-              disabled={processing}
+              disabled={processing || disabled}
               onChange={async e => {
                 setAddMemberName(e.target.value);
 
@@ -330,7 +334,7 @@ export const EditGroup: React.FC<Props> = ({
                 [styles.addMemberTriggerActive]:
                   addMemberName.trim().length > 0,
               })}
-              disabled={addMemberName.trim().length === 0}
+              disabled={addMemberName.trim().length === 0 || disabled}
               onClick={handleAddGroupMember}
             >
               <Icon name="buttonAdd" />
@@ -350,6 +354,7 @@ export const EditGroup: React.FC<Props> = ({
               <Button
                 variant="transparent"
                 className={styles.memberRemove}
+                disabled={disabled}
                 onClick={() => handleRemoveGroupMember(member)}
               >
                 <Icon name="buttonDelete" />
@@ -367,6 +372,7 @@ export const EditGroup: React.FC<Props> = ({
         </div>
 
         <GroupQuorum
+          disabled={disabled}
           quorum={parseInt(group.votePolicy.quorum || '1', 10)}
           onChange={(quorumValue: number) => handleUpdateQuorum(quorumValue)}
         />
