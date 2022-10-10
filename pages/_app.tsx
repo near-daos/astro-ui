@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect } from 'react';
 import Head from 'next/head';
 import { appWithTranslation } from 'next-i18next';
 import type { AppContext, AppProps } from 'next/app';
-import type { NextPage } from 'next';
+import type { NextPage, GetServerSideProps } from 'next';
 
 import nextI18NextConfig from 'next-i18next.config';
 
@@ -18,7 +18,7 @@ import { useIntercomAdjust } from 'hooks/useIntercomAdjust';
 import { useRouter } from 'next/router';
 import { WrappedWalletContext } from 'context/WalletContext';
 import { CookieService } from 'services/CookieService';
-import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
+import { DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 import { AppMonitoring } from 'astro_2.0/features/AppMonitoring/AppMonitoring';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 import { useAppInitialize } from 'hooks/useAppInitialize';
@@ -31,7 +31,8 @@ import { AllTokensProvider } from 'context/AllTokensContext';
 import { DaoTokensProvider } from 'context/DaoTokensContext';
 import { DaoSettingsProvider } from 'context/DaoSettingsContext';
 import { OpenSearchApiProvider } from 'context/OpenSearchApiContext';
-import { getClient } from 'utils/launchdarkly-server-client';
+
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 type GetLayout = (page: ReactNode) => ReactNode;
 
@@ -103,27 +104,20 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
   );
 }
 
+export const getServerSideProps: GetServerSideProps = async () => {
+  return {
+    props: {
+      ...(await getDefaultAppVersion()),
+    },
+  };
+};
+
 App.getInitialProps = async ({ ctx }: AppContext) => {
   const { req } = ctx;
-  const client = await getClient();
 
   CookieService.initServerSideCookies(req?.headers.cookie || null);
 
-  const accountId = CookieService.get(ACCOUNT_COOKIE);
-
-  const defaultApplicationUiVersion = await client.variation(
-    'default-application-ui-version',
-    {
-      key: accountId ?? '',
-    },
-    false
-  );
-
-  return {
-    props: {
-      defaultApplicationUiVersion,
-    },
-  };
+  return {};
 };
 
 export default appWithTranslation(App, nextI18NextConfig);
