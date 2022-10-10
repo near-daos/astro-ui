@@ -13,6 +13,7 @@ import { CookieService } from 'services/CookieService';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { getDaoContext } from 'features/daos/helpers';
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -49,6 +50,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       daoContext,
       initialProposalsData,
       initialProposalsStatusFilterValue: status,
+      ...(await getDefaultAppVersion()),
     },
   };
 };

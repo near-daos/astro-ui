@@ -4,6 +4,7 @@ import { getDaoContext } from 'features/daos/helpers';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 import DaoPage from './DaoPage';
 
@@ -31,6 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       props: {
         ...(await getTranslations(locale)),
         daoContext,
+        ...(await getDefaultAppVersion()),
       },
     };
   } catch (e) {

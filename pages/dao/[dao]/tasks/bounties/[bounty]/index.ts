@@ -5,6 +5,7 @@ import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -58,6 +59,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       proposal: bountyContext.proposal,
       daoContext,
       bountyDoneProposal,
+      ...(await getDefaultAppVersion()),
     },
   };
 };

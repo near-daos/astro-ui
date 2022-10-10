@@ -6,6 +6,7 @@ import { CookieService } from 'services/CookieService';
 import { NotificationsService } from 'services/NotificationsService';
 
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 export const getServerSideProps: GetServerSideProps = async ({
   locale = 'en',
@@ -23,6 +24,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       props: {
         config,
         ...(await getTranslations(locale)),
+        ...(await getDefaultAppVersion()),
       },
     };
   } catch (e) {

@@ -12,7 +12,7 @@ import { Feed } from 'astro_2.0/features/Feed';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
-import { getAppVersion, useAppVersion } from 'hooks/useAppVersion';
+import { useAppVersion } from 'hooks/useAppVersion';
 
 import { CreateProposalSelector } from 'astro_3.0/components/CreateProposalSelector';
 import { FeedLayout } from 'astro_3.0/features/FeedLayout';
@@ -23,11 +23,16 @@ import { Page } from 'pages/_app';
 import { getTranslations } from 'utils/getTranslations';
 import { useTranslation } from 'next-i18next';
 
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
+
 import styles from './GlobalFeedPage.module.scss';
 
-const GlobalFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
-  const { appVersion } = useAppVersion();
+const GlobalFeedPage: Page<
+  React.ComponentProps<typeof Feed> & { defaultApplicationUiVersion: number }
+> = ({ defaultApplicationUiVersion, ...props }) => {
+  const { appVersion: selectedAppVersion } = useAppVersion();
   const { t } = useTranslation();
+  const appVersion = selectedAppVersion || defaultApplicationUiVersion;
 
   return (
     <>
@@ -48,11 +53,9 @@ const GlobalFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
 };
 
 GlobalFeedPage.getLayout = function getLayout(page: ReactNode) {
-  const appVersion = getAppVersion();
-
   return (
     <>
-      {appVersion === 3 && <FeedLayout />}
+      <FeedLayout />
       {page}
     </>
   );
@@ -77,6 +80,7 @@ export const getServerSideProps: GetServerSideProps<
       ...(await getTranslations(locale)),
       initialProposals: res,
       initialProposalsStatusFilterValue: status,
+      ...(await getDefaultAppVersion()),
     },
   };
 };

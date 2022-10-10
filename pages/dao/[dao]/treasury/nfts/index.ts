@@ -3,6 +3,7 @@ import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 import { NFTsPageProps } from './NFTs';
 
@@ -31,6 +32,7 @@ export const getServerSideProps: GetServerSideProps<NFTsPageProps> = async ({
     props: {
       ...(await getTranslations(locale)),
       daoContext,
+      ...(await getDefaultAppVersion()),
     },
   };
 };

@@ -13,7 +13,7 @@ import Head from 'next/head';
 
 import { FeedLayout } from 'astro_3.0/features/FeedLayout';
 import { MainLayout } from 'astro_3.0/features/MainLayout';
-import { getAppVersion, useAppVersion } from 'hooks/useAppVersion';
+import { useAppVersion } from 'hooks/useAppVersion';
 import { ProposalsFeed } from 'astro_3.0/features/ProposalsFeed';
 import { Page } from 'pages/_app';
 import { CreateProposalSelector } from 'astro_3.0/components/CreateProposalSelector';
@@ -21,11 +21,15 @@ import { CreateProposalSelector } from 'astro_3.0/components/CreateProposalSelec
 import { getTranslations } from 'utils/getTranslations';
 
 import { useTranslation } from 'next-i18next';
+import { getClient } from 'utils/launchdarkly-server-client';
 import styles from './MyFeedPage.module.scss';
 
-const MyFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
-  const { appVersion } = useAppVersion();
+const MyFeedPage: Page<
+  React.ComponentProps<typeof Feed> & { defaultApplicationUiVersion: number }
+> = ({ defaultApplicationUiVersion, ...props }) => {
+  const { appVersion: selectedAppVersion } = useAppVersion();
   const { t } = useTranslation();
+  const appVersion = selectedAppVersion || defaultApplicationUiVersion;
 
   return (
     <>
@@ -46,11 +50,9 @@ const MyFeedPage: Page<React.ComponentProps<typeof Feed>> = props => {
 };
 
 MyFeedPage.getLayout = function getLayout(page: ReactNode) {
-  const appVersion = getAppVersion();
-
   return (
     <>
-      {appVersion === 3 && <FeedLayout />}
+      <FeedLayout />
       {page}
     </>
   );
@@ -62,6 +64,15 @@ export const getServerSideProps: GetServerSideProps<
   const { category, status = ProposalsFeedStatuses.VoteNeeded } =
     query as ProposalsQueries;
   const accountId = CookieService.get(ACCOUNT_COOKIE);
+  const client = await getClient();
+
+  const defaultApplicationUiVersion = await client.variation(
+    'default-application-ui-version',
+    {
+      key: accountId ?? '',
+    },
+    false
+  );
 
   if (!accountId) {
     return {
@@ -111,6 +122,7 @@ export const getServerSideProps: GetServerSideProps<
       ...(await getTranslations(locale)),
       initialProposals: res,
       initialProposalsStatusFilterValue: status,
+      defaultApplicationUiVersion,
     },
   };
 };

@@ -14,14 +14,15 @@ import { LinkToTop } from 'astro_2.0/components/LinkToTop';
 import { NotificationContainer } from 'features/notifications';
 import { MaintenanceWarning } from 'astro_2.0/components/MaintenanceWarning';
 
-import { useAppVersion } from 'hooks/useAppVersion';
-
 import styles from './PageLayout.module.scss';
 
-export const PageLayout: FC = ({ children }) => {
+interface Props {
+  appVersion: number | null;
+}
+
+export const PageLayout: FC<Props> = ({ children, appVersion }) => {
   const router = useRouter();
   const { applicationMaintenance } = useFlags();
-  const { appVersion } = useAppVersion();
 
   const isCreateDaoPage = router.route.match(CREATE_DAO_URL);
 
