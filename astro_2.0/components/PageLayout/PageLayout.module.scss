@@ -9,6 +9,7 @@
 
   &.whiteBackground {
     --app-background: var(--color-white);
+    min-height: 100vh;
   }
 }
 

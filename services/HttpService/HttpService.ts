@@ -1125,6 +1125,14 @@ export class HttpService {
           );
           break;
         }
+        case API_MAPPERS.MAP_OPEN_SEARCH_RESPONSE_TO_BOUNTIES: {
+          response.data = mapOpenSearchResponseToSearchResult(
+            'bounty',
+            SearchResponseIndex.BOUNTY,
+            response.data
+          );
+          break;
+        }
         default:
           break;
       }

@@ -54,12 +54,6 @@ export const BountiesFeedFilters: FC<Props> = ({ className }) => {
         icon: 'filterClock' as IconName,
         queryName: 'bountyFilter',
       },
-      {
-        value: 'hidden',
-        label: 'Hidden',
-        icon: 'filterClock' as IconName,
-        queryName: 'bountyFilter',
-      },
     ];
   }, []);
 

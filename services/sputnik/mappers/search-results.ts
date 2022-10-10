@@ -184,6 +184,7 @@ export const mapSearchResultsDTOToDataObject = (
     daos,
     proposals,
     members,
+    bounties: [],
     comments: [],
     drafts: [],
     totals: {

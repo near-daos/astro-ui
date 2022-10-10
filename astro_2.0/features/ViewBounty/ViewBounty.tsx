@@ -50,7 +50,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
   const [showInfoPanel, setShowInfoPanel] = useState<string | null>(
     initialInfoPanelView
   );
-  const isCouncilUser = proposal.permissions?.isCouncil ?? false;
+  const isCouncilUser = proposal?.permissions?.isCouncil ?? false;
   const [commentsNum, setCommentsNum] = useState(commentsCount);
 
   if (!(bounty || proposal)) {

@@ -85,6 +85,7 @@ export class SearchService {
           drafts: [],
           comments: [],
           members: [],
+          bounties: [],
           [resultKey]: res.data,
           totals: {
             daos: 0,
@@ -162,6 +163,7 @@ export class SearchService {
         proposals: proposalsRes.data as ProposalFeedItem[],
         drafts: draftsRes.data as DraftProposalFeedItem[],
         comments: commentsRes.data as ProposalComment[],
+        bounties: [],
         members: [],
         totals: {
           daos: daosRes.total,
