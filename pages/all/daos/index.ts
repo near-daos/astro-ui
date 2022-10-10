@@ -5,6 +5,7 @@ import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 import AllDaosPage from './AllDaosPage';
 
@@ -58,6 +59,7 @@ export async function getServerSideProps({
   return {
     props: {
       ...(await getTranslations(locale)),
+      ...(await getDefaultAppVersion()),
       data,
       total,
     },

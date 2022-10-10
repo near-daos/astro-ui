@@ -13,7 +13,9 @@ describe('page layout', () => {
   it('Should render component', () => {
     const content = 'Hello World!';
 
-    const { getByText } = render(<PageLayout>{content}</PageLayout>);
+    const { getByText } = render(
+      <PageLayout appVersion={2}>{content}</PageLayout>
+    );
 
     expect(getByText(content)).toBeInTheDocument();
   });

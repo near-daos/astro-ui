@@ -5,6 +5,7 @@ import { getDaoContext } from 'features/daos/helpers';
 import { DraftsService } from 'services/DraftsService';
 import { isCouncilUser } from 'astro_2.0/features/DraftComments/helpers';
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -52,6 +53,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       dao,
       daoContext,
       draft,
+      ...(await getDefaultAppVersion()),
     },
   };
 };

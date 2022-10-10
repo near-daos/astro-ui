@@ -7,6 +7,7 @@ import { ALL_FEED_URL } from 'constants/routing';
 
 import { CookieService } from 'services/CookieService';
 import { NotificationsService } from 'services/NotificationsService';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 import MyAccountPage, { MyAccountPageProps } from './MyAccountPage';
 
@@ -37,6 +38,7 @@ export const getServerSideProps: GetServerSideProps<
       notyConfig: notyConfig[0] || {},
       contactsConfig,
       ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
+      ...(await getDefaultAppVersion()),
     },
   };
 };

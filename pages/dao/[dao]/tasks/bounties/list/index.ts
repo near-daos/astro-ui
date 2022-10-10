@@ -5,6 +5,7 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
 
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 import { BountiesListPageProps } from './BountiesListPage';
 
@@ -38,6 +39,7 @@ export const getServerSideProps: GetServerSideProps<
       ...(await getTranslations(locale)),
       daoContext,
       bountiesContext: bountiesContext?.data || [],
+      ...(await getDefaultAppVersion()),
     },
   };
 };

@@ -10,6 +10,7 @@ import { ALL_FEED_URL, MY_FEED_URL } from 'constants/routing';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 type Props = {
   account: string | null;
@@ -33,6 +34,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   return {
     props: {
       ...(await getTranslations(locale)),
+      ...(await getDefaultAppVersion()),
       account: account || null,
     },
   };

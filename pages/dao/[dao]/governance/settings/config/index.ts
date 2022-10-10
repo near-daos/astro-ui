@@ -4,6 +4,7 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
 
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 import { DaoConfigPageProps } from './DaoConfigPage';
 
@@ -28,6 +29,7 @@ export const getServerSideProps: GetServerSideProps<
     props: {
       ...(await getTranslations(locale)),
       daoContext,
+      ...(await getDefaultAppVersion()),
     },
   };
 };

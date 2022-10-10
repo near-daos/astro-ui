@@ -7,6 +7,7 @@ import { CookieService } from 'services/CookieService';
 import { SputnikHttpService } from 'services/sputnik';
 
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 import { GroupPageProps } from './GroupPage';
 
@@ -37,6 +38,7 @@ export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
       ...(await getTranslations(locale)),
       daoContext,
       membersStats,
+      ...(await getDefaultAppVersion()),
     },
   };
 };

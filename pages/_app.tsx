@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect } from 'react';
 import Head from 'next/head';
 import { appWithTranslation } from 'next-i18next';
 import type { AppContext, AppProps } from 'next/app';
-import type { NextPage } from 'next';
+import type { NextPage, GetServerSideProps } from 'next';
 
 import nextI18NextConfig from 'next-i18next.config';
 
@@ -32,6 +32,8 @@ import { DaoTokensProvider } from 'context/DaoTokensContext';
 import { DaoSettingsProvider } from 'context/DaoSettingsContext';
 import { OpenSearchApiProvider } from 'context/OpenSearchApiContext';
 
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
+
 type GetLayout = (page: ReactNode) => ReactNode;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -50,7 +52,9 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
   const router = useRouter();
   const initialized = useAppInitialize();
   const getLayout = Component.getLayout ?? defaultGetLayout;
-  const { appVersion } = useAppVersion();
+  const { appVersion: selectedAppVersion } = useAppVersion();
+  const appVersion =
+    selectedAppVersion || pageProps.defaultApplicationUiVersion;
 
   useEffect(() => {
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
@@ -77,7 +81,7 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
                         <Head>
                           <title>Astro</title>
                         </Head>
-                        <PageLayout>
+                        <PageLayout appVersion={appVersion}>
                           <ErrorBoundary>
                             {getLayout(<Component {...pageProps} />)}
                           </ErrorBoundary>
@@ -99,6 +103,14 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  return {
+    props: {
+      ...(await getDefaultAppVersion()),
+    },
+  };
+};
 
 App.getInitialProps = async ({ ctx }: AppContext) => {
   const { req } = ctx;

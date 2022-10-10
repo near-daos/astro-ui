@@ -7,6 +7,7 @@ import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 export default Polls;
 
@@ -48,6 +49,7 @@ export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
       daoContext,
       initialPollsData,
       initialProposalsStatusFilterValue: status,
+      ...(await getDefaultAppVersion()),
     },
   };
 };

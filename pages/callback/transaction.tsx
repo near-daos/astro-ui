@@ -6,6 +6,7 @@ import {
   useSelectorWalletTransactionResult,
   useWalletTransactionResult,
 } from 'astro_3.0/features/TransactionResult/hooks';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 const Transaction: NextPage = () => {
   useSelectorWalletTransactionResult();
@@ -22,6 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   return {
     props: {
       ...(await getTranslations(locale)),
+      ...(await getDefaultAppVersion()),
     },
   };
 };

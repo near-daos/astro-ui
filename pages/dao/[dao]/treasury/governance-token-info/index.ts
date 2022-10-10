@@ -6,6 +6,7 @@ import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 export const getServerSideProps: GetServerSideProps<
   GovernanceTokenInfoPageProps
@@ -28,6 +29,7 @@ export const getServerSideProps: GetServerSideProps<
     props: {
       ...(await getTranslations(locale)),
       daoContext,
+      ...(await getDefaultAppVersion()),
     },
   };
 };

@@ -20,11 +20,16 @@ import styles from './DaoPage.module.scss';
 interface DaoHomeProps {
   daoContext: DaoContext;
   initialProposalsData: PaginationResponse<Proposal[]>;
+  defaultApplicationUiVersion: number;
 }
 
-const DAOHome: Page<DaoHomeProps> = ({ daoContext }) => {
+const DAOHome: Page<DaoHomeProps> = ({
+  daoContext,
+  defaultApplicationUiVersion,
+}) => {
   const { dao, userPermissions } = daoContext;
-  const { appVersion } = useAppVersion();
+  const { appVersion: selectedAppVersion } = useAppVersion();
+  const appVersion = selectedAppVersion || defaultApplicationUiVersion;
 
   const breadcrumbsConfig = useGetBreadcrumbsConfig(dao.id, dao.displayName);
 
