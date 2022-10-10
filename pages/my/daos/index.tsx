@@ -6,6 +6,7 @@ import { OpenSearchApiService } from 'services/SearchService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { DaoFeedItem } from 'types/dao';
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 import MyDaosPage from './MyDaosPage';
 
@@ -33,6 +34,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   return {
     props: {
       ...(await getTranslations(locale)),
+      ...(await getDefaultAppVersion()),
       accountDaos,
     },
   };

@@ -4,6 +4,7 @@ import { CookieService } from 'services/CookieService';
 import DiscoverPage from 'pages/discover/DiscoverPage';
 
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -14,6 +15,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   return {
     props: {
       ...(await getTranslations(locale)),
+      ...(await getDefaultAppVersion()),
     },
   };
 };

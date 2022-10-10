@@ -7,6 +7,8 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { getTranslations } from 'utils/getTranslations';
 
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
+
 import { BountiesPageProps } from './BountiesPage';
 
 export const getServerSideProps: GetServerSideProps<
@@ -31,6 +33,7 @@ export const getServerSideProps: GetServerSideProps<
   return {
     props: {
       ...(await getTranslations(locale)),
+      ...(await getDefaultAppVersion()),
       bountiesContext,
     },
   };

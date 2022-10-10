@@ -12,11 +12,18 @@ import { dispatchCustomEvent } from 'utils/dispatchCustomEvent';
 
 import { SHOW_PROPOSAL_SELECTOR } from 'constants/common';
 
+import { useAppVersion } from 'hooks/useAppVersion';
+
 import styles from './FeedLayout.module.scss';
 
 export const FeedLayout: FC = () => {
   const { accountId } = useWalletContext();
   const { t } = useTranslation();
+  const { appVersion } = useAppVersion();
+
+  if (appVersion === 2) {
+    return null;
+  }
 
   return (
     <div className={styles.root}>

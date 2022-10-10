@@ -5,6 +5,7 @@ import { getDaoContext } from 'features/daos/helpers';
 import { DaoContext } from 'types/context';
 import { SputnikHttpService } from 'services/sputnik';
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 export const getServerSideProps: GetServerSideProps<{
   daoContext: DaoContext;
@@ -32,6 +33,7 @@ export const getServerSideProps: GetServerSideProps<{
       ...(await getTranslations(locale)),
       daoContext,
       accountDaos,
+      ...(await getDefaultAppVersion()),
     },
   };
 };

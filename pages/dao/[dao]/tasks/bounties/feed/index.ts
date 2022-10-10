@@ -7,6 +7,7 @@ import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 import { BountiesFeedPageProps } from './BountiesFeedPage';
 
@@ -41,6 +42,7 @@ export const getServerSideProps: GetServerSideProps<
       ...(await getTranslations(locale)),
       daoContext,
       bountiesContext,
+      ...(await getDefaultAppVersion()),
     },
   };
 };

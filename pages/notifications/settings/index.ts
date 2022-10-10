@@ -5,6 +5,7 @@ import { SputnikHttpService } from 'services/sputnik';
 import { ALL_FEED_URL } from 'constants/routing';
 import { NotificationsService } from 'services/NotificationsService';
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 export const getServerSideProps: GetServerSideProps = async ({
   locale = 'en',
@@ -43,6 +44,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   return {
     props: {
       ...(await getTranslations(locale)),
+      ...(await getDefaultAppVersion()),
       myDaos: accountDaos.map(item => {
         return {
           dao: item,

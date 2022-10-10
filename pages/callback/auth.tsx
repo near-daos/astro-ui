@@ -5,6 +5,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import { getTranslations } from 'utils/getTranslations';
 
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 const Callback: NextPage = () => {
   useEffect(() => {
@@ -45,6 +46,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   return {
     props: {
       ...(await getTranslations(locale)),
+      ...(await getDefaultAppVersion()),
     },
   };
 };

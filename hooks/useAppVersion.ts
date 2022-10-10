@@ -15,10 +15,10 @@ export function getAppVersion(): number {
 
 export function useAppVersion(): {
   appVersionEnabled: boolean;
-  appVersion: number;
+  appVersion: number | null;
   updateAppVersion: (val: string) => void;
 } {
-  const { applicationVersionSelect } = useFlags();
+  const { applicationVersionSelect, defaultApplicationUiVersion } = useFlags();
   const [value, updateCookie] = useCookie('astroAppVersion');
 
   const updateAppVersion = useCallback(
@@ -30,7 +30,8 @@ export function useAppVersion(): {
 
   return {
     appVersionEnabled: applicationVersionSelect,
-    appVersion: value ? Number(value) : 2,
+    appVersion:
+      (value ? Number(value) : null) || defaultApplicationUiVersion || null,
     updateAppVersion,
   };
 }

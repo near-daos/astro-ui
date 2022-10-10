@@ -5,6 +5,7 @@ import { SputnikHttpService } from 'services/sputnik';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 import SharedlTemplatePage from './SharedlTemplatePage';
 
@@ -24,6 +25,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     props: {
       ...(await getTranslations(locale)),
       accountDaos,
+      ...(await getDefaultAppVersion()),
     },
   };
 };

@@ -6,6 +6,7 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { CookieService } from 'services/CookieService';
 
 import { getTranslations } from 'utils/getTranslations';
+import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 import CreateGovernanceToken, {
   GovernanceTokenProps,
@@ -34,6 +35,7 @@ export const getServerSideProps: GetServerSideProps<
     props: {
       ...(await getTranslations(locale)),
       daoContext,
+      ...(await getDefaultAppVersion()),
     },
   };
 };

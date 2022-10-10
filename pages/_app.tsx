@@ -18,7 +18,7 @@ import { useIntercomAdjust } from 'hooks/useIntercomAdjust';
 import { useRouter } from 'next/router';
 import { WrappedWalletContext } from 'context/WalletContext';
 import { CookieService } from 'services/CookieService';
-import { DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
+import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 import { AppMonitoring } from 'astro_2.0/features/AppMonitoring/AppMonitoring';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 import { useAppInitialize } from 'hooks/useAppInitialize';
@@ -31,6 +31,7 @@ import { AllTokensProvider } from 'context/AllTokensContext';
 import { DaoTokensProvider } from 'context/DaoTokensContext';
 import { DaoSettingsProvider } from 'context/DaoSettingsContext';
 import { OpenSearchApiProvider } from 'context/OpenSearchApiContext';
+import { getClient } from 'utils/launchdarkly-server-client';
 
 type GetLayout = (page: ReactNode) => ReactNode;
 
@@ -50,7 +51,9 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
   const router = useRouter();
   const initialized = useAppInitialize();
   const getLayout = Component.getLayout ?? defaultGetLayout;
-  const { appVersion } = useAppVersion();
+  const { appVersion: selectedAppVersion } = useAppVersion();
+  const appVersion =
+    selectedAppVersion || pageProps.defaultApplicationUiVersion;
 
   useEffect(() => {
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
@@ -77,7 +80,7 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
                         <Head>
                           <title>Astro</title>
                         </Head>
-                        <PageLayout>
+                        <PageLayout appVersion={appVersion}>
                           <ErrorBoundary>
                             {getLayout(<Component {...pageProps} />)}
                           </ErrorBoundary>
@@ -102,10 +105,25 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
 
 App.getInitialProps = async ({ ctx }: AppContext) => {
   const { req } = ctx;
+  const client = await getClient();
 
   CookieService.initServerSideCookies(req?.headers.cookie || null);
 
-  return {};
+  const accountId = CookieService.get(ACCOUNT_COOKIE);
+
+  const defaultApplicationUiVersion = await client.variation(
+    'default-application-ui-version',
+    {
+      key: accountId ?? '',
+    },
+    false
+  );
+
+  return {
+    props: {
+      defaultApplicationUiVersion,
+    },
+  };
 };
 
 export default appWithTranslation(App, nextI18NextConfig);
