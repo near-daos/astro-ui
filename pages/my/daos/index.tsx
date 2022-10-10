@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   if (account) {
     accountDaos = useOpenSearchDataApi
-      ? await OpenSearchApiService.instance.getAccountDaos(account)
+      ? await new OpenSearchApiService().getAccountDaos(account)
       : await SputnikHttpService.getAccountDaos(account);
   }
 

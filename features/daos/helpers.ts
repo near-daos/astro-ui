@@ -26,7 +26,9 @@ export async function getDaosListFromOpenSearch({
   daos: DaoFeedItem[];
   total: number;
 }> {
-  const response = await OpenSearchApiService.instance.getDaoList({
+  const instance = new OpenSearchApiService();
+
+  const response = await instance.getDaoList({
     sort,
     offset,
     limit,

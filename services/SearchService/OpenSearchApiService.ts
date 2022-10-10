@@ -11,8 +11,6 @@ import { appConfig } from 'config';
 import { API_MAPPERS } from 'services/sputnik/constants';
 
 export class OpenSearchApiService {
-  static instance = new OpenSearchApiService();
-
   private readonly httpService;
 
   constructor() {
