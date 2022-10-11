@@ -28,7 +28,16 @@ import { BountyContext } from 'types/bounties';
 
 function mapDaoIndexToDaoFeedItem(daoIndex: DaoIndex): DaoFeedItem {
   const config = get(daoIndex, 'config');
-  const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
+
+  let meta;
+
+  try {
+    meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
+  } catch (err) {
+    console.error(`Failed to parse DAO metadata, daoId: ${daoIndex.id}`);
+
+    meta = null;
+  }
 
   return {
     createdAt: daoIndex.createTimestamp ?? '',
@@ -46,7 +55,7 @@ function mapDaoIndexToDaoFeedItem(daoIndex: DaoIndex): DaoFeedItem {
     displayName: meta?.displayName ?? '',
 
     links: meta?.links || [],
-    logo: meta?.flag ? getAwsImageUrl(meta.flag) : '/flags/defaultDaoFlag.png',
+    logo: meta?.flag ? getAwsImageUrl(meta?.flag) : '/flags/defaultDaoFlag.png',
     flagCover: getAwsImageUrl(meta?.flagCover),
     flagLogo: getAwsImageUrl(meta?.flagLogo),
     legal: meta?.legal || {},
