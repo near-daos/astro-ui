@@ -85,15 +85,17 @@ export class OpenSearchApiService {
   async getDaoList({
     offset = 0,
     limit = 20,
-    sort = 'createdAt:DESC',
+    sort = 'createTimestamp:DESC',
     filter,
   }: BaseParams): Promise<PaginationResponse<DaoFeedItem[]> | null> {
     try {
+      const sortOptions = sort?.split(',');
+
       const { data } = await this.httpService.post<
         unknown,
         { data: { data: DaoFeedItem[]; total: number } }
       >(
-        `/dao/_search?sort=${sort}&size=${limit}&from=${offset}`,
+        `/dao/_search?size=${limit}&from=${offset}`,
         {
           query: {
             bool: {
@@ -105,6 +107,13 @@ export class OpenSearchApiService {
               },
             },
           },
+          sort: [
+            {
+              [sortOptions[0]]: {
+                order: sortOptions[1].toLowerCase(),
+              },
+            },
+          ],
         },
         {
           responseMapper: {

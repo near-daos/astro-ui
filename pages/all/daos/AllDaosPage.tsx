@@ -4,13 +4,14 @@ import { useRouter } from 'next/router';
 import { TFunction, useTranslation } from 'next-i18next';
 import { useAsyncFn } from 'react-use';
 import Head from 'next/head';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { DaoFeedItem } from 'types/dao';
 
 import { DaosList } from 'astro_2.0/components/DaosList';
 import { Dropdown } from 'components/Dropdown';
 import { Checkbox } from 'components/inputs/Checkbox';
-import { getDaosList } from 'features/daos/helpers';
+import { getDaosList, getDaosListFromOpenSearch } from 'features/daos/helpers';
 import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 import { FiltersPanel } from 'astro_2.0/components/FiltersPanel';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
@@ -27,23 +28,23 @@ function getSortOptions(t: TFunction) {
   return [
     {
       label: t('allDAOsFilter.mostActive'),
-      value: 'totalProposalCount:DESC',
+      value: 'totalProposalCount,DESC',
     },
     {
       label: t('allDAOsFilter.newest'),
-      value: 'createdAt:DESC',
+      value: 'createTimestamp,DESC',
     },
     {
       label: t('allDAOsFilter.oldest'),
-      value: 'createdAt:ASC',
+      value: 'createTimestamp,ASC',
     },
     {
       label: t('allDAOsFilter.biggestFunds'),
-      value: 'totalDaoFunds:DESC',
+      value: 'totalDaoFunds,DESC',
     },
     {
       label: t('allDAOsFilter.numberOfMembers'),
-      value: 'numberOfMembers:DESC',
+      value: 'numberOfMembers,DESC',
     },
   ];
 }
@@ -60,6 +61,7 @@ const AllDaosPage: Page<BrowseAllDaosProps> = ({
   const { t } = useTranslation();
   const router = useRouter();
   const sortOptions = useMemo(() => getSortOptions(t), [t]);
+  const { useOpenSearchDataApi } = useFlags();
 
   const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
   const daosView = (router.query.daosView as string) ?? 'active';
@@ -69,7 +71,7 @@ const AllDaosPage: Page<BrowseAllDaosProps> = ({
     total: totalItemsAvailable,
   });
 
-  const [, fetchData] = useAsyncFn(
+  const [{ loading }, fetchData] = useAsyncFn(
     async (
       view: string,
       sort: string,
@@ -77,7 +79,11 @@ const AllDaosPage: Page<BrowseAllDaosProps> = ({
     ) => {
       let accumulatedListData = initData || null;
 
-      const { daos, total } = await getDaosList({
+      const fetcher = useOpenSearchDataApi
+        ? getDaosListFromOpenSearch
+        : getDaosList;
+
+      const { daos, total } = await fetcher({
         offset: initData ? initData.data.length : 0,
         limit: 20,
         sort,
@@ -91,7 +97,7 @@ const AllDaosPage: Page<BrowseAllDaosProps> = ({
 
       return accumulatedListData;
     },
-    []
+    [useOpenSearchDataApi]
   );
 
   const getMoreDaos = async () => {
@@ -112,7 +118,7 @@ const AllDaosPage: Page<BrowseAllDaosProps> = ({
           query: nextQuery,
         },
         undefined,
-        { shallow: false, scroll: false }
+        { shallow: true, scroll: false }
       );
 
       const newData = await fetchData(daosView, nextQuery.sort);
@@ -141,7 +147,7 @@ const AllDaosPage: Page<BrowseAllDaosProps> = ({
     setData(newData);
   };
 
-  const isLoading = useRouterLoading();
+  const isLoading = useRouterLoading() || loading;
 
   return (
     <DaosList label="allDaos">
