@@ -97,6 +97,7 @@ export const CloneDaoWarning: FC<Props> = ({
   );
 
   const canActOnFlow = isActiveUserCouncil(dao, accountId);
+
   const isCloneAvailable =
     (daoVersion?.version[0] === 2 || !daoVersion) &&
     canActOnFlow &&
@@ -195,7 +196,7 @@ export const CloneDaoWarning: FC<Props> = ({
             daoId={dao.id}
           >
             <div className={cn(styles.text, styles.list)}>
-              {transferProposals.map(proposal => {
+              {transferProposals.slice(0, 5).map(proposal => {
                 return (
                   <Link
                     key={proposal.id}
@@ -205,6 +206,11 @@ export const CloneDaoWarning: FC<Props> = ({
                   </Link>
                 );
               })}
+              {transferProposals.length > 5 ? (
+                <Link href={`/dao/${dao.id}/proposals/`}>
+                  <a className={styles.linkButton}>Show all</a>
+                </Link>
+              ) : null}
             </div>
           </WarningRenderer>
         </AnimatedContent>

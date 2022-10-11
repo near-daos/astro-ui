@@ -184,6 +184,7 @@ export const DaoHeaderContent: FC<Props> = ({
             />
           )}
           <CloneDaoWarning
+            key={dao.id}
             dao={dao}
             className={styles.warning}
             onCreateProposal={onCreateProposal}
