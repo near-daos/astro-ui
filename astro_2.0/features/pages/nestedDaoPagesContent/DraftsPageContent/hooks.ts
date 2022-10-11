@@ -6,7 +6,10 @@ import { useCallback, useState } from 'react';
 import { useWalletContext } from 'context/WalletContext';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider';
-import { getDraftProposalTypeByCategory } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/helpers';
+import {
+  getDraftProposalTypeByCategory,
+  getDraftStateQuery,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/helpers';
 import { ProposalCategories } from 'types/proposal';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
@@ -52,7 +55,7 @@ export function useDraftsPageData(daoId: string): {
         type: getDraftProposalTypeByCategory(category as ProposalCategories),
         accountId,
         search,
-        state: state === 'open' || state === 'closed' ? state : undefined,
+        state: getDraftStateQuery(state as string),
         isSaved: view === 'saved' ? 'true' : undefined,
       });
 

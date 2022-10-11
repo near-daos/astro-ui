@@ -1,4 +1,5 @@
 import { ProposalCategories, ProposalType } from 'types/proposal';
+import { DraftState } from 'services/DraftsService/types';
 
 export function getDraftProposalTypeByCategory(
   category: ProposalCategories
@@ -26,4 +27,16 @@ export function getDraftProposalTypeByCategory(
       return undefined;
     }
   }
+}
+
+export function getDraftStateQuery(state?: string): DraftState | undefined {
+  if (state === undefined) {
+    return 'open';
+  }
+
+  if (state === 'all') {
+    return undefined;
+  }
+
+  return state as DraftState;
 }

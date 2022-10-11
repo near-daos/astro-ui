@@ -60,8 +60,8 @@ export const DraftsStatusFilter: FC = () => {
         controlClassName={styles.dropdown}
         menuClassName={styles.menu}
         options={options}
-        value={state ?? options[0].value}
-        defaultValue={state ?? options[0].value}
+        value={state ?? options[1].value}
+        defaultValue={state ?? options[1].value}
         onChange={handleChange}
       />
     </div>
