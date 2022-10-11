@@ -1,7 +1,7 @@
 import { Settings } from 'types/settings';
 import { useAsyncFn, useMountedState } from 'react-use';
 import { useWalletContext } from 'context/WalletContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SputnikHttpService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
@@ -13,6 +13,7 @@ export function useDaoSettingsData(daoId: string | undefined): {
   const isMounted = useMountedState();
   const { accountId, nearService, pkAndSignature } = useWalletContext();
   const [settings, setSettings] = useState<Settings | null>(null);
+  const daoRef = useRef(daoId);
 
   const [{ loading }, getSettings] = useAsyncFn(async () => {
     if (!daoId) {
@@ -23,6 +24,7 @@ export function useDaoSettingsData(daoId: string | undefined): {
 
     if (res && isMounted()) {
       setSettings(res);
+      daoRef.current = daoId;
     }
   }, [daoId, isMounted]);
 
@@ -81,6 +83,6 @@ export function useDaoSettingsData(daoId: string | undefined): {
   return {
     loading: loading || updatingStatus,
     update,
-    settings,
+    settings: daoRef.current === daoId ? settings : null,
   };
 }
