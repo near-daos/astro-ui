@@ -32,6 +32,7 @@ export enum SearchResponseIndex {
   PROPOSAL = 'proposal',
   COMMENT = 'comment',
   DRAFT_PROPOSAL = 'draftproposal',
+  BOUNTY = 'bounty',
 }
 
 export interface DaoIndex {
@@ -106,6 +107,27 @@ export interface ProposalIndex {
   completeDate: string;
 }
 
+export interface BountyIndex {
+  accounts: string;
+  amount: string;
+  bountyClaims: string;
+  bountyDoneProposals: string;
+  bountyId: number;
+  commentsCount: number;
+  createTimestamp: string;
+  daoId: string;
+  description: string;
+  id: string;
+  maxDeadline: string;
+  name: string;
+  numberOfClaims: number;
+  proposal: ProposalIndex;
+  proposalId: string;
+  times: string;
+  token: string;
+  transactionHash: string;
+}
+
 /* eslint-disable camelcase */
 export type OpenSearchResponse = {
   hits: {
@@ -119,7 +141,8 @@ export type OpenSearchResponse = {
         | DaoIndex
         | ProposalComment
         | ProposalIndex
-        | DraftProposalFeedItem;
+        | DraftProposalFeedItem
+        | BountyIndex;
     }[];
     max_score: null;
     total: {
@@ -143,5 +166,24 @@ export type SearchResult = {
     | SearchResultsData['daos']
     | SearchResultsData['proposals']
     | SearchResultsData['drafts']
-    | SearchResultsData['comments'];
+    | SearchResultsData['comments']
+    | SearchResultsData['bounties'];
 };
+
+export interface OpenSearchQuery {
+  bool?: {
+    must?: {
+      simple_query_string: {
+        query: string | number;
+        fields: string[];
+      };
+    }[];
+    must_not?: {
+      simple_query_string: {
+        query: string | number;
+        fields: string[];
+      };
+    }[];
+  };
+  match_all?: Record<string, string>;
+}

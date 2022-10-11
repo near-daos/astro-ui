@@ -9,6 +9,8 @@ import { BaseParams } from 'services/sputnik/types';
 import { PaginationResponse } from 'types/api';
 import { appConfig } from 'config';
 import { API_MAPPERS } from 'services/sputnik/constants';
+import { BountyContext } from 'types/bounties';
+import { buildBountiesQuery } from 'services/SearchService/builders/bounties';
 
 export class OpenSearchApiService {
   private readonly httpService;
@@ -107,6 +109,44 @@ export class OpenSearchApiService {
         {
           responseMapper: {
             name: API_MAPPERS.MAP_OPEN_SEARCH_RESPONSE_TO_DAOS,
+          },
+        }
+      );
+
+      return {
+        total: data.total,
+        data: data.data,
+        count: data.data.length,
+        page: 0,
+        pageCount: 0,
+      };
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  }
+
+  async getBountiesContext(params: {
+    account?: string;
+    bountyFilter: string | null;
+    bountySort: string | null;
+    bountyPhase: string | null;
+    limit?: number;
+    offset?: number;
+  }): Promise<PaginationResponse<BountyContext[]> | null> {
+    try {
+      const { data } = await this.httpService.post<
+        unknown,
+        { data: { data: BountyContext[]; total: number } }
+      >(
+        `/bounty/_search?size=${params.limit}&from=${params.offset}`,
+        {
+          query: buildBountiesQuery(params),
+        },
+        {
+          responseMapper: {
+            name: API_MAPPERS.MAP_OPEN_SEARCH_RESPONSE_TO_BOUNTIES,
           },
         }
       );

@@ -33,6 +33,7 @@ export const API_MAPPERS = {
   MAP_DRAFT_TO_PROPOSAL_DRAFT: 'mapDraftToProposalDraft',
   MAP_OPEN_SEARCH_RESULTS: 'mapOpenSearchResults',
   MAP_OPEN_SEARCH_RESPONSE_TO_DAOS: 'mapOpenSearchResponseToDaos',
+  MAP_OPEN_SEARCH_RESPONSE_TO_BOUNTIES: 'mapOpenSearchResponseToBounties',
 };
 
 export type ApiMappers = keyof typeof API_MAPPERS;

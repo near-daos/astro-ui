@@ -1,4 +1,5 @@
 import {
+  BountyIndex,
   DaoIndex,
   OpenSearchResponse,
   ProposalIndex,
@@ -23,6 +24,7 @@ import get from 'lodash/get';
 import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
 import { DATA_SEPARATOR } from 'constants/common';
 import { toMillis } from 'utils/format';
+import { BountyContext } from 'types/bounties';
 
 function mapDaoIndexToDaoFeedItem(daoIndex: DaoIndex): DaoFeedItem {
   const config = get(daoIndex, 'config');
@@ -228,6 +230,61 @@ function mapProposalIndexToProposalDetails(
   };
 }
 
+function mapBountyIndexToBountyContext(item: BountyIndex): BountyContext {
+  const { proposal } = item;
+
+  return {
+    id: item.id,
+    daoId: item.daoId,
+    proposal: {
+      id: proposal.id,
+      daoId: proposal.daoId,
+      bountyClaimId: proposal.bountyClaimId ?? '',
+      proposalId: proposal.proposalId,
+      createdAt: new Date(
+        Number(proposal.createTimestamp) / 1000000
+      ).toISOString(),
+      updatedAt: '',
+      description: proposal.description,
+      transactionHash: proposal.transactionHash,
+      voteYes: 0,
+      voteNo: 0,
+      voteRemove: 0,
+      proposer: proposal.proposer,
+      status: proposal.status,
+      voteStatus: proposal.voteStatus,
+      kind: {
+        type: ProposalType.AddBounty,
+        bounty: proposal.bounty,
+      },
+      votePeriodEnd: proposal.votePeriodEnd,
+      votes: JSON.parse(proposal.votes),
+      permissions: {
+        canApprove: false,
+        canReject: false,
+        canDelete: false,
+        isCouncil: false,
+      },
+    },
+    bounty: {
+      bountyId: item.bountyId,
+      bountyClaims: JSON.parse(item.bountyClaims),
+      daoId: item.daoId,
+      id: item.id,
+      amount: item.amount,
+      bountyDoneProposals: JSON.parse(item.bountyDoneProposals),
+      createdAt: new Date(Number(item.createTimestamp) / 1000000).toISOString(),
+      description: item.description,
+      maxDeadline: item.maxDeadline,
+      proposalId: item.proposalId,
+      times: item.times,
+      token: item.token,
+      numberOfClaims: item.numberOfClaims,
+    },
+    commentsCount: item.commentsCount,
+  };
+}
+
 /* eslint-disable no-underscore-dangle */
 export function mapOpenSearchResponseToSearchResult(
   query: string,
@@ -261,10 +318,6 @@ export function mapOpenSearchResponseToSearchResult(
             return mapProposalIndexToProposalFeedItem(
               item._source as ProposalIndex
             );
-
-            // return mapProposalIndexToProposalDetails(
-            //   item._source as ProposalIndex
-            // );
           }),
       };
     }
@@ -288,6 +341,25 @@ export function mapOpenSearchResponseToSearchResult(
           .map(item => {
             return item._source as ProposalComment;
           }),
+      };
+    }
+
+    case SearchResponseIndex.BOUNTY: {
+      return {
+        total: data.hits.total.value,
+        data: data.hits.hits
+          .filter(item => item._index === index)
+          .reduce<BountyContext[]>((res, item) => {
+            const source = item._source as BountyIndex;
+
+            if (!source.proposal) {
+              return res;
+            }
+
+            res.push(mapBountyIndexToBountyContext(source));
+
+            return res;
+          }, []),
       };
     }
 
