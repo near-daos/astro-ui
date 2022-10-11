@@ -9,9 +9,11 @@ export type DraftBaseParams = {
   order?: 'ASC' | 'DESC';
 };
 
+export type DraftState = 'open' | 'closed' | 'all';
+
 export type DraftParams = {
   type?: string;
-  state?: 'open' | 'closed';
+  state?: DraftState;
   daoId: string;
   searchInput?: string;
   accountId: string;
