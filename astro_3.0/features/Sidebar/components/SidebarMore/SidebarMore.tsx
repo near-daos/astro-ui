@@ -12,7 +12,8 @@ import { Icon, IconName } from 'components/Icon';
 
 import { Button } from 'components/button/Button';
 import { DISCOVER } from 'constants/routing';
-import { appConfig } from 'config';
+
+import { configService } from 'services/ConfigService';
 
 import styles from './SidebarMore.module.scss';
 
@@ -28,6 +29,8 @@ export const SidebarMore: FC = () => {
     null
   );
   const ref = useRef(null);
+  const { appConfig } = configService.get();
+  const RELEASE_NOTES = appConfig?.RELEASE_NOTES || '';
 
   const { styles: popperStyles, attributes } = usePopper(
     referenceElement,
@@ -111,11 +114,7 @@ export const SidebarMore: FC = () => {
                   setOpen(false);
                 }}
               >
-                <a
-                  href={appConfig.RELEASE_NOTES ?? ''}
-                  rel="noreferrer"
-                  target="_blank"
-                >
+                <a href={RELEASE_NOTES ?? ''} rel="noreferrer" target="_blank">
                   <Icon name="sidebarReleaseNotes" className={styles.icon} />
                   <span>Release Notes</span>
                 </a>
