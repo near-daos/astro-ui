@@ -106,7 +106,7 @@ export function useProposalTypeOptions(
       if (filteredTemplates.length) {
         result.push({
           title: 'Custom Templates',
-          disabled: false,
+          disabled: !allowedProposalsToCreate[ProposalType.FunctionCall],
           options: filteredTemplates.map(item => ({
             label: item.name,
             value: item.id ?? '',
