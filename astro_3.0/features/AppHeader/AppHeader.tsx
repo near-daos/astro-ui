@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useMedia } from 'react-use';
+import Link from 'next/link';
 
 import { AppLogo } from 'astro_3.0/features/AppHeader/components/AppLogo';
 
@@ -23,7 +24,11 @@ export const AppHeader: FC = () => {
     <div className={styles.root}>
       <div className={styles.mobileMenu}>{isMobile && <MobileDaosMenu />}</div>
       <div className={styles.logoWrapper}>
-        <AppLogo />
+        <Link href="https://astrodao.com/">
+          <a>
+            <AppLogo />
+          </a>
+        </Link>
       </div>
 
       <MainLayout className={styles.main}>
