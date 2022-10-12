@@ -85,7 +85,6 @@ export function getAllowedProposalsToCreate(
     [ProposalType.ChangeConfig]: false,
     [ProposalType.ChangePolicy]: false,
     [ProposalType.AddBounty]: false,
-    [ProposalType.BountyDone]: false,
     [ProposalType.FunctionCall]: false,
     [ProposalType.Transfer]: false,
     [ProposalType.Vote]: false,
@@ -94,6 +93,7 @@ export function getAllowedProposalsToCreate(
     [ProposalType.UpgradeRemote]: false,
     [ProposalType.UpgradeSelf]: false,
     [ProposalType.SetStakingContract]: false,
+    [ProposalType.BountyDone]: false,
   };
 
   // If no user account - restrict create
@@ -126,7 +126,6 @@ export function getAllowedProposalsToVote(
     [ProposalType.ChangeConfig]: false,
     [ProposalType.ChangePolicy]: false,
     [ProposalType.AddBounty]: false,
-    [ProposalType.BountyDone]: false,
     [ProposalType.FunctionCall]: false,
     [ProposalType.Transfer]: false,
     [ProposalType.Vote]: false,
@@ -135,6 +134,7 @@ export function getAllowedProposalsToVote(
     [ProposalType.UpgradeRemote]: false,
     [ProposalType.UpgradeSelf]: false,
     [ProposalType.SetStakingContract]: false,
+    [ProposalType.BountyDone]: false,
   };
 
   // If no user account - restrict vote
