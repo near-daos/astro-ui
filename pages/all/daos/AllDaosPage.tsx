@@ -22,6 +22,8 @@ import { useRouterLoading } from 'hooks/useRouterLoading';
 import { Page } from 'pages/_app';
 import { MainLayout } from 'astro_3.0/features/MainLayout';
 
+import { getFilterValue } from 'pages/all/daos/helpers';
+
 import styles from './AllDaosPage.module.scss';
 
 function getSortOptions(t: TFunction) {
@@ -87,7 +89,7 @@ const AllDaosPage: Page<BrowseAllDaosProps> = ({
         offset: initData ? initData.data.length : 0,
         limit: 20,
         sort,
-        filter: view === 'active' ? 'Active' : 'Active Inactive',
+        filter: getFilterValue(useOpenSearchDataApi, daosView),
       });
 
       accumulatedListData = {

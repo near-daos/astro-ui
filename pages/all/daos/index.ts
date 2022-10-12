@@ -7,6 +7,8 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getTranslations } from 'utils/getTranslations';
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
+import { getFilterValue } from 'pages/all/daos/helpers';
+
 import AllDaosPage from './AllDaosPage';
 
 interface GetDaoListQuery {
@@ -14,14 +16,6 @@ interface GetDaoListQuery {
   offset?: number;
   limit?: number;
   daosView?: string;
-}
-
-function getFilterValue(useOpenSearch: boolean, daosView: string) {
-  if (useOpenSearch) {
-    return daosView === 'active' ? 'Active' : 'Active Inactive';
-  }
-
-  return daosView === 'active' ? 'status||$eq||Active' : '';
 }
 
 export async function getServerSideProps({
