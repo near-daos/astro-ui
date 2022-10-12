@@ -11,7 +11,11 @@ import { DaoFeedItem } from 'types/dao';
 import { DaosList } from 'astro_2.0/components/DaosList';
 import { Dropdown } from 'components/Dropdown';
 import { Checkbox } from 'components/inputs/Checkbox';
-import { getDaosList, getDaosListFromOpenSearch } from 'features/daos/helpers';
+import {
+  getDaosList,
+  getDaosListFromOpenSearch,
+  getFilterValue,
+} from 'features/daos/helpers';
 import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 import { FiltersPanel } from 'astro_2.0/components/FiltersPanel';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
@@ -21,8 +25,6 @@ import { useRouterLoading } from 'hooks/useRouterLoading';
 
 import { Page } from 'pages/_app';
 import { MainLayout } from 'astro_3.0/features/MainLayout';
-
-import { getFilterValue } from 'pages/all/daos/helpers';
 
 import styles from './AllDaosPage.module.scss';
 

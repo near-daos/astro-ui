@@ -1,13 +1,15 @@
 import { DaoFeedItem } from 'types/dao';
 import { getClient } from 'utils/launchdarkly-server-client';
-import { getDaosList, getDaosListFromOpenSearch } from 'features/daos/helpers';
+import {
+  getDaosList,
+  getDaosListFromOpenSearch,
+  getFilterValue,
+} from 'features/daos/helpers';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { getTranslations } from 'utils/getTranslations';
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
-
-import { getFilterValue } from 'pages/all/daos/helpers';
 
 import AllDaosPage from './AllDaosPage';
 
