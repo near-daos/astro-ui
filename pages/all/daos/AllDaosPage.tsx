@@ -91,7 +91,7 @@ const AllDaosPage: Page<BrowseAllDaosProps> = ({
         offset: initData ? initData.data.length : 0,
         limit: 20,
         sort,
-        filter: getFilterValue(useOpenSearchDataApi, daosView),
+        filter: getFilterValue(useOpenSearchDataApi, view),
       });
 
       accumulatedListData = {
@@ -143,7 +143,7 @@ const AllDaosPage: Page<BrowseAllDaosProps> = ({
         query: nextQuery,
       },
       undefined,
-      { shallow: false, scroll: false }
+      { shallow: true, scroll: false }
     );
 
     const newData = await fetchData(nextQuery.daosView, activeSort);

@@ -25,6 +25,11 @@ import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
 import { DATA_SEPARATOR } from 'constants/common';
 import { toMillis } from 'utils/format';
 import { BountyContext } from 'types/bounties';
+import {
+  getParsedPolicy,
+  getParsedVotes,
+} from 'services/SearchService/mappers/helpers';
+import { DaoPolicy } from 'services/sputnik/types/policy';
 
 function mapDaoIndexToDaoFeedItem(daoIndex: DaoIndex): DaoFeedItem {
   const config = get(daoIndex, 'config');
@@ -40,7 +45,7 @@ function mapDaoIndexToDaoFeedItem(daoIndex: DaoIndex): DaoFeedItem {
   }
 
   return {
-    createdAt: daoIndex.createTimestamp ?? '',
+    createdAt: new Date(toMillis(daoIndex.createTimestamp)).toISOString(),
     id: daoIndex.id,
     numberOfMembers: daoIndex.numberOfMembers,
     numberOfGroups: daoIndex.numberOfGroups,
@@ -82,7 +87,7 @@ function getProposalKind(item: ProposalIndex): ProposalKind {
         type: ProposalType.BountyDone,
         receiverId: item.receiverId,
         bountyId: item.bountyId,
-        completedDate: item.completeDate,
+        completedDate: item.completeDate ?? null,
       };
     }
     case ProposalType.ChangePolicy: {
@@ -164,11 +169,10 @@ function mapProposalIndexToProposalFeedItem(
 
   const config = get(item.dao, 'config');
   const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
-
   const votePeriodEnd = new Date(toMillis(item.votePeriodEnd)).toISOString();
 
   return {
-    ...getVotesStatistic({ votes: JSON.parse(item.votes) }),
+    ...getVotesStatistic({ votes: getParsedVotes(item.votes) }),
     id: item.id,
     proposalId: item.proposalId ?? 0,
     daoId: item.daoId,
@@ -183,7 +187,7 @@ function mapProposalIndexToProposalFeedItem(
     voteStatus: item.voteStatus,
     isFinalized: item.status === 'Expired',
     txHash: item.transactionHash ?? '',
-    createdAt: '',
+    createdAt: new Date(toMillis(item.createTimestamp)).toISOString(),
     dao: {
       id: item.dao?.id,
       name: item.dao?.config.name ?? '',
@@ -194,7 +198,7 @@ function mapProposalIndexToProposalFeedItem(
       flagLogo: getAwsImageUrl(meta?.flagLogo),
       legal: meta?.legal || {},
       numberOfMembers: item.dao?.numberOfMembers,
-      policy: item.dao ? JSON.parse(item.dao.policy) : {},
+      policy: item.dao ? getParsedPolicy(item.dao.policy) : ({} as DaoPolicy),
     },
     daoDetails: {
       name: item.dao?.config.name ?? '',
@@ -250,9 +254,7 @@ function mapBountyIndexToBountyContext(item: BountyIndex): BountyContext {
       daoId: proposal.daoId,
       bountyClaimId: proposal.bountyClaimId ?? '',
       proposalId: proposal.proposalId,
-      createdAt: new Date(
-        Number(proposal.createTimestamp) / 1000000
-      ).toISOString(),
+      createdAt: new Date(toMillis(item.createTimestamp)).toISOString(),
       updatedAt: '',
       description: proposal.description,
       transactionHash: proposal.transactionHash,
@@ -266,7 +268,7 @@ function mapBountyIndexToBountyContext(item: BountyIndex): BountyContext {
         type: ProposalType.AddBounty,
         bounty: proposal.bounty,
       },
-      votePeriodEnd: proposal.votePeriodEnd,
+      votePeriodEnd: new Date(toMillis(proposal.votePeriodEnd)).toISOString(),
       votes: JSON.parse(proposal.votes),
       permissions: {
         canApprove: false,
@@ -282,7 +284,7 @@ function mapBountyIndexToBountyContext(item: BountyIndex): BountyContext {
       id: item.id,
       amount: item.amount,
       bountyDoneProposals: JSON.parse(item.bountyDoneProposals),
-      createdAt: new Date(Number(item.createTimestamp) / 1000000).toISOString(),
+      createdAt: new Date(toMillis(item.createTimestamp)).toISOString(),
       description: item.description,
       maxDeadline: item.maxDeadline,
       proposalId: item.proposalId,

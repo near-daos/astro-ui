@@ -17,9 +17,6 @@ import {
   ProposalsFeedStatuses,
 } from 'types/proposal';
 
-// Constants
-import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
-
 // Components
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Feed as FeedList } from 'astro_2.0/components/Feed';
@@ -41,6 +38,10 @@ import { SputnikHttpService } from 'services/sputnik';
 
 // Constants
 import { FEED_CATEGORIES } from 'constants/proposals';
+
+import { useFlags } from 'launchdarkly-react-client-sdk';
+import { useOpenSearchApi } from 'context/OpenSearchApiContext';
+import { getProposalsList } from 'features/proposal/helpers';
 
 import styles from './FeedProposals.module.scss';
 
@@ -70,6 +71,8 @@ export const FeedProposals = ({
   const { query, replace, pathname } = useRouter();
   const { t } = useTranslation();
   const isMounted = useMountedState();
+  const { useOpenSearchDataApi } = useFlags();
+  const { service } = useOpenSearchApi();
 
   const queries = query as ProposalsQueries;
 
@@ -122,28 +125,17 @@ export const FeedProposals = ({
       let accumulatedListData = initialData || null;
       const proposers = chips.join(',');
 
-      const res = dao
-        ? await SputnikHttpService.getProposalsList({
-            offset: accumulatedListData?.data.length || 0,
-            limit: LIST_LIMIT_DEFAULT,
-            daoId: dao?.id,
-            category: category || queries.category,
-            status,
-            accountId,
-            proposers,
-          })
-        : await SputnikHttpService.getProposalsListByAccountId(
-            {
-              offset: accumulatedListData?.data.length || 0,
-              limit: LIST_LIMIT_DEFAULT,
-              category: queries.category,
-              status,
-              daoFilter: 'All DAOs',
-              accountId,
-              proposers,
-            },
-            isMyFeed && accountId ? accountId : undefined
-          );
+      const res = await getProposalsList(
+        accumulatedListData,
+        status,
+        category || queries.category,
+        accountId,
+        dao?.id ?? '',
+        isMyFeed,
+        useOpenSearchDataApi,
+        service,
+        proposers
+      );
 
       if (!res) {
         return null;
@@ -168,6 +160,8 @@ export const FeedProposals = ({
       accountId,
       isMyFeed,
       chips,
+      service,
+      useOpenSearchDataApi,
     ]
   );
 
@@ -219,7 +213,7 @@ export const FeedProposals = ({
         query: nextQuery,
       },
       undefined,
-      { shallow: false, scroll: false }
+      { shallow: true, scroll: false }
     );
   };
 
@@ -284,6 +278,7 @@ export const FeedProposals = ({
             title={t('feed.filters.chooseAFilter')}
             disabled={proposalsDataIsLoading}
             titleClassName={styles.statusFilterTitle}
+            shallowUpdate
           />
           <div className={styles.filterByProposer}>
             <p className={styles.filterByProposerTitle}>

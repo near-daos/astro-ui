@@ -23,6 +23,8 @@ type FeedProps<T> = {
     selectedList: string[]
   ) => React.ReactElement;
   loadMore: () => void;
+  hasMore?: boolean;
+  dataLength?: number;
 };
 
 export const Feed = <T,>({
@@ -32,6 +34,8 @@ export const Feed = <T,>({
   noResults,
   renderItem,
   loadMore,
+  hasMore,
+  dataLength,
 }: FeedProps<T>): React.ReactElement | null => {
   const { handleVote, handleSelect, handleDismiss, list } =
     useMultiVoteActions();
@@ -43,9 +47,11 @@ export const Feed = <T,>({
   return (
     <div className={cn(styles.root, className)}>
       <InfiniteScroll
-        dataLength={data.data.length}
+        dataLength={dataLength !== undefined ? dataLength : data.data.length}
         next={loadMore}
-        hasMore={data.data.length < data.total}
+        hasMore={
+          hasMore !== undefined ? hasMore : data.data.length < data.total
+        }
         loader={loader}
         style={{ overflow: 'initial' }}
         endMessage={noResults}

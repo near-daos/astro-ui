@@ -18,9 +18,6 @@ type PageData = PaginationResponse<DraftProposalFeedItem[]>;
 const defaultData: PageData = {
   data: [],
   total: 0,
-  page: 0,
-  count: 0,
-  pageCount: 0,
 };
 
 export function useDraftsPageData(daoId: string): {

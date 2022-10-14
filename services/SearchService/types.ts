@@ -172,18 +172,9 @@ export type SearchResult = {
 
 export interface OpenSearchQuery {
   bool?: {
-    must?: {
-      simple_query_string: {
-        query: string | number;
-        fields: string[];
-      };
-    }[];
-    must_not?: {
-      simple_query_string: {
-        query: string | number;
-        fields: string[];
-      };
-    }[];
+    must?: Record<string, unknown>[];
+    must_not?: Record<string, unknown>[];
+    should?: Record<string, unknown>[];
   };
-  match_all?: Record<string, string>;
+  match_all?: Record<string, unknown>;
 }

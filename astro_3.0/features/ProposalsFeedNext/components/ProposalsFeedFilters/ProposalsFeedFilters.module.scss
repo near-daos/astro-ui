@@ -1,0 +1,117 @@
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+  padding: 0;
+  width: 100%;
+}
+
+.filter,
+.sort {
+  @extend %subtitle3;
+  align-items: center;
+  display: flex;
+}
+
+.filterLabel {
+  white-space: nowrap;
+}
+
+.filterIcon {
+  margin-left: 12px;
+  width: 20px;
+}
+
+.sortIcon {
+  margin-left: 12px;
+  width: 12px;
+}
+
+.separator {
+  background-color: var(--color-neutral-40);
+  height: 40px;
+  margin: 0 12px;
+  width: 1px;
+}
+
+.last {
+  display: none;
+  margin-left: auto;
+
+  @include desktop {
+    display: flex;
+  }
+}
+
+.mobileFilters {
+  display: flex;
+  margin-left: auto;
+
+  @include desktop {
+    display: none;
+  }
+}
+
+.scrollableFilter {
+  margin-right: 12px;
+  overflow: hidden;
+  padding: 12px 0;
+  position: relative;
+  width: 100%;
+
+  &::before {
+    background-image: linear-gradient(
+      to right,
+      var(--color-background),
+      rgba(0, 0, 0, 0)
+    );
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 24px;
+  }
+
+  &::after {
+    background-image: linear-gradient(
+      to left,
+      var(--color-background),
+      rgba(0, 0, 0, 0)
+    );
+    content: '';
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 24px;
+  }
+
+  &.hideOnMobiles {
+    display: none;
+
+    @include desktop {
+      display: block;
+    }
+  }
+}
+
+.scrollableFilter {
+  @include desktop {
+    &::before,
+    &::after {
+      //display: none;
+    }
+  }
+}
+
+.statusFilter,
+.categoriesFilter {
+  @include hide-scrollbar;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0;
+}

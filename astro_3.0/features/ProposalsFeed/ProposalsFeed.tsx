@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
-import { useAsyncFn, useMountedState } from 'react-use';
+import { useAsyncFn, useMount, useMountedState } from 'react-use';
 import { useRouter } from 'next/router';
 import React, { ReactElement, ReactNode, useState } from 'react';
 import { useTranslation } from 'next-i18next';
@@ -16,9 +16,6 @@ import {
   ProposalsFeedStatuses,
 } from 'types/proposal';
 
-// Constants
-import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
-
 // Components
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Feed as FeedList } from 'astro_2.0/components/Feed';
@@ -30,13 +27,12 @@ import { ProposalsFeedFilters } from 'astro_3.0/features/ProposalsFeed/component
 import { useWalletContext } from 'context/WalletContext';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 
-// Services
-import { SputnikHttpService } from 'services/sputnik';
-
-// Constants
-
 import { MainLayout } from 'astro_3.0/features/MainLayout';
 import { FeedControlsLayout } from 'astro_3.0/features/FeedLayout';
+
+import { useFlags } from 'launchdarkly-react-client-sdk';
+import { useOpenSearchApi } from 'context/OpenSearchApiContext';
+import { getProposalsList } from 'features/proposal/helpers';
 
 import styles from './ProposalsFeed.module.scss';
 
@@ -64,6 +60,8 @@ export const ProposalsFeed = ({
   const { query, pathname } = useRouter();
   const { t } = useTranslation();
   const isMounted = useMountedState();
+  const { useOpenSearchDataApi } = useFlags();
+  const { service } = useOpenSearchApi();
 
   const queries = query as ProposalsQueries;
 
@@ -84,39 +82,16 @@ export const ProposalsFeed = ({
     async (initialData?: typeof proposalsData) => {
       let accumulatedListData = initialData || null;
 
-      let res;
-
-      if (dao) {
-        res = await SputnikHttpService.getProposalsList({
-          offset: accumulatedListData?.data.length || 0,
-          limit: LIST_LIMIT_DEFAULT,
-          daoId: dao?.id,
-          category: category || queries.category,
-          status,
-          accountId,
-        });
-      } else if (isMyFeed && accountId) {
-        res = await SputnikHttpService.getProposalsListByAccountId(
-          {
-            offset: accumulatedListData?.data.length || 0,
-            limit: LIST_LIMIT_DEFAULT,
-            category: queries.category,
-            status,
-            daoFilter: 'All DAOs',
-            accountId,
-          },
-          accountId
-        );
-      } else {
-        res = await SputnikHttpService.getProposalsList({
-          offset: accumulatedListData?.data.length || 0,
-          limit: LIST_LIMIT_DEFAULT,
-          category: queries.category,
-          status,
-          daoFilter: 'All DAOs',
-          accountId,
-        });
-      }
+      const res = await getProposalsList(
+        accumulatedListData,
+        status,
+        category || queries.category,
+        accountId,
+        dao?.id ?? '',
+        isMyFeed,
+        useOpenSearchDataApi,
+        service
+      );
 
       if (!res) {
         return null;
@@ -134,7 +109,15 @@ export const ProposalsFeed = ({
 
       return accumulatedListData;
     },
-    [proposalsData?.data?.length, status, queries.category, accountId, isMyFeed]
+    [
+      proposalsData?.data?.length,
+      status,
+      queries.category,
+      accountId,
+      isMyFeed,
+      service,
+      useOpenSearchDataApi,
+    ]
   );
 
   useDebounceEffect(
@@ -166,6 +149,10 @@ export const ProposalsFeed = ({
       setProposalsData(newProposalsData);
     }
   };
+
+  useMount(() => {
+    loadMore();
+  });
 
   return (
     <main className={cn(styles.root, className)}>

@@ -14,6 +14,8 @@ import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { getDaoContext } from 'features/daos/helpers';
 import { getTranslations } from 'utils/getTranslations';
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
+import { getClient } from 'utils/launchdarkly-server-client';
+import { OpenSearchApiService } from 'services/SearchService';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -26,16 +28,29 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
+  const client = await getClient();
+  const flags = await client.allFlagsState({
+    key: account ?? '',
+  });
+  const useOpenSearchDataApi = flags.getFlagValue(
+    'default-application-ui-version'
+  );
+
+  const params = {
+    offset: 0,
+    limit: LIST_LIMIT_DEFAULT,
+    daoId: daoId as string,
+    category: category as ProposalCategories,
+    status: status as ProposalsFeedStatuses,
+    accountId: account,
+  };
+  const openSearchService = new OpenSearchApiService();
+
   const [daoContext, initialProposalsData] = await Promise.all([
     getDaoContext(account, daoId as string),
-    SputnikHttpService.getProposalsList({
-      offset: 0,
-      limit: LIST_LIMIT_DEFAULT,
-      daoId: daoId as string,
-      category: category as ProposalCategories,
-      status: status as ProposalsFeedStatuses,
-      accountId: account,
-    }),
+    useOpenSearchDataApi
+      ? openSearchService.getProposalsList(params)
+      : SputnikHttpService.getProposalsList(params),
   ]);
 
   if (!daoContext) {

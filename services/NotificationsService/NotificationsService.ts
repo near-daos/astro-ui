@@ -192,9 +192,6 @@ class NotificationsServiceClass {
     });
 
     return {
-      page: response.data.page,
-      count: response.data.count,
-      pageCount: response.data.pageCount,
       total: response.data.total,
       data: mapNotificationDtoToNotification(response.data.data),
     };

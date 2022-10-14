@@ -1,0 +1,59 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: block;
+}
+
+.control {
+  @include centralize;
+  background-color: var(--color-background);
+  border-radius: 8px;
+  height: 40px;
+  margin-right: 8px;
+  transition: background-color 0.1s ease-out;
+  width: 40px;
+
+  &:hover {
+    background-color: var(--color-neutral-20);
+  }
+
+  &:hover .controlIcon {
+    color: var(--color-primary-50);
+  }
+}
+
+.controlIcon {
+  color: var(--color-neutral-50);
+  width: 24px;
+}
+
+.arrow.arrow {
+  border-bottom-color: var(--color-white);
+}
+
+.menu {
+  background-color: var(--color-white);
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  color: var(--color-white);
+  padding: 24px;
+}
+
+.menuRow {
+  align-items: center;
+  display: flex;
+  padding: 8px 0;
+}
+
+.labelPrimary {
+  @extend %subtitle3;
+  margin-right: 24px;
+}
+
+.foundItem {
+  @extend %caption1;
+  color: var(--color-neutral-90);
+  font-size: 14px;
+  margin-bottom: 8px;
+  text-align: left;
+}

@@ -263,11 +263,7 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
 
         if (isMounted()) {
           const newData = {
-            pageCount: notifications?.pageCount || 1,
-            page: notifications?.page || 1,
             total: notifications?.total || 0,
-            count:
-              notifications?.count !== undefined ? notifications?.count + 1 : 0,
             data: notifications?.data ? [newNoty, ...notifications?.data] : [],
           };
 
@@ -275,16 +271,7 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
         }
       });
     }
-  }, [
-    fetchData,
-    isMounted,
-    notifications?.count,
-    notifications?.data,
-    notifications?.page,
-    notifications?.pageCount,
-    notifications?.total,
-    socket,
-  ]);
+  }, [fetchData, isMounted, notifications?.data, notifications?.total, socket]);
 
   const triggerUpdate = useCallback(() => {
     dispatchCustomEvent(NOTIFICATIONS_UPDATED, true);
@@ -406,10 +393,7 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
         const newData = notifications?.data.filter(item => item.id !== id);
 
         setNotifications({
-          pageCount: notifications?.pageCount || 1,
-          page: notifications?.page || 1,
           total: notifications?.total || 0,
-          count: notifications?.count ? notifications?.count - 1 : 0,
           data: newData ?? [],
         });
 

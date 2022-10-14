@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
-import { useAsyncFn, useMountedState } from 'react-use';
+import { useAsyncFn, useMount, useMountedState } from 'react-use';
 import { useRouter } from 'next/router';
 import React, {
   ReactNode,
@@ -23,9 +23,6 @@ import {
   ProposalsFeedStatuses,
 } from 'types/proposal';
 
-// Constants
-import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
-
 // Components
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Feed as FeedList } from 'astro_2.0/components/Feed';
@@ -40,11 +37,12 @@ import { useWalletContext } from 'context/WalletContext';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 import { getStatusFilterOptions } from 'astro_2.0/features/Proposals/helpers/getStatusFilterOptions';
 
-// Services
-import { SputnikHttpService } from 'services/sputnik';
-
 // Constants
 import { FEED_CATEGORIES } from 'constants/proposals';
+
+import { useFlags } from 'launchdarkly-react-client-sdk';
+import { useOpenSearchApi } from 'context/OpenSearchApiContext';
+import { getProposalsList } from 'features/proposal/helpers';
 
 import styles from './Feed.module.scss';
 
@@ -55,8 +53,8 @@ interface FeedProps {
   title?: ReactNode | string;
   category?: ProposalCategories;
   headerClassName?: string;
-  initialProposals: PaginationResponse<ProposalFeedItem[]> | null;
-  initialProposalsStatusFilterValue: ProposalsFeedStatuses;
+  initialProposals?: PaginationResponse<ProposalFeedItem[]> | null;
+  initialProposalsStatusFilterValue?: ProposalsFeedStatuses;
 }
 
 export const Feed = ({
@@ -66,13 +64,15 @@ export const Feed = ({
   className,
   showFlag = true,
   headerClassName,
-  initialProposals,
+  initialProposals = null,
   initialProposalsStatusFilterValue,
 }: FeedProps): JSX.Element => {
   const neighbourRef = useRef(null);
   const { query, replace, pathname } = useRouter();
   const { t } = useTranslation();
   const isMounted = useMountedState();
+  const { useOpenSearchDataApi } = useFlags();
+  const { service } = useOpenSearchApi();
 
   const queries = query as ProposalsQueries;
 
@@ -107,39 +107,16 @@ export const Feed = ({
     async (initialData?: typeof proposalsData) => {
       let accumulatedListData = initialData || null;
 
-      let res;
-
-      if (dao) {
-        res = await SputnikHttpService.getProposalsList({
-          offset: accumulatedListData?.data.length || 0,
-          limit: LIST_LIMIT_DEFAULT,
-          daoId: dao?.id,
-          category: category || queries.category,
-          status,
-          accountId,
-        });
-      } else if (isMyFeed && accountId) {
-        res = await SputnikHttpService.getProposalsListByAccountId(
-          {
-            offset: accumulatedListData?.data.length || 0,
-            limit: LIST_LIMIT_DEFAULT,
-            category: queries.category,
-            status,
-            daoFilter: 'All DAOs',
-            accountId,
-          },
-          accountId
-        );
-      } else {
-        res = await SputnikHttpService.getProposalsList({
-          offset: accumulatedListData?.data.length || 0,
-          limit: LIST_LIMIT_DEFAULT,
-          category: queries.category,
-          status,
-          daoFilter: 'All DAOs',
-          accountId,
-        });
-      }
+      const res = await getProposalsList(
+        accumulatedListData,
+        status,
+        category || queries.category,
+        accountId,
+        dao?.id ?? '',
+        isMyFeed,
+        useOpenSearchDataApi,
+        service
+      );
 
       if (!res) {
         return null;
@@ -157,7 +134,15 @@ export const Feed = ({
 
       return accumulatedListData;
     },
-    [proposalsData?.data?.length, status, queries.category, accountId, isMyFeed]
+    [
+      proposalsData?.data?.length,
+      status,
+      queries.category,
+      accountId,
+      isMyFeed,
+      service,
+      useOpenSearchDataApi,
+    ]
   );
 
   useDebounceEffect(
@@ -190,6 +175,10 @@ export const Feed = ({
     }
   };
 
+  useMount(() => {
+    loadMore();
+  });
+
   const onProposalFilterChange = useCallback(
     async (value: string) => {
       const nextQuery = {
@@ -209,7 +198,7 @@ export const Feed = ({
           query: nextQuery,
         },
         undefined,
-        { shallow: false, scroll: false }
+        { shallow: true, scroll: false }
       );
     },
     [isMounted, queries, replace]
@@ -255,6 +244,7 @@ export const Feed = ({
             title={t('feed.filters.chooseAFilter')}
             disabled={proposalsDataIsLoading}
             titleClassName={styles.categoriesListTitle}
+            shallowUpdate
           />
         )}
 
