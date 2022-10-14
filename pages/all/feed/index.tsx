@@ -25,6 +25,9 @@ import { useTranslation } from 'next-i18next';
 
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
+import { getClient } from 'utils/launchdarkly-server-client';
+import { OpenSearchApiService } from 'services/SearchService';
+
 import styles from './GlobalFeedPage.module.scss';
 
 const GlobalFeedPage: Page<
@@ -67,13 +70,27 @@ export const getServerSideProps: GetServerSideProps<
   const accountId = CookieService.get(ACCOUNT_COOKIE);
   const { category, status = ProposalsFeedStatuses.Active } =
     query as ProposalsQueries;
-  const res = await SputnikHttpService.getProposalsList({
+
+  const client = await getClient();
+  const flags = await client.allFlagsState({
+    key: accountId ?? '',
+  });
+  const useOpenSearchDataApi = flags.getFlagValue(
+    'default-application-ui-version'
+  );
+
+  const params = {
     category,
     status,
     limit: LIST_LIMIT_DEFAULT,
-    daoFilter: 'All DAOs',
     accountId,
-  });
+  };
+
+  const openSearchService = new OpenSearchApiService();
+
+  const res = useOpenSearchDataApi
+    ? await openSearchService.getProposalsList(params, accountId)
+    : await SputnikHttpService.getProposalsListByAccountId(params, accountId);
 
   return {
     props: {

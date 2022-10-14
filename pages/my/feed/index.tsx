@@ -7,6 +7,7 @@ import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikHttpService } from 'services/sputnik';
+import { OpenSearchApiService } from 'services/SearchService';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ALL_FEED_URL } from 'constants/routing';
 import Head from 'next/head';
@@ -22,6 +23,7 @@ import { getTranslations } from 'utils/getTranslations';
 
 import { useTranslation } from 'next-i18next';
 import { getClient } from 'utils/launchdarkly-server-client';
+
 import styles from './MyFeedPage.module.scss';
 
 const MyFeedPage: Page<
@@ -61,17 +63,20 @@ MyFeedPage.getLayout = function getLayout(page: ReactNode) {
 export const getServerSideProps: GetServerSideProps<
   React.ComponentProps<typeof Feed>
 > = async ({ query, locale = 'en' }) => {
-  const { category, status = ProposalsFeedStatuses.VoteNeeded } =
+  const { category, status = ProposalsFeedStatuses.All } =
     query as ProposalsQueries;
   const accountId = CookieService.get(ACCOUNT_COOKIE);
   const client = await getClient();
 
-  const defaultApplicationUiVersion = await client.variation(
-    'default-application-ui-version',
-    {
-      key: accountId ?? '',
-    },
-    false
+  const flags = await client.allFlagsState({
+    key: accountId ?? '',
+  });
+
+  const defaultApplicationUiVersion = flags.getFlagValue(
+    'default-application-ui-version'
+  );
+  const useOpenSearchDataApi = flags.getFlagValue(
+    'default-application-ui-version'
   );
 
   if (!accountId) {
@@ -83,38 +88,45 @@ export const getServerSideProps: GetServerSideProps<
     };
   }
 
-  let res = await SputnikHttpService.getProposalsListByAccountId(
-    {
-      category,
-      status,
-      limit: LIST_LIMIT_DEFAULT,
-      daoFilter: 'All DAOs',
-      accountId,
-    },
-    accountId
-  );
+  const params = {
+    category,
+    status,
+    limit: LIST_LIMIT_DEFAULT,
+    accountId,
+  };
+
+  const openSearchService = new OpenSearchApiService();
+
+  let res = useOpenSearchDataApi
+    ? await openSearchService.getProposalsList(params, accountId)
+    : await SputnikHttpService.getProposalsListByAccountId(params, accountId);
 
   // If no proposals found and it is not because of filter -> redirect to global feed
   if (res?.data?.length === 0) {
-    res = await SputnikHttpService.getProposalsListByAccountId(
-      {
-        category,
-        status: ProposalsFeedStatuses.All,
-        limit: LIST_LIMIT_DEFAULT,
-        daoFilter: 'All DAOs',
-        accountId,
-      },
-      accountId
-    );
+    res = useOpenSearchDataApi
+      ? await openSearchService.getProposalsList(
+          {
+            ...params,
+            status: ProposalsFeedStatuses.All,
+          },
+          accountId
+        )
+      : await SputnikHttpService.getProposalsListByAccountId(
+          {
+            ...params,
+            status: ProposalsFeedStatuses.All,
+          },
+          accountId
+        );
+  }
 
-    if (res?.data?.length === 0) {
-      return {
-        redirect: {
-          destination: ALL_FEED_URL,
-          permanent: true,
-        },
-      };
-    }
+  if (res?.data?.length === 0) {
+    return {
+      redirect: {
+        destination: ALL_FEED_URL,
+        permanent: true,
+      },
+    };
   }
 
   return {
