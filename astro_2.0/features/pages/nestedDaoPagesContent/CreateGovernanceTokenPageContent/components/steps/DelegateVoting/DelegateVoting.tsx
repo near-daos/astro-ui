@@ -49,7 +49,10 @@ export const DelegateVoting: FC<Props> = ({
 
     const [meta, balance] = await Promise.all([
       nearService.getFtMetadata(contractAddress),
-      nearService.getFtBalance(dao.name, accountId),
+      nearService.getFtBalance(
+        nearService.getStackingContract(dao.name),
+        accountId
+      ),
     ]);
 
     setTokenDetails({

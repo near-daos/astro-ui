@@ -56,7 +56,10 @@ export function useDelegatePageData(dao: DAO): {
 
       const [meta, balance] = await Promise.all([
         nearService.getFtMetadata(contractAddress),
-        nearService.getFtBalance(contractAddress, accountId),
+        nearService.getFtBalance(
+          nearService.getStackingContract(dao.name),
+          accountId
+        ),
       ]);
 
       return {
@@ -218,7 +221,10 @@ export function useVotingPolicyDetails(dao: DAO): {
 
       const [meta, balance] = await Promise.all([
         nearService.getFtMetadata(contractAddress),
-        nearService.getFtBalance(contractAddress, accountId),
+        nearService.getFtBalance(
+          nearService.getStackingContract(dao.name),
+          accountId
+        ),
       ]);
 
       return {
