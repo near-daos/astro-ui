@@ -4,6 +4,7 @@ import { SidebarNavItem } from 'astro_3.0/features/Sidebar/components/SidebarNav
 import {
   ALL_DAOS_URL,
   ALL_FEED_URL,
+  BOUNTIES,
   CREATE_DAO_URL,
   MY_FEED_URL,
 } from 'constants/routing';
@@ -34,7 +35,7 @@ export const MobileAppNavigation: FC = () => {
       {
         icon: 'sidebarBounties',
         label: 'Bounties area',
-        href: 'none',
+        href: BOUNTIES,
       },
     ];
   }, []);
