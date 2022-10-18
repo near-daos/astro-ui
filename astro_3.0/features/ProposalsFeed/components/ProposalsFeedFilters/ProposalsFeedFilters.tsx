@@ -96,6 +96,7 @@ export const ProposalsFeedFilters: FC<Props> = ({ className }) => {
           list={filterOptions}
           disabled={false}
           hideAllOption
+          shallowUpdate
           className={styles.categoriesFilter}
         />
       </div>

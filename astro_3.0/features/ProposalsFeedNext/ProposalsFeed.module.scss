@@ -1,0 +1,54 @@
+.root {
+  //margin-top: 24px;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+
+/* stylelint-disable-next-line */
+.container :global(.infinite-scroll-component__outerdiv) {
+  flex-grow: 1;
+}
+
+.wrapper {
+  overflow: visible;
+}
+
+.filtersContainer {
+  background-color: var(--color-background);
+  margin-bottom: 24px;
+  position: sticky;
+  top: var(--app-header-height);
+  z-index: 90;
+
+  &::after {
+    background-image: linear-gradient(
+      to bottom,
+      var(--color-background),
+      transparent
+    );
+    content: '';
+    height: 24px;
+    left: 0;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.proposalCardWrapper {
+  margin-bottom: 60px;
+
+  &:not(:first-of-type) {
+    margin-top: 32px;
+  }
+}

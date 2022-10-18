@@ -32,7 +32,6 @@ export interface ClaimBountyParams {
 
 export type DaosParams = {
   daoId?: string | null;
-  daoFilter?: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
   daosIdsFilter?: string[];
 };
 

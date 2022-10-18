@@ -10,30 +10,34 @@ exports[`BountiesFeed Should render component 1`] = `
     >
       <div
         class="root"
-        role="button"
-        tabindex="0"
       >
         <div
-          class="iconHolder"
-        >
-          <svg
-            class="icon"
-          >
-            <use
-              href="/_next/undefined"
-            />
-          </svg>
-        </div>
-        <input
-          class="input"
-          placeholder="searchBountyPlaceholder"
+          class="container"
+          role="button"
           tabindex="0"
-          type="text"
-          value=""
-        />
-        <div
-          class="anchor"
-        />
+        >
+          <div
+            class="iconHolder"
+          >
+            <svg
+              class="icon"
+            >
+              <use
+                href="/_next/undefined"
+              />
+            </svg>
+          </div>
+          <input
+            class="input"
+            placeholder="searchBountyPlaceholder"
+            tabindex="0"
+            type="text"
+            value=""
+          />
+          <div
+            class="anchor"
+          />
+        </div>
       </div>
     </div>
     <div

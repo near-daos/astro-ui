@@ -24,7 +24,7 @@ export function useAvailableActionsCounters(): {
     );
 
     if (res) {
-      return res.count;
+      return res.data.length;
     }
 
     return 0;

@@ -903,7 +903,7 @@ export class HttpService {
           if (query.category === ProposalCategories.Members) {
             queryString.append(
               'type',
-              `${ProposalType.AddMemberToRole},${ProposalType.AddMemberToRole}`
+              `${ProposalType.AddMemberToRole},${ProposalType.RemoveMemberFromRole}`
             );
           }
 
@@ -1129,6 +1129,14 @@ export class HttpService {
           response.data = mapOpenSearchResponseToSearchResult(
             'bounty',
             SearchResponseIndex.BOUNTY,
+            response.data
+          );
+          break;
+        }
+        case API_MAPPERS.MAP_OPEN_SEARCH_RESPONSE_TO_PROPOSALS: {
+          response.data = mapOpenSearchResponseToSearchResult(
+            'proposal',
+            SearchResponseIndex.PROPOSAL,
             response.data
           );
           break;

@@ -3,6 +3,11 @@
 @import 'styles/typography';
 
 .root {
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
   align-items: center;
   background: var(--color-white);
   border: 1px solid var(--color-neutral-30);
@@ -96,6 +101,8 @@
   border-radius: 8px;
   box-shadow: 0 8.89583px 30px rgba(0, 0, 0, 0.14);
   color: var(--color-neutral-60);
+  display: flex;
+  flex-direction: column;
   max-height: 50vh;
   overflow: auto;
   padding: 12px 24px;
@@ -120,4 +127,11 @@
 
 .withoutLoading {
   margin-left: 10px;
+}
+
+.label {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+  margin-bottom: 8px;
+  transition: color 0.1s;
 }

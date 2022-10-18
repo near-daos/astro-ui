@@ -2,6 +2,7 @@ import cn from 'classnames';
 import { merge } from 'lodash';
 import { usePopper } from 'react-popper';
 import React, { FC, useState, useEffect } from 'react';
+import { Placement } from '@popperjs/core/lib/enums';
 
 import { useOnClickOutside } from 'hooks/useOnClickOutside';
 import { BaseDropdownProps } from './types';
@@ -16,6 +17,7 @@ export interface GenericDropdownProps extends BaseDropdownProps {
   arrowClassName?: string;
   showOnHover?: boolean;
   preventOpenThroughParent?: boolean;
+  placement?: Placement;
 }
 
 export const GenericDropdown: FC<GenericDropdownProps> = ({
@@ -28,13 +30,18 @@ export const GenericDropdown: FC<GenericDropdownProps> = ({
   arrowClassName,
   showOnHover,
   preventOpenThroughParent,
+  placement = 'auto',
 }) => {
   const [open, setOpen] = useState(isOpen);
   const [popperElement, setPopperElement] = useState<HTMLElement>();
   const [referenceElement, setReferenceElement] = useState<HTMLElement>();
 
-  function openCloseDropdown(e: unknown, isClickOutside: boolean) {
+  function openCloseDropdown(e: Event, isClickOutside: boolean) {
     if (preventOpenThroughParent && !isClickOutside) {
+      return;
+    }
+
+    if (e.target && (e.target as HTMLElement)?.closest('#search_results')) {
       return;
     }
 
@@ -76,6 +83,7 @@ export const GenericDropdown: FC<GenericDropdownProps> = ({
 
   const opts = merge(
     {
+      placement,
       strategy: 'fixed',
       modifiers: [
         {

@@ -1,23 +1,15 @@
 import Head from 'next/head';
 import React, { ReactNode } from 'react';
 import { GetServerSideProps } from 'next';
-
-import { ProposalsFeedStatuses } from 'types/proposal';
-import { ProposalsQueries } from 'services/sputnik/types/proposals';
-
-import { SputnikHttpService } from 'services/sputnik';
-import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { Feed } from 'astro_2.0/features/Feed';
-import { CookieService } from 'services/CookieService';
-import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { useAppVersion } from 'hooks/useAppVersion';
 
 import { CreateProposalSelector } from 'astro_3.0/components/CreateProposalSelector';
 import { FeedLayout } from 'astro_3.0/features/FeedLayout';
 import { MainLayout } from 'astro_3.0/features/MainLayout';
-import { ProposalsFeed } from 'astro_3.0/features/ProposalsFeed';
 import { Page } from 'pages/_app';
 
 import { getTranslations } from 'utils/getTranslations';
@@ -25,24 +17,44 @@ import { useTranslation } from 'next-i18next';
 
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
+import { ProposalsFeed } from 'astro_3.0/features/ProposalsFeed';
+import { ProposalsFeedNext } from 'astro_3.0/features/ProposalsFeedNext';
+
+import { ProposalsFeedStatuses } from 'types/proposal';
+
 import styles from './GlobalFeedPage.module.scss';
 
-const GlobalFeedPage: Page<
-  React.ComponentProps<typeof Feed> & { defaultApplicationUiVersion: number }
-> = ({ defaultApplicationUiVersion, ...props }) => {
+const GlobalFeedPage: Page<{ defaultApplicationUiVersion: number }> = ({
+  defaultApplicationUiVersion,
+  ...props
+}) => {
+  const { useOpenSearchDataApi } = useFlags();
   const { appVersion: selectedAppVersion } = useAppVersion();
   const { t } = useTranslation();
   const appVersion = selectedAppVersion || defaultApplicationUiVersion;
 
+  function renderFeed() {
+    return useOpenSearchDataApi ? (
+      <ProposalsFeedNext {...props} className={styles.root}>
+        <CreateProposalSelector />
+      </ProposalsFeedNext>
+    ) : (
+      <ProposalsFeed
+        initialProposals={null}
+        initialProposalsStatusFilterValue={ProposalsFeedStatuses.All}
+      >
+        <CreateProposalSelector />
+      </ProposalsFeed>
+    );
+  }
+
   return (
     <>
       <Head>
-        <title>My proposals feed</title>
+        <title>All proposals feed</title>
       </Head>
       {appVersion === 3 ? (
-        <ProposalsFeed {...props} className={styles.root}>
-          <CreateProposalSelector />
-        </ProposalsFeed>
+        renderFeed()
       ) : (
         <MainLayout>
           <Feed {...props} title={t('globalFeed')} />
@@ -61,25 +73,12 @@ GlobalFeedPage.getLayout = function getLayout(page: ReactNode) {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<
-  React.ComponentProps<typeof Feed>
-> = async ({ query, locale = 'en' }) => {
-  const accountId = CookieService.get(ACCOUNT_COOKIE);
-  const { category, status = ProposalsFeedStatuses.Active } =
-    query as ProposalsQueries;
-  const res = await SputnikHttpService.getProposalsList({
-    category,
-    status,
-    limit: LIST_LIMIT_DEFAULT,
-    daoFilter: 'All DAOs',
-    accountId,
-  });
-
+export const getServerSideProps: GetServerSideProps = async ({
+  locale = 'en',
+}) => {
   return {
     props: {
       ...(await getTranslations(locale)),
-      initialProposals: res,
-      initialProposalsStatusFilterValue: status,
       ...(await getDefaultAppVersion()),
     },
   };
