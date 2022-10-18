@@ -33,7 +33,7 @@ export const MobileAppNavigation: FC = () => {
         href: CREATE_DAO_URL,
       },
       {
-        icon: 'sidebarBounties',
+        icon: 'briefcase',
         label: 'Bounties area',
         href: BOUNTIES,
       },
