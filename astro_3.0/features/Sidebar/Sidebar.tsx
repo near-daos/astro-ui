@@ -69,7 +69,7 @@ export const Sidebar: FC = () => {
         actionsCount: proposalActionsCount,
       },
       {
-        icon: 'sidebarBounties',
+        icon: 'briefcase',
         label: 'Bounties area',
         href: BOUNTIES,
       },

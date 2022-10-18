@@ -5,11 +5,9 @@
   background: var(--color-white);
   border-right: 1px solid var(--color-neutral-30);
   display: none;
-  //filter: drop-shadow(3px 4px 8px rgba(0, 0, 0, 0.05));
   flex-direction: column;
   left: 0;
   min-height: calc(100vh - var(--app-header-height));
-  //overflow-y: auto;
   position: fixed;
   top: var(--app-header-height);
   z-index: 900;
@@ -24,7 +22,6 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  //overflow: hidden;
   transition: width 0.2s ease-out;
   width: 64px;
   will-change: width;
@@ -90,8 +87,11 @@
   max-height: calc(100vh - 462px);
   overflow-x: hidden;
   overflow-y: auto;
+  scrollbar-color: rgba(232, 224, 255, 0.09);
 
-  /* Turn on custom 4px wide scrollbar */
+  /* Turn on custom 2px wide scrollbar */
+  scrollbar-width: thin;
+
   &::-webkit-scrollbar {
     background: transparent;
     border-radius: 0;
@@ -133,7 +133,6 @@
   bottom: 0;
   padding: 0 24px;
   position: absolute;
-  //position: absolute;
   width: 250px;
 
   .icon {
