@@ -9,6 +9,7 @@ import { getDaoContext } from 'features/daos/helpers';
 import { getTranslations } from 'utils/getTranslations';
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 import { fetcher as getProposal } from 'services/ApiService/hooks/useProposal';
+import { getClient } from 'utils/launchdarkly-server-client';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -19,12 +20,19 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
+  const client = await getClient();
+  const flags = await client.allFlagsState({
+    key: account ?? '',
+  });
+  const useOpenSearchDataApi = flags.getFlagValue('use-open-search-data-api');
+
   const daoId = query.dao as string;
   const proposalId = query.proposal as string;
 
   const [proposal, membersStats, daoContext] = await Promise.all([
-    getProposal('proposal', daoId, proposalId),
-    // SputnikHttpService.getProposalById(proposalId, account),
+    useOpenSearchDataApi
+      ? getProposal('proposal', daoId, proposalId)
+      : SputnikHttpService.getProposalById(proposalId, account),
     SputnikHttpService.getDaoMembersStats(daoId),
     getDaoContext(account, daoId as string),
   ]);
@@ -35,9 +43,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: {
         ...(await getTranslations(locale)),
-        fallback: {
-          [unstable_serialize(['proposal', daoId, proposalId])]: proposal,
-        },
       },
       redirect: {
         permanent: true,

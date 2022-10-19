@@ -4,7 +4,6 @@ import get from 'lodash/get';
 import { fromBase64ToMetadata } from 'services/sputnik/mappers';
 import { toMillis } from 'utils/format';
 import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
-import { getParsedPolicy } from 'services/SearchService/mappers/helpers';
 import { DaoRole } from 'types/role';
 
 export function mapDaoIndexToDao(daoIndex: DaoIndex): DAO {
@@ -20,7 +19,7 @@ export function mapDaoIndexToDao(daoIndex: DaoIndex): DAO {
     meta = null;
   }
 
-  const policy = getParsedPolicy(daoIndex.policy);
+  const { policy } = daoIndex;
 
   // Get DAO groups
   const daoGroups = policy.roles

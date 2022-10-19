@@ -7,6 +7,7 @@ import {
 } from 'types/proposal';
 import { DraftProposalFeedItem } from 'types/draftProposal';
 import { SearchResultsData } from 'types/search';
+import { DaoPolicy } from 'services/sputnik/types/policy';
 
 export type BaseParams = {
   id?: string;
@@ -63,7 +64,7 @@ export interface DaoIndex {
   totalProposalCount: number;
   totalSupply: string;
   transactionHash: string;
-  policy: string;
+  policy: DaoPolicy;
 }
 
 export interface ProposalIndex {
