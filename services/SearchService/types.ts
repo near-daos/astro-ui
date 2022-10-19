@@ -64,7 +64,7 @@ export interface DaoIndex {
   totalProposalCount: number;
   totalSupply: string;
   transactionHash: string;
-  policy: DaoPolicy;
+  policy: DaoPolicy | string;
 }
 
 export interface ProposalIndex {

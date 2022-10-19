@@ -97,10 +97,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
 
   const contentNode = getContentNode(proposal);
 
-  const { canApprove, canReject, isCouncil } = getProposalPermissions(
-    proposal,
-    accountId
-  );
+  const permissions = getProposalPermissions(proposal, accountId);
 
   const voted =
     proposal.votes[accountId] === 'Yes' ||
@@ -116,7 +113,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
       nonActionable={
         selectedList &&
         selectedList?.length > 0 &&
-        (voted || !canApprove || !canReject)
+        (voted || !permissions.canApprove || !permissions.canReject)
       }
       isDraft={isDraft}
       proposal={proposal}
@@ -168,7 +165,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
           accountId={accountId}
           daoId={proposal.daoId}
           dao={dao}
-          permissions={proposal.permissions}
+          permissions={permissions}
           likes={proposal.voteYes}
           dislikes={proposal.voteNo}
           voteRemove={proposal.voteRemove}
@@ -209,7 +206,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
               <ProposalComments
                 contextId={proposal.id}
                 contextType="Proposal"
-                isCouncilUser={isCouncil}
+                isCouncilUser={permissions.isCouncil}
                 isCommentsAllowed
                 updateCommentsCount={setCommentsCount}
               />

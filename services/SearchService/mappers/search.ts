@@ -25,7 +25,10 @@ import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
 import { DATA_SEPARATOR } from 'constants/common';
 import { toMillis } from 'utils/format';
 import { BountyContext } from 'types/bounties';
-import { getParsedVotes } from 'services/SearchService/mappers/helpers';
+import {
+  getParsedPolicy,
+  getParsedVotes,
+} from 'services/SearchService/mappers/helpers';
 
 function mapDaoIndexToDaoFeedItem(daoIndex: DaoIndex): DaoFeedItem {
   const config = get(daoIndex, 'config');
@@ -167,6 +170,11 @@ export function mapProposalIndexToProposalFeedItem(
   const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
   const votePeriodEnd = new Date(toMillis(item.votePeriodEnd)).toISOString();
 
+  const policy =
+    typeof item.dao.policy === 'string'
+      ? getParsedPolicy(item.dao.policy)
+      : item.dao.policy;
+
   return {
     ...getVotesStatistic({ votes: getParsedVotes(item.votes) }),
     id: item.id,
@@ -194,7 +202,7 @@ export function mapProposalIndexToProposalFeedItem(
       flagLogo: getAwsImageUrl(meta?.flagLogo),
       legal: meta?.legal || {},
       numberOfMembers: item.dao?.numberOfMembers,
-      policy: item.dao.policy,
+      policy,
     },
     daoDetails: {
       name: item.dao?.config.name ?? '',
