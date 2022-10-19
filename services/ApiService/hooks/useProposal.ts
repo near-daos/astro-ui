@@ -18,7 +18,7 @@ export async function fetcher(
   url: string,
   daoId: string,
   proposalId: string
-): Promise<ProposalFeedItem> {
+): Promise<ProposalFeedItem | undefined> {
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
     : appConfig.SEARCH_API_URL;
@@ -33,16 +33,18 @@ export async function fetcher(
     }
   );
 
-  return mapProposalIndexToProposalFeedItem(
-    response.data.hits.hits[0]._source as ProposalIndex
-  );
+  const rawData = response?.data?.hits?.hits[0]?._source;
+
+  return rawData
+    ? mapProposalIndexToProposalFeedItem(rawData as ProposalIndex)
+    : undefined;
 }
 
 export function useProposal(): {
   proposal: ProposalFeedItem | undefined;
   isLoading: boolean;
   isError: boolean;
-  mutate: KeyedMutator<ProposalFeedItem>;
+  mutate: KeyedMutator<ProposalFeedItem | undefined>;
 } {
   const router = useRouter();
   const { query } = router;
