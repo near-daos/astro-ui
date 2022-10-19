@@ -17,7 +17,7 @@ import { DaoContext } from 'types/context';
 import { Member } from 'types/dao';
 
 export function useProposalVotingDetails(
-  proposal: ProposalFeedItem,
+  proposal: ProposalFeedItem | undefined,
   daoContext: DaoContext,
   members: Member[]
 ): {
