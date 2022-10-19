@@ -17,7 +17,7 @@ const DEFAULT_ACTION_ITEM = {
 };
 
 export const useTimelineData = (
-  proposal: ProposalFeedItem,
+  proposal: ProposalFeedItem | undefined,
   total: number
 ): {
   extraActions: ProposalActionData[];
@@ -25,7 +25,7 @@ export const useTimelineData = (
   voteActions: VoteActionItem[];
 } => {
   return useMemo(() => {
-    if (total === 0) {
+    if (total === 0 || !proposal) {
       return {
         extraActions: [],
         lastVote: DEFAULT_ACTION_ITEM,
@@ -112,11 +112,5 @@ export const useTimelineData = (
       lastVote: lastVote || DEFAULT_ACTION_ITEM,
       voteActions: result,
     };
-  }, [
-    total,
-    proposal.actions,
-    proposal.createdAt,
-    proposal.votePeriodEnd,
-    proposal.status,
-  ]);
+  }, [total, proposal]);
 };

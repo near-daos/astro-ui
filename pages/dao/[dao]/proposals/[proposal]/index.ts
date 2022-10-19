@@ -1,4 +1,6 @@
 import { GetServerSideProps } from 'next';
+// eslint-disable-next-line camelcase
+import { unstable_serialize } from 'swr';
 
 import { SputnikHttpService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
@@ -6,6 +8,7 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
 import { getTranslations } from 'utils/getTranslations';
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
+import { fetcher as getProposal } from 'services/ApiService/hooks/useProposal';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -20,7 +23,8 @@ export const getServerSideProps: GetServerSideProps = async ({
   const proposalId = query.proposal as string;
 
   const [proposal, membersStats, daoContext] = await Promise.all([
-    SputnikHttpService.getProposalById(proposalId, account),
+    getProposal('proposal', daoId, proposalId),
+    // SputnikHttpService.getProposalById(proposalId, account),
     SputnikHttpService.getDaoMembersStats(daoId),
     getDaoContext(account, daoId as string),
   ]);
@@ -31,6 +35,9 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: {
         ...(await getTranslations(locale)),
+        fallback: {
+          [unstable_serialize(['proposal', daoId, proposalId])]: proposal,
+        },
       },
       redirect: {
         permanent: true,
@@ -43,10 +50,12 @@ export const getServerSideProps: GetServerSideProps = async ({
     props: {
       ...(await getTranslations(locale)),
       dao,
-      proposal,
       membersStats,
       daoContext,
       ...(await getDefaultAppVersion()),
+      fallback: {
+        [unstable_serialize(['proposal', daoId, proposalId])]: proposal,
+      },
     },
   };
 };

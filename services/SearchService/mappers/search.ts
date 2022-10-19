@@ -161,7 +161,7 @@ function getProposalKind(item: ProposalIndex): ProposalKind {
   }
 }
 
-function mapProposalIndexToProposalFeedItem(
+export function mapProposalIndexToProposalFeedItem(
   item: ProposalIndex
 ): ProposalFeedItem {
   const [description, link, proposalVariant = ProposalVariant.ProposeDefault] =
