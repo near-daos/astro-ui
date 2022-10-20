@@ -197,7 +197,7 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
                       key={bountyContext.id}
                       className={styles.bountyCardWrapper}
                     >
-                      {dao && (
+                      {dao && bountyContext.proposal && (
                         <ViewBounty
                           contextId={bountyContext.id}
                           commentsCount={bountyContext.commentsCount}

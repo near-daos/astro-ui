@@ -40,8 +40,6 @@ import { getStatusFilterOptions } from 'astro_2.0/features/Proposals/helpers/get
 // Constants
 import { FEED_CATEGORIES } from 'constants/proposals';
 
-import { useFlags } from 'launchdarkly-react-client-sdk';
-import { useOpenSearchApi } from 'context/OpenSearchApiContext';
 import { getProposalsList } from 'features/proposal/helpers';
 
 import styles from './Feed.module.scss';
@@ -71,8 +69,6 @@ export const Feed = ({
   const { query, replace, pathname } = useRouter();
   const { t } = useTranslation();
   const isMounted = useMountedState();
-  const { useOpenSearchDataApi } = useFlags();
-  const { service } = useOpenSearchApi();
 
   const queries = query as ProposalsQueries;
 
@@ -113,9 +109,7 @@ export const Feed = ({
         category || queries.category,
         accountId,
         dao?.id ?? '',
-        isMyFeed,
-        useOpenSearchDataApi,
-        service
+        isMyFeed
       );
 
       if (!res) {
@@ -134,15 +128,7 @@ export const Feed = ({
 
       return accumulatedListData;
     },
-    [
-      proposalsData?.data?.length,
-      status,
-      queries.category,
-      accountId,
-      isMyFeed,
-      service,
-      useOpenSearchDataApi,
-    ]
+    [proposalsData?.data?.length, status, queries.category, accountId, isMyFeed]
   );
 
   useDebounceEffect(
