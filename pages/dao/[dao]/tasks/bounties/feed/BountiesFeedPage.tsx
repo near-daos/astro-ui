@@ -1,4 +1,6 @@
 import React, { VFC, useMemo } from 'react';
+import Head from 'next/head';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { BountyContext } from 'types/bounties';
 import { ProposalVariant } from 'types/proposal';
@@ -11,7 +13,6 @@ import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { BountiesPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/BountiesPageContent';
 import { BountiesFeed } from 'astro_2.0/features/Bounties/components/BountiesFeed';
 import { PaginationResponse } from 'types/api';
-import Head from 'next/head';
 
 export interface BountiesFeedPageProps {
   daoContext: DaoContext;
@@ -22,6 +23,8 @@ const BountiesFeedPage: VFC<BountiesFeedPageProps> = ({
   daoContext,
   bountiesContext,
 }) => {
+  useFlags();
+
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     daoContext.dao.id,
     daoContext.dao.displayName

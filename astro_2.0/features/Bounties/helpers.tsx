@@ -94,6 +94,10 @@ export function prepareBountiesPageContent(
     completed: BountyContext[];
   }>(
     (res, item) => {
+      if (!item.proposal) {
+        return res;
+      }
+
       if (item.proposal && !item.bounty) {
         res.proposalPhase.push(item);
 
@@ -122,38 +126,42 @@ export function prepareBountiesPageContent(
   );
 
   return {
-    proposalPhase: result.proposalPhase.map(item => {
-      const [description] = item.proposal.description.split(DATA_SEPARATOR);
+    proposalPhase: result.proposalPhase
+      .filter(item => item.proposal)
+      .map(item => {
+        const [description] = item.proposal
+          ? item.proposal.description.split(DATA_SEPARATOR)
+          : [''];
 
-      return {
-        id: item.id,
-        title: description,
-        proposer: item.proposal.proposer,
-        proposalId: item.proposal.id,
-        link: {
-          pathname: SINGLE_PROPOSAL_PAGE_URL,
-          query: {
-            dao: dao.id,
-            proposal: item.proposal.id,
+        return {
+          id: item.id,
+          title: description,
+          proposer: item.proposal?.proposer ?? '',
+          proposalId: item.proposal?.id ?? '',
+          link: {
+            pathname: SINGLE_PROPOSAL_PAGE_URL,
+            query: {
+              dao: dao.id,
+              proposal: item.proposal?.id ?? '',
+            },
           },
-        },
-        content: (
-          <VotingContent
-            proposal={item.proposal}
-            accountId={accountId}
-            daoId={dao.id}
-          />
-        ),
-      };
-    }),
+          content: item.proposal ? (
+            <VotingContent
+              proposal={item.proposal}
+              accountId={accountId}
+              daoId={dao.id}
+            />
+          ) : null,
+        };
+      }),
     bounties: result.bounties.map(item => {
       const [description] = item.bounty.description.split(DATA_SEPARATOR);
 
       return {
         id: item.id,
         title: description,
-        proposer: item.proposal.proposer,
-        proposalId: item.proposal.id,
+        proposer: item.proposal?.proposer ?? '',
+        proposalId: item.proposal?.id ?? '',
         bounty: item.bounty,
         link: {
           pathname: SINGLE_BOUNTY_PAGE_URL,
@@ -179,8 +187,8 @@ export function prepareBountiesPageContent(
       return {
         id: item.id,
         title: description,
-        proposer: item.proposal.proposer,
-        proposalId: item.proposal.id,
+        proposer: item.proposal?.proposer ?? '',
+        proposalId: item.proposal?.id ?? '',
         bounty: item.bounty,
         link: {
           pathname: SINGLE_BOUNTY_PAGE_URL,

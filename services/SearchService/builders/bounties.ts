@@ -1,50 +1,55 @@
 import { OpenSearchQuery } from 'services/SearchService/types';
 
 export function buildBountiesQuery(params: {
+  daoId?: string;
   account?: string;
   bountyFilter: string | null;
   bountySort: string | null;
   bountyPhase: string | null;
 }): OpenSearchQuery {
-  let q: OpenSearchQuery;
+  const q: OpenSearchQuery = {
+    bool: {
+      must: [] as Record<string, unknown>[],
+      must_not: [] as Record<string, unknown>[],
+      should: [] as Record<string, unknown>[],
+    },
+  };
+
+  // specific DAO
+  if (params.daoId) {
+    q.bool?.must?.push({
+      simple_query_string: {
+        query: `"${params.daoId}"`,
+        fields: ['daoId'],
+      },
+    });
+  }
 
   switch (params.bountyFilter) {
     case 'proposer': {
-      q = {
-        bool: {
-          must: [
-            {
-              simple_query_string: {
-                query: params.account ?? '',
-                fields: ['proposal.proposer'],
-              },
-            },
-          ],
+      q.bool?.must?.push({
+        simple_query_string: {
+          query: params.account
+            ? params.account.substring(0, params.account.indexOf('.'))
+            : '',
+          fields: ['accounts'],
         },
-      };
+      });
 
       break;
     }
     case 'numberOfClaims': {
-      q = {
-        bool: {
-          must: [
-            {
-              simple_query_string: {
-                query: 0,
-                fields: ['numberOfClaims'],
-              },
-            },
-          ],
+      q.bool?.must?.push({
+        simple_query_string: {
+          query: 0,
+          fields: ['numberOfClaims'],
         },
-      };
+      });
 
       break;
     }
     default: {
-      q = {
-        match_all: {},
-      };
+      // do nothing
     }
   }
 
@@ -53,7 +58,7 @@ export function buildBountiesQuery(params: {
       const condition = {
         simple_query_string: {
           query: 'InProgress',
-          fields: ['proposal.status'],
+          fields: ['status'],
         },
       };
       const conditionBounty = {
@@ -63,51 +68,31 @@ export function buildBountiesQuery(params: {
         },
       };
 
-      if (q.bool) {
-        q.bool.must?.push(condition);
-        q.bool.must?.push(conditionBounty);
-      } else {
-        q = {
-          bool: {
-            must: [condition, conditionBounty],
-          },
-        };
-      }
+      q.bool?.must?.push(condition);
+      q.bool?.must?.push(conditionBounty);
 
       break;
     }
     case 'inProgress': {
-      const condition = [
-        {
-          simple_query_string: {
-            query: 0,
-            fields: ['numberOfClaims'],
-          },
+      const condition = {
+        simple_query_string: {
+          query: 0,
+          fields: ['numberOfClaims'],
         },
-      ];
+      };
 
-      if (q.bool) {
-        q.bool.must_not = condition;
-      } else {
-        q = {
-          bool: {
-            must_not: condition,
-          },
-        };
-      }
+      q.bool?.must_not?.push(condition);
 
       break;
     }
 
     case 'availableBounty': {
-      const mnCondition = [
-        {
-          simple_query_string: {
-            query: 0,
-            fields: ['times'],
-          },
+      const mnCondition = {
+        simple_query_string: {
+          query: 0,
+          fields: ['times'],
         },
-      ];
+      };
 
       const condition = {
         simple_query_string: {
@@ -116,17 +101,8 @@ export function buildBountiesQuery(params: {
         },
       };
 
-      if (q.bool) {
-        q.bool.must_not = mnCondition;
-        q.bool.must?.push(condition);
-      } else {
-        q = {
-          bool: {
-            must_not: mnCondition,
-            must: [condition],
-          },
-        };
-      }
+      q.bool?.must_not?.push(mnCondition);
+      q.bool?.must?.push(condition);
 
       break;
     }
@@ -138,15 +114,7 @@ export function buildBountiesQuery(params: {
         },
       };
 
-      if (q.bool) {
-        q.bool.must?.push(condition);
-      } else {
-        q = {
-          bool: {
-            must: [condition],
-          },
-        };
-      }
+      q.bool?.must?.push(condition);
 
       break;
     }
