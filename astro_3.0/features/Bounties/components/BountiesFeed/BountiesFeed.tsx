@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import isEmpty from 'lodash/isEmpty';
 import { useAsyncFn, useMount, useMountedState } from 'react-use';
@@ -7,17 +7,16 @@ import cn from 'classnames';
 import uniqBy from 'lodash/uniqBy';
 
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
-import { useBountySearch } from 'astro_2.0/features/Bounties/components/hooks';
 
 import { BountyContext } from 'types/bounties';
 import { DAO } from 'types/dao';
 import { PaginationResponse } from 'types/api';
 
+import { MainLayout } from 'astro_3.0/features/MainLayout';
 import { Feed as FeedList } from 'astro_2.0/components/Feed';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Loader } from 'components/loader';
 import { ViewBounty } from 'astro_2.0/features/ViewBounty';
-import { SearchInput } from 'astro_2.0/components/SearchInput';
 
 import { Tokens } from 'types/token';
 import { useWalletContext } from 'context/WalletContext';
@@ -44,8 +43,6 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
   const { query } = useRouter();
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(false);
-
-  const { handleSearch, loading: searching } = useBountySearch();
 
   const [{ loading: dataIsLoading }, fetchData] = useAsyncFn(
     async (initData?: typeof data) => {
@@ -111,31 +108,6 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
     }
   };
 
-  const handleBountyInoutSearch = useCallback(
-    async val => {
-      if (!val || !val.trim()) {
-        return null;
-      }
-
-      const res = await handleSearch(val);
-
-      if (isMounted()) {
-        setData(res);
-      }
-
-      return res;
-    },
-    [handleSearch, isMounted]
-  );
-
-  const handleBountyInputClose = useCallback(async () => {
-    const newProposalsData = await fetchData();
-
-    if (isMounted()) {
-      setData(newProposalsData);
-    }
-  }, [fetchData, isMounted]);
-
   useMount(() => {
     loadMore();
   });
@@ -149,58 +121,53 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
         <BountiesFeedFilters />
       </FeedControlsLayout>
       <HideBountyContextProvider>
-        <div className={cn(styles.row, styles.additionalFilters)}>
-          <SearchInput
-            onSubmit={handleBountyInoutSearch}
-            loading={searching}
-            onClose={handleBountyInputClose}
-          />
-        </div>
-        <div className={cn(styles.row, styles.content)}>
-          <div className={styles.container}>
-            {loading ? (
-              <Loader className={styles.loader} />
-            ) : (
-              data && (
-                <FeedList
-                  data={data}
-                  loadMore={loadMore}
-                  loader={<p className={styles.loading}>{t('loading')}...</p>}
-                  noResults={
-                    <div className={styles.loading}>
-                      <NoResultsView
-                        title={
-                          isEmpty(data?.data)
-                            ? t('noDataFound')
-                            : t('noMoreResults')
-                        }
-                      />
-                    </div>
-                  }
-                  renderItem={bountyContext => (
-                    <div
-                      key={bountyContext.id}
-                      className={styles.bountyCardWrapper}
-                    >
-                      {bountyContext.proposal && (
-                        <ViewBounty
-                          contextId={bountyContext.id}
-                          commentsCount={bountyContext.commentsCount}
-                          dao={dao}
-                          daoId={bountyContext.daoId}
-                          bounty={bountyContext.bounty}
-                          proposal={bountyContext.proposal}
-                          initialInfoPanelView={null}
+        <MainLayout>
+          <div className={cn(styles.row, styles.content)}>
+            <div className={styles.container}>
+              {loading ? (
+                <Loader className={styles.loader} />
+              ) : (
+                data && (
+                  <FeedList
+                    data={data}
+                    loadMore={loadMore}
+                    loader={<p className={styles.loading}>{t('loading')}...</p>}
+                    noResults={
+                      <div className={styles.loading}>
+                        <NoResultsView
+                          title={
+                            isEmpty(data?.data)
+                              ? t('noDataFound')
+                              : t('noMoreResults')
+                          }
                         />
-                      )}
-                    </div>
-                  )}
-                  className={styles.listWrapper}
-                />
-              )
-            )}
+                      </div>
+                    }
+                    renderItem={bountyContext => (
+                      <div
+                        key={bountyContext.id}
+                        className={styles.bountyCardWrapper}
+                      >
+                        {bountyContext.proposal && (
+                          <ViewBounty
+                            contextId={bountyContext.id}
+                            commentsCount={bountyContext.commentsCount}
+                            dao={dao}
+                            daoId={bountyContext.daoId}
+                            bounty={bountyContext.bounty}
+                            proposal={bountyContext.proposal}
+                            initialInfoPanelView={null}
+                          />
+                        )}
+                      </div>
+                    )}
+                    className={styles.listWrapper}
+                  />
+                )
+              )}
+            </div>
           </div>
-        </div>
+        </MainLayout>
       </HideBountyContextProvider>
     </div>
   );

@@ -68,7 +68,7 @@ export const CollapsableSection: FC<CollapsableSectionProps> = ({
             return (
               <SectionRow
                 id={item.id}
-                key={item.title}
+                key={item.id}
                 accountId={accountId}
                 dao={dao}
                 isFirstRow={i === 0}

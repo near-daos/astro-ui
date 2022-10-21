@@ -1,14 +1,19 @@
 import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite';
+import useSWR, { SWRResponse } from 'swr';
 import axios from 'axios';
+import { useRouter } from 'next/router';
+
 import { mapOpenSearchResponseToSearchResult } from 'services/SearchService/mappers/search';
 import { SearchResponseIndex } from 'services/SearchService/types';
-import { useRouter } from 'next/router';
-import { appConfig } from 'config';
+import { buildBountiesQuery } from 'services/SearchService/builders/bounties';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
+
+import { appConfig } from 'config';
+
 import { useWalletContext } from 'context/WalletContext';
+
 import { PaginationResponse } from 'types/api';
 import { BountyContext } from 'types/bounties';
-import { buildBountiesQuery } from 'services/SearchService/builders/bounties';
 
 const DEDUPING_INTERVAL = 10000;
 
@@ -22,8 +27,8 @@ export async function fetcher(
   limit: number,
   offset: number
 ): Promise<PaginationResponse<BountyContext[]>> {
-  // const sort = 'createTimestamp,DESC';
-  // const sortOptions = sort.split(',');
+  const sort = bountySort ?? 'createTimestamp,DESC';
+  const sortOptions = sort.split(',');
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
     : appConfig.SEARCH_API_URL;
@@ -35,16 +40,15 @@ export async function fetcher(
         daoId,
         account: accountId,
         bountyFilter,
-        bountySort,
         bountyPhase,
       }),
-      // sort: [
-      //   {
-      //     [sortOptions[0]]: {
-      //       order: sortOptions[1].toLowerCase(),
-      //     },
-      //   },
-      // ],
+      sort: [
+        {
+          [sortOptions[0]]: {
+            order: sortOptions[1].toLowerCase(),
+          },
+        },
+      ],
     }
   );
 
@@ -60,13 +64,12 @@ export async function fetcher(
   };
 }
 
-export function useBountiesInfinite(): SWRInfiniteResponse<{
-  data: BountyContext[];
-  total: number;
-}> {
+export function useBountiesInfinite(): SWRInfiniteResponse<
+  PaginationResponse<BountyContext[]>
+> {
   const { accountId } = useWalletContext();
   const { query } = useRouter();
-  const { daoId, bountySort, bountyFilter, bountyPhase } = query;
+  const { dao, bountySort, bountyFilter, bountyPhase } = query;
 
   const limit = LIST_LIMIT_DEFAULT;
 
@@ -76,7 +79,7 @@ export function useBountiesInfinite(): SWRInfiniteResponse<{
 
       return [
         'bounties',
-        daoId,
+        dao,
         bountySort,
         bountyFilter,
         bountyPhase,
@@ -85,6 +88,34 @@ export function useBountiesInfinite(): SWRInfiniteResponse<{
         offset,
       ];
     },
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: DEDUPING_INTERVAL,
+    }
+  );
+}
+
+export function useBounties(
+  page: number
+): SWRResponse<PaginationResponse<BountyContext[]>> {
+  const { accountId } = useWalletContext();
+  const { query } = useRouter();
+  const { dao, bountySort, bountyFilter, bountyPhase } = query;
+
+  const limit = LIST_LIMIT_DEFAULT;
+
+  return useSWR(
+    [
+      'bounties',
+      dao,
+      bountySort,
+      bountyFilter,
+      bountyPhase,
+      accountId,
+      limit,
+      page * limit,
+    ],
     fetcher,
     {
       revalidateOnFocus: false,

@@ -19,12 +19,14 @@ import styles from './BountiesPageContent.module.scss';
 export interface BountiesPageContentProps {
   daoContext: DaoContext;
   toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
+  hideFilters?: boolean;
 }
 
 export const BountiesPageContent: FC<BountiesPageContentProps> = ({
   toggleCreateProposal,
   daoContext,
   children,
+  hideFilters = false,
 }) => {
   const { dao } = daoContext;
   const { tokens } = useDaoCustomTokens();
@@ -61,30 +63,36 @@ export const BountiesPageContent: FC<BountiesPageContentProps> = ({
     <div className={styles.root}>
       <div className={styles.header}>
         <h1 className={styles.title}>Bounties</h1>
-        <div className={styles.filters}>
-          <div className={cn(styles.filter, styles.desktopOnly)}>
-            <span className={styles.filterLabel}>Sorting by:</span>
-            <Dropdown
-              menuClassName={styles.filterMenu}
-              value={query.bountySort ?? BOUNTIES_PAGE_SORT_OPTIONS[0].value}
-              onChange={val => updateQuery('bountySort', val)}
-              options={BOUNTIES_PAGE_SORT_OPTIONS}
-            />
+        {!hideFilters && (
+          <div className={styles.filters}>
+            <div className={cn(styles.filter, styles.desktopOnly)}>
+              <span className={styles.filterLabel}>Sorting by:</span>
+              <Dropdown
+                menuClassName={styles.filterMenu}
+                value={query.bountySort ?? BOUNTIES_PAGE_SORT_OPTIONS[0].value}
+                onChange={val => updateQuery('bountySort', val)}
+                options={BOUNTIES_PAGE_SORT_OPTIONS}
+              />
+            </div>
+            <div className={styles.filter}>
+              <span className={styles.filterLabel}>Filter:</span>
+              <Dropdown
+                menuClassName={styles.filterMenu}
+                value={
+                  query.bountyFilter ?? BOUNTIES_PAGE_FILTER_OPTIONS[0].value
+                }
+                onChange={val => updateQuery('bountyFilter', val)}
+                options={BOUNTIES_PAGE_FILTER_OPTIONS}
+              />
+            </div>
           </div>
-          <div className={styles.filter}>
-            <span className={styles.filterLabel}>Filter:</span>
-            <Dropdown
-              menuClassName={styles.filterMenu}
-              value={
-                query.bountyFilter ?? BOUNTIES_PAGE_FILTER_OPTIONS[0].value
-              }
-              onChange={val => updateQuery('bountyFilter', val)}
-              options={BOUNTIES_PAGE_FILTER_OPTIONS}
-            />
-          </div>
-        </div>
-
-        <ViewToggle dao={dao} className={styles.toggle} />
+        )}
+        <ViewToggle
+          dao={dao}
+          className={cn(styles.toggle, {
+            [styles.alignRight]: hideFilters,
+          })}
+        />
       </div>
       {renderChildren()}
     </div>

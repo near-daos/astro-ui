@@ -28,6 +28,7 @@ export interface ViewBountyProps {
   toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
   initialInfoPanelView: string | null;
   daoContext?: DaoContext;
+  showFlag?: boolean;
 }
 
 const variants = {
@@ -46,6 +47,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
   toggleCreateProposal,
   initialInfoPanelView,
   daoContext,
+  showFlag = true,
 }) => {
   const [showInfoPanel, setShowInfoPanel] = useState<string | null>(
     initialInfoPanelView
@@ -64,12 +66,14 @@ export const ViewBounty: FC<ViewBountyProps> = ({
       <ProposalCardRenderer
         proposalId={null}
         daoFlagNode={
-          <DaoFlagWidget
-            daoName={daoId}
-            flagUrl={dao?.flagLogo}
-            daoId={daoId}
-            fallBack={dao?.logo}
-          />
+          showFlag && (
+            <DaoFlagWidget
+              daoName={daoId}
+              flagUrl={dao?.flagLogo}
+              daoId={daoId}
+              fallBack={dao?.logo}
+            />
+          )
         }
         letterHeadNode={
           <LetterHeadWidget
