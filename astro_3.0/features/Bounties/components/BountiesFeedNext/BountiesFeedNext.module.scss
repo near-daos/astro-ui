@@ -1,0 +1,12 @@
+.root {
+  width: 100%;
+}
+
+/* stylelint-disable-next-line */
+.container :global(.infinite-scroll-component__outerdiv) {
+  flex-grow: 1;
+}
+
+.bountyCardWrapper {
+  margin-top: 32px;
+}

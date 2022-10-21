@@ -37,7 +37,7 @@ export function useDao(): {
 
   const { data, error, mutate } = useSWR(['dao', daoId], fetcher, {
     revalidateOnFocus: false,
-    revalidateOnMount: false,
+    // revalidateOnMount: false,
     dedupingInterval: 5000,
   });
 

@@ -8,8 +8,7 @@ import {
 import { ProposalType } from 'types/proposal';
 import { getClient } from 'utils/launchdarkly-server-client';
 import { OpenSearchApiService } from 'services/SearchService';
-import { fetcher as getDao } from 'services/ApiService/hooks/useDao';
-import { fetcher as getPolicyAffectsProposals } from 'services/ApiService/hooks/usePolicyAffectsProposals';
+import { fetcher as fetchDaoContextData } from 'services/ApiService/hooks/useDaoContext';
 
 interface GetDaoListProps {
   sort?: string;
@@ -132,18 +131,16 @@ export async function getDaoContext(
   });
   const useOpenSearchDataApi = flags.getFlagValue('use-open-search-data-api');
 
-  const [dao, policyAffectsProposals, delegations] = await Promise.all([
-    useOpenSearchDataApi
-      ? getDao('dao', daoId)
-      : SputnikHttpService.getDaoById(daoId),
-    useOpenSearchDataApi
-      ? getPolicyAffectsProposals('proposals', daoId)
-      : SputnikHttpService.findPolicyAffectsProposals(daoId),
-    SputnikHttpService.getDelegations(
-      daoId,
-      flags.getFlagValue('governance-token')
-    ),
-  ]);
+  const [dao, policyAffectsProposals, delegations] = useOpenSearchDataApi
+    ? await fetchDaoContextData(daoId)
+    : await Promise.all([
+        SputnikHttpService.getDaoById(daoId),
+        SputnikHttpService.findPolicyAffectsProposals(daoId),
+        SputnikHttpService.getDelegations(
+          daoId,
+          flags.getFlagValue('governance-token')
+        ),
+      ]);
 
   if (!dao) {
     return undefined;
@@ -151,7 +148,7 @@ export async function getDaoContext(
 
   let userHasDelegatedTokens = false;
   const userDelegation = delegations.find(item => item.accountId === accountId);
-  const holdersRole = dao.policy.roles.find(
+  const holdersRole = dao.policy?.roles.find(
     role => role.kind === 'Member' && role.name === 'TokenHolders'
   );
 
