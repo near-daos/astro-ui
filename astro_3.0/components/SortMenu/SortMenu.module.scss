@@ -1,0 +1,48 @@
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  display: flex;
+
+  min-width: 70px;
+}
+
+.dropdownWrapper,
+.dropdown {
+  font-weight: 500;
+  width: 100%;
+}
+
+.dropdown {
+  &:hover {
+    color: var(--color-neutral-70);
+  }
+}
+
+.controlIcon.controlIcon {
+  margin-left: 12px;
+  width: 12px;
+}
+
+.filterLabel {
+  white-space: nowrap;
+}
+
+.filterIcon {
+  margin-left: 12px;
+  width: 20px;
+}
+
+.sortIcon {
+  margin-left: 12px;
+  width: 12px;
+}
+
+.menu {
+  @extend %body2;
+  right: 0;
+}
+
+.selectedItem {
+  @extend %subtitle5;
+}

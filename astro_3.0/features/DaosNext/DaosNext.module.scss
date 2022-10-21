@@ -1,0 +1,18 @@
+@import 'styles/daosList';
+
+.daosList {
+  @include daos-list;
+}
+
+.loading {
+  margin: 32px 0;
+  text-align: center;
+}
+
+.filtersWrapper {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 12px;
+}

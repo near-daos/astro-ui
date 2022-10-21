@@ -1,12 +1,5 @@
 import { DaoFeedItem } from 'types/dao';
-import { getClient } from 'utils/launchdarkly-server-client';
-import {
-  getDaosList,
-  getDaosListFromOpenSearch,
-  getFilterValue,
-} from 'features/daos/helpers';
-import { CookieService } from 'services/CookieService';
-import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { getDaosList, getFilterValue } from 'features/daos/helpers';
 
 import { getTranslations } from 'utils/getTranslations';
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
@@ -29,27 +22,13 @@ export async function getServerSideProps({
 }): Promise<{
   props: { data: DaoFeedItem[]; total: number };
 }> {
-  const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
-  const client = await getClient();
-  const useOpenSearchDataApi = await client.variation(
-    'use-open-search-data-api',
-    {
-      key: account ?? '',
-    },
-    false
-  );
-
   const daosView = query.daosView ? (query.daosView as string) : 'active';
 
-  const fetcher = useOpenSearchDataApi
-    ? getDaosListFromOpenSearch
-    : getDaosList;
-
-  const { daos: data, total } = await fetcher({
+  const { daos: data, total } = await getDaosList({
     offset: 0,
     limit: 20,
     sort: query.sort as string,
-    filter: getFilterValue(useOpenSearchDataApi, daosView),
+    filter: getFilterValue(false, daosView),
   });
 
   return {
