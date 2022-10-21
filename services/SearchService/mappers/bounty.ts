@@ -1,11 +1,17 @@
 import { BountyIndex } from 'services/SearchService/types';
 import { BountyContext } from 'types/bounties';
 import { toMillis } from 'utils/format';
+import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
+import get from 'lodash/get';
+import { fromBase64ToMetadata } from 'services/sputnik/mappers';
 
 export function mapBountyIndexToBountyContext(
   item: BountyIndex
 ): BountyContext {
   const { proposal } = item;
+
+  const config = get(proposal, 'dao.config');
+  const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
 
   return {
     id: item.id,
@@ -29,6 +35,18 @@ export function mapBountyIndexToBountyContext(
           kind: proposal.kind ?? {
             type: 'AddBounty',
             bounty: { times: item.times },
+          },
+          dao: {
+            id: proposal.dao?.id,
+            name: proposal.dao?.config.name ?? '',
+            logo: meta?.flag
+              ? getAwsImageUrl(meta.flag)
+              : '/flags/defaultDaoFlag.png',
+            flagCover: getAwsImageUrl(meta?.flagCover),
+            flagLogo: getAwsImageUrl(meta?.flagLogo),
+            legal: meta?.legal || {},
+            numberOfMembers: proposal.dao?.numberOfMembers,
+            policy: proposal.dao?.policy,
           },
           votePeriodEnd: new Date(
             toMillis(proposal.votePeriodEnd)

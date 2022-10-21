@@ -12,6 +12,8 @@ import { useBountyVoting } from 'astro_2.0/features/Bounties/components/hooks';
 import { useCountdown } from 'hooks/useCountdown';
 import { toMillis } from 'utils/format';
 
+import { getProposalPermissions } from 'astro_2.0/features/ViewProposal/helpers';
+
 import styles from './VotingContent.module.scss';
 
 interface VotingContentProps {
@@ -35,7 +37,10 @@ export const VotingContent: FC<VotingContentProps> = ({
   const disliked = votesStat.votes[accountId] === 'No';
   const dismissed = votesStat.votes[accountId] === 'Dismiss';
 
-  const { canApprove, canReject } = proposal.permissions;
+  const permissions = getProposalPermissions(proposal, accountId);
+
+  const { canApprove, canReject } = permissions;
+
   const votePeriodEnd = new Date(
     toMillis(proposal.votePeriodEnd)
   ).toISOString();

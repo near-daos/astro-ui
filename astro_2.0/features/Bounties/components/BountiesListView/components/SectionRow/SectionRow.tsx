@@ -62,7 +62,7 @@ export const SectionRow: FC<SectionRowProps> = ({
           })}
         >
           <motion.div
-            layout
+            // layout
             initial={{ opacity: 0 }}
             animate={{ opacity: selected.includes(item.id) ? 0.3 : 1 }}
             exit={{ opacity: 0 }}

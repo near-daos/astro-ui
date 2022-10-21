@@ -75,6 +75,7 @@ const BountyPage: NextPage<BountyPageProps> = ({
           commentsCount={commentsCount}
           className={styles.bountyInfo}
           initialInfoPanelView="claims"
+          showFlag={false}
         />
         {bountyDoneProposal && (
           <ViewProposal proposal={bountyDoneProposal} showFlag={false} />

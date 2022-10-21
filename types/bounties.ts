@@ -1,4 +1,5 @@
 import { ProposalKind } from 'types/proposal';
+import { DaoPolicy } from 'services/sputnik/types/policy';
 
 export interface BountyResponse {
   bountyId: string;
@@ -113,5 +114,18 @@ export type BountyProposal = {
     canReject: boolean;
     canDelete: boolean;
     isCouncil: boolean;
+  };
+  dao?: {
+    id: string;
+    name: string;
+    logo: string;
+    flagCover: string;
+    flagLogo: string;
+    legal: {
+      legalStatus?: string;
+      legalLink?: string;
+    };
+    numberOfMembers: number;
+    policy: DaoPolicy;
   };
 };

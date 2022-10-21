@@ -10,6 +10,7 @@ import {
   ProposalType,
   ProposalVariant,
 } from 'types/proposal';
+import { BountyProposal } from 'types/bounties';
 
 import { getInitialData } from 'features/vote-policy/helpers';
 
@@ -1176,7 +1177,7 @@ export function getProposalUpdatedDate(
 }
 
 export function getProposalPermissions(
-  proposal: ProposalFeedItem,
+  proposal: ProposalFeedItem | BountyProposal,
   accountId: string
 ): {
   canApprove: boolean;
@@ -1186,9 +1187,18 @@ export function getProposalPermissions(
 } {
   const { dao, permissions } = proposal;
 
-  if (permissions && !Object.keys(permissions).length) {
+  if (permissions && Object.keys(permissions).length > 0) {
     return {
       ...permissions,
+    };
+  }
+
+  if (!dao) {
+    return {
+      canApprove: false,
+      canReject: false,
+      canDelete: false,
+      isCouncil: false,
     };
   }
 

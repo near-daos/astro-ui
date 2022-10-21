@@ -4,7 +4,6 @@ export function buildBountiesQuery(params: {
   daoId?: string;
   account?: string;
   bountyFilter: string | null;
-  bountySort: string | null;
   bountyPhase: string | null;
 }): OpenSearchQuery {
   const q: OpenSearchQuery = {

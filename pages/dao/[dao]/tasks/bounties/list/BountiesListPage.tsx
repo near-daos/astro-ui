@@ -1,4 +1,6 @@
 import React, { VFC, useMemo } from 'react';
+import Head from 'next/head';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { BountyContext } from 'types/bounties';
 import { ProposalVariant } from 'types/proposal';
@@ -10,7 +12,7 @@ import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 
 import { BountiesPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/BountiesPageContent';
 import { BountiesListView } from 'astro_2.0/features/Bounties/components/BountiesListView';
-import Head from 'next/head';
+import { DaoBountiesList } from 'astro_3.0/features/Bounties/components/DaoBounties';
 
 export interface BountiesListPageProps {
   daoContext: DaoContext;
@@ -21,6 +23,7 @@ const BountiesListPage: VFC<BountiesListPageProps> = ({
   daoContext,
   bountiesContext,
 }) => {
+  const { useOpenSearchDataApi } = useFlags();
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     daoContext.dao.id,
     daoContext.dao.displayName
@@ -34,6 +37,22 @@ const BountiesListPage: VFC<BountiesListPageProps> = ({
     ];
   }, [breadcrumbsConfig]);
 
+  function renderContent() {
+    if (useOpenSearchDataApi === undefined) {
+      return null;
+    }
+
+    return useOpenSearchDataApi ? (
+      <BountiesPageContent daoContext={daoContext} hideFilters>
+        <DaoBountiesList />
+      </BountiesPageContent>
+    ) : (
+      <BountiesPageContent daoContext={daoContext}>
+        <BountiesListView bountiesContext={bountiesContext} />
+      </BountiesPageContent>
+    );
+  }
+
   return (
     <NestedDaoPageWrapper
       daoContext={daoContext}
@@ -43,9 +62,7 @@ const BountiesListPage: VFC<BountiesListPageProps> = ({
       <Head>
         <title>Bounties list</title>
       </Head>
-      <BountiesPageContent daoContext={daoContext}>
-        <BountiesListView bountiesContext={bountiesContext} />
-      </BountiesPageContent>
+      {renderContent()}
     </NestedDaoPageWrapper>
   );
 };
