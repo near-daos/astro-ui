@@ -34,10 +34,6 @@ const GlobalFeedPage: Page<{ defaultApplicationUiVersion: number }> = ({
   const appVersion = selectedAppVersion || defaultApplicationUiVersion;
 
   function renderFeed() {
-    if (useOpenSearchDataApi === undefined) {
-      return null;
-    }
-
     return useOpenSearchDataApi ? (
       <ProposalsFeedNext {...props} className={styles.root}>
         <CreateProposalSelector />

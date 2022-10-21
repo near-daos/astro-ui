@@ -11,26 +11,27 @@ import { useWalletContext } from 'context/WalletContext';
 import { SidebarMarker } from 'astro_3.0/features/Sidebar/components/SidebarMarker';
 import { SINGLE_DAO_PAGE } from 'constants/routing';
 
-import { useAccountDaos } from 'services/ApiService/hooks/useAccountDaos';
+import { useOpenSearchApi } from 'context/OpenSearchApiContext';
 
 import { getDaoAvatar } from 'astro_3.0/features/Sidebar/helpers';
+
 import styles from './SidebarDaos.module.scss';
 
 export const SidebarDaos: FC = () => {
   const router = useRouter();
   const { accountId } = useWalletContext();
   const { useOpenSearchDataApi } = useFlags();
-  const { data } = useAccountDaos();
+  const { service } = useOpenSearchApi();
 
-  const { value } = useAsync(async () => {
-    if (!accountId || useOpenSearchDataApi) {
+  const { value: daos } = useAsync(async () => {
+    if (!accountId || useOpenSearchDataApi === undefined || !service) {
       return null;
     }
 
-    return SputnikHttpService.getAccountDaos(accountId);
-  }, [accountId, useOpenSearchDataApi]);
-
-  const daos = value || data;
+    return useOpenSearchDataApi
+      ? service?.getAccountDaos(accountId)
+      : SputnikHttpService.getAccountDaos(accountId);
+  }, [accountId, useOpenSearchDataApi, service]);
 
   useEffect(() => {
     Tooltip.rebuild();

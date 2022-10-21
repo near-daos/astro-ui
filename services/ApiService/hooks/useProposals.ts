@@ -66,17 +66,10 @@ export async function fetcher(
   };
 }
 
-type Props = {
-  isMyFeed?: boolean;
-  category?: ProposalCategories;
-};
-
-export function useProposalsInfinite(props?: Props): SWRInfiniteResponse<{
+export function useProposalsInfinite(isMyFeed?: boolean): SWRInfiniteResponse<{
   data: ProposalFeedItem[];
   total: number;
 }> {
-  const { isMyFeed, category: initialCategory } = props ?? {};
-
   const router = useRouter();
   const { query } = router;
 
@@ -84,7 +77,7 @@ export function useProposalsInfinite(props?: Props): SWRInfiniteResponse<{
 
   const limit = LIST_LIMIT_DEFAULT;
   const status = query.status ?? '';
-  const category = initialCategory ?? query.category ?? '';
+  const category = query.category ?? '';
   const daoId = query.dao ?? '';
   const proposer = query.proposer ?? '';
 

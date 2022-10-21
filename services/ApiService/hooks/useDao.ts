@@ -9,10 +9,7 @@ import { buildDaoQuery } from 'services/SearchService/builders/dao';
 import { mapDaoIndexToDao } from 'services/SearchService/mappers/dao';
 
 /* eslint-disable no-underscore-dangle */
-export async function fetcher(
-  url: string,
-  daoId: string
-): Promise<DAO | undefined> {
+export async function fetcher(url: string, daoId: string): Promise<DAO> {
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
     : appConfig.SEARCH_API_URL;
@@ -24,16 +21,14 @@ export async function fetcher(
     }
   );
 
-  const rawData = response?.data?.hits?.hits[0]?._source;
-
-  return rawData ? mapDaoIndexToDao(rawData as DaoIndex) : undefined;
+  return mapDaoIndexToDao(response.data.hits.hits[0]._source as DaoIndex);
 }
 
 export function useDao(): {
   dao: DAO | undefined;
   isLoading: boolean;
   isError: boolean;
-  mutate: KeyedMutator<DAO | undefined>;
+  mutate: KeyedMutator<DAO>;
 } {
   const router = useRouter();
   const { query } = router;
@@ -42,7 +37,7 @@ export function useDao(): {
 
   const { data, error, mutate } = useSWR(['dao', daoId], fetcher, {
     revalidateOnFocus: false,
-    // revalidateOnMount: false,
+    revalidateOnMount: false,
     dedupingInterval: 5000,
   });
 

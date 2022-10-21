@@ -50,9 +50,7 @@ export async function fetcher(
   return mappedData.data as ProposalFeedItem[];
 }
 
-export function usePolicyAffectsProposals(): {
-  data: ProposalFeedItem[] | undefined;
-} {
+export function usePolicyAffectsProposals(): ProposalFeedItem[] | undefined {
   const router = useRouter();
   const { query } = router;
 
@@ -63,5 +61,5 @@ export function usePolicyAffectsProposals(): {
     dedupingInterval: PROPOSALS_DEDUPING_INTERVAL,
   });
 
-  return { data };
+  return data;
 }
