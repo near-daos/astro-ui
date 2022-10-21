@@ -84,6 +84,7 @@ export const BountiesFeedFilters: FC<Props> = ({ className }) => {
           list={filterOptions}
           disabled={false}
           hideAllOption
+          shallowUpdate
           className={styles.categoriesFilter}
         />
       </div>

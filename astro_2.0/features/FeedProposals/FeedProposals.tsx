@@ -39,8 +39,6 @@ import { SputnikHttpService } from 'services/sputnik';
 // Constants
 import { FEED_CATEGORIES } from 'constants/proposals';
 
-import { useFlags } from 'launchdarkly-react-client-sdk';
-import { useOpenSearchApi } from 'context/OpenSearchApiContext';
 import { getProposalsList } from 'features/proposal/helpers';
 
 import styles from './FeedProposals.module.scss';
@@ -71,8 +69,6 @@ export const FeedProposals = ({
   const { query, replace, pathname } = useRouter();
   const { t } = useTranslation();
   const isMounted = useMountedState();
-  const { useOpenSearchDataApi } = useFlags();
-  const { service } = useOpenSearchApi();
 
   const queries = query as ProposalsQueries;
 
@@ -132,8 +128,6 @@ export const FeedProposals = ({
         accountId,
         dao?.id ?? '',
         isMyFeed,
-        useOpenSearchDataApi,
-        service,
         proposers
       );
 
@@ -160,8 +154,6 @@ export const FeedProposals = ({
       accountId,
       isMyFeed,
       chips,
-      service,
-      useOpenSearchDataApi,
     ]
   );
 

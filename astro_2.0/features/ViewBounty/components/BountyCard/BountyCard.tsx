@@ -67,7 +67,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
 
   const desc = bounty ? bounty.description : proposal.description;
   const [description, url] = desc.split(DATA_SEPARATOR);
-  const kind = proposal.kind as {
+  const kind = proposal?.kind as {
     type: ProposalType.AddBounty;
     bounty: AddBountyRequest;
   };

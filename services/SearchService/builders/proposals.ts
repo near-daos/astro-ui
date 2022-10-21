@@ -173,7 +173,7 @@ export function buildProposalsQuery(
   if (accountId) {
     q.bool?.must?.push({
       simple_query_string: {
-        query: accountId,
+        query: accountId.substring(0, accountId.indexOf('.')),
         fields: ['accounts'],
       },
     });
