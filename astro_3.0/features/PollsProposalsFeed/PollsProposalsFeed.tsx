@@ -10,15 +10,17 @@ import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Feed as FeedList } from 'astro_2.0/components/Feed';
 import { ProposalsFeedFilters } from 'astro_3.0/features/ProposalsFeedNext/components/ProposalsFeedFilters';
 
+import { ProposalCategories } from 'types/proposal';
+
 import { useProposalsFeed } from 'astro_3.0/features/ProposalsFeedNext/hooks';
 
-import styles from './DaoProposalsFeed.module.scss';
+import styles from './PollsProposalsFeed.module.scss';
 
 interface Props {
   className?: string;
 }
 
-export const DaoProposalsFeed: FC<Props> = ({ className }) => {
+export const PollsProposalsFeed: FC<Props> = ({ className }) => {
   const { t } = useTranslation();
   const {
     handleFilterChange,
@@ -27,13 +29,16 @@ export const DaoProposalsFeed: FC<Props> = ({ className }) => {
     isValidating,
     hasMore,
     dataLength,
-  } = useProposalsFeed();
+  } = useProposalsFeed({
+    category: ProposalCategories.Polls,
+  });
 
   return (
     <div className={clsx(styles.root, className)}>
       <ProposalsFeedFilters
         className={styles.filtersContainer}
         onFilterChange={handleFilterChange}
+        hideCategories
       />
       {isValidating && !proposalsData.data.length && <Loader />}
       <FeedList

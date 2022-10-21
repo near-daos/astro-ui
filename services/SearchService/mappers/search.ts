@@ -78,6 +78,8 @@ export function mapProposalIndexToProposalFeedItem(
   const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
   const votePeriodEnd = new Date(toMillis(item.votePeriodEnd)).toISOString();
 
+  const { policy } = item.dao;
+
   return {
     ...getVotesStatistic({ votes: getParsedVotes(item.votes) }),
     id: item.id,
@@ -105,7 +107,7 @@ export function mapProposalIndexToProposalFeedItem(
       flagLogo: getAwsImageUrl(meta?.flagLogo),
       legal: meta?.legal || {},
       numberOfMembers: item.dao?.numberOfMembers,
-      policy: item.dao.policy,
+      policy,
     },
     daoDetails: {
       name: item.dao?.config.name ?? '',

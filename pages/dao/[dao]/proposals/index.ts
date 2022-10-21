@@ -1,4 +1,7 @@
 import { GetServerSideProps } from 'next';
+import { getClient } from 'utils/launchdarkly-server-client';
+// eslint-disable-next-line camelcase
+import { unstable_serialize } from 'swr';
 
 import {
   ProposalCategories,
@@ -14,8 +17,8 @@ import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { getDaoContext } from 'features/daos/helpers';
 import { getTranslations } from 'utils/getTranslations';
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
-import { getClient } from 'utils/launchdarkly-server-client';
-import { OpenSearchApiService } from 'services/SearchService';
+
+import { fetcher as getProposals } from 'services/ApiService/hooks/useProposals';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -32,9 +35,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const flags = await client.allFlagsState({
     key: account ?? '',
   });
-  const useOpenSearchDataApi = flags.getFlagValue(
-    'default-application-ui-version'
-  );
+  const useOpenSearchDataApi = flags.getFlagValue('use-open-search-data-api');
 
   const params = {
     offset: 0,
@@ -44,12 +45,19 @@ export const getServerSideProps: GetServerSideProps = async ({
     status: status as ProposalsFeedStatuses,
     accountId: account,
   };
-  const openSearchService = new OpenSearchApiService();
 
   const [daoContext, initialProposalsData] = await Promise.all([
     getDaoContext(account, daoId as string),
     useOpenSearchDataApi
-      ? openSearchService.getProposalsList(params)
+      ? getProposals(
+          'proposals',
+          params.daoId,
+          params.status,
+          params.category,
+          0,
+          LIST_LIMIT_DEFAULT,
+          params.accountId
+        )
       : SputnikHttpService.getProposalsList(params),
   ]);
 
@@ -66,6 +74,17 @@ export const getServerSideProps: GetServerSideProps = async ({
       initialProposalsData,
       initialProposalsStatusFilterValue: status,
       ...(await getDefaultAppVersion()),
+      fallback: {
+        [unstable_serialize([
+          'proposals',
+          params.daoId,
+          params.status,
+          params.category,
+          0,
+          LIST_LIMIT_DEFAULT,
+          params.accountId,
+        ])]: initialProposalsData,
+      },
     },
   };
 };
