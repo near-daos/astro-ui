@@ -1181,12 +1181,11 @@ export function getProposalPermissions(
 ): {
   canApprove: boolean;
   canReject: boolean;
-  canDelete: boolean;
   isCouncil: boolean;
 } {
   const { dao, permissions } = proposal;
 
-  if (permissions && !Object.keys(permissions).length) {
+  if (permissions) {
     return {
       ...permissions,
     };
@@ -1205,7 +1204,6 @@ export function getProposalPermissions(
   return {
     canApprove: isPermitted,
     canReject: isPermitted,
-    canDelete: isPermitted,
     isCouncil,
   };
 }

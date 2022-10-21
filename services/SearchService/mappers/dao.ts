@@ -1,13 +1,10 @@
-import get from 'lodash/get';
-
 import { DaoIndex } from 'services/SearchService/types';
 import { DAO } from 'types/dao';
-import { DaoRole } from 'types/role';
-
+import get from 'lodash/get';
+import { fromBase64ToMetadata } from 'services/sputnik/mappers';
 import { toMillis } from 'utils/format';
 import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
-import { fromBase64ToMetadata } from 'services/sputnik/mappers';
-import { getParsedPolicy } from 'services/SearchService/mappers/helpers';
+import { DaoRole } from 'types/role';
 
 export function mapDaoIndexToDao(daoIndex: DaoIndex): DAO {
   const config = get(daoIndex, 'config');
@@ -22,24 +19,20 @@ export function mapDaoIndexToDao(daoIndex: DaoIndex): DAO {
     meta = null;
   }
 
-  const policy =
-    typeof daoIndex.policy === 'string'
-      ? getParsedPolicy(daoIndex.policy)
-      : daoIndex.policy;
+  const { policy } = daoIndex;
 
   // Get DAO groups
-  const daoGroups =
-    policy?.roles
-      ?.filter((item: DaoRole) => item.kind === 'Group')
-      .map((item: DaoRole) => {
-        return {
-          members: item.accountIds || [],
-          name: item.name,
-          permissions: item.permissions,
-          votePolicy: item.votePolicy,
-          slug: item.name,
-        };
-      }) ?? [];
+  const daoGroups = policy.roles
+    .filter((item: DaoRole) => item.kind === 'Group')
+    .map((item: DaoRole) => {
+      return {
+        members: item.accountIds || [],
+        name: item.name,
+        permissions: item.permissions,
+        votePolicy: item.votePolicy,
+        slug: item.name,
+      };
+    });
 
   const daoMembersList = daoGroups
     .map(({ members }: { members: string[] }) => members)

@@ -16,13 +16,11 @@ import styles from './ProposalsFeedFilters.module.scss';
 interface Props {
   className?: string;
   onFilterChange?: () => void;
-  hideCategories?: boolean;
 }
 
 export const ProposalsFeedFilters: FC<Props> = ({
   className,
   onFilterChange,
-  hideCategories,
 }) => {
   const statusOptions = useMemo<ListItem[]>(() => {
     return [
@@ -49,16 +47,14 @@ export const ProposalsFeedFilters: FC<Props> = ({
 
   const categoriesOptions = useMemo<ListItem[]>(
     () =>
-      hideCategories
-        ? []
-        : FEED_CATEGORIES.map(
-            item =>
-              ({
-                ...item,
-                queryName: 'category',
-              } as ListItem)
-          ),
-    [hideCategories]
+      FEED_CATEGORIES.map(
+        item =>
+          ({
+            ...item,
+            queryName: 'category',
+          } as ListItem)
+      ),
+    []
   );
 
   const filterOptions = useMemo(() => {
