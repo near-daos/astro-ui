@@ -34,10 +34,6 @@ const MyFeedPage: Page<{ defaultApplicationUiVersion: number }> = ({
   const appVersion = selectedAppVersion || defaultApplicationUiVersion;
 
   function renderFeed() {
-    if (useOpenSearchDataApi === undefined) {
-      return null;
-    }
-
     return useOpenSearchDataApi ? (
       <ProposalsFeedNext {...props} isMyFeed className={styles.root}>
         <CreateProposalSelector />

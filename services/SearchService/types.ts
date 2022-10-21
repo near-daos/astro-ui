@@ -1,14 +1,13 @@
 import { CancelToken } from 'axios';
 import {
-  ProposalActionData,
+  AddBountyRequest,
+  FunctionCallAction,
   ProposalComment,
-  ProposalKind,
   ProposalType,
 } from 'types/proposal';
 import { DraftProposalFeedItem } from 'types/draftProposal';
 import { SearchResultsData } from 'types/search';
 import { DaoPolicy } from 'services/sputnik/types/policy';
-import { DaoVersion } from 'types/dao';
 
 export type BaseParams = {
   id?: string;
@@ -66,7 +65,6 @@ export interface DaoIndex {
   totalSupply: string;
   transactionHash: string;
   policy: DaoPolicy;
-  daoVersion: DaoVersion;
 }
 
 export interface ProposalIndex {
@@ -83,23 +81,31 @@ export interface ProposalIndex {
   id: string;
   msg: string;
   name: string;
-
+  policyLabel: string;
   proposalId: number;
   proposer: string;
   receiverId: string;
-  status: 'Approved' | 'InProgress' | 'Expired';
+  status: 'Approved' | 'Expired';
   submissionTime: string;
   tokenId: string;
   transactionHash: string;
   type: ProposalType;
-  updateTimestamp: string | null;
-  voteCounts: Record<string, string>;
   votePeriodEnd: string;
   voteStatus: 'Active';
   votes: string;
 
-  kind: ProposalKind;
-  actions: ProposalActionData[];
+  // type specifics
+  bounty: AddBountyRequest;
+  policy: string;
+  config: { metadata: string; name: string; purpose: string };
+  memberId: string;
+  role: string;
+  actions: FunctionCallAction[];
+  stakingId: string;
+  hash: string;
+  methodName: string;
+  bountyId: string;
+  completeDate: string;
 }
 
 export interface BountyIndex {

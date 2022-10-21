@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import isEmpty from 'lodash/isEmpty';
-import { useAsyncFn, useMount, useMountedState } from 'react-use';
+import { useAsyncFn, useMountedState } from 'react-use';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import uniqBy from 'lodash/uniqBy';
@@ -26,8 +26,8 @@ import { HideBountyContextProvider } from 'astro_2.0/features/Bounties/component
 import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 
-import { FeedControlsLayout } from 'astro_3.0/features/FeedLayout';
-import { BountiesFeedFilters } from 'astro_3.0/features/Bounties/components/BountiesFeedFilters';
+import { useFlags } from 'launchdarkly-react-client-sdk';
+import { useOpenSearchApi } from 'context/OpenSearchApiContext';
 
 import styles from './BountiesFeed.module.scss';
 
@@ -44,6 +44,8 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
   const { query } = useRouter();
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(false);
+  const { useOpenSearchDataApi } = useFlags();
+  const { service } = useOpenSearchApi();
 
   const { handleSearch, loading: searching } = useBountySearch();
 
@@ -51,13 +53,23 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
     async (initData?: typeof data) => {
       let accumulatedListData = initData || null;
 
-      const res = await SputnikHttpService.getBountiesContext('', accountId, {
-        offset: accumulatedListData?.data.length || 0,
-        limit: LIST_LIMIT_DEFAULT,
-        bountySort: query.bountySort as string,
-        bountyFilter: query.bountyFilter as string,
-        bountyPhase: query.bountyPhase as string,
-      });
+      const res =
+        useOpenSearchDataApi && service
+          ? await service?.getBountiesContext({
+              account: accountId,
+              offset: accumulatedListData?.data.length || 0,
+              limit: LIST_LIMIT_DEFAULT,
+              bountySort: query.bountySort as string,
+              bountyFilter: query.bountyFilter as string,
+              bountyPhase: query.bountyPhase as string,
+            })
+          : await SputnikHttpService.getBountiesContext('', accountId, {
+              offset: accumulatedListData?.data.length || 0,
+              limit: LIST_LIMIT_DEFAULT,
+              bountySort: query.bountySort as string,
+              bountyFilter: query.bountyFilter as string,
+              bountyPhase: query.bountyPhase as string,
+            });
 
       if (!res) {
         return null;
@@ -78,7 +90,7 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
 
       return accumulatedListData;
     },
-    [data?.data?.length, query, accountId]
+    [data?.data?.length, query, accountId, service, useOpenSearchDataApi]
   );
 
   useDebounceEffect(
@@ -136,18 +148,8 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
     }
   }, [fetchData, isMounted]);
 
-  useMount(() => {
-    loadMore();
-  });
-
   return (
     <div className={styles.root}>
-      <FeedControlsLayout>
-        <h1>Bounties</h1>
-      </FeedControlsLayout>
-      <FeedControlsLayout>
-        <BountiesFeedFilters />
-      </FeedControlsLayout>
       <HideBountyContextProvider>
         <div className={cn(styles.row, styles.additionalFilters)}>
           <SearchInput
@@ -182,17 +184,15 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
                       key={bountyContext.id}
                       className={styles.bountyCardWrapper}
                     >
-                      {bountyContext.proposal && (
-                        <ViewBounty
-                          contextId={bountyContext.id}
-                          commentsCount={bountyContext.commentsCount}
-                          dao={dao}
-                          daoId={bountyContext.daoId}
-                          bounty={bountyContext.bounty}
-                          proposal={bountyContext.proposal}
-                          initialInfoPanelView={null}
-                        />
-                      )}
+                      <ViewBounty
+                        contextId={bountyContext.id}
+                        commentsCount={bountyContext.commentsCount}
+                        dao={dao}
+                        daoId={bountyContext.daoId}
+                        bounty={bountyContext.bounty}
+                        proposal={bountyContext.proposal}
+                        initialInfoPanelView={null}
+                      />
                     </div>
                   )}
                   className={styles.listWrapper}

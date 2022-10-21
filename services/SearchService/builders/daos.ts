@@ -6,7 +6,7 @@ export function buildAccountDaosQuery(account: string): OpenSearchQuery {
       must: [
         {
           simple_query_string: {
-            query: account.substring(0, account.indexOf('.')),
+            query: account,
             fields: ['accounts'],
           },
         },

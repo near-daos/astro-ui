@@ -83,7 +83,7 @@ export type BountyClaim = {
 export type BountyContext = {
   id: string;
   daoId: string;
-  proposal: BountyProposal | null;
+  proposal: BountyProposal;
   bounty: Bounty;
   commentsCount: number;
 };
