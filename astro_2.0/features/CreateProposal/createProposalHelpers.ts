@@ -50,7 +50,7 @@ export function checkUserPermission(
 ): boolean {
   // get all the user's permissions on the chosen proposal kind
   const proposalKindPermissions: string[] = policy.roles
-    .filter(
+    ?.filter(
       role =>
         role.kind === 'Everyone' ||
         role.accountIds?.includes(accountId) ||
