@@ -16,9 +16,6 @@ const getGlobalAWSConfig = () => {
   baseConfig = {
     ...baseConfig,
     region: awsConfig.region,
-    credentials: new AWS.CognitoIdentityCredentials({
-      IdentityPoolId: awsConfig.identityPoolId,
-    }),
   };
 
   return baseConfig;

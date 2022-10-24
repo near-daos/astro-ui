@@ -42,7 +42,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name:
+  name: ui
 
 podSecurityContext: {}
   # fsGroup: 2000
@@ -93,6 +93,5 @@ environment:
   API_URL: "http://a6f2431dfded249d18fc7a20377342db-2021398035.eu-central-1.elb.amazonaws.com"
   AWS_BUCKET: "sputnik-dao"
   AWS_REGION: "eu-central-1"
-  AWS_IDENTITY_POOL_ID: "eu-central-1:5887fd21-7b40-4871-a6cb-21097fe079a2"
   STATS_API_URL: "https://testnet.api.daostats.io"
   RELEASE_NOTES: "https://astrodao.canny.io/changelog"
