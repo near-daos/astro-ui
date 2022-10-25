@@ -33,8 +33,6 @@ export class RpcService {
 
       return JSON.parse(Buffer.from(result).toString()) as T;
     } catch (e) {
-      console.error(e);
-
       return Promise.reject();
     }
   }
