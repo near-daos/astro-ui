@@ -12,6 +12,7 @@ import {
   ProposalIndex,
 } from 'services/SearchService/types';
 import { mapProposalIndexToProposalFeedItem } from 'services/SearchService/mappers/search';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 /* eslint-disable no-underscore-dangle */
 export async function fetcher(
@@ -46,6 +47,7 @@ export function useProposal(): {
   isError: boolean;
   mutate: KeyedMutator<ProposalFeedItem | undefined>;
 } {
+  const { useOpenSearchDataApi } = useFlags();
   const router = useRouter();
   const { query } = router;
 
@@ -53,7 +55,7 @@ export function useProposal(): {
   const proposalId = query.proposal ?? '';
 
   const { data, error, mutate } = useSWR(
-    ['proposal', daoId, proposalId],
+    useOpenSearchDataApi ? ['proposal', daoId, proposalId] : undefined,
     fetcher,
     {
       revalidateOnFocus: false,
