@@ -24,7 +24,6 @@ export function useDelegatePageData(dao: DAO): {
   delegateByUser:
     | (UserDelegateDetails & {
         nextActionTime: Date;
-        delegatedToUser: Record<string, string>;
       })
     | undefined;
   handleSearch: (val: string) => Promise<void>;
@@ -54,7 +53,7 @@ export function useDelegatePageData(dao: DAO): {
         return undefined;
       }
 
-      const [meta, balance] = await Promise.all([
+      const [meta, balance] = await Promise.allSettled([
         nearService.getFtMetadata(contractAddress),
         nearService.getFtBalance(
           nearService.getStackingContract(dao.name),
@@ -63,9 +62,12 @@ export function useDelegatePageData(dao: DAO): {
       ]);
 
       return {
-        balance: Number(formatYoktoValue(balance, meta.decimals)),
-        symbol: meta.symbol,
-        decimals: meta.decimals,
+        balance:
+          balance.status === 'fulfilled' && meta.status === 'fulfilled'
+            ? Number(formatYoktoValue(balance.value, meta.value.decimals))
+            : 0,
+        symbol: meta.status === 'fulfilled' ? meta.value.symbol : 'n/a',
+        decimals: meta.status === 'fulfilled' ? meta.value.decimals : 0,
         contractAddress,
       };
     }, [nearService, ts, settings]);
@@ -105,25 +107,18 @@ export function useDelegatePageData(dao: DAO): {
           return undefined;
         }
 
-        const { delegatedTotal, delegatedToUser } =
-          userData.delegated_amounts.reduce<{
-            delegatedTotal: number;
-            delegatedToUser: Record<string, string>;
-          }>(
-            (res, item) => {
-              const [acc, balance] = item;
+        const { delegatedTotal } = userData.delegated_amounts.reduce<{
+          delegatedTotal: number;
+        }>(
+          (res, item) => {
+            const [balance] = item;
 
-              res.delegatedTotal += +balance;
+            res.delegatedTotal += +balance;
 
-              res.delegatedToUser[acc] = formatYoktoValue(
-                balance,
-                tokenDetails?.decimals
-              );
-
-              return res;
-            },
-            { delegatedTotal: 0, delegatedToUser: {} }
-          );
+            return res;
+          },
+          { delegatedTotal: 0 }
+        );
 
         return {
           accountId,
@@ -137,7 +132,6 @@ export function useDelegatePageData(dao: DAO): {
           nextActionTime: new Date(
             Number(userData.next_action_timestamp) / 1000000
           ),
-          delegatedToUser,
         };
       } catch (e) {
         return undefined;
@@ -219,18 +213,13 @@ export function useVotingPolicyDetails(dao: DAO): {
         return undefined;
       }
 
-      const [meta, balance] = await Promise.all([
+      const [meta] = await Promise.allSettled([
         nearService.getFtMetadata(contractAddress),
-        nearService.getFtBalance(
-          nearService.getStackingContract(dao.name),
-          accountId
-        ),
       ]);
 
       return {
-        balance: Number(formatYoktoValue(balance, meta.decimals)),
-        symbol: meta.symbol,
-        decimals: meta.decimals,
+        symbol: meta.status === 'fulfilled' ? meta.value.symbol : 'n/a',
+        decimals: meta.status === 'fulfilled' ? meta.value.decimals : 0,
         contractAddress,
       };
     } catch (e) {

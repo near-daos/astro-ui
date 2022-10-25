@@ -143,7 +143,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
 
       if (proposalId !== undefined && proposalId !== null) {
         const res = await SputnikHttpService.getProposalById(
-          proposalId.indexOf(daoContext.dao.id) === 0
+          `${proposalId}`.indexOf(daoContext.dao.id) === 0
             ? proposalId
             : `${daoContext.dao.id}-${proposalId}`,
           accountId
