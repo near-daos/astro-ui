@@ -11,6 +11,9 @@ import { WalletType } from 'types/config';
 import { GAS_VALUE } from 'services/sputnik/SputnikNearService/services/constants';
 import { STAKING_CONTRACT_PREFIX } from 'constants/proposals';
 
+import { getWalletSelectorStorageDepositTransaction } from 'services/sputnik/SputnikNearService/services/utils/getWalletSelectorStorageDepositTransaction';
+import { getPlainFunctionCallTransaction } from 'services/sputnik/SputnikNearService/services/utils/getPlainFunctionCallTransaction';
+
 import { BaseService } from './BaseService';
 
 export const ONE_NEAR = new BN(`1${'0'.repeat(24)}`);
@@ -376,6 +379,32 @@ export class GovernanceTokenService extends BaseService {
 
         break;
       }
+      case WalletType.SELECTOR_NEAR: {
+        userStorageDepositTransactionAction =
+          getWalletSelectorStorageDepositTransaction(
+            stakingContract ?? '',
+            accountId
+          );
+        storageDepositTransactionAction =
+          getWalletSelectorStorageDepositTransaction(
+            tokenContract ?? '',
+            stakingContract
+          );
+
+        transferTransaction = getPlainFunctionCallTransaction({
+          receiverId: tokenContract,
+          methodName: 'ft_transfer_call',
+          args: {
+            receiver_id: stakingContract,
+            amount,
+            msg: '',
+          },
+          gas: GAS_VALUE.toString(),
+          deposit: '1',
+        });
+
+        break;
+      }
       case WalletType.NEAR:
       default: {
         userStorageDepositTransactionAction = {
@@ -525,6 +554,27 @@ export class GovernanceTokenService extends BaseService {
               },
             ],
           },
+        ];
+
+        break;
+      }
+      case WalletType.SELECTOR_NEAR: {
+        transaction = [
+          getWalletSelectorStorageDepositTransaction(
+            stakingContract ?? '',
+            accountId,
+            false
+          ),
+          getPlainFunctionCallTransaction({
+            receiverId: stakingContract,
+            methodName,
+            args: {
+              account_id: accountId,
+              amount,
+            },
+            gas: GAS_VALUE.toString(),
+            deposit: '0',
+          }),
         ];
 
         break;

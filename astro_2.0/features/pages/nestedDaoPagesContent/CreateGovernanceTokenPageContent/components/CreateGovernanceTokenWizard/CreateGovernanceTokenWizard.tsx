@@ -34,6 +34,7 @@ import { CreateGovernanceTokenSteps, ProgressStatus } from 'types/settings';
 import { SputnikHttpService } from 'services/sputnik';
 
 import { DELEGATE_PAGE_URL } from 'constants/routing';
+import { STAKE_TOKENS_KEY, DELEGATE_VOTING_KEY } from 'constants/localStorage';
 
 import { useWalletContext } from 'context/WalletContext';
 
@@ -140,6 +141,8 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
   useEffect(() => {
     (async () => {
       localStorage.setItem(CREATE_PROPOSAL_ACTION_TYPE, '');
+      localStorage.setItem(STAKE_TOKENS_KEY, '');
+      localStorage.setItem(DELEGATE_VOTING_KEY, '');
 
       if (proposalId !== undefined && proposalId !== null) {
         const res = await SputnikHttpService.getProposalById(
@@ -246,6 +249,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
               contractAddress={contractAddress}
               onSubmit={handleViewProposalApprove}
               daoName={daoContext.dao.name}
+              daoId={daoContext.dao.id}
             />
           );
         }

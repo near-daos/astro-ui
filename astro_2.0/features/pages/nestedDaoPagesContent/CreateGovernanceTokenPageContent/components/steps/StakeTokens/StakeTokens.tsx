@@ -15,12 +15,15 @@ import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/Input
 
 import { getInputWidth } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent/helpers';
 
+import { STAKE_TOKENS_KEY } from 'constants/localStorage';
+
 import styles from './StakeTokens.module.scss';
 
 interface Props {
   onSubmit: () => void;
   daoName: string;
   contractAddress: string;
+  daoId: string;
 }
 
 interface Form {
@@ -31,6 +34,7 @@ export const StakeTokens: FC<Props> = ({
   onSubmit,
   contractAddress,
   daoName,
+  daoId,
 }) => {
   const { nearService, accountId } = useWalletContext();
 
@@ -86,6 +90,8 @@ export const StakeTokens: FC<Props> = ({
     if (!nearService || !tokenDetails) {
       return;
     }
+
+    localStorage.setItem(STAKE_TOKENS_KEY, daoId);
 
     // do stake
     await nearService.stakeTokens({

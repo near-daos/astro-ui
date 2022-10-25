@@ -21,8 +21,9 @@ import {
 import { useWalletContext } from 'context/WalletContext';
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 import { SputnikHttpService } from 'services/sputnik';
-import { Settings } from 'types/settings';
+import { CreateGovernanceTokenSteps, Settings } from 'types/settings';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { DELEGATE_VOTING_KEY, STAKE_TOKENS_KEY } from 'constants/localStorage';
 
 export function useSelectorWalletTransactionResult(): void {
   const router = useRouter();
@@ -56,9 +57,6 @@ export function useSelectorWalletTransactionResult(): void {
             signature,
             settings: newSettings,
           });
-
-          // clean LS
-          // setCreateProposalAction('');
 
           // redirect to wizard
           router.push({
@@ -94,6 +92,16 @@ export function useSelectorWalletTransactionResult(): void {
       const rawResults = searchParams.get('results');
 
       const voteActionSource = localStorage.getItem(VOTE_ACTION_SOURCE_PAGE);
+      const delegateVotingAction = localStorage.getItem(DELEGATE_VOTING_KEY);
+
+      if (delegateVotingAction) {
+        update(delegateVotingAction.replaceAll('"', ''), {
+          step: null,
+          wizardCompleted: true,
+        });
+
+        return;
+      }
 
       if (!rawResults) {
         if (voteActionSource) {
@@ -101,7 +109,7 @@ export function useSelectorWalletTransactionResult(): void {
 
           localStorage.setItem(VOTE_ACTION_SOURCE_PAGE, '');
 
-          router.push(redirectUrl);
+          router.push(redirectUrl.replaceAll('"', ''));
         } else {
           router.push(MY_DAOS_URL);
         }
@@ -114,6 +122,7 @@ export function useSelectorWalletTransactionResult(): void {
       const createProposalAction = localStorage.getItem(
         CREATE_PROPOSAL_ACTION_TYPE
       );
+      const stakeTokensAction = localStorage.getItem(STAKE_TOKENS_KEY);
 
       for (let i = 0; i < results.length; i += 1) {
         const result = results[i];
@@ -150,9 +159,7 @@ export function useSelectorWalletTransactionResult(): void {
           case TransactionResultType.FINALIZE:
           case TransactionResultType.PROPOSAL_VOTE: {
             if (voteActionSource) {
-              localStorage.setItem(VOTE_ACTION_SOURCE_PAGE, '');
-
-              router.push(voteActionSource as string);
+              router.push((voteActionSource as string).replaceAll('"', ''));
             } else {
               router.push({
                 pathname: SINGLE_PROPOSAL_PAGE_URL,
@@ -169,7 +176,7 @@ export function useSelectorWalletTransactionResult(): void {
             if (voteActionSource) {
               localStorage.setItem(VOTE_ACTION_SOURCE_PAGE, '');
 
-              router.push(voteActionSource as string);
+              router.push((voteActionSource as string).replaceAll('"', ''));
             } else {
               router.push({
                 pathname: SINGLE_BOUNTY_PAGE_URL,
@@ -183,7 +190,15 @@ export function useSelectorWalletTransactionResult(): void {
             break;
           }
           default: {
-            if (result.metadata.daoId) {
+            if (stakeTokensAction) {
+              update(stakeTokensAction.replaceAll('"', ''), {
+                step: CreateGovernanceTokenSteps.DelegateVoting,
+              });
+            } else if (delegateVotingAction) {
+              update(delegateVotingAction.replaceAll('"', ''), {
+                step: null,
+              });
+            } else if (result.metadata.daoId) {
               router.push({
                 pathname: SINGLE_DAO_PAGE,
                 query: {
