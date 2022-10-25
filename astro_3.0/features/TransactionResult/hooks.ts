@@ -1,4 +1,4 @@
-import { useLocalStorage } from 'react-use';
+import { useAsyncFn, useLocalStorage } from 'react-use';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
@@ -6,6 +6,7 @@ import { TransactionResult, TransactionResultType } from 'types/transaction';
 import { WalletType } from 'types/config';
 
 import {
+  CREATE_GOV_TOKEN_PAGE_URL,
   MY_DAOS_URL,
   MY_FEED_URL,
   SINGLE_BOUNTY_PAGE_URL,
@@ -13,14 +14,74 @@ import {
   SINGLE_PROPOSAL_PAGE_URL,
 } from 'constants/routing';
 import { VOTE_ACTION_SOURCE_PAGE } from 'constants/votingConstants';
+import {
+  CREATE_GOVERNANCE_TOKEN_PROPOSAL,
+  CREATE_PROPOSAL_ACTION_TYPE,
+} from 'constants/proposals';
 import { useWalletContext } from 'context/WalletContext';
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
+import { SputnikHttpService } from 'services/sputnik';
+import { Settings } from 'types/settings';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 export function useSelectorWalletTransactionResult(): void {
   const router = useRouter();
-  const { currentWallet } = useWalletContext();
+  const { currentWallet, accountId, nearService, pkAndSignature } =
+    useWalletContext();
   const [voteActionSource, setVoteActionSource] = useLocalStorage(
     VOTE_ACTION_SOURCE_PAGE
+  );
+
+  const [, update] = useAsyncFn(
+    async (daoId, updates) => {
+      if (!pkAndSignature) {
+        return;
+      }
+
+      try {
+        const latestSettings =
+          (await SputnikHttpService.getDaoSettings(daoId)) ?? ({} as Settings);
+
+        const newSettings: Settings = {
+          ...latestSettings,
+          createGovernanceToken: {
+            ...(latestSettings.createGovernanceToken ?? {}),
+            ...updates,
+          },
+        };
+
+        const { publicKey, signature } = pkAndSignature;
+
+        if (publicKey && signature && accountId) {
+          await SputnikHttpService.updateDaoSettings(daoId, {
+            accountId,
+            publicKey,
+            signature,
+            settings: newSettings,
+          });
+
+          // clean LS
+          // setCreateProposalAction('');
+
+          // redirect to wizard
+          router.push({
+            pathname: CREATE_GOV_TOKEN_PAGE_URL,
+            query: {
+              dao: daoId,
+            },
+          });
+        }
+      } catch (err) {
+        const { message } = err;
+
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          lifetime: 20000,
+          description: message,
+        });
+      }
+    },
+    [nearService, pkAndSignature, router]
   );
 
   useEffect(() => {
@@ -51,18 +112,29 @@ export function useSelectorWalletTransactionResult(): void {
 
       const results: TransactionResult[] = JSON.parse(rawResults);
 
+      const createProposalAction = localStorage.getItem(
+        CREATE_PROPOSAL_ACTION_TYPE
+      );
+
       for (let i = 0; i < results.length; i += 1) {
         const result = results[i];
 
         switch (result.type) {
           case TransactionResultType.PROPOSAL_CREATE: {
-            router.push({
-              pathname: SINGLE_PROPOSAL_PAGE_URL,
-              query: {
-                dao: result.metadata.daoId,
-                proposal: result.metadata.proposalId,
-              },
-            });
+            if (createProposalAction === CREATE_GOVERNANCE_TOKEN_PROPOSAL) {
+              // update dao settings with proposal Id
+              update(result.metadata.daoId, {
+                proposalId: result.metadata.proposalId,
+              });
+            } else {
+              router.push({
+                pathname: SINGLE_PROPOSAL_PAGE_URL,
+                query: {
+                  dao: result.metadata.daoId,
+                  proposal: result.metadata.proposalId,
+                },
+              });
+            }
 
             break;
           }
@@ -81,7 +153,7 @@ export function useSelectorWalletTransactionResult(): void {
             if (voteActionSource) {
               router.push(voteActionSource as string);
 
-              setVoteActionSource(null);
+              setVoteActionSource('');
             } else {
               router.push({
                 pathname: SINGLE_PROPOSAL_PAGE_URL,
@@ -131,7 +203,7 @@ export function useSelectorWalletTransactionResult(): void {
       console.error(e);
       router.push(MY_FEED_URL);
     }
-  }, [currentWallet, router, setVoteActionSource, voteActionSource]);
+  }, [currentWallet, router, setVoteActionSource, update, voteActionSource]);
 }
 
 export function useWalletTransactionResult(): void {

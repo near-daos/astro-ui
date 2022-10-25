@@ -3,7 +3,10 @@ import { useTranslation } from 'next-i18next';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { STAKING_CONTRACT_PREFIX } from 'constants/proposals';
+import {
+  CREATE_PROPOSAL_ACTION_TYPE,
+  STAKING_CONTRACT_PREFIX,
+} from 'constants/proposals';
 
 import { CreationProgress } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/steps/CreateToken/components/CreationProgress';
 import { WarningPanel } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/WarningPanel';
@@ -136,9 +139,13 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
 
   useEffect(() => {
     (async () => {
+      localStorage.setItem(CREATE_PROPOSAL_ACTION_TYPE, '');
+
       if (proposalId !== undefined && proposalId !== null) {
         const res = await SputnikHttpService.getProposalById(
-          `${daoContext.dao.id}-${proposalId}`,
+          proposalId.indexOf(daoContext.dao.id) === 0
+            ? proposalId
+            : `${daoContext.dao.id}-${proposalId}`,
           accountId
         );
 
@@ -277,6 +284,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
           canCreateTokenProposal={canControl}
           proposalVariant={stepProposalVariant}
           initialValues={initialValues}
+          actionType="createGovernanceToken"
         />
       );
     }

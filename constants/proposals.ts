@@ -37,3 +37,6 @@ export const FEED_CATEGORIES = [
 export const STAKING_CONTRACT_PREFIX = '-staking';
 
 export const MAX_MULTI_VOTES = 20;
+
+export const CREATE_PROPOSAL_ACTION_TYPE = 'astro_create-proposal-action-type';
+export const CREATE_GOVERNANCE_TOKEN_PROPOSAL = 'createGovernanceToken';
