@@ -17,6 +17,8 @@ import { DAO } from 'types/dao';
 
 import { formatValueToYokto, formatYoktoValue } from 'utils/format';
 
+import { DELEGATE_VOTING_KEY } from 'constants/localStorage';
+
 import styles from './DelegateVoting.module.scss';
 
 interface Props {
@@ -123,6 +125,8 @@ export const DelegateVoting: FC<Props> = ({
     if (!nearService || !tokenDetails) {
       return;
     }
+
+    localStorage.setItem(DELEGATE_VOTING_KEY, dao.id);
 
     // do delegate
     await nearService.delegateVoting(

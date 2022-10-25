@@ -6,14 +6,15 @@ import { getPlainFunctionCallTransaction } from './getPlainFunctionCallTransacti
 
 export function getWalletSelectorStorageDepositTransaction(
   receiverId: string,
-  accountId: string
+  accountId: string,
+  registrationOnly = true
 ): Transaction {
   return getPlainFunctionCallTransaction({
     receiverId,
     methodName: 'storage_deposit',
     args: {
       account_id: accountId,
-      registration_only: true,
+      registration_only: registrationOnly,
     },
     gas: GAS_VALUE?.toString(),
     deposit: '100000000000000000000000',
