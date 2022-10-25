@@ -1,4 +1,4 @@
-import { useAsyncFn, useLocalStorage } from 'react-use';
+import { useAsyncFn } from 'react-use';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
@@ -28,9 +28,6 @@ export function useSelectorWalletTransactionResult(): void {
   const router = useRouter();
   const { currentWallet, accountId, nearService, pkAndSignature } =
     useWalletContext();
-  const [voteActionSource, setVoteActionSource] = useLocalStorage(
-    VOTE_ACTION_SOURCE_PAGE
-  );
 
   const [, update] = useAsyncFn(
     async (daoId, updates) => {
@@ -96,11 +93,13 @@ export function useSelectorWalletTransactionResult(): void {
       const { searchParams } = new URL(window.location.toString());
       const rawResults = searchParams.get('results');
 
+      const voteActionSource = localStorage.getItem(VOTE_ACTION_SOURCE_PAGE);
+
       if (!rawResults) {
         if (voteActionSource) {
           const redirectUrl = voteActionSource as string;
 
-          setVoteActionSource(null);
+          localStorage.setItem(VOTE_ACTION_SOURCE_PAGE, '');
 
           router.push(redirectUrl);
         } else {
@@ -151,9 +150,9 @@ export function useSelectorWalletTransactionResult(): void {
           case TransactionResultType.FINALIZE:
           case TransactionResultType.PROPOSAL_VOTE: {
             if (voteActionSource) {
-              router.push(voteActionSource as string);
+              localStorage.setItem(VOTE_ACTION_SOURCE_PAGE, '');
 
-              setVoteActionSource('');
+              router.push(voteActionSource as string);
             } else {
               router.push({
                 pathname: SINGLE_PROPOSAL_PAGE_URL,
@@ -168,9 +167,9 @@ export function useSelectorWalletTransactionResult(): void {
           }
           case TransactionResultType.BOUNTY_CLAIM: {
             if (voteActionSource) {
-              router.push(voteActionSource as string);
+              localStorage.setItem(VOTE_ACTION_SOURCE_PAGE, '');
 
-              setVoteActionSource(null);
+              router.push(voteActionSource as string);
             } else {
               router.push({
                 pathname: SINGLE_BOUNTY_PAGE_URL,
@@ -203,7 +202,7 @@ export function useSelectorWalletTransactionResult(): void {
       console.error(e);
       router.push(MY_FEED_URL);
     }
-  }, [currentWallet, router, setVoteActionSource, update, voteActionSource]);
+  }, [currentWallet, router, update]);
 }
 
 export function useWalletTransactionResult(): void {
