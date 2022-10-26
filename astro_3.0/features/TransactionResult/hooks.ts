@@ -1,12 +1,11 @@
-import { useAsyncFn } from 'react-use';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { TransactionResult, TransactionResultType } from 'types/transaction';
 import { WalletType } from 'types/config';
+import { CreateGovernanceTokenSteps } from 'types/settings';
 
 import {
-  CREATE_GOV_TOKEN_PAGE_URL,
   MY_DAOS_URL,
   MY_FEED_URL,
   SINGLE_BOUNTY_PAGE_URL,
@@ -18,66 +17,17 @@ import {
   CREATE_GOVERNANCE_TOKEN_PROPOSAL,
   CREATE_PROPOSAL_ACTION_TYPE,
 } from 'constants/proposals';
+import { DELEGATE_VOTING_KEY, STAKE_TOKENS_KEY } from 'constants/localStorage';
+
 import { useWalletContext } from 'context/WalletContext';
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
-import { SputnikHttpService } from 'services/sputnik';
-import { CreateGovernanceTokenSteps, Settings } from 'types/settings';
-import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import { DELEGATE_VOTING_KEY, STAKE_TOKENS_KEY } from 'constants/localStorage';
+
+import { useUpdateGovernanceTokenWizardProgress } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/hooks';
 
 export function useSelectorWalletTransactionResult(): void {
   const router = useRouter();
-  const { currentWallet, accountId, nearService, pkAndSignature } =
-    useWalletContext();
-
-  const [, update] = useAsyncFn(
-    async (daoId, updates) => {
-      if (!pkAndSignature) {
-        return;
-      }
-
-      try {
-        const latestSettings =
-          (await SputnikHttpService.getDaoSettings(daoId)) ?? ({} as Settings);
-
-        const newSettings: Settings = {
-          ...latestSettings,
-          createGovernanceToken: {
-            ...(latestSettings.createGovernanceToken ?? {}),
-            ...updates,
-          },
-        };
-
-        const { publicKey, signature } = pkAndSignature;
-
-        if (publicKey && signature && accountId) {
-          await SputnikHttpService.updateDaoSettings(daoId, {
-            accountId,
-            publicKey,
-            signature,
-            settings: newSettings,
-          });
-
-          // redirect to wizard
-          router.push({
-            pathname: CREATE_GOV_TOKEN_PAGE_URL,
-            query: {
-              dao: daoId,
-            },
-          });
-        }
-      } catch (err) {
-        const { message } = err;
-
-        showNotification({
-          type: NOTIFICATION_TYPES.ERROR,
-          lifetime: 20000,
-          description: message,
-        });
-      }
-    },
-    [nearService, pkAndSignature, router]
-  );
+  const { currentWallet } = useWalletContext();
+  const { update } = useUpdateGovernanceTokenWizardProgress();
 
   useEffect(() => {
     if (
@@ -91,10 +41,17 @@ export function useSelectorWalletTransactionResult(): void {
       const { searchParams } = new URL(window.location.toString());
       const rawResults = searchParams.get('results');
 
+      // On votes, accessing delegate page in governance token wizard etc. we save current location in LS
+      // so we can return to same page after wallet redirect
       const voteActionSource = localStorage.getItem(VOTE_ACTION_SOURCE_PAGE);
       const delegateVotingAction = localStorage.getItem(DELEGATE_VOTING_KEY);
+      const createProposalAction = localStorage.getItem(
+        CREATE_PROPOSAL_ACTION_TYPE
+      );
+      const stakeTokensAction = localStorage.getItem(STAKE_TOKENS_KEY);
 
       if (delegateVotingAction) {
+        // We were on last wizard step so we complete wizard and get back to wizard initial page
         update(delegateVotingAction.replaceAll('"', ''), {
           step: null,
           wizardCompleted: true,
@@ -103,6 +60,8 @@ export function useSelectorWalletTransactionResult(): void {
         return;
       }
 
+      // No rawResults from BE - this means this was unhandled action and we dont know its type, so we
+      // redirect user to default location
       if (!rawResults) {
         if (voteActionSource) {
           const redirectUrl = voteActionSource as string;
@@ -119,18 +78,13 @@ export function useSelectorWalletTransactionResult(): void {
 
       const results: TransactionResult[] = JSON.parse(rawResults);
 
-      const createProposalAction = localStorage.getItem(
-        CREATE_PROPOSAL_ACTION_TYPE
-      );
-      const stakeTokensAction = localStorage.getItem(STAKE_TOKENS_KEY);
-
       for (let i = 0; i < results.length; i += 1) {
         const result = results[i];
 
         switch (result.type) {
           case TransactionResultType.PROPOSAL_CREATE: {
             if (createProposalAction === CREATE_GOVERNANCE_TOKEN_PROPOSAL) {
-              // update dao settings with proposal Id
+              // we created new proposal in governance token wiard - update dao settings with proposal Id
               update(result.metadata.daoId, {
                 proposalId: result.metadata.proposalId,
               });
