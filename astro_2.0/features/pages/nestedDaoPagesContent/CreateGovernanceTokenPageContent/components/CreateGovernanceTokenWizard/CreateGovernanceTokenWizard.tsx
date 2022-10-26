@@ -3,7 +3,10 @@ import { useTranslation } from 'next-i18next';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { STAKING_CONTRACT_PREFIX } from 'constants/proposals';
+import {
+  CREATE_PROPOSAL_ACTION_TYPE,
+  STAKING_CONTRACT_PREFIX,
+} from 'constants/proposals';
 
 import { CreationProgress } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/steps/CreateToken/components/CreationProgress';
 import { WarningPanel } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/WarningPanel';
@@ -31,6 +34,7 @@ import { CreateGovernanceTokenSteps, ProgressStatus } from 'types/settings';
 import { SputnikHttpService } from 'services/sputnik';
 
 import { DELEGATE_PAGE_URL } from 'constants/routing';
+import { STAKE_TOKENS_KEY, DELEGATE_VOTING_KEY } from 'constants/localStorage';
 
 import { useWalletContext } from 'context/WalletContext';
 
@@ -136,9 +140,15 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
 
   useEffect(() => {
     (async () => {
+      localStorage.setItem(CREATE_PROPOSAL_ACTION_TYPE, '');
+      localStorage.setItem(STAKE_TOKENS_KEY, '');
+      localStorage.setItem(DELEGATE_VOTING_KEY, '');
+
       if (proposalId !== undefined && proposalId !== null) {
         const res = await SputnikHttpService.getProposalById(
-          `${daoContext.dao.id}-${proposalId}`,
+          `${proposalId}`.indexOf(daoContext.dao.id) === 0
+            ? proposalId
+            : `${daoContext.dao.id}-${proposalId}`,
           accountId
         );
 
@@ -239,6 +249,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
               contractAddress={contractAddress}
               onSubmit={handleViewProposalApprove}
               daoName={daoContext.dao.name}
+              daoId={daoContext.dao.id}
             />
           );
         }
@@ -277,6 +288,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
           canCreateTokenProposal={canControl}
           proposalVariant={stepProposalVariant}
           initialValues={initialValues}
+          actionType="createGovernanceToken"
         />
       );
     }

@@ -21,6 +21,7 @@ import { ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
 import { Token } from 'types/token';
 import { UserPermissions } from 'types/context';
+import { CreateProposalAction } from 'astro_2.0/features/CreateProposal/types';
 
 import { useWalletContext } from 'context/WalletContext';
 import { getInitialProposalVariant } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
@@ -60,6 +61,7 @@ export interface CreateProposalProps {
   initialValues?: Record<string, unknown>;
   isDraft?: boolean;
   isEditDraft?: boolean;
+  actionType?: CreateProposalAction;
 }
 
 export const CreateProposal: FC<CreateProposalProps> = ({
@@ -79,6 +81,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   initialValues,
   isDraft,
   isEditDraft,
+  actionType,
 }) => {
   const [, setNewProposalFlag] = useLocalStorage(CREATE_PROPOSAL_FORM);
   const { t } = useTranslation();
@@ -149,6 +152,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     onClose,
     onCreate,
     redirectAfterCreation,
+    actionType,
   });
 
   const { onDraftSubmit } = useSubmitDraft({

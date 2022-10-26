@@ -21,6 +21,8 @@ import {
 } from 'services/sputnik/SputnikNearService/services/GovernanceTokenService';
 import { SputnikNearService } from 'services/sputnik';
 import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider';
+import { CreateProposalAction } from 'astro_2.0/features/CreateProposal/types';
+import { CREATE_PROPOSAL_ACTION_TYPE } from 'constants/proposals';
 
 async function createProposal(
   variant: ProposalVariant,
@@ -55,6 +57,7 @@ export function useSubmitProposal({
   onClose,
   onCreate,
   redirectAfterCreation,
+  actionType,
 }: {
   selectedProposalVariant: ProposalVariant;
   dao: DAO;
@@ -63,6 +66,7 @@ export function useSubmitProposal({
   onClose: () => void;
   onCreate: ((proposalId: number | number[] | null) => void) | undefined;
   redirectAfterCreation: boolean;
+  actionType?: CreateProposalAction;
 }): {
   onSubmit: (data: Record<string, unknown>) => Promise<void>;
 } {
@@ -75,6 +79,11 @@ export function useSubmitProposal({
 
   const onSubmit = useCallback(
     async data => {
+      if (actionType) {
+        // Save LS flag to identify that newly created proposal is from governance token wizard
+        localStorage.setItem(CREATE_PROPOSAL_ACTION_TYPE, actionType);
+      }
+
       // show captcha modal for some proposals
       if (
         selectedProposalVariant === ProposalVariant.ProposeAcceptStakingContract
@@ -293,20 +302,21 @@ export function useSubmitProposal({
       }
     },
     [
+      actionType,
       selectedProposalVariant,
       showModal,
       daoTokens,
       nearService,
       dao,
       onCreate,
-      pkAndSignature,
       onClose,
-      router,
-      draftsService,
-      accountId,
       isMounted,
+      accountId,
       bountyId,
+      router,
+      pkAndSignature,
       redirectAfterCreation,
+      draftsService,
     ]
   );
 

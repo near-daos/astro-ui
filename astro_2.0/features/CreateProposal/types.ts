@@ -53,3 +53,5 @@ export interface CreateTokenInput {
   totalSupply: string;
   tokenImage: '';
 }
+
+export type CreateProposalAction = 'createGovernanceToken';

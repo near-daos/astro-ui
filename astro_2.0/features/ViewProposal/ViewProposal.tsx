@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
-import { useToggle } from 'react-use';
+import { useMount, useToggle } from 'react-use';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import {
@@ -22,6 +22,8 @@ import {
   getProposalUpdatedDate,
   isSaveTemplateActionAvailable,
 } from 'astro_2.0/features/ViewProposal/helpers';
+
+import { VOTE_ACTION_SOURCE_PAGE } from 'constants/votingConstants';
 
 import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments';
 import { SaveFcTemplate } from 'astro_2.0/features/ViewProposal/components/SaveFcTemplate';
@@ -71,6 +73,12 @@ export const ViewProposal: FC<ViewProposalProps> = ({
     proposal,
     accountId
   );
+
+  useMount(() => {
+    if (localStorage.getItem(VOTE_ACTION_SOURCE_PAGE)) {
+      localStorage.setItem(VOTE_ACTION_SOURCE_PAGE, '');
+    }
+  });
 
   const handleToggleCreateProposal = useCallback(async () => {
     if (toggleCreateProposal) {
