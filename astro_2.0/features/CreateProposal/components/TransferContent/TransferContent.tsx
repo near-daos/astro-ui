@@ -33,7 +33,7 @@ export const TransferContent: FC = () => {
   };
 
   const tokenOptions = Object.values(tokens).map(token => ({
-    value: token.symbol,
+    value: token.tokenId || token.symbol,
     label: (
       <div className={styles.row}>
         <TokenIcon

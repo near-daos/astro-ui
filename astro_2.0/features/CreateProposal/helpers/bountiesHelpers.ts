@@ -67,7 +67,11 @@ export function getAddBountyProposal(
     externalUrl,
     token,
   } = data;
-  const tokenData = Object.values(tokens).find(item => item.symbol === token);
+  let tokenData = Object.values(tokens).find(item => item.tokenId === token);
+
+  if (!token) {
+    tokenData = Object.values(tokens).find(item => item.symbol === token);
+  }
 
   if (!tokenData) {
     throw new Error('No tokens data found');
