@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMount, useMountedState } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
 import { useRouter } from 'next/router';
@@ -6,6 +6,8 @@ import { Token } from 'types/token';
 import reduce from 'lodash/reduce';
 import { Tokens } from 'context/types';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { useTokens } from 'services/ApiService/hooks/useTokens';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 function normalizeTokens(tkns: Token[]): Tokens {
   const hasNear = tkns.find(item => !item.tokenId);
@@ -76,25 +78,27 @@ export function useDaoCustomTokens(daoId?: string): {
 }
 
 export function useAllCustomTokens(): { tokens: Record<string, Token> } {
-  const isMounted = useMountedState();
-  const [tokens, setTokens] = useState<Record<string, Token>>({});
-
-  const prepareTokens = useCallback(
-    (tkns: Token[]) => {
-      if (isMounted()) {
-        setTokens(normalizeTokens(tkns));
-      }
-    },
-    [isMounted]
-  );
+  const [tokensData, setTokensData] = useState<Token[]>();
+  const { useOpenSearchDataApi } = useFlags();
+  const { data } = useTokens();
 
   useMount(() => {
+    if (useOpenSearchDataApi) {
+      return;
+    }
+
     SputnikHttpService.getTokens({
       limit: 1000,
-    }).then(data => {
-      prepareTokens(data);
+    }).then(d => {
+      setTokensData(d);
     });
   });
+
+  const tokens = useMemo(() => {
+    const values = tokensData || data;
+
+    return values ? normalizeTokens(values) : {};
+  }, [data, tokensData]);
 
   return { tokens };
 }
