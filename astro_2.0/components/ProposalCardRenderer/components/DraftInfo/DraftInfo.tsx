@@ -29,7 +29,6 @@ export const DraftInfo: FC<DraftInfoProps> = ({
   const [savesCount, setSavesCount] = useState(saves);
   const { draftsService, amountComments } = useDraftsContext();
   const router = useRouter();
-  const daoId = router.query.dao as string;
   const { draft } = router.query;
   const draftId = draft as string;
   const { accountId, pkAndSignature } = useWalletContext();
@@ -53,7 +52,6 @@ export const DraftInfo: FC<DraftInfoProps> = ({
       if (isSavedDraft) {
         response = await draftsService.deleteDraftSave({
           id: draftId,
-          daoId,
           publicKey,
           signature,
           accountId,
@@ -64,7 +62,6 @@ export const DraftInfo: FC<DraftInfoProps> = ({
       } else {
         response = await draftsService.updateDraftSave({
           id: draftId,
-          daoId,
           publicKey,
           signature,
           accountId,
@@ -82,7 +79,6 @@ export const DraftInfo: FC<DraftInfoProps> = ({
     }
   }, [
     accountId,
-    daoId,
     draftId,
     draftsService,
     isSavedDraft,
