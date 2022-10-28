@@ -238,6 +238,7 @@ export function useSubmitProposal({
               if (publicKey && signature) {
                 await draftsService.updateDraftClose({
                   id: draftId,
+                  daoId: dao.id,
                   proposalId: newProposalId,
                   publicKey,
                   signature,
