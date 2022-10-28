@@ -153,8 +153,6 @@ export function useDraftsPageData(daoId: string): {
 export function useDraftsPageActions(): {
   handleView: (id: string) => void;
 } {
-  const router = useRouter();
-  const daoId = router.query.dao as string;
   const { accountId, pkAndSignature } = useWalletContext();
   const { draftsService } = useDraftsContext();
 
@@ -173,7 +171,6 @@ export function useDraftsPageActions(): {
 
         await draftsService.updateDraftView({
           id,
-          daoId,
           accountId,
           publicKey,
           signature,
@@ -186,7 +183,7 @@ export function useDraftsPageActions(): {
         });
       }
     },
-    [accountId, daoId, draftsService, pkAndSignature]
+    [accountId, draftsService, pkAndSignature]
   );
 
   return {
@@ -204,7 +201,6 @@ export function useMultiDraftActions(): {
   const { draftsService } = useDraftsContext();
   const { nearService, accountId, pkAndSignature } = useWalletContext();
   const router = useRouter();
-  const daoId = router.query.dao as string;
   const [list, { push, removeAt, clear }] = useList<string>([]);
 
   const handleSelect = useCallback(
@@ -240,7 +236,6 @@ export function useMultiDraftActions(): {
         list.map(item => {
           return draftsService.deleteDraft({
             id: item,
-            daoId,
             accountId,
             publicKey,
             signature,
@@ -258,7 +253,7 @@ export function useMultiDraftActions(): {
 
       await router.reload();
     }
-  }, [router, nearService, list, daoId]);
+  }, [router, nearService, list]);
 
   return {
     loading,

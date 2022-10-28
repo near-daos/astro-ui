@@ -83,75 +83,56 @@ export class DraftsService {
   public async patchDraft(
     params: { id: string } & CreateDraftParams
   ): Promise<AxiosResponse<string>> {
-    return this.httpService.patch(
-      `/draft-proposals/${params.daoId}/${params.id}`,
-      params,
-      {
-        queryRequest: {
-          name: API_QUERIES.ADD_AUTHORIZATION,
-        },
-      }
-    );
+    return this.httpService.patch(`/draft-proposals/${params.id}`, params, {
+      queryRequest: {
+        name: API_QUERIES.ADD_AUTHORIZATION,
+      },
+    });
   }
 
   public async deleteDraft(
     params: {
       id: string;
-      daoId: string;
     } & Authorization
   ): Promise<AxiosResponse<boolean>> {
-    return this.httpService.delete(
-      `/draft-proposals/${params.daoId}/${params.id}`,
-      params,
-      {
-        queryRequest: {
-          name: API_QUERIES.ADD_AUTHORIZATION,
-        },
-      }
-    );
+    return this.httpService.delete(`/draft-proposals/${params.id}`, params, {
+      queryRequest: {
+        name: API_QUERIES.ADD_AUTHORIZATION,
+      },
+    });
   }
 
   public async updateDraftView(
-    params: { id: string; daoId: string } & Authorization
+    params: { id: string } & Authorization
   ): Promise<AxiosResponse<boolean>> {
-    return this.httpService.post(
-      `/draft-proposals/${params.daoId}/${params.id}/view`,
-      params,
-      {
-        queryRequest: {
-          name: API_QUERIES.ADD_AUTHORIZATION,
-        },
-      }
-    );
+    return this.httpService.post(`/draft-proposals/${params.id}/view`, params, {
+      queryRequest: {
+        name: API_QUERIES.ADD_AUTHORIZATION,
+      },
+    });
   }
 
   public async updateDraftSave(
     params: {
       id: string;
-      daoId: string;
       accountId: string;
     } & Authorization
   ): Promise<AxiosResponse<boolean>> {
-    return this.httpService.post(
-      `/draft-proposals/${params.daoId}/${params.id}/save`,
-      params,
-      {
-        queryRequest: {
-          name: API_QUERIES.ADD_AUTHORIZATION,
-        },
-      }
-    );
+    return this.httpService.post(`/draft-proposals/${params.id}/save`, params, {
+      queryRequest: {
+        name: API_QUERIES.ADD_AUTHORIZATION,
+      },
+    });
   }
 
   public async deleteDraftSave(
     params: {
       id: string;
-      daoId: string;
       accountId: string;
     } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.delete(
-      `/draft-proposals/${params.daoId}/${params.id}/save`,
+      `/draft-proposals/${params.id}/save`,
       params,
       {
         queryRequest: {
@@ -164,12 +145,11 @@ export class DraftsService {
   public async updateDraftClose(
     params: {
       id: string;
-      daoId: string;
       proposalId: string;
     } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.post(
-      `/draft-proposals/${params.daoId}/${params.id}/close`,
+      `/draft-proposals/${params.id}/close`,
       params,
       {
         queryRequest: {
