@@ -59,6 +59,7 @@ export const DeleteDraftButton: FC<DeleteDraftButtonProps> = ({
         if (res[0]) {
           await draftsService.deleteDraft({
             id: draftId,
+            daoId: dao?.id ?? '',
             publicKey,
             signature,
             accountId,
