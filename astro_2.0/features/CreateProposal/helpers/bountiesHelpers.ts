@@ -69,7 +69,7 @@ export function getAddBountyProposal(
   } = data;
   let tokenData = Object.values(tokens).find(item => item.tokenId === token);
 
-  if (!token) {
+  if (!tokenData) {
     tokenData = Object.values(tokens).find(item => item.symbol === token);
   }
 
