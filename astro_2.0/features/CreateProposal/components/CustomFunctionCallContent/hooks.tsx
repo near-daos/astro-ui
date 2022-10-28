@@ -27,7 +27,7 @@ export function useAllTokenOptions(fieldName = 'token'): {
 
   const tokenOptions = Object.values(tokens)
     .map(token => ({
-      value: token.symbol,
+      value: token.tokenId,
       label: (
         <div className={styles.row}>
           <div className={styles.iconWrapper}>
@@ -76,7 +76,7 @@ export function useTokenOptions(fieldName = 'token'): {
 
   const tokenOptions = Object.values(tokens)
     .map(token => ({
-      value: token.symbol,
+      value: token.tokenId || token.symbol,
       label: (
         <div className={styles.row}>
           <div className={styles.iconWrapper}>

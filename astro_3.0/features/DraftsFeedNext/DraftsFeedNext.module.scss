@@ -1,0 +1,148 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin: 56px 0 20px;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 100%;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    flex-direction: column;
+    padding: 0;
+  }
+}
+
+.listWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-width: 100%;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    margin: 0;
+  }
+}
+
+.loader {
+  width: 100%;
+}
+
+.loading {
+  margin: 32px 0;
+  text-align: center;
+}
+
+.noResults {
+  padding: 24px 0;
+}
+
+.status {
+  width: 32px;
+}
+
+.listTitleWrapper {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  margin-bottom: 12px;
+  position: relative;
+  white-space: nowrap;
+  &::after {
+    background: var(--color-neutral-50);
+    content: '';
+    height: 1px;
+    margin-left: 8px;
+    width: 100%;
+  }
+}
+
+.title {
+  @extend %subtitle4;
+  margin-right: 2px;
+}
+
+.count {
+  @extend %subtitle3;
+}
+
+.selection {
+  bottom: 84px;
+  left: 50%;
+  position: fixed;
+  transform: translateX(-50%);
+  z-index: 10;
+
+  @include tablet-landscape {
+    bottom: 24px;
+  }
+}
+
+.panel {
+  align-items: center;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-14);
+  display: flex;
+  justify-content: space-between;
+  min-width: 40vw;
+  padding: 20px;
+  width: 100%;
+
+  @include tablet-landscape {
+    padding: 20px 24px;
+  }
+}
+
+.details {
+  display: flex;
+  flex-direction: column-reverse;
+  margin-right: 12px;
+
+  @include tablet-landscape {
+    display: flex;
+    flex-direction: row;
+    margin-right: 24px;
+  }
+}
+
+.value {
+  @extend %title3;
+  margin-right: 4px;
+}
+
+.label {
+  @extend %body1;
+  white-space: nowrap;
+}
+
+.controls {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+}
+
+.controlButton {
+  min-width: 60px;
+}
+
+.dismiss {
+  color: var(--color-error-70);
+  padding-left: 8px;
+  padding-right: 8px;
+
+  @include tablet-landscape {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}

@@ -1,7 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { SputnikHttpService } from 'services/sputnik';
 import { UserPermissions } from 'types/context';
 import { useWalletContext } from 'context/WalletContext';
+import { useJoiningDaoProposals } from 'services/ApiService/hooks/useJoiningDaoProposals';
+import { ProposalType } from 'types/proposal';
+import { useFlags } from 'launchdarkly-react-client-sdk';
+import { useAsync } from 'react-use';
 
 type JoinDaoState = {
   showButton: boolean;
@@ -13,40 +17,65 @@ export function useJoinDao(
   userPermissions: UserPermissions,
   daoMembers: string[]
 ): JoinDaoState {
+  const { useOpenSearchDataApi } = useFlags();
   const { accountId } = useWalletContext();
-  const [state, setState] = useState<JoinDaoState>({
-    showButton: false,
-    showWarning: false,
-  });
+  const hasPendingApprovalProposals = useJoiningDaoProposals();
 
-  useEffect(() => {
-    (async () => {
-      if (
-        !userPermissions.isCanCreateProposals ||
-        daoMembers.includes(accountId) ||
-        !accountId
-      ) {
-        return;
-      }
+  const { value } = useAsync(async () => {
+    if (
+      useOpenSearchDataApi ||
+      useOpenSearchDataApi === undefined ||
+      !userPermissions.allowedProposalsToCreate[ProposalType.AddMemberToRole] ||
+      !userPermissions.isCanCreateProposals ||
+      daoMembers.includes(accountId) ||
+      !accountId
+    ) {
+      return false;
+    }
 
-      const pendingJoinApproval =
-        await SputnikHttpService.getJoiningDaoProposal({ daoId, accountId });
+    return SputnikHttpService.getJoiningDaoProposal({
+      daoId,
+      accountId,
+    });
+  }, [
+    accountId,
+    daoId,
+    daoMembers,
+    userPermissions.allowedProposalsToCreate,
+    userPermissions.isCanCreateProposals,
+  ]);
 
-      if (pendingJoinApproval) {
-        setState({
-          showButton: false,
-          showWarning: true,
-        });
+  const hasPending = value || hasPendingApprovalProposals;
 
-        return;
-      }
+  return useMemo(() => {
+    if (hasPending) {
+      return {
+        showButton: false,
+        showWarning: true,
+      };
+    }
 
-      setState({
+    if (
+      userPermissions.allowedProposalsToCreate[ProposalType.AddMemberToRole] &&
+      userPermissions.isCanCreateProposals &&
+      !daoMembers.includes(accountId) &&
+      accountId
+    ) {
+      return {
         showButton: true,
         showWarning: false,
-      });
-    })();
-  }, [accountId, daoId, daoMembers, userPermissions.isCanCreateProposals]);
+      };
+    }
 
-  return state;
+    return {
+      showButton: false,
+      showWarning: false,
+    };
+  }, [
+    accountId,
+    daoMembers,
+    hasPending,
+    userPermissions.allowedProposalsToCreate,
+    userPermissions.isCanCreateProposals,
+  ]);
 }
