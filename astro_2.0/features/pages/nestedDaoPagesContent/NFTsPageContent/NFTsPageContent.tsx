@@ -33,7 +33,7 @@ export const NFTsPageContent: FC<NFTsPageContentProps> = ({
   const nfts = nftsData ?? data ?? [];
 
   useEffect(() => {
-    if (useOpenSearchDataApi) {
+    if (useOpenSearchDataApi || useOpenSearchDataApi === undefined) {
       return;
     }
 

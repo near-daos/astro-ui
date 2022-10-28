@@ -179,6 +179,7 @@ export type OpenSearchResponse = {
         | ProposalIndex
         | DraftProposalFeedItem
         | BountyIndex
+        | TokenIndex
         | NftIndex;
     }[];
     max_score: null;
@@ -215,4 +216,25 @@ export interface OpenSearchQuery {
     should?: Record<string, unknown>[];
   };
   match_all?: Record<string, unknown>;
+}
+
+export interface TokenIndex {
+  accountId: string;
+  balance: string;
+  tokenId: string;
+  partitionId: string;
+  isArchived: boolean;
+  token: {
+    reference: null;
+    symbol: string;
+    totalSupply: string;
+    price: null;
+    decimals: number;
+    icon: string;
+    name: string;
+    id: string;
+    ownerId: string;
+    spec: string;
+    referenceHash: null;
+  };
 }

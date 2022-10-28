@@ -107,18 +107,25 @@ export function useDelegatePageData(dao: DAO): {
           return undefined;
         }
 
-        const { delegatedTotal } = userData.delegated_amounts.reduce<{
-          delegatedTotal: number;
-        }>(
-          (res, item) => {
-            const [balance] = item;
+        const { delegatedTotal, delegatedToUser } =
+          userData.delegated_amounts.reduce<{
+            delegatedTotal: number;
+            delegatedToUser: Record<string, string>;
+          }>(
+            (res, item) => {
+              const [acc, balance] = item;
 
-            res.delegatedTotal += +balance;
+              res.delegatedTotal += +balance;
 
-            return res;
-          },
-          { delegatedTotal: 0 }
-        );
+              res.delegatedToUser[acc] = formatYoktoValue(
+                balance,
+                tokenDetails?.decimals
+              );
+
+              return res;
+            },
+            { delegatedTotal: 0, delegatedToUser: {} }
+          );
 
         return {
           accountId,
@@ -132,6 +139,7 @@ export function useDelegatePageData(dao: DAO): {
           nextActionTime: new Date(
             Number(userData.next_action_timestamp) / 1000000
           ),
+          delegatedToUser,
         };
       } catch (e) {
         return undefined;

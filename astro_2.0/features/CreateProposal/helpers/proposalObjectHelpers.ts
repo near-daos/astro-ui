@@ -33,6 +33,16 @@ export type CustomFunctionCallInput = {
   actionsGas: number;
 };
 
+function getToken(tokens: Tokens, tokenInput: string) {
+  let token = Object.values(tokens).find(item => item.tokenId === tokenInput);
+
+  if (!token) {
+    token = Object.values(tokens).find(item => item.symbol === tokenInput);
+  }
+
+  return token;
+}
+
 export function getUpgradeCodeProposal(
   dao: DAO,
   data: Record<string, string>
@@ -131,7 +141,7 @@ export async function getCustomFunctionCallProposal(
     externalUrl,
     actionsGas,
   } = data;
-  const token = Object.values(tokens).find(item => item.symbol === data.token);
+  const token = getToken(tokens, data.token);
 
   if (!token) {
     throw new Error('No tokens data found');
@@ -187,7 +197,7 @@ export async function getBuyNftFromMintbaseProposal(
     actionsGas,
   } = data;
 
-  const token = Object.values(tokens).find(item => item.symbol === data.token);
+  const token = getToken(tokens, data.token);
 
   if (!token) {
     throw new Error('No tokens data found');
@@ -289,7 +299,7 @@ export async function getBuyNftFromParasProposal(
 ): Promise<CreateProposalParams> {
   const { tokenKey, target, details, externalUrl, actionsGas, deposit } = data;
 
-  const token = Object.values(tokens).find(item => item.symbol === data.token);
+  const token = getToken(tokens, data.token);
 
   if (!token) {
     throw new Error('No tokens data found');
@@ -605,7 +615,7 @@ export async function getTransferProposal(
 ): Promise<CreateProposalParams> {
   const { token: dToken, details, externalUrl, target, amount } = data;
 
-  const token = Object.values(tokens).find(item => item.symbol === dToken);
+  const token = getToken(tokens, dToken);
 
   if (!token) {
     throw new Error('No tokens data found');
@@ -768,7 +778,7 @@ export function getTransferDaoFundsProposal(
 ): CreateProposalParams {
   const { token: dToken, details, externalUrl, target, amount } = data;
 
-  const token = Object.values(tokens).find(item => item.symbol === dToken);
+  const token = getToken(tokens, dToken);
 
   if (!token) {
     throw new Error('No tokens data found');
