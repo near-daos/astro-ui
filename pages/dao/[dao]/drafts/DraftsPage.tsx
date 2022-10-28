@@ -9,12 +9,15 @@ import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 
 import { DraftsPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent';
 import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider';
+import { useFlags } from 'launchdarkly-react-client-sdk';
+import { DraftsFeedNext } from 'astro_3.0/features/DraftsFeedNext/DraftsFeedNext';
 
 export interface DraftsPageProps {
   daoContext: DaoContext;
 }
 
 const DraftsPage: NextPage<DraftsPageProps> = ({ daoContext }) => {
+  const { useOpenSearchDataApi } = useFlags();
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     daoContext.dao.id,
     daoContext.dao.displayName
@@ -28,6 +31,18 @@ const DraftsPage: NextPage<DraftsPageProps> = ({ daoContext }) => {
     ];
   }, [breadcrumbsConfig]);
 
+  function renderContent() {
+    if (useOpenSearchDataApi === undefined) {
+      return null;
+    }
+
+    return useOpenSearchDataApi ? (
+      <DraftsFeedNext daoContext={daoContext} />
+    ) : (
+      <DraftsPageContent daoContext={daoContext} />
+    );
+  }
+
   return (
     <DraftsDataProvider>
       <NestedDaoPageWrapper
@@ -35,7 +50,7 @@ const DraftsPage: NextPage<DraftsPageProps> = ({ daoContext }) => {
         breadcrumbs={breadcrumbs}
         defaultProposalType={ProposalVariant.ProposePoll}
       >
-        <DraftsPageContent daoContext={daoContext} />
+        {renderContent()}
       </NestedDaoPageWrapper>
     </DraftsDataProvider>
   );
