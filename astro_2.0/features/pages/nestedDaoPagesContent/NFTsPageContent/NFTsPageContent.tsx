@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { isEmpty, uniqBy } from 'lodash';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { DaoContext } from 'types/context';
 import { NftToken } from 'types/token';
@@ -10,9 +11,11 @@ import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { DropdownMultiSelect } from 'components/inputs/selects/DropdownMultiSelect';
 import { SputnikHttpService } from 'services/sputnik';
 
-import styles from './NFTsPageContent.module.scss';
+import { useDaoNfts } from 'services/ApiService/hooks/useDaoNfts';
 
-import { NFTCard } from '../../nft/NtfCard';
+import { NFTCard } from 'astro_2.0/features/pages/nft/NtfCard';
+
+import styles from './NFTsPageContent.module.scss';
 
 export interface NFTsPageContentProps {
   daoContext: DaoContext;
@@ -22,15 +25,22 @@ export interface NFTsPageContentProps {
 export const NFTsPageContent: FC<NFTsPageContentProps> = ({
   toggleCreateProposal,
 }) => {
+  const { useOpenSearchDataApi } = useFlags();
   const router = useRouter();
   const daoId = router.query.dao as string;
-  const [nfts, setNfts] = useState<NftToken[]>([]);
+  const [nftsData, setNftsData] = useState<NftToken[] | null>(null);
+  const { data } = useDaoNfts();
+  const nfts = nftsData ?? data ?? [];
 
   useEffect(() => {
-    SputnikHttpService.getAccountNFTs(daoId).then(data => {
-      setNfts(data);
+    if (useOpenSearchDataApi) {
+      return;
+    }
+
+    SputnikHttpService.getAccountNFTs(daoId).then(d => {
+      setNftsData(d);
     });
-  }, [daoId]);
+  }, [daoId, useOpenSearchDataApi]);
 
   const [currentContractIds, setCurrentContractIds] = useState<string[]>([]);
   const nftsByUniqueContractId = uniqBy(nfts, 'contractId');

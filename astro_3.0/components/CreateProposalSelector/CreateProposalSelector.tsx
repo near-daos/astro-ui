@@ -26,6 +26,9 @@ import { DaoTokensContext } from 'context/DaoTokensContext';
 
 import { SHOW_PROPOSAL_SELECTOR } from 'constants/common';
 
+import { useFlags } from 'launchdarkly-react-client-sdk';
+import { useAccountDaos } from 'services/ApiService/hooks/useAccountDaos';
+
 import styles from './CreateProposalSelector.module.scss';
 
 export const CreateProposalSelector: FC = () => {
@@ -33,17 +36,25 @@ export const CreateProposalSelector: FC = () => {
   const [dao, setDao] = useState<DAO | null>(null);
   const [visible, setVisible] = useState(false);
 
+  const { useOpenSearchDataApi } = useFlags();
   const daoContext = useDaoContext(accountId, dao?.id);
   const { settings, loading, update } = useDaoSettingsData(dao?.id);
   const { tokens } = useDaoCustomTokens(dao?.id);
+  const { data } = useAccountDaos();
 
-  const { value: daos } = useAsync(async () => {
-    if (!accountId) {
+  const { value: apiData } = useAsync(async () => {
+    if (
+      !accountId ||
+      useOpenSearchDataApi ||
+      useOpenSearchDataApi === undefined
+    ) {
       return null;
     }
 
     return SputnikHttpService.getAccountDaos(accountId);
   }, [accountId]);
+
+  const daos = apiData || data;
 
   const handleVisibility = useCallback(() => {
     setVisible(true);

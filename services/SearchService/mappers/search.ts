@@ -1,6 +1,7 @@
 import {
   BountyIndex,
   DaoIndex,
+  NftIndex,
   OpenSearchResponse,
   ProposalIndex,
   SearchResponseIndex,
@@ -23,6 +24,8 @@ import { DATA_SEPARATOR } from 'constants/common';
 import { toMillis } from 'utils/format';
 import { BountyContext } from 'types/bounties';
 import { getParsedVotes } from 'services/SearchService/mappers/helpers';
+import { NftToken } from 'types/token';
+import { mapNftIndexToNftToken } from 'services/SearchService/mappers/nft';
 import { mapBountyIndexToBountyContext } from './bounty';
 
 export function mapDaoIndexToDaoFeedItem(daoIndex: DaoIndex): DaoFeedItem {
@@ -200,6 +203,25 @@ export function mapOpenSearchResponseToSearchResult(
             }
 
             res.push(mapBountyIndexToBountyContext(source));
+
+            return res;
+          }, []),
+      };
+    }
+
+    case SearchResponseIndex.NFT: {
+      return {
+        total: data.hits.total.value,
+        data: data.hits.hits
+          .filter(item => item._index === index)
+          .reduce<NftToken[]>((res, item) => {
+            const source = item._source as NftIndex;
+
+            if (!source.daoId || !source.metadata) {
+              return res;
+            }
+
+            res.push(mapNftIndexToNftToken(source));
 
             return res;
           }, []),

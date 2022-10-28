@@ -187,11 +187,13 @@ export const mapSearchResultsDTOToDataObject = (
     bounties: [],
     comments: [],
     drafts: [],
+    nfts: [],
     totals: {
       daos: daos.length,
       proposals: proposals.length,
       comments: 0,
       drafts: 0,
+      nfts: 0,
     },
     opts: {
       query,

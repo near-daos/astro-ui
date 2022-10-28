@@ -23,7 +23,11 @@ export const SidebarDaos: FC = () => {
   const { data } = useAccountDaos();
 
   const { value } = useAsync(async () => {
-    if (!accountId || useOpenSearchDataApi) {
+    if (
+      !accountId ||
+      useOpenSearchDataApi ||
+      useOpenSearchDataApi === undefined
+    ) {
       return null;
     }
 

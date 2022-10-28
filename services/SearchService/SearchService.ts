@@ -86,12 +86,14 @@ export class SearchService {
           comments: [],
           members: [],
           bounties: [],
+          nfts: [],
           [resultKey]: res.data,
           totals: {
             daos: 0,
             proposals: 0,
             drafts: 0,
             comments: 0,
+            nfts: 0,
             [resultKey]: res.total,
           },
           opts: {
@@ -165,11 +167,13 @@ export class SearchService {
         comments: commentsRes.data as ProposalComment[],
         bounties: [],
         members: [],
+        nfts: [],
         totals: {
           daos: daosRes.total,
           proposals: proposalsRes.total,
           drafts: draftsRes.total,
           comments: commentsRes.total,
+          nfts: 0,
         },
         opts: {
           query: params.query,

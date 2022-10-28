@@ -58,6 +58,7 @@ export async function fetcher(
     total: mappedData.total,
   };
 }
+
 export function useDaosInfinite(): SWRInfiniteResponse<
   PaginationResponse<DaoFeedItem[]>
 > {
