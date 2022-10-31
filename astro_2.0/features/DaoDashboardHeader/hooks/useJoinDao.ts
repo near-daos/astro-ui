@@ -12,6 +12,27 @@ type JoinDaoState = {
   showWarning: boolean;
 };
 
+function skipApiDataFetch(
+  useOpenSearchDataApi: boolean | undefined,
+  userPermissions: UserPermissions,
+  daoMembers: string[],
+  accountId: string
+) {
+  const isDataFetchedFromOpenSeacrh =
+    useOpenSearchDataApi || useOpenSearchDataApi === undefined;
+  const isUserNotAllowedToCreateProposal =
+    !userPermissions.allowedProposalsToCreate[ProposalType.AddMemberToRole] ||
+    !userPermissions.isCanCreateProposals;
+  const isAlreadyADaoMember = daoMembers.includes(accountId);
+
+  return (
+    isDataFetchedFromOpenSeacrh ||
+    isUserNotAllowedToCreateProposal ||
+    isAlreadyADaoMember ||
+    !accountId
+  );
+}
+
 export function useJoinDao(
   daoId: string,
   userPermissions: UserPermissions,
@@ -23,12 +44,12 @@ export function useJoinDao(
 
   const { value } = useAsync(async () => {
     if (
-      useOpenSearchDataApi ||
-      useOpenSearchDataApi === undefined ||
-      !userPermissions.allowedProposalsToCreate[ProposalType.AddMemberToRole] ||
-      !userPermissions.isCanCreateProposals ||
-      daoMembers.includes(accountId) ||
-      !accountId
+      skipApiDataFetch(
+        useOpenSearchDataApi,
+        userPermissions,
+        daoMembers,
+        accountId
+      )
     ) {
       return false;
     }
@@ -55,9 +76,12 @@ export function useJoinDao(
       };
     }
 
-    if (
+    const isUserAllowedToCreateProposal =
       userPermissions.allowedProposalsToCreate[ProposalType.AddMemberToRole] &&
-      userPermissions.isCanCreateProposals &&
+      userPermissions.isCanCreateProposals;
+
+    if (
+      isUserAllowedToCreateProposal &&
       !daoMembers.includes(accountId) &&
       accountId
     ) {
