@@ -17,8 +17,6 @@ export async function fetcher(
   offset: number,
   limit: number
 ): Promise<PaginationResponse<NftToken[]>> {
-  // const sort = 'createTimestamp,DESC';
-  // const sortOptions = sort.split(',');
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
     : appConfig.SEARCH_API_URL;
@@ -27,13 +25,6 @@ export async function fetcher(
     `${baseUrl}/nft/_search?size=${limit}&from=${offset}`,
     {
       query: buildNftsQuery(daoId),
-      // sort: [
-      //   {
-      //     [sortOptions[0]]: {
-      //       order: sortOptions[1].toLowerCase(),
-      //     },
-      //   },
-      // ],
     }
   );
 
@@ -88,7 +79,6 @@ export function useDaoNftsInfinite(): SWRInfiniteResponse<{
     {
       revalidateOnFocus: false,
       dedupingInterval: 60000,
-      // revalidateFirstPage: false,
     }
   );
 }
