@@ -11,7 +11,7 @@ import { LocaleSelector } from 'astro_2.0/components/LocaleSelector';
 import { Icon, IconName } from 'components/Icon';
 
 import { Button } from 'components/button/Button';
-import { DISCOVER } from 'constants/routing';
+import { DISCOVER, TERMS_AND_CONDITIONS } from 'constants/routing';
 
 import { configService } from 'services/ConfigService';
 
@@ -104,6 +104,19 @@ export const SidebarMore: FC = () => {
               >
                 <Icon name="sidebarDaosStats" className={styles.icon} />
                 <span>DAOs Statistic</span>
+              </Button>
+              <Button
+                capitalize
+                className={styles.moreButton}
+                variant="tertiary"
+                size="small"
+                onClick={() => {
+                  setOpen(false);
+                  router.push(TERMS_AND_CONDITIONS);
+                }}
+              >
+                <Icon name="sidebarReleaseNotes" className={styles.icon} />
+                <span>Terms and Conditions</span>
               </Button>
               <Button
                 capitalize

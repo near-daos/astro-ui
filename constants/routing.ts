@@ -19,6 +19,8 @@ export const SINGLE_DAO_PAGE = '/dao/[dao]';
 
 export const SEARCH_PAGE_URL = '/search-results';
 
+export const TERMS_AND_CONDITIONS = '/terms-conditions';
+
 export const NOTIFICATIONS_PAGE_URL = '/notifications';
 export const NOTIFICATIONS_SETTINGS_PAGE_URL = `${NOTIFICATIONS_PAGE_URL}/settings`;
 
