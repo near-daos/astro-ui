@@ -1,9 +1,9 @@
 import axios from 'axios';
 import useSWR from 'swr';
 import { appConfig } from 'config';
-import { useWalletContext } from 'context/WalletContext';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 import { buildDraftProposalsQuery } from 'services/SearchService/builders/draftProposals';
+import { useWalletContext } from 'context/WalletContext';
 
 const PROPOSALS_DEDUPING_INTERVAL = 10000;
 
@@ -11,17 +11,13 @@ const PROPOSALS_DEDUPING_INTERVAL = 10000;
 export async function fetcher(
   url: string,
   daoId: string,
-  state: string,
-  category: string,
-  offset: string,
-  limit: string,
   accountId: string
 ): Promise<number> {
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
     : appConfig.SEARCH_API_URL;
 
-  const response = await axios.post(`${baseUrl}/proposal/_search`, {
+  const response = await axios.post(`${baseUrl}/draftproposal/_search`, {
     query: buildDraftProposalsQuery(
       {
         daoId,
@@ -37,12 +33,14 @@ export async function fetcher(
   return response?.data?.hits?.total?.value ?? 0;
 }
 
-export function useUnreadDraftProposalsCount(): number {
+export function useUnreadDraftProposalsCount(daoId: string): number {
   const { useOpenSearchDataApi } = useFlags();
   const { accountId } = useWalletContext();
 
   const { data } = useSWR(
-    useOpenSearchDataApi ? ['availableActionsProposals', accountId] : undefined,
+    useOpenSearchDataApi
+      ? ['unreadDraftProposalsCount', daoId, accountId]
+      : undefined,
     fetcher,
     {
       revalidateOnFocus: false,

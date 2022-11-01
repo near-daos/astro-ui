@@ -12,7 +12,7 @@ export function buildDraftProposalsQuery(
   },
   accountId: string
 ): OpenSearchQuery {
-  const { category, daoId, state } = params;
+  const { category, daoId, state, view } = params;
 
   let q: OpenSearchQuery = {
     bool: {
@@ -32,11 +32,21 @@ export function buildDraftProposalsQuery(
   }
 
   // State
-  if (state) {
+  if (state && state !== 'all') {
     q.bool?.must?.push({
       simple_query_string: {
         query: state,
         fields: ['state'],
+      },
+    });
+  }
+
+  // View
+  if (view === 'unread') {
+    q.bool?.must_not?.push({
+      simple_query_string: {
+        query: accountId,
+        fields: ['viewAccounts'],
       },
     });
   }
