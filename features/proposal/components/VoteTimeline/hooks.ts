@@ -37,7 +37,19 @@ export const useTimelineData = (
       () => DEFAULT_ACTION_ITEM
     );
     const extraActions: ProposalActionData[] = [];
-    const actions: ProposalActionData[] = proposal.actions.slice(1);
+    const actions: ProposalActionData[] = proposal.actions
+      .sort((a, b) => {
+        if (a.timestamp > b.timestamp) {
+          return 1;
+        }
+
+        if (a.timestamp < b.timestamp) {
+          return -1;
+        }
+
+        return 0;
+      })
+      .slice(1);
 
     const startTimestamp = new Date(proposal.createdAt).getTime();
     const diff = new Date(proposal.votePeriodEnd).getTime() - startTimestamp;
