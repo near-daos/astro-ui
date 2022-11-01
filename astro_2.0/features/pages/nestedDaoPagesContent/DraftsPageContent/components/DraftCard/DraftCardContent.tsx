@@ -102,6 +102,7 @@ export const DraftCardContent: FC<Props> = ({
       try {
         await draftsService.deleteDraft({
           id,
+          daoId,
           publicKey,
           signature,
           accountId,
@@ -114,7 +115,7 @@ export const DraftCardContent: FC<Props> = ({
         });
       }
     }
-  }, [accountId, draftsService, id, pkAndSignature, showModal, t]);
+  }, [accountId, daoId, draftsService, id, pkAndSignature, showModal, t]);
 
   const renderDraftTitle = () => {
     if (isOpenStatus) {

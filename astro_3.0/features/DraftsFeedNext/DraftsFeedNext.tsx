@@ -76,7 +76,7 @@ export const DraftsFeedNext: FC<Props> = ({ daoContext }) => {
     const read: DraftProposalFeedItem[] = [];
 
     draftsData?.data.forEach(draft => {
-      if (draft.isRead) {
+      if (draft.viewAccounts?.includes(accountId)) {
         read.push(draft);
       } else {
         unread.push(draft);
@@ -84,7 +84,7 @@ export const DraftsFeedNext: FC<Props> = ({ daoContext }) => {
     });
 
     return { unreadDrafts: unread, readDrafts: read };
-  }, [draftsData?.data]);
+  }, [accountId, draftsData?.data]);
 
   const renderItem = (item: DraftProposalFeedItem) => {
     return (

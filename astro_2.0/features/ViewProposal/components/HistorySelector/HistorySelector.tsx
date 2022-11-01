@@ -33,6 +33,7 @@ export const HistorySelector: FC<Props> = ({ data }) => {
     <GenericDropdown
       isOpen={open}
       onOpenUpdate={setOpen}
+      placement="bottom-end"
       parent={
         <div className={styles.root}>
           {formatISODate(currentVersion.updatedAt, 'dd MMMM yyyy, hh:mm')}

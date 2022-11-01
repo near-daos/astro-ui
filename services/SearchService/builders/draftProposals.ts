@@ -44,9 +44,8 @@ export function buildDraftProposalsQuery(
   // View
   if (view === 'unread') {
     q.bool?.must_not?.push({
-      simple_query_string: {
-        query: accountId,
-        fields: ['viewAccounts'],
+      terms: {
+        viewAccounts: [accountId],
       },
     });
   }

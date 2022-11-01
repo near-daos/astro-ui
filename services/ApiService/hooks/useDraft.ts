@@ -5,14 +5,20 @@ import { useRouter } from 'next/router';
 import { DraftProposal } from 'types/draftProposal';
 import { appConfig } from 'config';
 import axios from 'axios';
-import { OpenSearchResponse } from 'services/SearchService/types';
+import {
+  DraftProposalIndex,
+  OpenSearchResponse,
+} from 'services/SearchService/types';
 import { buildDraftQuery } from 'services/SearchService/builders/draft';
+import { mapDraftProposalIndexToDraftProposal } from 'services/SearchService/mappers/draft';
+import { useWalletContext } from 'context/WalletContext';
 
 /* eslint-disable no-underscore-dangle */
 export async function fetcher(
   url: string,
   daoId: string,
-  draftId: string
+  draftId: string,
+  accountId?: string
 ): Promise<DraftProposal | undefined> {
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
@@ -30,7 +36,10 @@ export async function fetcher(
 
   const rawData = response?.data?.hits?.hits[0]?._source;
 
-  return rawData ? (rawData as DraftProposal) : undefined;
+  return mapDraftProposalIndexToDraftProposal(
+    rawData as DraftProposalIndex,
+    accountId
+  );
 }
 
 export function useDraft(): {
@@ -39,6 +48,7 @@ export function useDraft(): {
   isError: boolean;
   mutate: KeyedMutator<DraftProposal | undefined>;
 } {
+  const { accountId } = useWalletContext();
   const { useOpenSearchDataApi } = useFlags();
   const router = useRouter();
   const { query } = router;
@@ -47,11 +57,10 @@ export function useDraft(): {
   const draftId = query.draft ?? '';
 
   const { data, error, mutate } = useSWR(
-    useOpenSearchDataApi ? ['draft', daoId, draftId] : undefined,
+    useOpenSearchDataApi ? ['draft', daoId, draftId, accountId] : undefined,
     fetcher,
     {
       revalidateOnFocus: false,
-      revalidateOnMount: false,
       dedupingInterval: 5000,
     }
   );

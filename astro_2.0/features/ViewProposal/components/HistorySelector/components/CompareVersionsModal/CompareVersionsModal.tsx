@@ -54,8 +54,8 @@ export const CompareVersionsModal: FC<Props> = ({
         );
 
         const rightRes = HtmlDiff.execute(
-          rightRef.current.innerHTML,
-          leftRef.current.innerHTML
+          leftRef.current.innerHTML,
+          rightRef.current.innerHTML
         );
 
         setContent({ left: leftRes, right: rightRes });
@@ -70,11 +70,7 @@ export const CompareVersionsModal: FC<Props> = ({
         <div className={styles.body}>
           {content.left && (
             <div className={cn(styles.column, styles.left)}>
-              <CompareProposal
-                current={prevVersion}
-                view="prev"
-                content={content.left}
-              />
+              <CompareProposal current={prevVersion} view="prev" />
             </div>
           )}
           {content.right && (

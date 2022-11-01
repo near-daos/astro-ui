@@ -45,4 +45,5 @@ export interface DraftProposalFeedItem {
   createdAt: string;
   isRead: boolean;
   isSaved: boolean;
+  viewAccounts?: string[];
 }

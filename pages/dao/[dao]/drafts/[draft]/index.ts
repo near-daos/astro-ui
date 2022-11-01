@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const dao = daoContext?.dao;
 
   const draft = useOpenSearchDataApi
-    ? await getDraft('draft', daoId, draftId)
+    ? await getDraft('draft', daoId, draftId, accountId)
     : await draftService.getDraft(draftId, dao, accountId);
 
   if (!draft || !daoContext) {
@@ -59,7 +59,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       draft,
       daoContext,
       fallback: {
-        [unstable_serialize(['draft', daoId, draftId])]: draft,
+        [unstable_serialize(['draft', daoId, draftId, accountId])]: draft,
       },
     },
   };

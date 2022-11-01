@@ -18,7 +18,7 @@ export async function fetcher(
     : appConfig.SEARCH_API_URL;
 
   const response = await axios.post<unknown, { data: OpenSearchResponse }>(
-    `${baseUrl}/tokens/_search?size=300&from=0`,
+    `${baseUrl}/tokenbalance/_search?size=300&from=0`,
     {
       query: buildTokensQuery(accountId),
     }
@@ -37,7 +37,7 @@ export function useTokens(accountId?: string): {
   const { useOpenSearchDataApi } = useFlags();
 
   const { data, error } = useSWR(
-    useOpenSearchDataApi ? ['tokens', accountId] : undefined,
+    useOpenSearchDataApi ? ['tokenbalance', accountId] : undefined,
     fetcher,
     {
       revalidateOnFocus: false,
