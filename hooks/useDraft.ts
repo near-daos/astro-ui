@@ -1,39 +1,36 @@
-import { useState, useEffect } from 'react';
 import { useWalletContext } from 'context/WalletContext';
-import { PaginationResponse } from 'types/api';
-import { DraftProposalFeedItem } from 'types/draftProposal';
+import { useAsync } from 'react-use';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 import { useDraftService } from './useDraftService';
 
-export function useDraft(
-  daoId: string
-): PaginationResponse<DraftProposalFeedItem[]> | null {
+export function useUnreadDraftCount(daoId: string): number | null {
   const { accountId } = useWalletContext();
-  const [data, setData] = useState<PaginationResponse<
-    DraftProposalFeedItem[]
-  > | null>(null);
+  const { useOpenSearchDataApi } = useFlags();
   const draftsService = useDraftService();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (draftsService) {
-        const res = await draftsService.getDrafts({
-          offset: 0,
-          limit: 1000,
-          daoId,
-          accountId,
-          isSaved: 'false',
-        });
+  const { value } = useAsync(async () => {
+    if (useOpenSearchDataApi || useOpenSearchDataApi === undefined) {
+      return 0;
+    }
 
-        if (!res) {
-          setData(null);
-        }
+    if (draftsService) {
+      const res = await draftsService.getDrafts({
+        offset: 0,
+        limit: 1000,
+        daoId,
+        accountId,
+        isRead: 'false',
+      });
 
-        setData(res);
+      if (!res) {
+        return 0;
       }
-    };
 
-    fetchData();
+      return res.total;
+    }
+
+    return 0;
   }, [accountId, daoId, draftsService]);
 
-  return data;
+  return value ?? 0;
 }
