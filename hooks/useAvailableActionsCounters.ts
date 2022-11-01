@@ -11,10 +11,14 @@ export function useAvailableActionsCounters(): {
   const { accountId } = useWalletContext();
   const { useOpenSearchDataApi } = useFlags();
 
-  const { data } = useAvailableActionsProposals();
+  const count = useAvailableActionsProposals();
 
   const { value: proposalActionsCount } = useAsync(async () => {
-    if (!accountId || useOpenSearchDataApi) {
+    if (
+      !accountId ||
+      useOpenSearchDataApi ||
+      useOpenSearchDataApi === undefined
+    ) {
       return 0;
     }
 
@@ -36,6 +40,6 @@ export function useAvailableActionsCounters(): {
   }, [accountId, useOpenSearchDataApi]);
 
   return {
-    proposalActionsCount: (proposalActionsCount || data?.length) ?? 0,
+    proposalActionsCount: (proposalActionsCount || count) ?? 0,
   };
 }

@@ -35,6 +35,8 @@ export enum SearchResponseIndex {
   COMMENT = 'comment',
   DRAFT_PROPOSAL = 'draftproposal',
   BOUNTY = 'bounty',
+  NFT = 'nft',
+  TOKEN = 'token',
 }
 
 export interface DaoIndex {
@@ -123,6 +125,45 @@ export interface BountyIndex {
   transactionHash: string;
 }
 
+export interface NftIndex {
+  accounts: string;
+  daoId: string;
+  description: string;
+  id: string;
+  index: string;
+  indexedBy: string;
+  symbol: string;
+  baseUri: string;
+  tokenId: string;
+  ownerId: string;
+  contractId: string;
+  metadata: {
+    copies: 0;
+    description: string;
+    expiresAt: string;
+    extra: string;
+    issuedAt: string;
+    media: string;
+    mediaHash: string;
+    reference: string;
+    referenceHash: string;
+    startsAt: string;
+    title: string;
+    updatedAt: string;
+    approvedAccountIds: [string];
+  };
+  contract: {
+    id: string;
+    spec: string;
+    name: string;
+    symbol: string;
+    icon: string;
+    baseUri: string;
+    reference: string;
+    referenceHash: string;
+  };
+}
+
 /* eslint-disable camelcase */
 export type OpenSearchResponse = {
   hits: {
@@ -138,7 +179,8 @@ export type OpenSearchResponse = {
         | ProposalIndex
         | DraftProposalFeedItem
         | BountyIndex
-        | TokenIndex;
+        | TokenIndex
+        | NftIndex;
     }[];
     max_score: null;
     total: {
@@ -163,7 +205,8 @@ export type SearchResult = {
     | SearchResultsData['proposals']
     | SearchResultsData['drafts']
     | SearchResultsData['comments']
-    | SearchResultsData['bounties'];
+    | SearchResultsData['bounties']
+    | SearchResultsData['nfts'];
 };
 
 export interface OpenSearchQuery {

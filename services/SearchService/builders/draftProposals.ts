@@ -4,11 +4,11 @@ import { DraftState } from 'services/DraftsService/types';
 
 export function buildDraftProposalsQuery(
   params: {
-    category: ProposalCategories;
+    category?: ProposalCategories;
     daoId: string;
     state: DraftState;
     view: string;
-    search: string;
+    search?: string;
   },
   accountId: string
 ): OpenSearchQuery {
