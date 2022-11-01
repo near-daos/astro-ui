@@ -6,6 +6,7 @@ import {
   LetterHeadWidget,
   ProposalCardRenderer,
 } from 'astro_2.0/components/ProposalCardRenderer';
+import { AnimatedLayout } from 'astro_3.0/components/AnimatedLayout';
 
 import { ProposalType, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
@@ -137,60 +138,60 @@ export const CreateProposalSelector: FC = () => {
     return null;
   }, [daoContext]);
 
-  if (!visible) {
-    return null;
-  }
-
   return (
-    <div className={styles.root}>
-      <DropdownSelect
-        isBorderless
-        placeholder={
-          <div className={styles.row}>
-            <div
-              className={cn(styles.avatar, styles.selected)}
-              style={{
-                backgroundImage: `url(/avatars/defaltDaoAvatar.png)`,
-              }}
+    <AnimatedLayout>
+      {visible ? (
+        <div className={styles.root}>
+          <DropdownSelect
+            isBorderless
+            placeholder={
+              <div className={styles.row}>
+                <div
+                  className={cn(styles.avatar, styles.selected)}
+                  style={{
+                    backgroundImage: `url(/avatars/defaltDaoAvatar.png)`,
+                  }}
+                />
+                <div className={styles.placeholder}>Select DAO</div>
+              </div>
+            }
+            className={styles.dropdown}
+            options={daosOptions}
+            onChange={handleDaoSelect}
+          />
+          {dao && daoContext && allowedVariant ? (
+            <DaoTokensContext.Provider value={tokensContextValue}>
+              <DaoSettingsContext.Provider value={settingsContextValue}>
+                <CreateProposal
+                  showInfo={false}
+                  className={styles.createProposal}
+                  dao={dao}
+                  daoTokens={tokens}
+                  userPermissions={daoContext.userPermissions}
+                  proposalVariant={allowedVariant}
+                  showFlag={false}
+                  onCreate={handleDone}
+                  onClose={handleDone}
+                />
+              </DaoSettingsContext.Provider>
+            </DaoTokensContext.Provider>
+          ) : (
+            <ProposalCardRenderer
+              daoFlagNode={null}
+              className={styles.dummyCard}
+              letterHeadNode={
+                <LetterHeadWidget
+                  type={ProposalType.Transfer}
+                  proposalVariant={ProposalVariant.ProposeTransfer}
+                />
+              }
+              proposalCardNode={
+                <DummyProposalCard onClose={() => setVisible(false)} />
+              }
             />
-            <div className={styles.placeholder}>Select DAO</div>
-          </div>
-        }
-        className={styles.dropdown}
-        options={daosOptions}
-        onChange={handleDaoSelect}
-      />
-      {dao && daoContext && allowedVariant ? (
-        <DaoTokensContext.Provider value={tokensContextValue}>
-          <DaoSettingsContext.Provider value={settingsContextValue}>
-            <CreateProposal
-              showInfo={false}
-              className={styles.createProposal}
-              dao={dao}
-              daoTokens={tokens}
-              userPermissions={daoContext.userPermissions}
-              proposalVariant={allowedVariant}
-              showFlag={false}
-              onCreate={handleDone}
-              onClose={handleDone}
-            />
-          </DaoSettingsContext.Provider>
-        </DaoTokensContext.Provider>
-      ) : (
-        <ProposalCardRenderer
-          daoFlagNode={null}
-          className={styles.dummyCard}
-          letterHeadNode={
-            <LetterHeadWidget
-              type={ProposalType.Transfer}
-              proposalVariant={ProposalVariant.ProposeTransfer}
-            />
-          }
-          proposalCardNode={
-            <DummyProposalCard onClose={() => setVisible(false)} />
-          }
-        />
-      )}
-    </div>
+          )}
+        </div>
+      ) : null}
+    </AnimatedLayout>
   );
 };

@@ -22,6 +22,13 @@ export async function fetcher(
     `${baseUrl}/dao/_search?size=100&from=0`,
     {
       query: buildAccountDaosQuery(accountId),
+      sort: [
+        {
+          createTimestamp: {
+            order: 'DESC',
+          },
+        },
+      ],
     }
   );
 

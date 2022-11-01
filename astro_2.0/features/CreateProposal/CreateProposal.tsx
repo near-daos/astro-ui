@@ -103,7 +103,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   const formRef = useRef<HTMLDivElement>(null);
 
   useMount(() => {
-    formRef?.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    formRef?.current?.scrollIntoView({ block: 'center' });
   });
 
   useEffect(() => {

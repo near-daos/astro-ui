@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { AnimatedLayout } from 'astro_3.0/components/AnimatedLayout';
 
 type RefToggle = [boolean, Dispatch<SetStateAction<boolean>>];
 type RefProps<P> = [Partial<P>, Dispatch<SetStateAction<Partial<P>>>];
@@ -36,9 +37,13 @@ const useToggleable = <P,>(FC: ComponentType<P>): UseToggleableResult<P> => {
       refToggle.current = useState<boolean>(false);
       refProps.current = useState<Partial<P>>(props);
 
-      return refToggle.current[0] ? (
-        <FC {...props} {...refProps.current[0]} />
-      ) : null;
+      return (
+        <AnimatedLayout>
+          {refToggle.current[0] ? (
+            <FC {...props} {...refProps.current[0]} />
+          ) : null}
+        </AnimatedLayout>
+      );
     };
 
     return WrappedComponent;
