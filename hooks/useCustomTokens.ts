@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useMount } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
 import { useRouter } from 'next/router';
 import { Token } from 'types/token';
@@ -84,7 +83,7 @@ export function useAllCustomTokens(): { tokens: Record<string, Token> } {
   const { useOpenSearchDataApi } = useFlags();
   const { data } = useTokens();
 
-  useMount(() => {
+  useEffect(() => {
     if (useOpenSearchDataApi || useOpenSearchDataApi === undefined) {
       return;
     }
@@ -94,7 +93,7 @@ export function useAllCustomTokens(): { tokens: Record<string, Token> } {
     }).then(d => {
       setTokensData(d);
     });
-  });
+  }, [useOpenSearchDataApi]);
 
   const tokens = useMemo(() => {
     const values = tokensData || data;
