@@ -6,9 +6,9 @@ import { WalletType } from 'types/config';
 import { CreateGovernanceTokenSteps } from 'types/settings';
 
 import {
+  ALL_BOUNTIES_PAGE_URL,
   MY_DAOS_URL,
   MY_FEED_URL,
-  SINGLE_BOUNTY_PAGE_URL,
   SINGLE_DAO_PAGE,
   SINGLE_PROPOSAL_PAGE_URL,
 } from 'constants/routing';
@@ -133,10 +133,9 @@ export function useSelectorWalletTransactionResult(): void {
               router.push((voteActionSource as string).replaceAll('"', ''));
             } else {
               router.push({
-                pathname: SINGLE_BOUNTY_PAGE_URL,
+                pathname: ALL_BOUNTIES_PAGE_URL,
                 query: {
                   dao: result.metadata.daoId,
-                  bountyContext: result.metadata.bountyContextId,
                 },
               });
             }
@@ -152,14 +151,14 @@ export function useSelectorWalletTransactionResult(): void {
               update(delegateVotingAction.replaceAll('"', ''), {
                 step: null,
               });
-            } else if (result.metadata.daoId) {
+            } else if (result?.metadata?.daoId) {
               router.push({
                 pathname: SINGLE_DAO_PAGE,
                 query: {
                   dao: result.metadata.daoId,
                 },
               });
-            } else {
+            } else if (i === results.length - 1) {
               router.push(MY_FEED_URL);
             }
 

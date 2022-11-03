@@ -24,6 +24,9 @@ import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 
 import { MainLayout } from 'astro_3.0/features/MainLayout';
 
+import { useMount } from 'react-use';
+import { DELEGATE_VOTING_KEY } from 'constants/localStorage';
+
 import styles from './NestedDaoPageWrapper.module.scss';
 
 interface NestedDaoPageWrapperProps {
@@ -76,6 +79,10 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
       return null;
     });
   }
+
+  useMount(() => {
+    localStorage.setItem(DELEGATE_VOTING_KEY, '');
+  });
 
   const onCreateProposal = useCallback(
     (
