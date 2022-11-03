@@ -3,6 +3,8 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
+import { SWRConfig } from 'swr';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { DAO } from 'types/dao';
 import { DaoContext } from 'types/context';
@@ -20,17 +22,26 @@ import { DraftProposal } from 'types/draftProposal';
 import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider';
 import { DraftWrapper } from 'astro_2.0/features/Drafts/components/DraftWrapper';
 
+import { DraftProposalView } from 'astro_3.0/features/DraftProposalView';
+
 import styles from './Draft.module.scss';
 
 interface DraftPageProps {
   dao: DAO;
   draft: DraftProposal;
   daoContext: DaoContext;
+  fallback: { [p: string]: DraftProposal } | undefined;
 }
 
-const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
+const DraftPage: NextPage<DraftPageProps> = ({
+  dao,
+  draft,
+  daoContext,
+  fallback,
+}) => {
   const router = useRouter();
   const { t } = useTranslation();
+  const { useOpenSearchDataApi } = useFlags();
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     dao.id,
     dao.displayName,
@@ -48,32 +59,18 @@ const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
     ];
   }, [breadcrumbsConfig]);
 
-  return (
-    <DraftsDataProvider>
-      <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
-        <DraftWrapper>
-          {toggleCreateProposal => (
-            <>
-              <Head>
-                <title>{t('drafts.draftPage.title')}</title>
-                <meta property="og:url" content={router.asPath} />
-                <meta property="og:type" content="website" />
-                <meta property="og:title" content="Astro" />
-                <meta property="og:description" content={draft?.description} />
-                <meta
-                  property="og:image"
-                  content={dao?.flagCover || dao?.logo}
-                />
+  function renderContent() {
+    if (useOpenSearchDataApi === undefined) {
+      return null;
+    }
 
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta property="twitter:url" content={router.asPath} />
-                <meta name="twitter:title" content="Astro" />
-                <meta name="twitter:description" content={draft?.description} />
-                <meta
-                  name="twitter:image"
-                  content={dao?.flagCover || dao?.logo}
-                />
-              </Head>
+    return useOpenSearchDataApi ? (
+      <DraftProposalView daoContext={daoContext} />
+    ) : (
+      <DraftsDataProvider>
+        <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
+          <DraftWrapper>
+            {toggleCreateProposal => (
               <div className={styles.draftInfo}>
                 <BackButton
                   name={t('drafts.backToFeed')}
@@ -96,11 +93,31 @@ const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
                 />
                 <DraftComments dao={dao} />
               </div>
-            </>
-          )}
-        </DraftWrapper>
-      </NestedDaoPageWrapper>
-    </DraftsDataProvider>
+            )}
+          </DraftWrapper>
+        </NestedDaoPageWrapper>
+      </DraftsDataProvider>
+    );
+  }
+
+  return (
+    <SWRConfig value={{ fallback }}>
+      <Head>
+        <title>{t('drafts.draftPage.title')}</title>
+        <meta property="og:url" content={router.asPath} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Astro" />
+        <meta property="og:description" content={draft?.description} />
+        <meta property="og:image" content={dao?.flagCover || dao?.logo} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={router.asPath} />
+        <meta name="twitter:title" content="Astro" />
+        <meta name="twitter:description" content={draft?.description} />
+        <meta name="twitter:image" content={dao?.flagCover || dao?.logo} />
+      </Head>
+      {renderContent()}
+    </SWRConfig>
   );
 };
 

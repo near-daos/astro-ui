@@ -108,11 +108,12 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   const permissions = getProposalPermissions(proposal, accountId);
 
   const voted =
-    proposal.votes[accountId] === 'Yes' ||
-    proposal.votes[accountId] === 'No' ||
-    proposal.votes[accountId] === 'Dismiss' ||
-    (proposal.status && proposal.status !== 'InProgress') ||
-    (proposal.voteStatus && proposal.voteStatus !== 'Active');
+    proposal.votes &&
+    (proposal.votes[accountId] === 'Yes' ||
+      proposal.votes[accountId] === 'No' ||
+      proposal.votes[accountId] === 'Dismiss' ||
+      (proposal.status && proposal.status !== 'InProgress') ||
+      (proposal.voteStatus && proposal.voteStatus !== 'Active'));
 
   const isClosedDraft = 'state' in proposal && proposal?.state === 'closed';
 
@@ -152,7 +153,9 @@ export const ViewProposal: FC<ViewProposalProps> = ({
         <ProposalCard
           convertToProposal={handleToggleCreateProposal}
           title={'title' in proposal ? proposal?.title : undefined}
-          history={'history' in proposal ? proposal?.history : undefined}
+          history={
+            'history' in proposal ? [...proposal?.history, proposal] : undefined
+          }
           isSaved={'isSaved' in proposal ? proposal?.isSaved : undefined}
           saves={'isSaved' in proposal ? proposal?.saves : undefined}
           draftState={'state' in proposal ? proposal?.state : undefined}

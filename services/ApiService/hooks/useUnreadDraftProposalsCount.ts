@@ -44,6 +44,7 @@ export function useUnreadDraftProposalsCount(daoId: string): number {
     fetcher,
     {
       revalidateOnFocus: false,
+      refreshInterval: 30000,
       dedupingInterval: PROPOSALS_DEDUPING_INTERVAL,
     }
   );

@@ -4,11 +4,12 @@ import {
   ProposalComment,
   ProposalKind,
   ProposalType,
+  ProposalVariant,
 } from 'types/proposal';
-import { DraftProposalFeedItem } from 'types/draftProposal';
+import { DraftProposal, DraftProposalFeedItem } from 'types/draftProposal';
 import { SearchResultsData } from 'types/search';
 import { DaoPolicy } from 'services/sputnik/types/policy';
-import { DaoVersion } from 'types/dao';
+import { DAO as TDAO, DaoVersion } from 'types/dao';
 
 export type BaseParams = {
   id?: string;
@@ -180,7 +181,8 @@ export type OpenSearchResponse = {
         | DraftProposalFeedItem
         | BountyIndex
         | TokenIndex
-        | NftIndex;
+        | NftIndex
+        | DraftProposalIndex;
     }[];
     max_score: null;
     total: {
@@ -237,4 +239,32 @@ export interface TokenIndex {
     spec: string;
     referenceHash: null;
   };
+}
+
+export interface DraftProposalIndex {
+  saveAccounts: string[];
+  kind: ProposalKind & { proposalVariant: ProposalVariant };
+  proposer: string;
+  description: string;
+  history: {
+    daoId: string;
+    proposer: string;
+    kind: ProposalKind;
+    description: string;
+    id: string;
+    title: string;
+    type: ProposalType;
+    timestamp: number;
+  }[];
+  title: string;
+  type: ProposalType;
+  updateTimestamp: number;
+  createTimestamp: number;
+  replies: number;
+  id: string;
+  state: DraftProposal['state'];
+  viewAccounts: string[];
+  dao: TDAO;
+  daoId: string;
+  accounts: string;
 }
