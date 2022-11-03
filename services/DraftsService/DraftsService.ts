@@ -29,13 +29,23 @@ export class DraftsService {
 
   private useDraftsApiRelatedToDao = false;
 
-  constructor(httpService?: HttpService, useDraftsApiRelatedToDao?: boolean) {
+  private useDraftCommentsApiRelatedToDao = false;
+
+  constructor(
+    httpService?: HttpService,
+    useDraftsApiRelatedToDao?: boolean,
+    useDraftCommentsApiRelatedToDao?: boolean
+  ) {
     if (httpService) {
       this.httpService = httpService;
     }
 
     if (useDraftsApiRelatedToDao) {
       this.useDraftsApiRelatedToDao = true;
+    }
+
+    if (useDraftCommentsApiRelatedToDao) {
+      this.useDraftCommentsApiRelatedToDao = true;
     }
   }
 
@@ -210,7 +220,7 @@ export class DraftsService {
   }
 
   public async createDraftComment(
-    data: CreateDraftCommentData & Authorization
+    data: CreateDraftCommentData & { daoId: string } & Authorization
   ): Promise<AxiosResponse<DraftComment>> {
     return this.httpService.post('/draft-comments', data, {
       queryRequest: {
@@ -220,40 +230,63 @@ export class DraftsService {
   }
 
   public async editDraftComment(
-    data: EditDraftCommentData & Authorization
+    data: EditDraftCommentData & {
+      daoId: string;
+      draftId: string;
+    } & Authorization
   ): Promise<AxiosResponse<DraftComment>> {
-    return this.httpService.patch(`/draft-comments/${data.id}`, data, {
-      queryRequest: {
-        name: API_QUERIES.ADD_AUTHORIZATION,
-      },
-    });
+    return this.httpService.patch(
+      this.useDraftCommentsApiRelatedToDao
+        ? `/draft-comments/${data.daoId}/${data.draftId}/${data.id}`
+        : `/draft-comments/${data.id}`,
+      data,
+      {
+        queryRequest: {
+          name: API_QUERIES.ADD_AUTHORIZATION,
+        },
+      }
+    );
   }
 
   public async deleteDraftComment(
-    params: { id: string } & Authorization
+    params: { id: string; daoId: string; draftId: string } & Authorization
   ): Promise<AxiosResponse<boolean>> {
-    return this.httpService.delete(`/draft-comments/${params.id}`, params, {
-      queryRequest: {
-        name: API_QUERIES.ADD_AUTHORIZATION,
-      },
-    });
+    return this.httpService.delete(
+      this.useDraftCommentsApiRelatedToDao
+        ? `/draft-comments/${params.daoId}/${params.draftId}/${params.id}`
+        : `/draft-comments/${params.id}`,
+      params,
+      {
+        queryRequest: {
+          name: API_QUERIES.ADD_AUTHORIZATION,
+        },
+      }
+    );
   }
 
   public async likeDraftComment(
-    params: { id: string } & Authorization
+    params: { id: string; daoId: string; draftId: string } & Authorization
   ): Promise<AxiosResponse<boolean>> {
-    return this.httpService.post(`/draft-comments/${params.id}/like`, params, {
-      queryRequest: {
-        name: API_QUERIES.ADD_AUTHORIZATION,
-      },
-    });
+    return this.httpService.post(
+      this.useDraftCommentsApiRelatedToDao
+        ? `/draft-comments/${params.daoId}/${params.draftId}/${params.id}/like`
+        : `/draft-comments/${params.id}/like`,
+      params,
+      {
+        queryRequest: {
+          name: API_QUERIES.ADD_AUTHORIZATION,
+        },
+      }
+    );
   }
 
   public async removeLikeDraftComment(
-    params: { id: string } & Authorization
+    params: { id: string; daoId: string; draftId: string } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.post(
-      `/draft-comments/${params.id}/remove-like`,
+      this.useDraftCommentsApiRelatedToDao
+        ? `/draft-comments/${params.daoId}/${params.draftId}/${params.id}/remove-like`
+        : `/draft-comments/${params.id}/remove-like`,
       params,
       {
         queryRequest: {
@@ -264,10 +297,12 @@ export class DraftsService {
   }
 
   public async dislikeDraftComment(
-    params: { id: string } & Authorization
+    params: { id: string; daoId: string; draftId: string } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.post(
-      `/draft-comments/${params.id}/dislike`,
+      this.useDraftCommentsApiRelatedToDao
+        ? `/draft-comments/${params.daoId}/${params.draftId}/${params.id}/dislike`
+        : `/draft-comments/${params.id}/dislike`,
       params,
       {
         queryRequest: {
@@ -278,10 +313,12 @@ export class DraftsService {
   }
 
   public async removeDislikeDraftComment(
-    params: { id: string } & Authorization
+    params: { id: string; daoId: string; draftId: string } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.post(
-      `/draft-comments/${params.id}/remove-dislike`,
+      this.useDraftCommentsApiRelatedToDao
+        ? `/draft-comments/${params.daoId}/${params.draftId}/${params.id}/remove-dislike`
+        : `/draft-comments/${params.id}/remove-dislike`,
       params,
       {
         queryRequest: {
