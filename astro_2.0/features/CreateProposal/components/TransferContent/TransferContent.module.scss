@@ -1,5 +1,6 @@
 @use 'styles/breakpoints';
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .root {
   display: flex;
@@ -122,6 +123,11 @@
   display: flex;
   margin-top: 24px;
   padding: 8px;
+}
+
+.sub {
+  @extend %caption3;
+  @include ellipse-text;
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {

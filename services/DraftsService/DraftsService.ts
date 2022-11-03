@@ -27,9 +27,15 @@ export class DraftsService {
     }/api/v1/`,
   });
 
-  constructor(httpService?: HttpService) {
+  private useDraftsApiRelatedToDao = false;
+
+  constructor(httpService?: HttpService, useDraftsApiRelatedToDao?: boolean) {
     if (httpService) {
       this.httpService = httpService;
+    }
+
+    if (useDraftsApiRelatedToDao) {
+      this.useDraftsApiRelatedToDao = true;
     }
   }
 
@@ -84,7 +90,9 @@ export class DraftsService {
     params: { id: string } & CreateDraftParams
   ): Promise<AxiosResponse<string>> {
     return this.httpService.patch(
-      `/draft-proposals/${params.daoId}/${params.id}`,
+      this.useDraftsApiRelatedToDao
+        ? `/draft-proposals/${params.daoId}/${params.id}`
+        : `/draft-proposals/${params.id}`,
       params,
       {
         queryRequest: {
@@ -101,7 +109,9 @@ export class DraftsService {
     } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.delete(
-      `/draft-proposals/${params.daoId}/${params.id}`,
+      this.useDraftsApiRelatedToDao
+        ? `/draft-proposals/${params.daoId}/${params.id}`
+        : `/draft-proposals/${params.id}`,
       params,
       {
         queryRequest: {
@@ -115,7 +125,9 @@ export class DraftsService {
     params: { id: string; daoId: string } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.post(
-      `/draft-proposals/${params.daoId}/${params.id}/view`,
+      this.useDraftsApiRelatedToDao
+        ? `/draft-proposals/${params.daoId}/${params.id}/view`
+        : `/draft-proposals/${params.id}/view`,
       params,
       {
         queryRequest: {
@@ -133,7 +145,9 @@ export class DraftsService {
     } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.post(
-      `/draft-proposals/${params.daoId}/${params.id}/save`,
+      this.useDraftsApiRelatedToDao
+        ? `/draft-proposals/${params.daoId}/${params.id}/save`
+        : `/draft-proposals/${params.id}/save`,
       params,
       {
         queryRequest: {
@@ -151,7 +165,9 @@ export class DraftsService {
     } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.delete(
-      `/draft-proposals/${params.daoId}/${params.id}/save`,
+      this.useDraftsApiRelatedToDao
+        ? `/draft-proposals/${params.daoId}/${params.id}/save`
+        : `/draft-proposals/${params.id}/save`,
       params,
       {
         queryRequest: {
@@ -169,7 +185,9 @@ export class DraftsService {
     } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.post(
-      `/draft-proposals/${params.daoId}/${params.id}/close`,
+      this.useDraftsApiRelatedToDao
+        ? `/draft-proposals/${params.daoId}/${params.id}/close`
+        : `/draft-proposals/${params.id}/close`,
       params,
       {
         queryRequest: {

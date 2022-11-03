@@ -65,23 +65,32 @@ exports[`AddBountyContent Should render component 1`] = `
                   class="row"
                 >
                   <div
-                    class="iconWrapper"
+                    class="row"
                   >
-                    <svg>
-                      <use
-                        href="/_next/undefined"
+                    <div
+                      class="iconWrapper"
+                    >
+                      <svg>
+                        <use
+                          href="/_next/undefined"
+                        />
+                      </svg>
+                    </div>
+                    <div
+                      class="symbol"
+                    >
+                      <div>
+                        NEAR
+                      </div>
+                      <div
+                        class="sub"
                       />
-                    </svg>
-                  </div>
-                  <div
-                    class="symbol"
-                  >
-                    NEAR
-                  </div>
-                  <div
-                    class="balance"
-                  >
-                    5.1002
+                    </div>
+                    <div
+                      class="balance"
+                    >
+                      5.1002
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,5 +1,6 @@
 @use 'styles/breakpoints';
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .row {
   align-items: center;
@@ -24,6 +25,11 @@
   font-family: var(--font-family-primary);
   font-size: 14px;
   width: 100%;
+}
+
+.sub {
+  @extend %caption3;
+  @include ellipse-text;
 }
 
 .divider {

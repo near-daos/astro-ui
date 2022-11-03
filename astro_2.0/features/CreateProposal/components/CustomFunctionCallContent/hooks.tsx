@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { Icon } from 'components/Icon';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 
 import { Token } from 'types/token';
 
@@ -78,25 +79,33 @@ export function useTokenOptions(fieldName = 'token'): {
     .map(token => ({
       value: token.tokenId || token.symbol,
       label: (
-        <div className={styles.row}>
-          <div className={styles.iconWrapper}>
-            {token.symbol === 'NEAR' ? (
-              <Icon name="tokenNearBig" />
-            ) : (
-              <div
-                style={{
-                  background: 'black',
-                  backgroundImage: `url(${token.icon})`,
-                }}
-                className={styles.icon}
-              />
-            )}
+        <Tooltip
+          className={styles.row}
+          overlay={<span>{token.tokenId || token.symbol}</span>}
+        >
+          <div className={styles.row}>
+            <div className={styles.iconWrapper}>
+              {token.symbol === 'NEAR' ? (
+                <Icon name="tokenNearBig" />
+              ) : (
+                <div
+                  style={{
+                    background: 'black',
+                    backgroundImage: `url(${token.icon})`,
+                  }}
+                  className={styles.icon}
+                />
+              )}
+            </div>
+            <div className={styles.symbol}>
+              <div>{token.symbol}</div>
+              <div className={styles.sub}>{token.tokenId}</div>
+            </div>
+            <div className={styles.balance} data-hidden-value>
+              {token.balance}
+            </div>
           </div>
-          <div className={styles.symbol}>{token.symbol}</div>
-          <div className={styles.balance} data-hidden-value>
-            {token.balance}
-          </div>
-        </div>
+        </Tooltip>
       ),
     }))
     .filter(token => token.value === 'NEAR');

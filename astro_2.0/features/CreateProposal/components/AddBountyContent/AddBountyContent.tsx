@@ -9,6 +9,7 @@ import { Icon } from 'components/Icon';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { useDaoCustomTokens } from 'context/DaoTokensContext';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 
 import { getAmountFieldWidth } from './utils';
 
@@ -23,20 +24,28 @@ export const AddBountyContent: FC = () => {
   const tokenOptions = Object.values(tokens).map(token => ({
     value: token.tokenId || token.symbol,
     label: (
-      <div className={styles.row}>
-        <div className={styles.iconWrapper}>
-          {token.symbol === 'NEAR' ? (
-            <Icon name="tokenNearBig" />
-          ) : (
-            <div
-              style={{ backgroundImage: `url(${token.icon})` }}
-              className={styles.icon}
-            />
-          )}
+      <Tooltip
+        className={styles.row}
+        overlay={<span>{token.tokenId || token.symbol}</span>}
+      >
+        <div className={styles.row}>
+          <div className={styles.iconWrapper}>
+            {token.symbol === 'NEAR' ? (
+              <Icon name="tokenNearBig" />
+            ) : (
+              <div
+                style={{ backgroundImage: `url(${token.icon})` }}
+                className={styles.icon}
+              />
+            )}
+          </div>
+          <div className={styles.symbol}>
+            <div>{token.symbol}</div>
+            <div className={styles.sub}>{token.tokenId}</div>
+          </div>
+          <div className={styles.balance}>{token.balance}</div>
         </div>
-        <div className={styles.symbol}>{token.symbol}</div>
-        <div className={styles.balance}>{token.balance}</div>
-      </div>
+      </Tooltip>
     ),
   }));
 

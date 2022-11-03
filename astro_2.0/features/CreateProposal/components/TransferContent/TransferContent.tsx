@@ -3,6 +3,7 @@ import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { DebouncedInput, Input } from 'components/inputs/Input';
 import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
 import { TokenIcon } from 'astro_2.0/components/TokenIcon';
@@ -35,28 +36,36 @@ export const TransferContent: FC = () => {
   const tokenOptions = Object.values(tokens).map(token => ({
     value: token.tokenId || token.symbol,
     label: (
-      <div className={styles.row}>
-        <TokenIcon
-          symbol={token?.symbol}
-          icon={token?.icon}
-          className={styles.iconWrapper}
-        />
-        <div className={styles.symbol}>{token.symbol}</div>
-        <div className={styles.balance}>
-          <span
-            className={cn({
-              [styles.balanceNear]: token.symbol === 'NEAR',
-            })}
-          >
-            {token.balance}
-          </span>
-          {token.symbol === 'NEAR' && (
-            <span className={styles.balanceUsd}>
-              &#8776;&nbsp;{nearToUsd(token.balance)}&nbsp;USD
+      <Tooltip
+        className={styles.row}
+        overlay={<span>{token.tokenId || token.symbol}</span>}
+      >
+        <div className={styles.row}>
+          <TokenIcon
+            symbol={token?.symbol}
+            icon={token?.icon}
+            className={styles.iconWrapper}
+          />
+          <div className={styles.symbol}>
+            <div>{token.symbol}</div>
+            <div className={styles.sub}>{token.tokenId}</div>
+          </div>
+          <div className={styles.balance}>
+            <span
+              className={cn({
+                [styles.balanceNear]: token.symbol === 'NEAR',
+              })}
+            >
+              {token.balance}
             </span>
-          )}
+            {token.symbol === 'NEAR' && (
+              <span className={styles.balanceUsd}>
+                &#8776;&nbsp;{nearToUsd(token.balance)}&nbsp;USD
+              </span>
+            )}
+          </div>
         </div>
-      </div>
+      </Tooltip>
     ),
   }));
 

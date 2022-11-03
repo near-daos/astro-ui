@@ -1,5 +1,6 @@
 @use 'styles/breakpoints';
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .root {
   display: flex;
@@ -81,6 +82,7 @@
 
 .symbol {
   @include ellipse-text;
+  line-height: 1;
   max-width: 120px;
 }
 
@@ -123,6 +125,11 @@
   .inline:last-of-type {
     margin-top: 24px;
   }
+}
+
+.sub {
+  @extend %caption3;
+  @include ellipse-text;
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
