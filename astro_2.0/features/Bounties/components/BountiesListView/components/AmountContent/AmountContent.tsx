@@ -47,7 +47,7 @@ export const AmountContent: FC<AmountContentProps> = ({
               className={styles.iconWrapper}
             />
             <Tooltip
-              overlay={<span>{tokenData.symbol || 'NEAR'}</span>}
+              overlay={<span>{tokenData.tokenId || ''}</span>}
               className={styles.label}
             >
               <div className={styles.ellipse}>{tokenData.symbol || 'NEAR'}</div>
