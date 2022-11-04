@@ -6,6 +6,8 @@ import { ALL_FEED_URL } from 'constants/routing';
 import { NotificationsService } from 'services/NotificationsService';
 import { getTranslations } from 'utils/getTranslations';
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
+import { getClient } from 'utils/launchdarkly-server-client';
+import { fetcher as getAccountDaos } from 'services/ApiService/hooks/useAccountDaos';
 
 export const getServerSideProps: GetServerSideProps = async ({
   locale = 'en',
@@ -21,9 +23,17 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
+  const client = await getClient();
+  const flags = await client.allFlagsState({
+    key: accountId ?? '',
+  });
+  const useOpenSearchDataApi = flags.getFlagValue('use-open-search-data-api');
+
   const [accountDaosResponse, subscribedDaosResponse] =
     await Promise.allSettled([
-      SputnikHttpService.getAccountDaos(accountId),
+      useOpenSearchDataApi
+        ? getAccountDaos('accountDaos', accountId)
+        : SputnikHttpService.getAccountDaos(accountId),
       SputnikHttpService.getAccountDaoSubscriptions(accountId),
     ]);
 
@@ -34,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       ? subscribedDaosResponse.value
       : [];
 
-  const accountDaosIds = accountDaos.map(item => item.id);
+  const accountDaosIds = accountDaos?.map(item => item.id) ?? [];
 
   const [daosSettings, platformSettings] = await Promise.all([
     NotificationsService.getNotificationsSettings(accountId, accountDaosIds),
@@ -45,14 +55,15 @@ export const getServerSideProps: GetServerSideProps = async ({
     props: {
       ...(await getTranslations(locale)),
       ...(await getDefaultAppVersion()),
-      myDaos: accountDaos.map(item => {
-        return {
-          dao: item,
-          settings:
-            daosSettings.find(daoSetting => daoSetting.daoId === item.id) ??
-            null,
-        };
-      }),
+      myDaos:
+        accountDaos?.map(item => {
+          return {
+            dao: item,
+            settings:
+              daosSettings.find(daoSetting => daoSetting.daoId === item.id) ??
+              null,
+          };
+        }) ?? [],
       subscribedDaos: subscriptions.map(item => {
         return {
           dao: item.dao,

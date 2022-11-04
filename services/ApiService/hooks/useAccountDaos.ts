@@ -33,7 +33,7 @@ export async function fetcher(
   );
 
   return response?.data?.hits?.hits?.map(item => {
-    return mapDaoIndexToDaoFeedItem(item._source as DaoIndex);
+    return mapDaoIndexToDaoFeedItem(item._source as DaoIndex, accountId);
   });
 }
 
