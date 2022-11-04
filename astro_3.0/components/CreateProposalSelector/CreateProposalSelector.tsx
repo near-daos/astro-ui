@@ -17,7 +17,7 @@ import { SputnikHttpService } from 'services/sputnik';
 import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
 import cn from 'classnames';
 import { getDaoAvatar } from 'astro_3.0/features/Sidebar/helpers';
-import { useDaoContext } from 'hooks/useDaoContext';
+import { useDaoContext } from 'services/ApiService/hooks/useDaoContext';
 import {
   DaoSettingsContext,
   useDaoSettingsData,
@@ -38,7 +38,7 @@ export const CreateProposalSelector: FC = () => {
   const [visible, setVisible] = useState(false);
 
   const { useOpenSearchDataApi } = useFlags();
-  const daoContext = useDaoContext(accountId, dao?.id);
+  const daoContext = useDaoContext(dao?.id);
   const { settings, loading, update } = useDaoSettingsData(dao?.id);
   const { tokens } = useDaoCustomTokens(dao?.id);
   const { data } = useAccountDaos();

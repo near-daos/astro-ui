@@ -27,14 +27,14 @@ export async function fetcher(
     getPolicyAffectsProposals('proposals', daoId),
   ]);
 
-  return [dao, policyAffectsProposals, []];
+  return [dao, policyAffectsProposals, dao?.delegations ?? []];
 }
 
-export function useDaoContext(): DaoContext | undefined {
+export function useDaoContext(daoId?: string): DaoContext | undefined {
   const { accountId } = useWalletContext();
-  const { dao } = useDao();
+  const { dao } = useDao(daoId);
   const { data: policyAffectsProposals } = usePolicyAffectsProposals();
-  const delegations = [] as DaoDelegation[];
+  const delegations = dao?.delegations as DaoDelegation[];
 
   if (!dao) {
     return undefined;

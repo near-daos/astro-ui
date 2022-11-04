@@ -29,7 +29,7 @@ export async function fetcher(
   return rawData ? mapDaoIndexToDao(rawData as DaoIndex) : undefined;
 }
 
-export function useDao(): {
+export function useDao(daoId?: string): {
   dao: DAO | undefined;
   isLoading: boolean;
   isError: boolean;
@@ -38,9 +38,9 @@ export function useDao(): {
   const router = useRouter();
   const { query } = router;
 
-  const daoId = query.dao ?? '';
+  const dao = daoId ?? query.dao ?? '';
 
-  const { data, error, mutate } = useSWR(['dao', daoId], fetcher, {
+  const { data, error, mutate } = useSWR(['dao', dao], fetcher, {
     revalidateOnFocus: false,
     // revalidateOnMount: false,
     dedupingInterval: 5000,
