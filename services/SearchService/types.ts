@@ -38,6 +38,7 @@ export enum SearchResponseIndex {
   BOUNTY = 'bounty',
   NFT = 'nft',
   TOKEN = 'token',
+  DRAFT_PROPOSAL_COMMENT = 'draftproposalcomment',
 }
 
 export interface DaoIndex {
@@ -182,7 +183,8 @@ export type OpenSearchResponse = {
         | BountyIndex
         | TokenIndex
         | NftIndex
-        | DraftProposalIndex;
+        | DraftProposalIndex
+        | DraftCommentIndex;
     }[];
     max_score: null;
     total: {
@@ -208,7 +210,8 @@ export type SearchResult = {
     | SearchResultsData['drafts']
     | SearchResultsData['comments']
     | SearchResultsData['bounties']
-    | SearchResultsData['nfts'];
+    | SearchResultsData['nfts']
+    | SearchResultsData['draftProposalComments'];
 };
 
 export interface OpenSearchQuery {
@@ -268,3 +271,22 @@ export interface DraftProposalIndex {
   daoId: string;
   accounts: string;
 }
+
+export type DraftCommentIndex = {
+  author: string;
+  isArchived: boolean;
+  contextId: string;
+  message: string;
+  createTimestamp: number;
+  likeAccounts: string[];
+  contextType: 'DraftProposal';
+  dislikeAccounts: string[];
+  id: string;
+  accounts: string;
+  description: string;
+  index: string;
+  daoId: string;
+  replyTo: string | undefined;
+  replies: DraftCommentIndex[];
+  processingTimeStamp: number | null;
+};

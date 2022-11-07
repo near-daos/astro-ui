@@ -87,6 +87,7 @@ export class SearchService {
           members: [],
           bounties: [],
           nfts: [],
+          draftProposalComments: [],
           [resultKey]: res.data,
           totals: {
             daos: 0,
@@ -94,6 +95,7 @@ export class SearchService {
             drafts: 0,
             comments: 0,
             nfts: 0,
+            draftProposalComments: 0,
             [resultKey]: res.total,
           },
           opts: {
@@ -168,12 +170,14 @@ export class SearchService {
         bounties: [],
         members: [],
         nfts: [],
+        draftProposalComments: [],
         totals: {
           daos: daosRes.total,
           proposals: proposalsRes.total,
           drafts: draftsRes.total,
           comments: commentsRes.total,
           nfts: 0,
+          draftProposalComments: 0,
         },
         opts: {
           query: params.query,

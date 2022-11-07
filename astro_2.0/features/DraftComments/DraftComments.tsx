@@ -3,7 +3,6 @@ import cn from 'classnames';
 
 import { Comments } from 'astro_2.0/features/Comments';
 import { NewComment } from 'astro_2.0/features/DraftComments/components/NewComment';
-import { Loader } from 'components/loader';
 
 import { useDraftComments } from 'astro_2.0/features/Comments/hooks';
 
@@ -28,7 +27,6 @@ export const DraftComments: FC<DraftCommentsProps> = ({ className, dao }) => {
     deleteComment,
     likeComment,
     dislikeComment,
-    loading,
   } = useDraftComments();
   const { accountId } = useWalletContext();
   const isCouncil = isCouncilUser(dao, accountId);
@@ -36,7 +34,6 @@ export const DraftComments: FC<DraftCommentsProps> = ({ className, dao }) => {
   return (
     <div className={cn(styles.root, className)}>
       <NewComment onSubmit={addComment} />
-      {loading && <Loader className={cn(styles.loader)} title="Updating..." />}
       <Comments
         data={data}
         countComments={countComments}

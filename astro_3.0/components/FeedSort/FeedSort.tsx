@@ -18,11 +18,11 @@ export const FeedSort: FC = () => {
     return [
       {
         label: t('allDAOsFilter.newest'),
-        value: 'createdAt,DESC',
+        value: 'createTimestamp,DESC',
       },
       {
         label: t('allDAOsFilter.oldest'),
-        value: 'createdAt,ASC',
+        value: 'createTimestamp,ASC',
       },
     ];
   }, [t]);

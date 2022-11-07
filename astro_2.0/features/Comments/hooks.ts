@@ -8,6 +8,10 @@ import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { configService } from 'services/ConfigService';
 import io, { Socket as TSocket } from 'socket.io-client';
+import { fetcher as getDraftProposalComments } from 'services/ApiService/hooks/useDraftComments';
+import { useFlags } from 'launchdarkly-react-client-sdk';
+import { DraftCommentIndex } from 'services/SearchService/types';
+import { mapDraftCommentIndexToDraftComment } from 'services/SearchService/mappers/draftComment';
 
 type Socket = typeof TSocket;
 
@@ -53,6 +57,7 @@ export function useDraftComments(): {
   const daoId = dao as string;
   const contextType = 'DraftProposal';
 
+  const { useOpenSearchDataApi } = useFlags();
   const { draftsService, setAmountComments } = useDraftsContext();
   const { accountId, pkAndSignature } = useWalletContext();
 
@@ -65,13 +70,23 @@ export function useDraftComments(): {
   });
 
   const [{ loading }, getAllComments] = useAsyncFn(async () => {
+    if (useOpenSearchDataApi === undefined) {
+      return;
+    }
+
     try {
-      const data = await draftsService.getDraftComments({
-        contextId,
-        contextType,
-        offset: 0,
-        limit: 1000,
-      });
+      const data = useOpenSearchDataApi
+        ? await getDraftProposalComments(
+            'draftProposalComment',
+            daoId,
+            contextId
+          )
+        : await draftsService.getDraftComments({
+            contextId,
+            contextType,
+            offset: 0,
+            limit: 1000,
+          });
 
       setValue({
         data,
@@ -84,7 +99,7 @@ export function useDraftComments(): {
         description: e?.message,
       });
     }
-  }, [contextId]);
+  }, [contextId, useOpenSearchDataApi]);
 
   useMount(() => getAllComments());
 
@@ -268,49 +283,84 @@ export function useDraftComments(): {
       });
 
       if (socket) {
-        socket.on('draft-comment', (comment: DraftComment) => {
-          if (isMounted()) {
-            setValue(prev => {
-              return {
-                data: uniqBy([comment, ...prev.data], item => item.id),
-                countComments: prev.countComments + 1,
-              };
-            });
-          }
-        });
-        socket.on('draft-comment-updated', (comment: DraftComment) => {
-          if (isMounted()) {
-            setValue(prev => {
-              const newData = prev.data.map(item => {
-                if (item.id !== comment.id) {
-                  return item;
-                }
+        socket.on(
+          'draft-comment',
+          (comment: DraftComment | DraftCommentIndex) => {
+            if (isMounted()) {
+              setValue(prev => {
+                const newValue = (
+                  useOpenSearchDataApi
+                    ? mapDraftCommentIndexToDraftComment(
+                        comment as DraftCommentIndex
+                      )
+                    : comment
+                ) as DraftComment;
 
-                return comment;
+                return {
+                  data: uniqBy([newValue, ...prev.data], item => item.id),
+                  countComments: prev.countComments + 1,
+                };
               });
-
-              return {
-                data: newData,
-                countComments: newData.length,
-              };
-            });
+            }
           }
-        });
-        socket.on('draft-comment-removed', (comment: DraftComment) => {
-          if (isMounted()) {
-            setValue(prev => {
-              const newData = prev.data.filter(item => item.id !== comment.id);
+        );
+        socket.on(
+          'draft-comment-updated',
+          (comment: DraftComment | DraftCommentIndex) => {
+            if (isMounted()) {
+              setValue(prev => {
+                const newValue = (
+                  useOpenSearchDataApi
+                    ? mapDraftCommentIndexToDraftComment(
+                        comment as DraftCommentIndex
+                      )
+                    : comment
+                ) as DraftComment;
 
-              return {
-                data: newData,
-                countComments: newData.length,
-              };
-            });
+                const newData = prev.data.map(item => {
+                  if (item.id !== newValue.id) {
+                    return item;
+                  }
+
+                  return newValue;
+                });
+
+                return {
+                  data: newData,
+                  countComments: newData.length,
+                };
+              });
+            }
           }
-        });
+        );
+        socket.on(
+          'draft-comment-removed',
+          (comment: DraftComment | DraftCommentIndex) => {
+            if (isMounted()) {
+              const newValue = (
+                useOpenSearchDataApi
+                  ? mapDraftCommentIndexToDraftComment(
+                      comment as DraftCommentIndex
+                    )
+                  : comment
+              ) as DraftComment;
+
+              setValue(prev => {
+                const newData = prev.data.filter(
+                  item => item.id !== newValue.id
+                );
+
+                return {
+                  data: newData,
+                  countComments: newData.length,
+                };
+              });
+            }
+          }
+        );
       }
     }
-  }, [accountId, isMounted, pkAndSignature]);
+  }, [accountId, isMounted, pkAndSignature, useOpenSearchDataApi]);
 
   const preparedData = prepareData(value.data);
 
