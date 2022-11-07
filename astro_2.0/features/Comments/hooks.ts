@@ -48,8 +48,9 @@ export function useDraftComments(): {
 } {
   const isMounted = useMountedState();
   const router = useRouter();
-  const { draft } = router.query;
+  const { draft, dao } = router.query;
   const contextId = draft as string;
+  const daoId = dao as string;
   const contextType = 'DraftProposal';
 
   const { draftsService, setAmountComments } = useDraftsContext();
@@ -98,6 +99,7 @@ export function useDraftComments(): {
       try {
         await draftsService.createDraftComment({
           contextId,
+          daoId,
           contextType,
           message: msg,
           replyTo,
@@ -113,7 +115,7 @@ export function useDraftComments(): {
         });
       }
     },
-    [accountId, contextId, draftsService, pkAndSignature]
+    [accountId, contextId, daoId, draftsService, pkAndSignature]
   );
 
   const editComment = useCallback(
@@ -127,6 +129,8 @@ export function useDraftComments(): {
       try {
         await draftsService.editDraftComment({
           id,
+          daoId,
+          draftId: contextId,
           message: msg,
           accountId,
           publicKey,
@@ -142,7 +146,7 @@ export function useDraftComments(): {
         });
       }
     },
-    [getAllComments, accountId, draftsService, pkAndSignature]
+    [pkAndSignature, draftsService, daoId, contextId, accountId, getAllComments]
   );
 
   const likeComment = useCallback(
@@ -155,6 +159,8 @@ export function useDraftComments(): {
 
       const params = {
         id,
+        daoId,
+        draftId: contextId,
         accountId,
         publicKey,
         signature,
@@ -175,7 +181,7 @@ export function useDraftComments(): {
         });
       }
     },
-    [accountId, draftsService, pkAndSignature]
+    [accountId, contextId, daoId, draftsService, pkAndSignature]
   );
 
   const dislikeComment = useCallback(
@@ -188,6 +194,8 @@ export function useDraftComments(): {
 
       const params = {
         id,
+        daoId,
+        draftId: contextId,
         accountId,
         publicKey,
         signature,
@@ -208,7 +216,7 @@ export function useDraftComments(): {
         });
       }
     },
-    [accountId, draftsService, pkAndSignature]
+    [accountId, contextId, daoId, draftsService, pkAndSignature]
   );
 
   const deleteComment = useCallback(
@@ -222,6 +230,8 @@ export function useDraftComments(): {
       try {
         await draftsService.deleteDraftComment({
           id,
+          daoId,
+          draftId: contextId,
           accountId,
           publicKey,
           signature,
@@ -234,7 +244,7 @@ export function useDraftComments(): {
         });
       }
     },
-    [accountId, draftsService, pkAndSignature]
+    [accountId, contextId, daoId, draftsService, pkAndSignature]
   );
 
   useEffect(() => {

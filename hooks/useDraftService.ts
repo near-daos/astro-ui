@@ -9,13 +9,16 @@ export const useDraftService = (): DraftsService | undefined => {
     DraftsService | undefined
   >();
 
-  const { useDraftsApiRelatedToDao } = useFlags();
+  const flags = useFlags();
 
   useEffect(() => {
     setTimeout(() => {
-      if (useDraftsApiRelatedToDao === undefined) {
+      if (flags === undefined) {
         return;
       }
+
+      const { useDraftsApiRelatedToDao, useDraftCommentsApiRelatedToDao } =
+        flags;
 
       const httpService = new HttpService({
         baseURL: `${
@@ -26,10 +29,14 @@ export const useDraftService = (): DraftsService | undefined => {
       });
 
       setDraftsService(
-        new DraftsService(httpService, useDraftsApiRelatedToDao)
+        new DraftsService(
+          httpService,
+          useDraftsApiRelatedToDao,
+          useDraftCommentsApiRelatedToDao
+        )
       );
     }, 500);
-  }, [useDraftsApiRelatedToDao]);
+  }, [flags]);
 
   return draftsService;
 };
