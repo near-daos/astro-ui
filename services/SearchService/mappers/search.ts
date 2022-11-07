@@ -28,7 +28,10 @@ import { NftToken } from 'types/token';
 import { mapNftIndexToNftToken } from 'services/SearchService/mappers/nft';
 import { mapBountyIndexToBountyContext } from './bounty';
 
-export function mapDaoIndexToDaoFeedItem(daoIndex: DaoIndex): DaoFeedItem {
+export function mapDaoIndexToDaoFeedItem(
+  daoIndex: DaoIndex,
+  accountId?: string
+): DaoFeedItem {
   const config = get(daoIndex, 'config');
 
   let meta;
@@ -67,7 +70,7 @@ export function mapDaoIndexToDaoFeedItem(daoIndex: DaoIndex): DaoFeedItem {
     },
 
     council: daoIndex.council ?? null,
-    isCouncil: false,
+    isCouncil: accountId ? daoIndex.council?.includes(accountId) : false,
   };
 }
 
