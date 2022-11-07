@@ -30,7 +30,7 @@ export function useDelegatePageData(dao: DAO): {
   handleReset: () => void;
   data: DaoDelegation[];
 } {
-  const { governanceToken } = useFlags();
+  const { governanceToken, useOpenSearchDataApi } = useFlags();
   const router = useRouter();
   const { nearService, accountId } = useWalletContext();
   const { settings } = useDaoSettings();
@@ -147,7 +147,9 @@ export function useDelegatePageData(dao: DAO): {
     }, [dao, nearService, accountId, ts, tokenDetails, settings]);
 
   const [, fetchData] = useAsyncFn(async () => {
-    const res = await SputnikHttpService.getDelegations(daoId, governanceToken);
+    const res = useOpenSearchDataApi
+      ? dao.delegations ?? []
+      : await SputnikHttpService.getDelegations(daoId, governanceToken);
 
     setData(res);
   }, [daoId, ts, governanceToken]);

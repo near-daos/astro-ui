@@ -12,7 +12,6 @@ export const AnimatedLayout: FC<Props> = ({ children, className }) => {
     <AnimatePresence>
       {children && (
         <motion.div
-          layout
           className={cn(className)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

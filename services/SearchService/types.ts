@@ -9,7 +9,7 @@ import {
 import { DraftProposal, DraftProposalFeedItem } from 'types/draftProposal';
 import { SearchResultsData } from 'types/search';
 import { DaoPolicy } from 'services/sputnik/types/policy';
-import { DAO as TDAO, DaoVersion } from 'types/dao';
+import { DAO as TDAO, DaoDelegation, DaoVersion } from 'types/dao';
 
 export type BaseParams = {
   id?: string;
@@ -51,7 +51,7 @@ export interface DaoIndex {
   createTimestamp: string;
   createdBy: string;
   daoVersionHash: string;
-  delegations: unknown[];
+  delegations?: DaoDelegation[];
   description: string;
   id: string;
   lastBountyId: number;
