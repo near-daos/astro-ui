@@ -1,6 +1,8 @@
 import {
   BountyIndex,
   DaoIndex,
+  DraftCommentIndex,
+  DraftProposalIndex,
   NftIndex,
   OpenSearchResponse,
   ProposalIndex,
@@ -26,6 +28,8 @@ import { BountyContext } from 'types/bounties';
 import { getParsedVotes } from 'services/SearchService/mappers/helpers';
 import { NftToken } from 'types/token';
 import { mapNftIndexToNftToken } from 'services/SearchService/mappers/nft';
+import { mapDraftCommentIndexToDraftComment } from 'services/SearchService/mappers/draftComment';
+import { mapDraftProposalIndexToDraftProposal } from 'services/SearchService/mappers/draft';
 import { mapBountyIndexToBountyContext } from './bounty';
 
 export function mapDaoIndexToDaoFeedItem(
@@ -177,7 +181,22 @@ export function mapOpenSearchResponseToSearchResult(
         data: data.hits.hits
           .filter(item => item._index === index)
           .map(item => {
-            return item._source as DraftProposalFeedItem;
+            return mapDraftProposalIndexToDraftProposal(
+              item._source as DraftProposalIndex
+            ) as DraftProposalFeedItem;
+          }),
+      };
+    }
+
+    case SearchResponseIndex.DRAFT_PROPOSAL_COMMENT: {
+      return {
+        total: data.hits.total.value,
+        data: data.hits.hits
+          .filter(item => item._index === index)
+          .map(item => {
+            return mapDraftCommentIndexToDraftComment(
+              item._source as DraftCommentIndex
+            );
           }),
       };
     }

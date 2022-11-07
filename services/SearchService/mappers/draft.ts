@@ -21,7 +21,9 @@ export function mapDraftProposalIndexToDraftProposal(
     replies: index.replies,
     saves: index.saveAccounts.length,
     createdAt: new Date(index.createTimestamp).toISOString(),
-    updatedAt: new Date(index.updateTimestamp).toISOString(),
+    updatedAt: index.updateTimestamp
+      ? new Date(index.updateTimestamp).toISOString()
+      : null,
     isRead: accountId ? index.viewAccounts.includes(accountId) : false,
     isSaved: accountId ? index.saveAccounts.includes(accountId) : false,
     state: index.state,

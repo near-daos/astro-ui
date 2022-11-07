@@ -27,7 +27,7 @@ export async function fetcher(
   view: string,
   search: string
 ): Promise<PaginationResponse<DraftProposalFeedItem[]>> {
-  // const sortOptions = sort.split(',');
+  const sortOptions = sort.split(',');
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
     : appConfig.SEARCH_API_URL;
@@ -46,13 +46,13 @@ export async function fetcher(
         accountId
       ),
       // todo - waiting until this will be implemented in lambda
-      // sort: [
-      //   {
-      //     [sortOptions[0]]: {
-      //       order: sortOptions[1].toLowerCase(),
-      //     },
-      //   },
-      // ],
+      sort: [
+        {
+          [sortOptions[0]]: {
+            order: sortOptions[1].toLowerCase(),
+          },
+        },
+      ],
     }
   );
 
@@ -75,7 +75,6 @@ export function useDraftProposalsInfinite(): SWRInfiniteResponse<{
   const router = useRouter();
   const { query } = router;
 
-  // const { accountId } = useWalletContext();
   const accountId = '';
 
   const limit = LIST_LIMIT_DEFAULT;
