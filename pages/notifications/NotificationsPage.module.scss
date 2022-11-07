@@ -15,7 +15,7 @@
   justify-content: space-between;
   padding: 24px 0;
   position: sticky;
-  top: var(--header-height);
+  top: var(--app-header-height);
   z-index: 3;
 
   @include tablet-landscape {

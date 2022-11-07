@@ -2,10 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import get from 'lodash/get';
 import isNil from 'lodash/isNil';
 import omitBy from 'lodash/omitBy';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 import { NotificationsService } from 'services/NotificationsService';
+import { useAccountDaos } from 'services/ApiService/hooks/useAccountDaos';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { PaginationResponse } from 'types/api';
+import { DaoFeedItem } from 'types/dao';
 import { Notification, NotificationDTO } from 'types/notification';
 import {
   useAsyncFn,
@@ -135,6 +138,7 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
   handleUpdateAll: (action: 'READ' | 'ARCHIVE') => void;
 } {
   const router = useRouter();
+  const { useOpenSearchDataApi } = useFlags();
   const { socket } = useSocket();
   const { accountId, pkAndSignature } = useWalletContext();
   const [notifications, setNotifications] = useState<PaginationResponse<
@@ -143,6 +147,7 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
   const [accountDaosIds, setAccountDaosIds] = useState<string[]>([]);
   const [subscribedDaosIds, setSubscribedDaosIds] = useState<string[]>([]);
   const [daoIdsLoaded, setDaoIdsLoaded] = useState<boolean>(false);
+  const { data: accountDaos } = useAccountDaos();
 
   const isMounted = useMountedState();
 
@@ -151,17 +156,24 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
     const showYourDaos = router.query.notyType === 'yourDaos';
 
     if (!daoIdsLoaded) {
-      if (accountId) {
+      if (accountId && useOpenSearchDataApi !== undefined) {
         const [accountDaosResponse, subscribedDaosResponse] =
           await Promise.allSettled([
-            SputnikHttpService.getAccountDaos(accountId),
+            useOpenSearchDataApi
+              ? Promise.resolve([] as DaoFeedItem[])
+              : SputnikHttpService.getAccountDaos(accountId),
             SputnikHttpService.getAccountDaoSubscriptions(accountId),
           ]);
 
-        const tmpAccountDaoIds =
-          accountDaosResponse.status === 'fulfilled'
-            ? accountDaosResponse.value.map(item => item.id)
-            : [];
+        let tmpAccountDaoIds: string[];
+
+        if (useOpenSearchDataApi) {
+          tmpAccountDaoIds = accountDaos?.map(item => item.id) ?? [];
+        } else if (accountDaosResponse.status === 'fulfilled') {
+          tmpAccountDaoIds = accountDaosResponse.value.map(item => item.id);
+        } else {
+          tmpAccountDaoIds = [];
+        }
 
         const tmpSubscribedDaoIds =
           subscribedDaosResponse.status === 'fulfilled'
