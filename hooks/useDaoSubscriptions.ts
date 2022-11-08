@@ -4,6 +4,7 @@ import { SputnikHttpService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DAO, DaoSubscription } from 'types/dao';
 import { useWalletContext } from 'context/WalletContext';
+import { useRouter } from 'next/router';
 
 function normalizeSubscriptions(
   data: DaoSubscription[]
@@ -27,6 +28,8 @@ export function useDaoSubscriptions(): {
   handleUnfollow: (id: string) => void;
   isLoading: boolean;
 } {
+  const { query } = useRouter();
+  const dao = query.dao as string;
   const { accountId, nearService, pkAndSignature } = useWalletContext();
   const [subscriptions, setSubscriptions] = useState<Record<
     string,
@@ -84,16 +87,21 @@ export function useDaoSubscriptions(): {
       const { publicKey, signature } = pkAndSignature;
 
       if (publicKey && signature && accountId) {
-        await SputnikHttpService.deleteAccountSubscription(subscriptionId, {
+        await SputnikHttpService.deleteAccountSubscription(
+          dao,
           accountId,
-          publicKey,
-          signature,
-        });
+          subscriptionId,
+          {
+            accountId,
+            publicKey,
+            signature,
+          }
+        );
 
         await getSubscriptions();
       }
     },
-    [accountId, getSubscriptions, nearService, pkAndSignature]
+    [accountId, getSubscriptions, nearService, pkAndSignature, dao]
   );
 
   useEffect(() => {
