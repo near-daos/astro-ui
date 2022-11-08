@@ -1,5 +1,6 @@
 import { DraftProposalIndex } from 'services/SearchService/types';
 import { DraftProposal } from 'types/draftProposal';
+import { ProposalVariant } from 'types/proposal';
 
 export function mapDraftProposalIndexToDraftProposal(
   index: DraftProposalIndex | undefined,
@@ -11,21 +12,24 @@ export function mapDraftProposalIndexToDraftProposal(
 
   return {
     ...index,
-    proposalVariant: index.kind.proposalVariant,
+    proposalVariant:
+      index.kind?.proposalVariant ?? ProposalVariant.ProposeDefault,
     kind: index.kind,
     type: index.type,
     title: index.title,
     description: index.description,
     text: '',
-    views: index.viewAccounts.length,
+    views: index.viewAccounts?.length ?? 0,
     replies: index.replies,
-    saves: index.saveAccounts.length,
-    createdAt: new Date(index.createTimestamp).toISOString(),
+    saves: index.saveAccounts?.length ?? 0,
+    createdAt: index.createTimestamp
+      ? new Date(index.createTimestamp).toISOString()
+      : null,
     updatedAt: index.updateTimestamp
       ? new Date(index.updateTimestamp).toISOString()
       : null,
-    isRead: accountId ? index.viewAccounts.includes(accountId) : false,
-    isSaved: accountId ? index.saveAccounts.includes(accountId) : false,
+    isRead: accountId ? index.viewAccounts?.includes(accountId) : false,
+    isSaved: accountId ? index.saveAccounts?.includes(accountId) : false,
     state: index.state,
     history: index.history
       ? index.history
