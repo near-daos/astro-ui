@@ -86,7 +86,9 @@ export function mapProposalIndexToProposalFeedItem(
 
   const config = get(item.dao, 'config');
   const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
-  const votePeriodEnd = new Date(toMillis(item.votePeriodEnd)).toISOString();
+  const votePeriodEnd = item.votePeriodEnd
+    ? new Date(toMillis(item.votePeriodEnd)).toISOString()
+    : '';
 
   const { policy } = item.dao;
 
@@ -103,13 +105,15 @@ export function mapProposalIndexToProposalFeedItem(
     kind: item.kind,
     votePeriodEnd,
     votePeriodEndDate: votePeriodEnd,
-    voteStatus: item.voteStatus,
+    voteStatus: item.voteStatus ?? null,
     isFinalized: item.status === 'Expired',
     txHash: item.transactionHash ?? '',
-    createdAt: new Date(toMillis(item.createTimestamp)).toISOString(),
+    createdAt: item.createTimestamp
+      ? new Date(toMillis(item.createTimestamp)).toISOString()
+      : '',
     dao: {
       id: item.dao?.id,
-      name: item.dao?.config.name ?? '',
+      name: item.dao?.config?.name ?? '',
       logo: meta?.flag
         ? getAwsImageUrl(meta.flag)
         : '/flags/defaultDaoFlag.png',
@@ -120,7 +124,7 @@ export function mapProposalIndexToProposalFeedItem(
       policy,
     },
     daoDetails: {
-      name: item.dao?.config.name ?? '',
+      name: item.dao?.config?.name ?? '',
       displayName: meta?.displayName || '',
       logo: meta?.flag
         ? getAwsImageUrl(meta.flag)
@@ -129,12 +133,7 @@ export function mapProposalIndexToProposalFeedItem(
     proposalVariant: proposalVariant as ProposalVariant,
     updatedAt: '',
     actions: item.actions ?? [],
-    permissions: {
-      canApprove: false,
-      canReject: false,
-      canDelete: false,
-      isCouncil: false,
-    },
+    permissions: null,
   };
 }
 
