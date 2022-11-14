@@ -71,6 +71,7 @@ export interface DaoIndex {
   transactionHash: string;
   policy: DaoPolicy;
   daoVersion: DaoVersion;
+  tokens: TokenIndex[];
 }
 
 export interface ProposalIndex {

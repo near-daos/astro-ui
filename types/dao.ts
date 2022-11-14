@@ -1,5 +1,6 @@
 import { Token } from 'components/cards/member-card/types';
 import { PolicyType } from 'types/policy';
+import { Token as DaoToken } from 'types/token';
 
 export type DaoVotePolicy = {
   weightKind: string;
@@ -67,6 +68,7 @@ export type DAO = {
   lastProposalId: number;
   stakingContract?: string;
   delegations?: DaoDelegation[];
+  tokens?: DaoToken[];
 } & DaoProperties;
 
 export type DAOPreview = {
