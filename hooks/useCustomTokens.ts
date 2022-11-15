@@ -7,6 +7,7 @@ import { Tokens } from 'context/types';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { useTokens } from 'services/ApiService/hooks/useTokens';
 import { useFlags } from 'launchdarkly-react-client-sdk';
+import { useDao } from 'services/ApiService/hooks/useDao';
 
 function normalizeTokens(tkns: Token[]): Tokens {
   const hasNear = tkns.find(item => !item.tokenId);
@@ -45,7 +46,7 @@ export function useDaoCustomTokens(daoId?: string): {
   const router = useRouter();
   const [tokensData, setTokensData] = useState<Token[]>();
   const { useOpenSearchDataApi } = useFlags();
-  const { data } = useTokens(daoId ?? (router.query.dao as string));
+  const { dao } = useDao();
 
   useEffect(() => {
     if (
@@ -70,10 +71,10 @@ export function useDaoCustomTokens(daoId?: string): {
   }, [daoId, router.query.dao, useOpenSearchDataApi]);
 
   const tokens = useMemo(() => {
-    const values = tokensData || data;
+    const values = tokensData || dao?.tokens;
 
     return values ? normalizeTokens(values) : {};
-  }, [data, tokensData]);
+  }, [dao?.tokens, tokensData]);
 
   return { tokens };
 }

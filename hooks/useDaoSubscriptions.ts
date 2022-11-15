@@ -5,6 +5,7 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DAO, DaoSubscription } from 'types/dao';
 import { useWalletContext } from 'context/WalletContext';
 import { useRouter } from 'next/router';
+import { useAccountDaos } from 'services/ApiService/hooks/useAccountDaos';
 
 function normalizeSubscriptions(
   data: DaoSubscription[]
@@ -35,6 +36,7 @@ export function useDaoSubscriptions(): {
     string,
     { subscriptionId: string; dao: DAO }
   > | null>(null);
+  const { mutate: refreshAccountDaos } = useAccountDaos(true);
 
   const getSubscriptions = useCallback(async () => {
     try {
@@ -43,6 +45,7 @@ export function useDaoSubscriptions(): {
           accountId
         );
 
+        await refreshAccountDaos();
         setSubscriptions(normalizeSubscriptions(data));
       }
     } catch (err) {
@@ -52,7 +55,7 @@ export function useDaoSubscriptions(): {
         description: err.message,
       });
     }
-  }, [accountId]);
+  }, [accountId, refreshAccountDaos]);
 
   const [{ loading }, handleFollow] = useAsyncFn(
     async daoId => {

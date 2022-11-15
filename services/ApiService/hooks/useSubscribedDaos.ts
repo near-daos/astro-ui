@@ -7,13 +7,11 @@ import { DaoFeedItem } from 'types/dao';
 import { useWalletContext } from 'context/WalletContext';
 import { mapDaoIndexToDaoFeedItem } from 'services/SearchService/mappers/search';
 import { useFlags } from 'launchdarkly-react-client-sdk';
-import { buildAccountDaosQuery } from 'services/SearchService/builders/daos';
 
 /* eslint-disable no-underscore-dangle */
 export async function fetcher(
   url: string,
-  accountId: string,
-  includeSubscribed?: boolean
+  accountId: string
 ): Promise<DaoFeedItem[] | undefined> {
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
@@ -22,7 +20,17 @@ export async function fetcher(
   const response = await axios.post<unknown, { data: OpenSearchResponse }>(
     `${baseUrl}/dao/_search?size=200&from=0`,
     {
-      query: buildAccountDaosQuery(accountId, includeSubscribed),
+      query: {
+        bool: {
+          should: [
+            {
+              terms: {
+                followers: [accountId],
+              },
+            },
+          ],
+        },
+      },
       sort: [
         {
           createTimestamp: {
@@ -38,7 +46,7 @@ export async function fetcher(
   });
 }
 
-export function useAccountDaos(includeSubscribed?: boolean): {
+export function useSubscribedDaos(): {
   data: DaoFeedItem[] | undefined;
   isLoading: boolean;
   isError: boolean;
@@ -47,21 +55,19 @@ export function useAccountDaos(includeSubscribed?: boolean): {
   const { useOpenSearchDataApi } = useFlags();
   const { accountId } = useWalletContext();
 
-  const { data, error, mutate, isValidating } = useSWR(
-    useOpenSearchDataApi
-      ? ['accountDaos', accountId, includeSubscribed ?? false]
-      : undefined,
+  const { data, error, mutate } = useSWR(
+    useOpenSearchDataApi ? ['subscribedDaos', accountId] : undefined,
     fetcher,
     {
       revalidateOnFocus: false,
-      dedupingInterval: 15000,
+      dedupingInterval: 5000,
     }
   );
 
   return {
     data,
     mutate,
-    isLoading: !data && isValidating,
+    isLoading: !data,
     isError: !!error,
   };
 }

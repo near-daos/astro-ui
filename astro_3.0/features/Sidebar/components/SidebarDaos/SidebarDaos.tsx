@@ -20,7 +20,7 @@ export const SidebarDaos: FC = () => {
   const router = useRouter();
   const { accountId } = useWalletContext();
   const { useOpenSearchDataApi } = useFlags();
-  const { data } = useAccountDaos();
+  const { data } = useAccountDaos(true);
 
   const { value } = useAsync(async () => {
     if (

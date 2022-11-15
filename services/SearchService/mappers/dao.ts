@@ -8,6 +8,7 @@ import { toMillis } from 'utils/format';
 import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
 import { fromBase64ToMetadata } from 'services/sputnik/mappers';
 import { getParsedPolicy } from 'services/SearchService/mappers/helpers';
+import { mapTokenIndexToToken } from 'services/SearchService/mappers/tokens';
 
 export function mapDaoIndexToDao(daoIndex: DaoIndex): DAO {
   const config = get(daoIndex, 'config');
@@ -67,6 +68,8 @@ export function mapDaoIndexToDao(daoIndex: DaoIndex): DAO {
     description: config?.purpose ?? '',
     displayName: meta?.displayName ?? '',
 
+    tokens: daoIndex.tokens.map(mapTokenIndexToToken),
+
     links: meta?.links || [],
     logo: meta?.flag ? getAwsImageUrl(meta?.flag) : '/flags/defaultDaoFlag.png',
     flagCover: getAwsImageUrl(meta?.flagCover),
@@ -79,6 +82,6 @@ export function mapDaoIndexToDao(daoIndex: DaoIndex): DAO {
     funds: '',
     lastProposalId: daoIndex.lastProposalId,
     totalProposals: daoIndex.totalProposalCount ?? 0,
-    delegations: daoIndex.delegations,
+    delegations: daoIndex.delegations ?? [],
   };
 }

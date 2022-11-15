@@ -47,6 +47,7 @@ export function useDao(daoId?: string): {
     fetcher,
     {
       revalidateOnFocus: false,
+      // revalidateOnMount: false,
       dedupingInterval: 5000,
     }
   );
