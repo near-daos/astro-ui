@@ -288,12 +288,8 @@ export function useDraftComments(): {
           (comment: DraftComment | DraftCommentIndex) => {
             if (isMounted()) {
               setValue(prev => {
-                const newValue = (
-                  useOpenSearchDataApi
-                    ? mapDraftCommentIndexToDraftComment(
-                        comment as DraftCommentIndex
-                      )
-                    : comment
+                const newValue = mapDraftCommentIndexToDraftComment(
+                  comment as DraftCommentIndex
                 ) as DraftComment;
 
                 return {
@@ -309,12 +305,8 @@ export function useDraftComments(): {
           (comment: DraftComment | DraftCommentIndex) => {
             if (isMounted()) {
               setValue(prev => {
-                const newValue = (
-                  useOpenSearchDataApi
-                    ? mapDraftCommentIndexToDraftComment(
-                        comment as DraftCommentIndex
-                      )
-                    : comment
+                const newValue = mapDraftCommentIndexToDraftComment(
+                  comment as DraftCommentIndex
                 ) as DraftComment;
 
                 const newData = prev.data.map(item => {
@@ -337,12 +329,8 @@ export function useDraftComments(): {
           'draft-comment-removed',
           (comment: DraftComment | DraftCommentIndex) => {
             if (isMounted()) {
-              const newValue = (
-                useOpenSearchDataApi
-                  ? mapDraftCommentIndexToDraftComment(
-                      comment as DraftCommentIndex
-                    )
-                  : comment
+              const newValue = mapDraftCommentIndexToDraftComment(
+                comment as DraftCommentIndex
               ) as DraftComment;
 
               setValue(prev => {
