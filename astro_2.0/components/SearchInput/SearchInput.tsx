@@ -236,7 +236,7 @@ export const SearchInput: FC<SearchInputProps> = ({
   }
 
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, className)}>
       {label && <div className={styles.label}>{label}</div>}
       <div
         tabIndex={0}
@@ -244,7 +244,7 @@ export const SearchInput: FC<SearchInputProps> = ({
         onKeyPress={() => {
           inputRef.current?.focus();
         }}
-        className={cn(styles.container, className)}
+        className={cn(styles.container)}
         ref={ref}
         onClick={() => {
           inputRef.current?.focus();
