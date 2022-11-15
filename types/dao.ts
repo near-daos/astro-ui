@@ -67,6 +67,7 @@ export type DAO = {
   lastProposalId: number;
   stakingContract?: string;
   delegations?: DaoDelegation[];
+  followers?: string[];
 } & DaoProperties;
 
 export type DAOPreview = {
