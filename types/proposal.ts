@@ -206,7 +206,7 @@ type ProposalProperties = {
     canReject: boolean;
     canDelete: boolean;
     isCouncil: boolean;
-  };
+  } | null;
 };
 
 export type Proposal = {
@@ -417,7 +417,7 @@ export type ProposalFeedItem = {
     canReject: boolean;
     canDelete: boolean;
     isCouncil: boolean;
-  };
+  } | null;
 } & ProposalProperties;
 
 export interface CustomFcTemplatePayload {

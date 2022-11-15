@@ -5,6 +5,7 @@ import omitBy from 'lodash/omitBy';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 import { NotificationsService } from 'services/NotificationsService';
 import { useAccountDaos } from 'services/ApiService/hooks/useAccountDaos';
+import { useSubscribedDaos } from 'services/ApiService/hooks/useSubscribedDaos';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { PaginationResponse } from 'types/api';
@@ -148,6 +149,7 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
   const [subscribedDaosIds, setSubscribedDaosIds] = useState<string[]>([]);
   const [daoIdsLoaded, setDaoIdsLoaded] = useState<boolean>(false);
   const { data: accountDaos } = useAccountDaos();
+  const { data: subscribedDaos } = useSubscribedDaos();
 
   const isMounted = useMountedState();
 
@@ -162,10 +164,13 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
             useOpenSearchDataApi
               ? Promise.resolve([] as DaoFeedItem[])
               : SputnikHttpService.getAccountDaos(accountId),
-            SputnikHttpService.getAccountDaoSubscriptions(accountId),
+            useOpenSearchDataApi
+              ? Promise.resolve([] as DaoFeedItem[])
+              : SputnikHttpService.getAccountDaoSubscriptions(accountId),
           ]);
 
         let tmpAccountDaoIds: string[];
+        let tmpSubscribedDaoIds: string[];
 
         if (useOpenSearchDataApi) {
           tmpAccountDaoIds = accountDaos?.map(item => item.id) ?? [];
@@ -175,10 +180,15 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
           tmpAccountDaoIds = [];
         }
 
-        const tmpSubscribedDaoIds =
-          subscribedDaosResponse.status === 'fulfilled'
-            ? subscribedDaosResponse.value.map(item => item.dao.id)
-            : [];
+        if (useOpenSearchDataApi) {
+          tmpSubscribedDaoIds = subscribedDaos?.map(item => item.id) ?? [];
+        } else if (subscribedDaosResponse.status === 'fulfilled') {
+          tmpSubscribedDaoIds = subscribedDaosResponse.value.map(
+            item => item.id
+          );
+        } else {
+          tmpSubscribedDaoIds = [];
+        }
 
         setAccountDaosIds(tmpAccountDaoIds);
         setSubscribedDaosIds(tmpSubscribedDaoIds);
