@@ -7,6 +7,7 @@ import { DaoIndex, OpenSearchResponse } from 'services/SearchService/types';
 import { DAO } from 'types/dao';
 import { buildDaoQuery } from 'services/SearchService/builders/dao';
 import { mapDaoIndexToDao } from 'services/SearchService/mappers/dao';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 /* eslint-disable no-underscore-dangle */
 export async function fetcher(
@@ -35,16 +36,20 @@ export function useDao(daoId?: string): {
   isError: boolean;
   mutate: KeyedMutator<DAO | undefined>;
 } {
+  const { useOpenSearchDataApi } = useFlags();
   const router = useRouter();
   const { query } = router;
 
   const dao = daoId ?? query.dao ?? '';
 
-  const { data, error, mutate } = useSWR(['dao', dao], fetcher, {
-    revalidateOnFocus: false,
-    // revalidateOnMount: false,
-    dedupingInterval: 5000,
-  });
+  const { data, error, mutate } = useSWR(
+    useOpenSearchDataApi ? ['dao', dao] : undefined,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 5000,
+    }
+  );
 
   return {
     dao: data,

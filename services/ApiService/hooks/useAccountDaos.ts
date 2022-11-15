@@ -45,7 +45,7 @@ export function useAccountDaos(): {
   const { useOpenSearchDataApi } = useFlags();
   const { accountId } = useWalletContext();
 
-  const { data, error } = useSWR(
+  const { data, error, isValidating } = useSWR(
     useOpenSearchDataApi ? ['accountDaos', accountId] : undefined,
     fetcher,
     {
@@ -56,7 +56,7 @@ export function useAccountDaos(): {
 
   return {
     data,
-    isLoading: !data,
+    isLoading: !data && isValidating,
     isError: !!error,
   };
 }

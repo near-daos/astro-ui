@@ -9,8 +9,6 @@ import { Toggle } from 'components/inputs/Toggle';
 import { NotificationCollapsableSettings } from 'astro_2.0/features/Notifications/components/NotificationCollapsableSettings';
 import { PlatformNotificationSettings } from 'astro_2.0/features/Notifications/components/PlatformNotificationSettings';
 import {
-  // NotificationSettingsGroup,
-  // NotificationSettingsPlatform,
   NotificationsGroupStatus,
   NotifiedActionType,
 } from 'types/notification';
@@ -32,8 +30,6 @@ import { Page } from 'pages/_app';
 import styles from './NotificationSettings.module.scss';
 
 interface NotificationSettingsProps {
-  // settingsGroupsData: NotificationSettingsGroup[];
-  // settingsPlatformData: NotificationSettingsPlatform;
   myDaos: DaoSettings[];
   subscribedDaos: DaoSettings[];
   platformSettings: NotificationSettingDTO[];

@@ -12,7 +12,7 @@
   padding-top: 56px;
   row-gap: 24px;
 
-  @include tablet-landscape {
+  @include large-desktop {
     grid-template-areas:
       'breadcrumbs breadcrumbs'
       'title title'
@@ -32,8 +32,8 @@
 
 .sideFilter {
   grid-area: filter;
-  top: 72px;
-  @include tablet-landscape {
+  top: calc(var(--app-header-height) - 1px);
+  @include large-desktop {
     max-width: 240px;
     top: 102px;
   }
@@ -41,7 +41,6 @@
 
 .settings {
   grid-area: settings;
-  max-width: 600px;
 }
 
 .group {

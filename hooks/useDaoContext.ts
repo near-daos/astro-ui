@@ -12,10 +12,10 @@ export function useDaoContext(
   accountId: string | undefined,
   daoId: string | undefined
 ): DaoContext | undefined {
-  const { governanceToken } = useFlags();
+  const { governanceToken, useOpenSearchDataApi } = useFlags();
 
   const { value } = useAsync(async () => {
-    if (!daoId) {
+    if (!daoId || useOpenSearchDataApi || useOpenSearchDataApi === undefined) {
       return undefined;
     }
 
