@@ -47,7 +47,7 @@ export function useAccountDaos(includeSubscribed?: boolean): {
   const { useOpenSearchDataApi } = useFlags();
   const { accountId } = useWalletContext();
 
-  const { data, error, mutate } = useSWR(
+  const { data, error, mutate, isValidating } = useSWR(
     useOpenSearchDataApi
       ? ['accountDaos', accountId, includeSubscribed ?? false]
       : undefined,
@@ -61,7 +61,7 @@ export function useAccountDaos(includeSubscribed?: boolean): {
   return {
     data,
     mutate,
-    isLoading: !data,
+    isLoading: !data && isValidating,
     isError: !!error,
   };
 }

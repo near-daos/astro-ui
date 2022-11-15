@@ -10,6 +10,7 @@ import { SearchResponseIndex } from 'services/SearchService/types';
 import { useRouter } from 'next/router';
 import { appConfig } from 'config';
 import useSWR from 'swr';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 const PROPOSALS_DEDUPING_INTERVAL = 10000;
 
@@ -53,15 +54,20 @@ export async function fetcher(
 export function usePolicyAffectsProposals(): {
   data: ProposalFeedItem[] | undefined;
 } {
+  const { useOpenSearchDataApi } = useFlags();
   const router = useRouter();
   const { query } = router;
 
   const daoId = query.dao ?? '';
 
-  const { data } = useSWR(['policyAffectsProposals', daoId], fetcher, {
-    revalidateOnFocus: false,
-    dedupingInterval: PROPOSALS_DEDUPING_INTERVAL,
-  });
+  const { data } = useSWR(
+    useOpenSearchDataApi ? ['policyAffectsProposals', daoId] : undefined,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: PROPOSALS_DEDUPING_INTERVAL,
+    }
+  );
 
   return { data };
 }
