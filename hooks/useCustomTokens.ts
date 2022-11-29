@@ -73,7 +73,10 @@ export function useDaoCustomTokens(daoId?: string): {
   const tokens = useMemo(() => {
     const values = tokensData || dao?.tokens;
 
-    return values ? normalizeTokens(values) : {};
+    // We have to filter out usdc.tkn.near as it may appear in DAO funds
+    return values
+      ? normalizeTokens(values.filter(item => item.tokenId !== 'usdc.tkn.near'))
+      : {};
   }, [dao?.tokens, tokensData]);
 
   return { tokens };
