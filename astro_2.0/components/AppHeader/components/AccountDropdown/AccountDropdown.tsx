@@ -10,7 +10,7 @@ import { ConnectedAccountButton } from 'astro_2.0/components/AppHeader/component
 import styles from './AccountDropdown.module.scss';
 
 export const AccountDropdown: React.FC = () => {
-  const { accountId, nearService, connectingToWallet } = useWalletContext();
+  const { accountId, nearService } = useWalletContext();
   const [open, setOpen] = useState(false);
 
   const closeDropdown = useCallback(() => {
@@ -25,38 +25,37 @@ export const AccountDropdown: React.FC = () => {
     }
 
     return (
-      <GenericDropdown
-        isOpen={open}
-        onOpenUpdate={setOpen}
-        parent={
-          <div>
-            <ConnectedAccountButton>
-              <Icon
-                name="buttonArrowDown"
-                className={cn(styles.controlIcon, { [styles.open]: open })}
-              />
-            </ConnectedAccountButton>
-          </div>
-        }
-        options={{
-          placement: 'bottom-end',
-        }}
-      >
-        <>
-          {nearService && <WalletsList closeDropdownHandler={closeDropdown} />}
-          <AppFooter mobile className={styles.footer} onClick={closeDropdown} />
-        </>
-      </GenericDropdown>
+      <div className={styles.wrapper}>
+        <GenericDropdown
+          isOpen={open}
+          onOpenUpdate={setOpen}
+          parent={
+            <div>
+              <Icon name="settings" className={cn(styles.controlIcon)} />
+            </div>
+          }
+          options={{
+            placement: 'bottom-end',
+          }}
+        >
+          <>
+            {nearService && (
+              <WalletsList closeDropdownHandler={closeDropdown} />
+            )}
+            <AppFooter
+              mobile
+              className={styles.footer}
+              onClick={closeDropdown}
+            />
+          </>
+        </GenericDropdown>
+        <ConnectedAccountButton />
+      </div>
     );
   }
 
   return (
-    <div
-      className={cn(styles.root, {
-        [styles.disabled]: connectingToWallet,
-      })}
-      ref={ref}
-    >
+    <div className={cn(styles.root)} ref={ref}>
       {render()}
     </div>
   );

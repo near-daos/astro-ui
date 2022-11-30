@@ -57,7 +57,7 @@ export function buildBountiesQuery(params: {
       const condition = {
         simple_query_string: {
           query: 'InProgress',
-          fields: ['status'],
+          fields: ['proposalStatus'],
         },
       };
       const conditionBounty = {

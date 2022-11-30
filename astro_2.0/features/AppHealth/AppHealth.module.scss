@@ -2,7 +2,7 @@
 
 .root {
   @include centralize;
-  margin: 0 12px;
+  margin: 0 24px;
 
   @include tablet-landscape {
     margin-right: 24px;

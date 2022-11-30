@@ -4,8 +4,6 @@ import cn from 'classnames';
 import { useRouter } from 'next/router';
 import { useMedia } from 'react-use';
 
-import { WalletType } from 'types/config';
-
 import { useWalletContext } from 'context/WalletContext';
 import { useTranslation } from 'next-i18next';
 
@@ -47,7 +45,7 @@ export const DaoAction: FC<Props> = ({
 
   const handleCreateProposal = useCallback(() => {
     if (isEmpty(accountId)) {
-      login(WalletType.NEAR);
+      login();
     } else if (onCreateProposalClick) {
       onCreateProposalClick();
     }

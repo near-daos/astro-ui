@@ -38,7 +38,9 @@ export const LocaleSelector: FC = () => {
             <div className={cn(styles.selector)} ref={rootRef}>
               <CircleFlag
                 countryCode={locale === 'en' ? 'us' : locale}
-                className={styles.flag}
+                className={cn(styles.flag, {
+                  [styles.nonEn]: locale !== 'en',
+                })}
               />{' '}
               {locale}
             </div>

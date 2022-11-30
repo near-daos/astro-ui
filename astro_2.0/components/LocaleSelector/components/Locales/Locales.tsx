@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { CircleFlag } from 'react-circle-flags';
+import cn from 'classnames';
 import { useRouter } from 'next/router';
 import { Button } from 'components/button/Button';
 
@@ -23,7 +24,9 @@ export const Locales: FC = () => {
           >
             <CircleFlag
               countryCode={locale === 'en' ? 'us' : locale}
-              className={styles.flag}
+              className={cn(styles.flag, {
+                [styles.nonEn]: locale !== 'en',
+              })}
             />{' '}
             {locale}
           </Button>
