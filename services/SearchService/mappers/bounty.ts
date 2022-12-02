@@ -62,7 +62,7 @@ export function mapBountyIndexToBountyContext(
       : null,
     bounty: {
       bountyId: item.bountyId,
-      bountyClaims: JSON.parse(item.bountyClaims),
+      bountyClaims: item.bountyClaims ? JSON.parse(item.bountyClaims) : [],
       daoId: item.daoId,
       id: item.id,
       amount: item.amount,
