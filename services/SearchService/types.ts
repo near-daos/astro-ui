@@ -10,6 +10,7 @@ import { DraftProposal, DraftProposalFeedItem } from 'types/draftProposal';
 import { SearchResultsData } from 'types/search';
 import { DaoPolicy } from 'services/sputnik/types/policy';
 import { DAO as TDAO, DaoDelegation, DaoVersion } from 'types/dao';
+import { Settings } from 'types/settings';
 
 export type BaseParams = {
   id?: string;
@@ -72,6 +73,7 @@ export interface DaoIndex {
   policy: DaoPolicy;
   daoVersion: DaoVersion;
   tokens: TokenIndex[];
+  settings?: Settings;
 }
 
 export interface ProposalIndex {
