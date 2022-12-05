@@ -83,5 +83,6 @@ export function mapDaoIndexToDao(daoIndex: DaoIndex): DAO {
     lastProposalId: daoIndex.lastProposalId,
     totalProposals: daoIndex.totalProposalCount ?? 0,
     delegations: daoIndex.delegations ?? [],
+    settings: daoIndex.settings ?? null,
   };
 }

@@ -1,22 +1,26 @@
 import { Settings } from 'types/settings';
-import { useAsyncFn, useMountedState } from 'react-use';
+import { useAsync, useAsyncFn, useMountedState } from 'react-use';
 import { useWalletContext } from 'context/WalletContext';
 import { useEffect, useRef, useState } from 'react';
 import { SputnikHttpService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { useDao } from 'services/ApiService/hooks/useDao';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 export function useDaoSettingsData(daoId: string | undefined): {
   loading: boolean;
   update: (updates: Record<string, unknown>) => Promise<void>;
   settings: Settings | null | undefined;
 } {
+  const { useOpenSearchDataApi } = useFlags();
   const isMounted = useMountedState();
   const { accountId, nearService, pkAndSignature } = useWalletContext();
   const [settings, setSettings] = useState<Settings | null>(null);
   const daoRef = useRef(daoId);
+  const daoData = useDao(daoId);
 
-  const [{ loading }, getSettings] = useAsyncFn(async () => {
-    if (!daoId) {
+  const { loading, value } = useAsync(async () => {
+    if (!daoId || useOpenSearchDataApi || useOpenSearchDataApi === undefined) {
       return;
     }
 
@@ -75,10 +79,12 @@ export function useDaoSettingsData(daoId: string | undefined): {
   );
 
   useEffect(() => {
-    (async () => {
-      await getSettings();
-    })();
-  }, [getSettings]);
+    const newSettings = daoData.dao?.settings ?? value ?? null;
+
+    if (settings) {
+      setSettings(newSettings);
+    }
+  }, [daoData.dao?.settings, settings, value]);
 
   return {
     loading: loading || updatingStatus,
