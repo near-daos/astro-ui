@@ -41,7 +41,7 @@ const DraftPage: NextPage<DraftPageProps> = ({
 }) => {
   const router = useRouter();
   const { t } = useTranslation();
-  const { useOpenSearchDataApi } = useFlags();
+  const { useOpenSearchDataApiDrafts } = useFlags();
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     dao.id,
     dao.displayName,
@@ -60,11 +60,11 @@ const DraftPage: NextPage<DraftPageProps> = ({
   }, [breadcrumbsConfig]);
 
   function renderContent() {
-    if (useOpenSearchDataApi === undefined) {
+    if (useOpenSearchDataApiDrafts === undefined) {
       return null;
     }
 
-    return useOpenSearchDataApi ? (
+    return useOpenSearchDataApiDrafts ? (
       <DraftProposalView daoContext={daoContext} />
     ) : (
       <DraftsDataProvider>

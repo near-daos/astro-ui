@@ -57,7 +57,7 @@ export function useDraftComments(): {
   const daoId = dao as string;
   const contextType = 'DraftProposal';
 
-  const { useOpenSearchDataApi } = useFlags();
+  const { useOpenSearchDataApiDrafts } = useFlags();
   const { draftsService, setAmountComments } = useDraftsContext();
   const { accountId, pkAndSignature } = useWalletContext();
 
@@ -70,12 +70,12 @@ export function useDraftComments(): {
   });
 
   const [{ loading }, getAllComments] = useAsyncFn(async () => {
-    if (useOpenSearchDataApi === undefined) {
+    if (useOpenSearchDataApiDrafts === undefined) {
       return;
     }
 
     try {
-      const data = useOpenSearchDataApi
+      const data = useOpenSearchDataApiDrafts
         ? await getDraftProposalComments(
             'draftProposalComment',
             daoId,
@@ -99,7 +99,7 @@ export function useDraftComments(): {
         description: e?.message,
       });
     }
-  }, [contextId, useOpenSearchDataApi]);
+  }, [contextId, useOpenSearchDataApiDrafts]);
 
   useMount(() => getAllComments());
 
@@ -348,7 +348,7 @@ export function useDraftComments(): {
         );
       }
     }
-  }, [accountId, isMounted, pkAndSignature, useOpenSearchDataApi]);
+  }, [accountId, isMounted, pkAndSignature, useOpenSearchDataApiDrafts]);
 
   const preparedData = prepareData(value.data);
 

@@ -19,20 +19,20 @@ import styles from './SidebarDaos.module.scss';
 export const SidebarDaos: FC = () => {
   const router = useRouter();
   const { accountId } = useWalletContext();
-  const { useOpenSearchDataApi } = useFlags();
+  const { useOpenSearchDataApiMyDaos } = useFlags();
   const { data } = useAccountDaos(true);
 
   const { value } = useAsync(async () => {
     if (
       !accountId ||
-      useOpenSearchDataApi ||
-      useOpenSearchDataApi === undefined
+      useOpenSearchDataApiMyDaos ||
+      useOpenSearchDataApiMyDaos === undefined
     ) {
       return null;
     }
 
     return SputnikHttpService.getAccountDaos(accountId);
-  }, [accountId, useOpenSearchDataApi]);
+  }, [accountId, useOpenSearchDataApiMyDaos]);
 
   const daos = value || data;
 

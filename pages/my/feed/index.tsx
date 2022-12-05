@@ -28,17 +28,17 @@ const MyFeedPage: Page<{ defaultApplicationUiVersion: number }> = ({
   defaultApplicationUiVersion,
   ...props
 }) => {
-  const { useOpenSearchDataApi } = useFlags();
+  const { useOpenSearchDataApiFeed } = useFlags();
   const { appVersion: selectedAppVersion } = useAppVersion();
   const { t } = useTranslation();
   const appVersion = selectedAppVersion || defaultApplicationUiVersion;
 
   function renderFeed() {
-    if (useOpenSearchDataApi === undefined) {
+    if (useOpenSearchDataApiFeed === undefined) {
       return null;
     }
 
-    return useOpenSearchDataApi ? (
+    return useOpenSearchDataApiFeed ? (
       <ProposalsFeedNext {...props} isMyFeed className={styles.root}>
         <CreateProposalSelector />
       </ProposalsFeedNext>
