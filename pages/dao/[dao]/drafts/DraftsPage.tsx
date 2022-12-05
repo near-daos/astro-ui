@@ -17,7 +17,7 @@ export interface DraftsPageProps {
 }
 
 const DraftsPage: NextPage<DraftsPageProps> = ({ daoContext }) => {
-  const { useOpenSearchDataApi } = useFlags();
+  const { useOpenSearchDataApiDrafts } = useFlags();
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     daoContext.dao.id,
     daoContext.dao.displayName
@@ -32,11 +32,11 @@ const DraftsPage: NextPage<DraftsPageProps> = ({ daoContext }) => {
   }, [breadcrumbsConfig]);
 
   function renderContent() {
-    if (useOpenSearchDataApi === undefined) {
+    if (useOpenSearchDataApiDrafts === undefined) {
       return null;
     }
 
-    return useOpenSearchDataApi ? (
+    return useOpenSearchDataApiDrafts ? (
       <DraftsFeedNext daoContext={daoContext} />
     ) : (
       <DraftsPageContent daoContext={daoContext} />

@@ -38,7 +38,7 @@ export const CreateProposalSelector: FC = () => {
   const [dao, setDao] = useState<DAO | null>(null);
   const [visible, setVisible] = useState(false);
 
-  const { useOpenSearchDataApi } = useFlags();
+  const { useOpenSearchDataApiMyDaos } = useFlags();
   const daoContextFromOpenSearch = useDaoContext(dao?.id);
   const daoContextFromSputnik = useDaoContextFromSputnik(accountId, dao?.id);
   const daoContext = daoContextFromSputnik || daoContextFromOpenSearch;
@@ -50,8 +50,8 @@ export const CreateProposalSelector: FC = () => {
   const { value: apiData } = useAsync(async () => {
     if (
       !accountId ||
-      useOpenSearchDataApi ||
-      useOpenSearchDataApi === undefined
+      useOpenSearchDataApiMyDaos ||
+      useOpenSearchDataApiMyDaos === undefined
     ) {
       return null;
     }

@@ -44,11 +44,11 @@ export function useAccountDaos(includeSubscribed?: boolean): {
   isError: boolean;
   mutate: KeyedMutator<DaoFeedItem[] | undefined>;
 } {
-  const { useOpenSearchDataApi } = useFlags();
+  const { useOpenSearchDataApiMyDaos } = useFlags();
   const { accountId } = useWalletContext();
 
   const { data, error, mutate, isValidating } = useSWR(
-    useOpenSearchDataApi
+    useOpenSearchDataApiMyDaos
       ? ['accountDaos', accountId, includeSubscribed ?? false]
       : undefined,
     fetcher,

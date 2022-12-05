@@ -26,7 +26,9 @@ export const getServerSideProps: GetServerSideProps = async ({
   const flags = await client.allFlagsState({
     key: accountId ?? '',
   });
-  const useOpenSearchDataApi = flags.getFlagValue('use-open-search-data-api');
+  const useOpenSearchDataApiDrafts = flags.getFlagValue(
+    'useOpenSearchDataApiDrafts'
+  );
 
   const daoId = query.dao as string;
   const draftId = query.draft as string;
@@ -35,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const dao = daoContext?.dao;
 
-  const draft = useOpenSearchDataApi
+  const draft = useOpenSearchDataApiDrafts
     ? await getDraft('draft', daoId, draftId, accountId)
     : await draftService.getDraft(draftId, dao, accountId);
 
