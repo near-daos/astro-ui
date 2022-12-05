@@ -81,7 +81,7 @@ export function useDaoSettingsData(daoId: string | undefined): {
   useEffect(() => {
     const newSettings = daoData.dao?.settings ?? value ?? null;
 
-    if (settings) {
+    if (newSettings) {
       setSettings(newSettings);
     }
   }, [daoData.dao?.settings, settings, value]);

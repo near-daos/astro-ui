@@ -24,10 +24,11 @@ export async function fetcher(
   offset: number,
   limit: number,
   accountId?: string,
-  proposer?: string
+  proposer?: string,
+  sort?: string
 ): Promise<PaginationResponse<ProposalFeedItem[]>> {
-  const sort = 'createTimestamp,DESC';
-  const sortOptions = sort.split(',');
+  const initialSort = sort ?? 'createTimestamp,DESC';
+  const sortOptions = initialSort.split(',');
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
     : appConfig.SEARCH_API_URL;
@@ -87,6 +88,7 @@ export function useProposalsInfinite(props?: Props): SWRInfiniteResponse<{
   const category = initialCategory ?? query.category ?? '';
   const daoId = query.dao ?? '';
   const proposer = query.proposer ?? '';
+  const sort = query.sort ?? 'createTimestamp,DESC';
 
   return useSWRInfinite(
     index => {
@@ -101,6 +103,7 @@ export function useProposalsInfinite(props?: Props): SWRInfiniteResponse<{
         limit,
         isMyFeed ? accountId : undefined,
         proposer,
+        sort,
       ];
     },
     fetcher,

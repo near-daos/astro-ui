@@ -35,7 +35,9 @@ export const getServerSideProps: GetServerSideProps = async ({
   const flags = await client.allFlagsState({
     key: account ?? '',
   });
-  const useOpenSearchDataApi = flags.getFlagValue('use-open-search-data-api');
+  const useOpenSearchDataApiFeed = flags.getFlagValue(
+    'useOpenSearchDataApiFeed'
+  );
 
   const params = {
     offset: 0,
@@ -48,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const [daoContext, initialProposalsData] = await Promise.all([
     getDaoContext(account, daoId as string),
-    useOpenSearchDataApi
+    useOpenSearchDataApiFeed
       ? getProposals(
           'proposals',
           params.daoId,
