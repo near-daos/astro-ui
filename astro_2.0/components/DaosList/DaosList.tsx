@@ -7,7 +7,6 @@ import { CREATE_DAO_URL } from 'constants/routing';
 
 import { useWalletContext } from 'context/WalletContext';
 
-import { WalletType } from 'types/config';
 import styles from './DaosList.module.scss';
 
 interface DaosListProps {
@@ -20,7 +19,7 @@ export const DaosList: FC<DaosListProps> = ({ label, children }) => {
   const { accountId, login } = useWalletContext();
 
   const handleCreateDao = useCallback(
-    () => (accountId ? router.push(CREATE_DAO_URL) : login(WalletType.NEAR)),
+    () => (accountId ? router.push(CREATE_DAO_URL) : login()),
     [login, router, accountId]
   );
 

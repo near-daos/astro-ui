@@ -32,6 +32,7 @@ import { DaoSettingsProvider } from 'context/DaoSettingsContext';
 
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
+import '@near-wallet-selector/modal-ui/styles.css';
 import 'styles/globals.scss';
 
 type GetLayout = (page: ReactNode) => ReactNode;

@@ -13,6 +13,7 @@ import { AppHeader as AppHeaderNext } from 'astro_3.0/features/AppHeader';
 import { LinkToTop } from 'astro_2.0/components/LinkToTop';
 import { NotificationContainer } from 'features/notifications';
 import { MaintenanceWarning } from 'astro_2.0/components/MaintenanceWarning';
+import { AppAnnouncerModal } from 'astro_3.0/components/AppAnnouncerModal';
 
 import styles from './PageLayout.module.scss';
 
@@ -45,6 +46,10 @@ export const PageLayout: FC<Props> = ({ children, appVersion }) => {
       </div>
       <NotificationContainer />
       <Tooltip effect="solid" />
+      <AppAnnouncerModal
+        title="What's new"
+        message="Astro DAO is now integrated with NEAR Wallet Selector. Log in using your favorite wallet to continue using Astro DAO."
+      />
     </div>
   );
 };

@@ -15,7 +15,6 @@ import { Popup } from 'components/Popup';
 
 import { ALL_DAOS_URL, MY_DAOS_URL } from 'constants/routing';
 
-import { WalletType } from 'types/config';
 import styles from './NavButton.module.scss';
 
 export interface NavButtonProps extends NavItemProps {
@@ -74,7 +73,7 @@ export const NavButton: VFC<NavButtonProps> = props => {
 
   function navigate() {
     if (authRequired && !accountId) {
-      login(WalletType.NEAR);
+      login();
 
       return;
     }

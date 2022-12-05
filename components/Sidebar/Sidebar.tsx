@@ -18,7 +18,6 @@ import { useDaoIds } from 'hooks/useDaoIds';
 import { Logo } from 'components/Logo';
 import { Icon } from 'components/Icon';
 import { AppFooter } from 'astro_2.0/components/AppFooter';
-import { WalletType } from 'types/config';
 import { NavItem } from './components/NavItem';
 
 import styles from './Sidebar.module.scss';
@@ -39,9 +38,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
   const createDao = useCallback(() => {
     const url = { pathname: CREATE_DAO_URL, query: { step: 'info' } };
 
-    return accountId
-      ? router.push(url)
-      : login(WalletType.NEAR).then(() => router.push(url));
+    return accountId ? router.push(url) : login();
   }, [login, router, accountId]);
 
   function renderHomeNavItem() {

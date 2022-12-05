@@ -24,7 +24,7 @@ exports[`Locales Should render component 1`] = `
       type="button"
     >
       <img
-        class="flag"
+        class="flag nonEn"
         data-testid="circle-country-flag"
         height="100"
         src="https://hatscripts.github.io/circle-flags/flags/ru.svg"

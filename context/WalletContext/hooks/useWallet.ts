@@ -1,6 +1,4 @@
-import isNil from 'lodash/isNil';
-import { useRouter } from 'next/router';
-import { useLocalStorage } from 'react-use';
+import { useAsync } from 'react-use';
 import { useCallback, useEffect, useState } from 'react';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
@@ -9,72 +7,110 @@ import { WalletType } from 'types/config';
 import { WalletService } from 'services/sputnik/SputnikNearService/walletServices/types';
 
 import { CookieService } from 'services/CookieService';
-import { initNearWallet } from 'context/WalletContext/utils/initNearWallet';
-import { initSenderWallet } from 'context/WalletContext/utils/initSenderWallet';
-
-// import { useSelector } from './walletSelector/useSelector';
-import { initWalletSelector } from 'context/WalletContext/utils/initWalletSelector';
 import { configService } from 'services/ConfigService';
+import {
+  NetworkId,
+  setupWalletSelector,
+  WalletSelector,
+} from '@near-wallet-selector/core';
+import { setupHereWallet } from '@near-wallet-selector/here-wallet';
+import { setupMeteorWallet } from '@near-wallet-selector/meteor-wallet';
+import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet';
+import { setupSender } from '@near-wallet-selector/sender';
+import { WalletSelectorService } from 'services/sputnik/SputnikNearService/walletServices/WalletSelectorService';
+import { distinctUntilChanged, map } from 'rxjs';
 
 type ReturnVal = {
-  removePersistedWallet: () => void;
   currentWallet: WalletService | null;
-  setWallet: (walletService: WalletService) => void;
   getWallet: (walletType: WalletType) => Promise<WalletService | undefined>;
+  walletSelector: WalletSelector | undefined;
 };
 
 export const useWallet = (): ReturnVal => {
-  const router = useRouter();
-
-  const [persistedWallet, setPersistedWallet, removePersistedWallet] =
-    useLocalStorage('selectedWallet');
-
   const [currentWallet, setCurrentWallet] = useState<WalletService | null>(
     null
   );
 
+  const { value: walletSelector } = useAsync(async () => {
+    const { nearConfig } = configService.get();
+
+    return setupWalletSelector({
+      network: nearConfig.networkId as NetworkId,
+      modules: [
+        setupMyNearWallet(),
+        setupSender(),
+        setupHereWallet(),
+        setupMeteorWallet(),
+      ],
+    });
+  }, []);
+
   const getWallet = useCallback(
-    (walletType: WalletType) => {
-      switch (walletType) {
-        case WalletType.NEAR:
-          return initNearWallet();
-        case WalletType.SENDER:
-          return initSenderWallet(router.reload);
-        case WalletType.SELECTOR_NEAR:
-        case WalletType.SELECTOR_SENDER: {
-          return initWalletSelector(walletType);
-        }
-        default:
-          return Promise.resolve(undefined);
+    async (walletType: WalletType) => {
+      if (!walletSelector) {
+        return undefined;
       }
+
+      const wallet = await walletSelector.wallet(walletType as string);
+
+      // In case we are logged in using Sender wallet - listen for an updates and reload
+      // the app so wallet will be reinitialized
+      if (window.near) {
+        window.near.on('accountChanged', async () => {
+          window.location.reload();
+        });
+      }
+
+      return new WalletSelectorService(wallet, walletSelector);
     },
-    [router]
+    [walletSelector]
   );
 
-  const setWallet = useCallback(
-    async (wallet: WalletService) => {
-      setPersistedWallet(wallet.getWalletType());
-      setCurrentWallet(wallet);
+  useEffect(() => {
+    const accountSubscription = walletSelector?.store.observable
+      .pipe(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        map(state => {
+          return state.selectedWalletId;
+        }),
+        distinctUntilChanged()
+      )
+      .subscribe(async selectedWalletId => {
+        if (!selectedWalletId) {
+          return;
+        }
 
-      const accountId = await wallet.getAccountId();
+        const wallet = await getWallet(selectedWalletId as WalletType);
 
-      CookieService.set(ACCOUNT_COOKIE, accountId, {
-        path: '/',
+        if (wallet) {
+          const accountId = await wallet.getAccountId();
+
+          CookieService.set(ACCOUNT_COOKIE, accountId, {
+            path: '/',
+          });
+
+          setCurrentWallet(wallet);
+        }
       });
-    },
-    [setPersistedWallet]
-  );
 
-  // const { initiateSignInSelectorWallets } = useSelector({
-  //   setWallet,
-  // });
+    return () => accountSubscription?.unsubscribe();
+  }, [getWallet, walletSelector]);
 
   useEffect(() => {
     async function initWallet() {
-      if (isNil(persistedWallet)) {
+      const state = walletSelector?.store.getState();
+
+      if (!state) {
         CookieService.remove(ACCOUNT_COOKIE);
       } else {
-        const wallet = await getWallet(persistedWallet as WalletType);
+        const { selectedWalletId } = state;
+
+        if (!selectedWalletId) {
+          return;
+        }
+
+        const wallet = await getWallet(selectedWalletId as WalletType);
 
         if (!wallet) {
           return;
@@ -101,12 +137,11 @@ export const useWallet = (): ReturnVal => {
     }
 
     initWallet();
-  }, [getWallet, persistedWallet]);
+  }, [getWallet, walletSelector?.store]);
 
   return {
     getWallet,
-    setWallet,
     currentWallet,
-    removePersistedWallet,
+    walletSelector,
   };
 };

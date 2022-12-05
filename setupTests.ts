@@ -12,3 +12,9 @@ jest.mock('config/near', () => ({
     explorerUrl: 'https://explorer.testnet.near.org',
   }),
 }));
+
+jest.mock('@near-wallet-selector/modal-ui', () => {
+  return {
+    setupModal: jest.fn(),
+  };
+});

@@ -23,4 +23,8 @@
   height: 24px;
   margin-right: 8px;
   width: 24px;
+
+  &.nonEn {
+    transform: rotate(180deg);
+  }
 }

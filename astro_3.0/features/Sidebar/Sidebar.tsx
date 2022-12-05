@@ -18,8 +18,6 @@ import { SidebarMore } from 'astro_3.0/features/Sidebar/components/SidebarMore';
 import { useAvailableActionsCounters } from 'hooks/useAvailableActionsCounters';
 import { useWalletContext } from 'context/WalletContext';
 
-import { WalletType } from 'types/config';
-
 import {
   ALL_DAOS_URL,
   ALL_FEED_URL,
@@ -45,9 +43,7 @@ export const Sidebar: FC = () => {
   const handleCreateDao = useCallback(() => {
     const url = { pathname: CREATE_DAO_URL, query: { step: 'info' } };
 
-    return accountId
-      ? router.push(url)
-      : login(WalletType.NEAR).then(() => router.push(url));
+    return accountId ? router.push(url) : login();
   }, [login, router, accountId]);
 
   useClickAway(rootRef, e => {

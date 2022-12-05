@@ -121,3 +121,13 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   appearance: textfield;
 }
+
+// Wallet selector
+/* stylelint-disable */
+.nws-modal-wrapper {
+  z-index: 1200 !important;
+}
+
+:root {
+  --wallet-selector-backdrop-bg: var(--color-black-opacity-50);
+}

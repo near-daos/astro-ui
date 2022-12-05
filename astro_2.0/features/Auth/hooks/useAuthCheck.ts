@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DependencyList, useCallback } from 'react';
 import { useWalletContext } from 'context/WalletContext';
-import { WalletType } from 'types/config';
 
 export const useAuthCheck = <T extends (...args: any[]) => any>(
   callback: T,
@@ -17,7 +16,7 @@ export const useAuthCheck = <T extends (...args: any[]) => any>(
         return;
       }
 
-      login(WalletType.NEAR);
+      login();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [accountId, login, ...deps]
