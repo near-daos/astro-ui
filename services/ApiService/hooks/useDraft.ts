@@ -49,7 +49,7 @@ export function useDraft(): {
   mutate: KeyedMutator<DraftProposal | undefined>;
 } {
   const { accountId } = useWalletContext();
-  const { useOpenSearchDataApi } = useFlags();
+  const { useOpenSearchDataApiDrafts } = useFlags();
   const router = useRouter();
   const { query } = router;
 
@@ -57,7 +57,9 @@ export function useDraft(): {
   const draftId = query.draft ?? '';
 
   const { data, error, mutate } = useSWR(
-    useOpenSearchDataApi ? ['draft', daoId, draftId, accountId] : undefined,
+    useOpenSearchDataApiDrafts
+      ? ['draft', daoId, draftId, accountId]
+      : undefined,
     fetcher,
     {
       revalidateOnFocus: false,
