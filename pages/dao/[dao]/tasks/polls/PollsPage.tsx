@@ -40,7 +40,7 @@ const PollsPage: FC<PollsPageProps> = ({
   initialProposalsStatusFilterValue,
   fallback,
 }) => {
-  const { useOpenSearchDataApi } = useFlags();
+  const { useOpenSearchDataApiFeed } = useFlags();
 
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     daoContext.dao.id,
@@ -65,7 +65,7 @@ const PollsPage: FC<PollsPageProps> = ({
         <Head>
           <title>Polls</title>
         </Head>
-        {useOpenSearchDataApi ? (
+        {useOpenSearchDataApiFeed ? (
           <PollsProposalsFeed />
         ) : (
           <Feed

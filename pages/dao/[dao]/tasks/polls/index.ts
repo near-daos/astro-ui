@@ -32,13 +32,13 @@ export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
   const flags = await client.allFlagsState({
     key: account ?? '',
   });
-  const useOpenSearchDataApi = flags.getFlagValue(
-    'default-application-ui-version'
+  const useOpenSearchDataApiFeed = flags.getFlagValue(
+    'useOpenSearchDataApiFeed'
   );
 
   const [daoContext, initialPollsData] = await Promise.all([
     getDaoContext(account, daoId),
-    useOpenSearchDataApi
+    useOpenSearchDataApiFeed
       ? getPolls(
           'proposals',
           daoId,
