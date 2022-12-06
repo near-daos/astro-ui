@@ -15,6 +15,7 @@ import { GroupPolicyDetails, VoterDetail } from 'features/types';
 import { ProposalFeedItem } from 'types/proposal';
 import { DaoContext } from 'types/context';
 import { Member } from 'types/dao';
+import { calculateVoicesThreshold } from 'features/proposal/components/VoteCollapsableHeader/helpers';
 
 export function useProposalVotingDetails(
   proposal: ProposalFeedItem | undefined,
@@ -111,7 +112,7 @@ export function useProposalVotingDetails(
           : formatPolicyRatio(dao.policy.defaultVotePolicy);
 
         const totalGroupMembers = role.accountIds?.length ?? 0;
-        const votesToPass = Math.ceil((totalGroupMembers * val) / 100);
+        const votesToPass = calculateVoicesThreshold(val, totalGroupMembers);
 
         result[role.name] = {
           value: val,

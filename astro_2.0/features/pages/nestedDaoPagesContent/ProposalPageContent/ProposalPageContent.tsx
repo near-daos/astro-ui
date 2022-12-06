@@ -111,7 +111,9 @@ export const ProposalPageContent: FC<Props> = ({
         <VoteCollapsableList
           data={votesDetails}
           votingPolicyByGroup={votingPolicyByGroup}
-          lastVoteId={lastVote?.action?.id}
+          lastVoteId={
+            proposal.status !== 'InProgress' ? lastVote?.action?.id : undefined
+          }
         />
       </div>
     </>
