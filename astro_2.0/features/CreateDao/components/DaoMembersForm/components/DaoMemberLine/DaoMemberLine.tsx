@@ -88,6 +88,7 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({
         <GenericDropdown
           isOpen={openGroupDropdown}
           onOpenUpdate={setOpenGroupDropdown}
+          placement="bottom-end"
           parent={
             <button
               type="button"

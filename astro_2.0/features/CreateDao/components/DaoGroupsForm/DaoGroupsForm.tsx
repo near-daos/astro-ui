@@ -1,5 +1,5 @@
 import React, { VFC } from 'react';
-import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import uniqBy from 'lodash/uniqBy';
 import * as yup from 'yup';
@@ -15,6 +15,9 @@ import { updateAction } from 'astro_2.0/features/CreateDao/components/helpers';
 import { StepCounter } from 'astro_2.0/features/CreateDao/components/StepCounter';
 import { DaoGroupLine } from 'astro_2.0/features/CreateDao/components/DaoGroupsForm/components/DaoGroupLine';
 
+import { useWalletContext } from 'context/WalletContext';
+import { WalletType } from 'types/config';
+
 import styles from './DaoGroupsForm.module.scss';
 
 type Group = { group: string; slug?: string };
@@ -28,6 +31,8 @@ yup.addMethod(yup.array, 'unique', function validate(message, mapper) {
 });
 
 export const DaoGroupsForm: VFC = () => {
+  const { currentWallet } = useWalletContext();
+  const isSupportedWallet = currentWallet !== WalletType.SELECTOR_NEAR;
   const { t } = useTranslation();
   const { updateQuery } = useQuery<{
     step: string;
@@ -116,7 +121,9 @@ export const DaoGroupsForm: VFC = () => {
         </div>
 
         <p className={styles.description}>
-          {t('createDAO.daoGroupsForm.addGroupsDescription')}
+          {isSupportedWallet
+            ? t('createDAO.daoGroupsForm.addGroupsDescription')
+            : t('createDAO.daoGroupsForm.addGroupsDisabled')}
         </p>
 
         <div className={styles.row}>
@@ -144,32 +151,39 @@ export const DaoGroupsForm: VFC = () => {
               })}
             </section>
 
-            <h4 className={styles.subtitle}>
-              {t('createDAO.daoGroupsForm.customGroup')}
-            </h4>
+            {isSupportedWallet ? (
+              <>
+                <h4 className={styles.subtitle}>
+                  {t('createDAO.daoGroupsForm.customGroup')}
+                </h4>
+                <section className={styles.links}>
+                  {fields.slice(0, -1).map((item, index) => {
+                    return (
+                      <DaoGroupLine
+                        key={item.id}
+                        item={item}
+                        index={index + 1}
+                        onRemove={() => remove(index + 1)}
+                      />
+                    );
+                  })}
 
-            <section className={styles.links}>
-              {fields.slice(0, -1).map((item, index) => {
-                return (
-                  <DaoGroupLine
-                    key={item.id}
-                    item={item}
-                    index={index + 1}
-                    onRemove={() => remove(index + 1)}
-                  />
-                );
-              })}
+                  <Button
+                    className={styles.link}
+                    onClick={() => append({ group: '' })}
+                    variant="transparent"
+                  >
+                    <span className={styles.socialText} />
 
-              <Button
-                className={styles.link}
-                onClick={() => append({ group: '' })}
-                variant="transparent"
-              >
-                <span className={styles.socialText} />
-
-                <Icon className={styles.addBtn} name="buttonAdd" width={24} />
-              </Button>
-            </section>
+                    <Icon
+                      className={styles.addBtn}
+                      name="buttonAdd"
+                      width={24}
+                    />
+                  </Button>
+                </section>
+              </>
+            ) : null}
           </div>
 
           {checkUniqError() && (
