@@ -171,31 +171,3 @@ export function useSelectorWalletTransactionResult(): void {
     }
   }, [currentWallet, router, update]);
 }
-
-export function useWalletTransactionResult(): void {
-  const { currentWallet } = useWalletContext();
-
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(currentWallet);
-
-    // const { searchParams } = new URL(window.location.toString());
-    //
-    // const callback = window.opener?.sputnikRequestSignTransactionCompleted;
-    //
-    // if (typeof callback === 'function') {
-    //   const transactionHashes =
-    //     searchParams.get('transactionHashes') || undefined;
-    //   const errorCode = (searchParams.get('errorCode') ||
-    //     undefined) as SputnikWalletErrorCodes;
-    //
-    //   callback?.({ transactionHashes, errorCode });
-    //
-    //   setTimeout(() => {
-    //     window.close();
-    //   }, 1000);
-    // } else {
-    //   window.close();
-    // }
-  }, [currentWallet]);
-}

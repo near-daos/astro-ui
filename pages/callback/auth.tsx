@@ -6,26 +6,6 @@ import { getTranslations } from 'utils/getTranslations';
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
 const Callback: NextPage = () => {
-  // useEffect(() => {
-  //   const { searchParams } = new URL(window.location.toString());
-  //   const accountId = searchParams.get('account_id') || undefined;
-  //   const errorCode = (searchParams.get('errorCode') ||
-  //     undefined) as SputnikWalletErrorCodes;
-  //   const allKeys = searchParams.get('all_keys') || undefined;
-  //   const publicKey = searchParams.get('public_key') || undefined;
-  //
-  //   if (window.opener?.sputnikRequestSignInCompleted) {
-  //     window.opener
-  //       .sputnikRequestSignInCompleted({
-  //         accountId,
-  //         errorCode,
-  //         allKeys,
-  //         publicKey,
-  //       })
-  //       .then(() => window.close());
-  //   }
-  // }, []);
-  //
   return null;
 };
 

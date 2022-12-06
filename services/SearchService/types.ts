@@ -50,7 +50,8 @@ export interface DaoIndex {
   config: { name: string; purpose: string; metadata: string };
   council: string[];
   councilSeats: number;
-  createTimestamp: string;
+  creatingTimeStamp: string;
+  processingTimeStamp: string;
   createdBy: string;
   daoVersionHash: string;
   delegations?: DaoDelegation[];
@@ -82,7 +83,7 @@ export interface ProposalIndex {
   bountyClaimId: null;
   bountyDoneId: null;
   commentsCount: number;
-  createTimestamp: string;
+  creatingTimeStamp: string;
   dao: DaoIndex;
   daoId: string;
   description: string;
@@ -99,7 +100,7 @@ export interface ProposalIndex {
   tokenId: string;
   transactionHash: string;
   type: ProposalType;
-  updateTimestamp: string | null;
+  processingTimeStamp: string | null;
   voteCounts: Record<string, string>;
   votePeriodEnd: string;
   voteStatus: 'Active';
@@ -116,7 +117,8 @@ export interface BountyIndex {
   bountyDoneProposals: string;
   bountyId: number;
   commentsCount: number;
-  createTimestamp: string;
+  creatingTimeStamp: string;
+  processingTimeStamp: string;
   daoId: string;
   description: string;
   id: string;
@@ -264,8 +266,8 @@ export interface DraftProposalIndex {
   }[];
   title: string;
   type: ProposalType;
-  updateTimestamp: number;
-  createTimestamp: number;
+  processingTimeStamp: number;
+  creatingTimeStamp: number;
   replies: number;
   id: string;
   state: DraftProposal['state'];
@@ -280,7 +282,7 @@ export type DraftCommentIndex = {
   isArchived: boolean;
   contextId: string;
   message: string;
-  createTimestamp: number;
+  creatingTimeStamp: number;
   likeAccounts: string[];
   contextType: 'DraftProposal';
   dislikeAccounts: string[];

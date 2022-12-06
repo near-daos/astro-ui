@@ -22,8 +22,12 @@ export function mapBountyIndexToBountyContext(
           daoId: proposal.daoId,
           bountyClaimId: proposal.bountyClaimId ?? '',
           proposalId: proposal.proposalId,
-          createdAt: new Date(toMillis(item.createTimestamp)).toISOString(),
-          updatedAt: '',
+          createdAt: item.creatingTimeStamp
+            ? new Date(toMillis(item.creatingTimeStamp)).toISOString()
+            : '',
+          updatedAt: item.processingTimeStamp
+            ? new Date(toMillis(item.processingTimeStamp)).toISOString()
+            : '',
           description: proposal.description,
           transactionHash: proposal.transactionHash,
           voteYes: 0,
@@ -67,7 +71,9 @@ export function mapBountyIndexToBountyContext(
       id: item.id,
       amount: item.amount,
       bountyDoneProposals: JSON.parse(item.bountyDoneProposals),
-      createdAt: new Date(toMillis(item.createTimestamp)).toISOString(),
+      createdAt: item.creatingTimeStamp
+        ? new Date(toMillis(item.creatingTimeStamp)).toISOString()
+        : '',
       description: item.description,
       maxDeadline: item.maxDeadline,
       proposalId: item.proposalId,

@@ -81,7 +81,7 @@ export function useDraftProposalsInfinite(): SWRInfiniteResponse<{
   const state = query.state ?? '';
   const category = query.category ?? '';
   const daoId = query.dao ?? '';
-  const sort = query.sort ?? 'createTimestamp,DESC';
+  const sort = query.sort ?? 'creatingTimeStamp,DESC';
   const search = query.search ?? '';
   const view = query.view ?? '';
 

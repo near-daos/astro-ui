@@ -16,8 +16,8 @@ export function mapDraftCommentIndexToDraftComment(
       [],
     likeAccounts: index.likeAccounts ?? [],
     dislikeAccounts: index.dislikeAccounts ?? [],
-    createdAt: index.createTimestamp
-      ? new Date(index.createTimestamp).toISOString()
+    createdAt: index.creatingTimeStamp
+      ? new Date(index.creatingTimeStamp).toISOString()
       : '',
     updatedAt: index.processingTimeStamp
       ? new Date(index.processingTimeStamp).toISOString()
