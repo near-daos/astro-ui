@@ -49,7 +49,9 @@ export function mapDaoIndexToDaoFeedItem(
   }
 
   return {
-    createdAt: new Date(toMillis(daoIndex.createTimestamp)).toISOString(),
+    createdAt: daoIndex.creatingTimeStamp
+      ? new Date(toMillis(daoIndex.creatingTimeStamp)).toISOString()
+      : '',
     id: daoIndex.id,
     numberOfMembers: daoIndex.numberOfMembers,
     numberOfGroups: daoIndex.numberOfGroups,
@@ -108,8 +110,8 @@ export function mapProposalIndexToProposalFeedItem(
     voteStatus: item.voteStatus ?? null,
     isFinalized: item.status === 'Expired',
     txHash: item.transactionHash ?? '',
-    createdAt: item.createTimestamp
-      ? new Date(toMillis(item.createTimestamp)).toISOString()
+    createdAt: item.creatingTimeStamp
+      ? new Date(toMillis(item.creatingTimeStamp)).toISOString()
       : '',
     dao: {
       id: item.dao?.id,

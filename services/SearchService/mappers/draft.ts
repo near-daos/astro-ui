@@ -22,11 +22,11 @@ export function mapDraftProposalIndexToDraftProposal(
     views: index.viewAccounts?.length ?? 0,
     replies: index.replies,
     saves: index.saveAccounts?.length ?? 0,
-    createdAt: index.createTimestamp
-      ? new Date(index.createTimestamp).toISOString()
+    createdAt: index.creatingTimeStamp
+      ? new Date(index.creatingTimeStamp).toISOString()
       : null,
-    updatedAt: index.updateTimestamp
-      ? new Date(index.updateTimestamp).toISOString()
+    updatedAt: index.processingTimeStamp
+      ? new Date(index.processingTimeStamp).toISOString()
       : null,
     isRead: accountId ? index.viewAccounts?.includes(accountId) : false,
     isSaved: accountId ? index.saveAccounts?.includes(accountId) : false,
