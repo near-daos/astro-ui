@@ -18,11 +18,15 @@ import { StepCounter } from 'astro_2.0/features/CreateDao/components/StepCounter
 import { DaoMemberLine } from 'astro_2.0/features/CreateDao/components/DaoMembersForm/components/DaoMemberLine';
 import { validateUserAccount } from 'astro_2.0/features/CreateProposal/helpers';
 
+import { WalletType } from 'types/config';
+
 import styles from './DaoMembersForm.module.scss';
 
 type Form = { accounts: { name: string; role: string }[]; groups: string };
 
 export const DaoMembersForm: VFC = () => {
+  const { currentWallet } = useWalletContext();
+  const isSupportedWallet = currentWallet !== WalletType.SELECTOR_NEAR;
   const { t } = useTranslation();
   const { accountId, nearService } = useWalletContext();
   const { updateQuery } = useQuery<{
@@ -137,7 +141,8 @@ export const DaoMembersForm: VFC = () => {
               {fields.map((item, index) => {
                 return (
                   <DaoMemberLine
-                    key={item.name}
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={`${item.name}_${index}`}
                     item={item}
                     index={index}
                     onRemove={() => {
@@ -151,6 +156,7 @@ export const DaoMembersForm: VFC = () => {
               })}
 
               <Button
+                disabled={!isSupportedWallet && fields.length >= 5}
                 className={styles.link}
                 onClick={() => append({ name: '', role: '' })}
                 variant="transparent"
