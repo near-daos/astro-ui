@@ -25,7 +25,7 @@ export async function fetcher(
       query: buildAccountDaosQuery(accountId, includeSubscribed),
       sort: [
         {
-          creatingTimeStamp: {
+          createTimestamp: {
             order: 'DESC',
           },
         },

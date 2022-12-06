@@ -33,7 +33,7 @@ export async function fetcher(
       },
       sort: [
         {
-          creatingTimeStamp: {
+          createTimestamp: {
             order: 'DESC',
           },
         },

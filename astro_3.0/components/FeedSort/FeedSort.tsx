@@ -7,7 +7,11 @@ import { Dropdown } from 'components/Dropdown';
 
 import styles from './FeedSort.module.scss';
 
-export const FeedSort: FC = () => {
+interface Props {
+  field?: string;
+}
+
+export const FeedSort: FC<Props> = ({ field = 'creatingTimeStamp' }) => {
   const router = useRouter();
 
   const { t } = useTranslation();
@@ -18,14 +22,14 @@ export const FeedSort: FC = () => {
     return [
       {
         label: t('allDAOsFilter.newest'),
-        value: 'creatingTimeStamp,DESC',
+        value: `${field},DESC`,
       },
       {
         label: t('allDAOsFilter.oldest'),
-        value: 'creatingTimeStamp,ASC',
+        value: `${field},ASC`,
       },
     ];
-  }, [t]);
+  }, [field, t]);
 
   const handleSort = useCallback(
     async value => {
