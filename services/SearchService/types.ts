@@ -42,7 +42,17 @@ export enum SearchResponseIndex {
   DRAFT_PROPOSAL_COMMENT = 'draftproposalcomment',
 }
 
-export interface DaoIndex {
+export interface OnChainEntity {
+  createTimestamp: string;
+  updateTimestamp: string;
+}
+
+export interface OffChainEntity {
+  creatingTimeStamp: number;
+  processingTimeStamp: number;
+}
+
+export interface DaoIndex extends OnChainEntity {
   accountIds: string[];
   accounts: string;
   activeProposalCount: number;
@@ -50,8 +60,6 @@ export interface DaoIndex {
   config: { name: string; purpose: string; metadata: string };
   council: string[];
   councilSeats: number;
-  creatingTimeStamp: string;
-  processingTimeStamp: string;
   createdBy: string;
   daoVersionHash: string;
   delegations?: DaoDelegation[];
@@ -77,13 +85,12 @@ export interface DaoIndex {
   settings?: Settings;
 }
 
-export interface ProposalIndex {
+export interface ProposalIndex extends OnChainEntity {
   accounts: string;
   amount: string;
   bountyClaimId: null;
   bountyDoneId: null;
   commentsCount: number;
-  creatingTimeStamp: string;
   dao: DaoIndex;
   daoId: string;
   description: string;
@@ -100,7 +107,6 @@ export interface ProposalIndex {
   tokenId: string;
   transactionHash: string;
   type: ProposalType;
-  processingTimeStamp: string | null;
   voteCounts: Record<string, string>;
   votePeriodEnd: string;
   voteStatus: 'Active';
@@ -110,15 +116,13 @@ export interface ProposalIndex {
   actions: ProposalActionData[];
 }
 
-export interface BountyIndex {
+export interface BountyIndex extends OnChainEntity {
   accounts: string;
   amount: string;
   bountyClaims: string;
   bountyDoneProposals: string;
   bountyId: number;
   commentsCount: number;
-  creatingTimeStamp: string;
-  processingTimeStamp: string;
   daoId: string;
   description: string;
   id: string;
@@ -132,7 +136,7 @@ export interface BountyIndex {
   transactionHash: string;
 }
 
-export interface NftIndex {
+export interface NftIndex extends OnChainEntity {
   accounts: string;
   daoId: string;
   description: string;
@@ -249,7 +253,7 @@ export interface TokenIndex {
   };
 }
 
-export interface DraftProposalIndex {
+export interface DraftProposalIndex extends OffChainEntity {
   saveAccounts: string[];
   kind: ProposalKind & { proposalVariant: ProposalVariant };
   proposer: string;
@@ -266,8 +270,6 @@ export interface DraftProposalIndex {
   }[];
   title: string;
   type: ProposalType;
-  processingTimeStamp: number;
-  creatingTimeStamp: number;
   replies: number;
   id: string;
   state: DraftProposal['state'];
@@ -277,12 +279,11 @@ export interface DraftProposalIndex {
   accounts: string;
 }
 
-export type DraftCommentIndex = {
+export interface DraftCommentIndex extends OffChainEntity {
   author: string;
   isArchived: boolean;
   contextId: string;
   message: string;
-  creatingTimeStamp: number;
   likeAccounts: string[];
   contextType: 'DraftProposal';
   dislikeAccounts: string[];
@@ -293,5 +294,4 @@ export type DraftCommentIndex = {
   daoId: string;
   replyTo: string | undefined;
   replies: DraftCommentIndex[];
-  processingTimeStamp: number | null;
-};
+}

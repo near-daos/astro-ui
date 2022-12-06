@@ -102,7 +102,7 @@ export const ProposalsFeedFilters: FC<Props> = ({ className }) => {
       </div>
 
       <div className={styles.last}>
-        <FeedSort />
+        <FeedSort field="createTimestamp" />
       </div>
 
       <div className={styles.mobileFilters}>

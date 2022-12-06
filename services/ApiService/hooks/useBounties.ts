@@ -27,7 +27,7 @@ export async function fetcher(
   limit: number,
   offset: number
 ): Promise<PaginationResponse<BountyContext[]>> {
-  const sort = bountySort ?? 'creatingTimeStamp,DESC';
+  const sort = bountySort ?? 'createTimestamp,DESC';
   const sortOptions = sort.split(',');
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL

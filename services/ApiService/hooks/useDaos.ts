@@ -18,7 +18,7 @@ export async function fetcher(
   daosView = 'active',
   limit: number,
   offset: number,
-  sort = 'creatingTimeStamp,DESC'
+  sort = 'createTimestamp,DESC'
 ): Promise<PaginationResponse<DaoFeedItem[]>> {
   const sortOptions = sort.split(',');
   const baseUrl = process.browser

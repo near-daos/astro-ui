@@ -55,8 +55,8 @@ export function mapDaoIndexToDao(daoIndex: DaoIndex): DAO {
   const numberOfMembers = daoMembersList.length;
 
   return {
-    createdAt: daoIndex.creatingTimeStamp
-      ? new Date(toMillis(daoIndex.creatingTimeStamp)).toISOString()
+    createdAt: daoIndex.createTimestamp
+      ? new Date(toMillis(daoIndex.createTimestamp)).toISOString()
       : '',
     id: daoIndex.id,
     members: numberOfMembers,

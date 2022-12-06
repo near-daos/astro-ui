@@ -11,11 +11,11 @@ export function getSortOptions(t: TFunction): {
     },
     {
       label: t('allDAOsFilter.newest'),
-      value: 'creatingTimeStamp,DESC',
+      value: 'createTimestamp,DESC',
     },
     {
       label: t('allDAOsFilter.oldest'),
-      value: 'creatingTimeStamp,ASC',
+      value: 'createTimestamp,ASC',
     },
     {
       label: t('allDAOsFilter.biggestFunds'),
