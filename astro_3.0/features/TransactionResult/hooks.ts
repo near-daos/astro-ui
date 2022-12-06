@@ -20,7 +20,6 @@ import {
 import { DELEGATE_VOTING_KEY, STAKE_TOKENS_KEY } from 'constants/localStorage';
 
 import { useWalletContext } from 'context/WalletContext';
-import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 
 import { useUpdateGovernanceTokenWizardProgress } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/hooks';
 
@@ -177,30 +176,26 @@ export function useWalletTransactionResult(): void {
   const { currentWallet } = useWalletContext();
 
   useEffect(() => {
-    if (
-      currentWallet === WalletType.SELECTOR_NEAR ||
-      currentWallet === WalletType.SELECTOR_SENDER
-    ) {
-      return;
-    }
+    // eslint-disable-next-line no-console
+    console.log(currentWallet);
 
-    const { searchParams } = new URL(window.location.toString());
-
-    const callback = window.opener?.sputnikRequestSignTransactionCompleted;
-
-    if (typeof callback === 'function') {
-      const transactionHashes =
-        searchParams.get('transactionHashes') || undefined;
-      const errorCode = (searchParams.get('errorCode') ||
-        undefined) as SputnikWalletErrorCodes;
-
-      callback?.({ transactionHashes, errorCode });
-
-      setTimeout(() => {
-        window.close();
-      }, 1000);
-    } else {
-      window.close();
-    }
+    // const { searchParams } = new URL(window.location.toString());
+    //
+    // const callback = window.opener?.sputnikRequestSignTransactionCompleted;
+    //
+    // if (typeof callback === 'function') {
+    //   const transactionHashes =
+    //     searchParams.get('transactionHashes') || undefined;
+    //   const errorCode = (searchParams.get('errorCode') ||
+    //     undefined) as SputnikWalletErrorCodes;
+    //
+    //   callback?.({ transactionHashes, errorCode });
+    //
+    //   setTimeout(() => {
+    //     window.close();
+    //   }, 1000);
+    // } else {
+    //   window.close();
+    // }
   }, [currentWallet]);
 }
