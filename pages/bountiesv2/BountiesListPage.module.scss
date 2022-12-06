@@ -1,0 +1,36 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-row-gap: 0;
+  grid-template-columns: 1fr;
+  grid-template-rows: 100px 100px 1fr;
+  padding: 0 64px 0 96px;
+
+  // @include tablet-landscape {
+  //   grid-row-gap: 12px;
+  //   padding-top: 40px;
+  // }
+
+  // @include desktop {
+  //   padding-top: 56px;
+  // }
+}
+
+.bountyList {
+  display: flex;
+  flex-direction: column;
+  div {
+    display: flex;
+  }
+
+  .header {
+    grid-column-gap: 4px;
+  }
+
+  .row {
+    margin: 10px;
+    width: 100vw;
+  }
+}

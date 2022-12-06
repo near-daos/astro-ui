@@ -36,7 +36,7 @@ export type DaoVersion = {
   changelogUrl: string;
 };
 
-type DaoProperties = {
+export type DaoProperties = {
   id: string;
   name: string;
   description: string;
