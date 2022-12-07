@@ -13,7 +13,7 @@
     color: rgba(0, 0, 0, 0.5);
     display: grid;
     font-weight: 700;
-    grid-template-columns: 40px 40px 1fr 1fr 2fr 2fr 1fr 1fr 50px 50px;
+    grid-template-columns: 40px 1fr 1fr 2fr 2fr 1fr 1fr 50px 50px;
     letter-spacing: 0.07em;
     margin: 5px 0 20px;
   }
@@ -26,7 +26,7 @@
 
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: 40px 40px 1fr 1fr 2fr 2fr 1fr 1fr 50px 50px;
+    grid-template-columns: 40px 1fr 1fr 2fr 2fr 1fr 1fr 50px 50px;
     margin: 5px 0 20px;
 
     button {

@@ -1,3 +1,5 @@
+/* stylelint-disable max-nesting-depth */
+
 @import 'styles/typography';
 @import 'styles/mixins';
 
@@ -5,32 +7,28 @@
   display: grid;
   grid-row-gap: 0;
   grid-template-columns: 1fr;
-  grid-template-rows: 100px 100px 1fr;
+  grid-template-rows: 100px 50px 1fr;
   padding: 0 64px 0 96px;
 
-  // @include tablet-landscape {
-  //   grid-row-gap: 12px;
-  //   padding-top: 40px;
-  // }
-
-  // @include desktop {
-  //   padding-top: 56px;
-  // }
-}
-
-.bountyList {
-  display: flex;
-  flex-direction: column;
-  div {
+  .quickFilter {
     display: flex;
-  }
+    font-size: 0.8em;
 
-  .header {
-    grid-column-gap: 4px;
-  }
+    .icon {
+      height: 10px;
+      margin-right: 5px;
+    }
 
-  .row {
-    margin: 10px;
-    width: 100vw;
+    .item {
+      align-items: center;
+      background-color: var(--color-white);
+      border: 1px solid var(--color-neutral-40);
+      border-radius: 100px;
+      cursor: pointer;
+      display: flex;
+      height: 40px;
+      margin-right: 8px;
+      padding: 8px 12px;
+    }
   }
 }

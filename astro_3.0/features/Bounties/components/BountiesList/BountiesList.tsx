@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useRouter } from 'next/router';
 import { formatDistanceToNow } from 'date-fns';
 
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
@@ -19,8 +18,6 @@ interface BountiesListProps {
 }
 
 export const BountiesList: FC<BountiesListProps> = ({ bounties }) => {
-  const router = useRouter();
-
   if (!bounties?.length) {
     return <NoResultsView title="no results" />;
   }
@@ -29,7 +26,6 @@ export const BountiesList: FC<BountiesListProps> = ({ bounties }) => {
     <div className={styles.bountiesList}>
       {/* Headers */}
       <div className={styles.header}>
-        <div />
         <div />
         <div>ORG</div>
         <div>TYPE</div>
@@ -69,7 +65,7 @@ export const BountiesList: FC<BountiesListProps> = ({ bounties }) => {
 
         return (
           <div className={styles.row}>
-            <div>
+            {/* <div>
               <IconButton
                 size="medium"
                 icon="buttonBookmark2"
@@ -78,7 +74,7 @@ export const BountiesList: FC<BountiesListProps> = ({ bounties }) => {
                   // TODO
                 }}
               />
-            </div>
+            </div> */}
 
             <div>
               <div
@@ -114,15 +110,11 @@ export const BountiesList: FC<BountiesListProps> = ({ bounties }) => {
                 size="medium"
                 icon="buttonArrowRight"
                 className={styles.icon}
-                onClick={() =>
-                  router.push({
-                    pathname: '/dao/[dao]/proposals/[proposal]',
-                    query: {
-                      dao: bounty.daoId,
-                      proposal: bounty.proposalId,
-                    },
-                  })
-                }
+                onClick={() => {
+                  window.open(
+                    `/dao/${bounty.proposal?.dao?.id}/proposals/${bounty.proposal?.id}`
+                  );
+                }}
               />
             </div>
           </div>
