@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { TransactionResult, TransactionResultType } from 'types/transaction';
-import { WalletType } from 'types/config';
 import { CreateGovernanceTokenSteps } from 'types/settings';
 
 import {
@@ -29,10 +28,7 @@ export function useSelectorWalletTransactionResult(): void {
   const { update } = useUpdateGovernanceTokenWizardProgress();
 
   useEffect(() => {
-    if (
-      currentWallet !== WalletType.SELECTOR_NEAR &&
-      currentWallet !== WalletType.SELECTOR_SENDER
-    ) {
+    if (!currentWallet) {
       return;
     }
 
