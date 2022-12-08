@@ -33,6 +33,7 @@
     "@near-wallet-selector/meteor-wallet": "^7.3.0",
     "@near-wallet-selector/modal-ui": "^7.3.0",
     "@near-wallet-selector/my-near-wallet": "^7.3.0",
+    "@near-wallet-selector/near-wallet": "^7.3.0",
     "@near-wallet-selector/sender": "^7.3.0",
     "@nestjsx/crud-request": "^5.0.0-alpha.3",
     "@popperjs/core": "^2.9.2",
