@@ -48,7 +48,7 @@ export const BountiesList: FC<BountiesListProps> = ({ bounties }) => {
         const timestamp =
           bounty.creatingTimeStamp ?? bounty.processingTimeStamp;
 
-        let recency = 'N/A';
+        let recency = '';
 
         if (timestamp) {
           recency = formatDistanceToNow(new Date(timestamp));

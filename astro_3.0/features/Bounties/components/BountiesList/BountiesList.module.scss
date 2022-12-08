@@ -1,4 +1,5 @@
 /* stylelint-disable max-nesting-depth */
+/* stylelint-disable selector-max-compound-selectors */
 
 .bountiesList {
   font-size: 0.8em;
@@ -28,6 +29,14 @@
     display: grid;
     grid-template-columns: 40px 1fr 1fr 2fr 2fr 1fr 1fr 50px 50px;
     margin: 5px 0 20px;
+
+    div {
+      display: block;
+      overflow: hidden;
+      padding: 1px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
     button {
       margin: 5px 10px;

@@ -1,12 +1,17 @@
 import React, { VFC, useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { DebouncedInput } from 'components/inputs/Input';
 
 import axios from 'axios';
 import { appConfig } from 'config';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { BountiesList } from 'astro_3.0/features/Bounties/components/BountiesList';
 import { Loader } from 'components/loader';
-import { BountyIndex, OpenSearchResponse } from 'services/SearchService/types';
+import {
+  BountyIndex,
+  OpenSearchQuery,
+  OpenSearchResponse,
+} from 'services/SearchService/types';
 
 import { Icon } from 'components/Icon';
 
@@ -35,7 +40,7 @@ const fetch = (filter: Filter, from = 0) => {
         },
       })) ?? ([] as Record<string, unknown>[]);
 
-  const query = {
+  const query: OpenSearchQuery = {
     bool: {
       must: [
         {
@@ -52,10 +57,10 @@ const fetch = (filter: Filter, from = 0) => {
     },
   };
 
-  if (tagsQueries.length) {
-    query.bool.must.push({
-      bool: {
-        should: tagsQueries,
+  if (filter.daoId) {
+    query.bool?.must?.push({
+      match: {
+        daoId: filter.daoId,
       },
     });
   }
@@ -71,6 +76,7 @@ const fetch = (filter: Filter, from = 0) => {
 };
 
 type Filter = {
+  daoId: string;
   tags: string[];
   statuses: {
     InProgress: boolean;
@@ -91,6 +97,7 @@ const BountiesListPage: VFC = () => {
   const [error, setError] = useState();
   const [paginationTotal, setPaginationTotal] = useState(0);
   const [filter, setFilter] = useState<Filter>({
+    daoId: '',
     // tags: ['edwardtest'],
     tags: [],
     statuses: {
@@ -99,6 +106,10 @@ const BountiesListPage: VFC = () => {
       Rejected: false,
     },
   });
+
+  // useDebounce(()=>{
+
+  // })
 
   useEffect(() => {
     fetch(filter)
@@ -138,7 +149,31 @@ const BountiesListPage: VFC = () => {
 
   return (
     <main className={styles.root}>
-      <h1>Bounties</h1>
+      <div className={styles.filter}>
+        <h3>FILTERS</h3>
+        <div className={styles.label}>DAO ID</div>
+        <div className={styles.input}>
+          <DebouncedInput
+            onValueChange={val => {
+              setFilter({ ...filter, daoId: val as string });
+            }}
+            size="block"
+          />
+        </div>
+
+        <div className={styles.label}>Tags</div>
+        <div className={styles.input}>
+          <DebouncedInput
+            onValueChange={val => {
+              const tags = (val as string).trim();
+
+              setFilter({ ...filter, tags: tags ? tags.split(',') : [] });
+            }}
+            size="block"
+          />
+        </div>
+      </div>
+      <h1 className={styles.title}>Bounties</h1>
       <div className={styles.quickFilter}>
         {Object.entries(STATUS_LIST).map(([key, value]) => {
           const status = value as keyof typeof filter.statuses;
@@ -166,28 +201,30 @@ const BountiesListPage: VFC = () => {
         })}
       </div>
 
-      <InfiniteScroll
-        dataLength={bounties.length}
-        next={async () => {
-          const res = await fetch(filter, bounties.length);
-          const bountyIndexes =
-            res.data?.hits?.hits?.map(hit => {
-              const { _source: rawBounty } = hit;
+      <div className={styles.bounties}>
+        <InfiniteScroll
+          dataLength={bounties.length}
+          next={async () => {
+            const res = await fetch(filter, bounties.length);
+            const bountyIndexes =
+              res.data?.hits?.hits?.map(hit => {
+                const { _source: rawBounty } = hit;
 
-              return rawBounty;
-            }) ?? ([] as BountyIndex[]);
+                return rawBounty;
+              }) ?? ([] as BountyIndex[]);
 
-          setBounties(bounties.concat(bountyIndexes as BountyIndex[]));
-          setPaginationTotal(res.data.hits.total.value);
-          setError(undefined);
-        }}
-        hasMore={bounties.length < paginationTotal}
-        loader={<div>loading....</div>}
-        style={{ overflow: 'initial' }}
-        endMessage={<div>No more results</div>}
-      >
-        {renderContent()}
-      </InfiniteScroll>
+            setBounties(bounties.concat(bountyIndexes as BountyIndex[]));
+            setPaginationTotal(res.data.hits.total.value);
+            setError(undefined);
+          }}
+          hasMore={bounties.length < paginationTotal}
+          loader={<div>loading....</div>}
+          style={{ overflow: 'initial' }}
+          endMessage=""
+        >
+          {renderContent()}
+        </InfiniteScroll>
+      </div>
     </main>
   );
 };
