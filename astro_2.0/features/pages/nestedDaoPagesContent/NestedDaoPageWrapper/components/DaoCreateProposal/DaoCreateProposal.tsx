@@ -57,7 +57,7 @@ export const DaoCreateProposal: FC<Props> = ({
       proposalVariant={defaultProposalType}
       showFlag={false}
       onCreate={handleProposalDone}
-      onClose={handleProposalDone}
+      onClose={() => toggleCreateProposal()}
     />
   );
 };
