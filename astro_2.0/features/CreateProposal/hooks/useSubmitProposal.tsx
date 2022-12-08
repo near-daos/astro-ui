@@ -271,13 +271,9 @@ export function useSubmitProposal({
               });
             }
 
-            if (onCreate && isMounted()) {
-              onCreate(newProposalId);
-            }
-
-            await onClose();
-
             if (redirectAfterCreation) {
+              await onClose();
+
               await router.push({
                 pathname: SINGLE_PROPOSAL_PAGE_URL,
                 query: {
@@ -287,6 +283,12 @@ export function useSubmitProposal({
                   fromCreate: true,
                 },
               });
+            } else {
+              if (onCreate && isMounted()) {
+                onCreate(newProposalId);
+              }
+
+              await onClose();
             }
           } catch (err) {
             showNotification({
