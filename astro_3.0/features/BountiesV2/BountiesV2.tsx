@@ -3,19 +3,18 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { DebouncedInput } from 'components/inputs/Input';
 
 import axios from 'axios';
+import { Icon } from 'components/Icon';
 import { appConfig } from 'config';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
-import { BountiesList } from 'astro_3.0/features/Bounties/components/BountiesList';
 import { Loader } from 'components/loader';
 import {
   BountyIndex,
   OpenSearchQuery,
   OpenSearchResponse,
 } from 'services/SearchService/types';
+import { BountiesList } from './BountiesList';
 
-import { Icon } from 'components/Icon';
-
-import styles from './BountiesListPage.module.scss';
+import styles from './BountiesV2.module.scss';
 
 const PAGING_SIZE = 50;
 
@@ -71,6 +70,11 @@ const fetch = (filter: Filter, from = 0) => {
       from,
       size: PAGING_SIZE,
       query,
+      sort: {
+        creatingTimeStamp: {
+          order: 'desc',
+        },
+      },
     }
   );
 };
@@ -91,14 +95,13 @@ const STATUS_LIST = {
   Rejected: 'Rejected',
 };
 
-const BountiesListPage: VFC = () => {
+export const BountiesV2: VFC = () => {
   const [bounties, setBounties] = useState<BountyIndex[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
   const [paginationTotal, setPaginationTotal] = useState(0);
   const [filter, setFilter] = useState<Filter>({
     daoId: '',
-    // tags: ['edwardtest'],
     tags: [],
     statuses: {
       InProgress: false,
@@ -107,11 +110,8 @@ const BountiesListPage: VFC = () => {
     },
   });
 
-  // useDebounce(()=>{
-
-  // })
-
   useEffect(() => {
+    setLoading(true);
     fetch(filter)
       .then(res => {
         const bountyIndexes =
@@ -218,7 +218,7 @@ const BountiesListPage: VFC = () => {
             setError(undefined);
           }}
           hasMore={bounties.length < paginationTotal}
-          loader={<div>loading....</div>}
+          loader={<Loader />}
           style={{ overflow: 'initial' }}
           endMessage=""
         >
@@ -228,5 +228,3 @@ const BountiesListPage: VFC = () => {
     </main>
   );
 };
-
-export default BountiesListPage;

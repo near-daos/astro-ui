@@ -6,6 +6,7 @@ import { DATA_SEPARATOR } from 'constants/common';
 import { getDaoAvatar } from 'astro_3.0/features/Sidebar/helpers';
 import { IconButton } from 'components/button/IconButton';
 import { formatYoktoValue, kFormatter } from 'utils/format';
+import { CopyButton } from 'astro_2.0/components/CopyButton';
 
 import { BountyIndex } from 'services/SearchService/types';
 import { ProposalType } from 'types/proposal';
@@ -64,18 +65,7 @@ export const BountiesList: FC<BountiesListProps> = ({ bounties }) => {
         }
 
         return (
-          <div className={styles.row}>
-            {/* <div>
-              <IconButton
-                size="medium"
-                icon="buttonBookmark2"
-                className={styles.icon}
-                onClick={() => {
-                  // TODO
-                }}
-              />
-            </div> */}
-
+          <div className={styles.row} key={bounty.id}>
             <div>
               <div
                 className={styles.daoLogo}
@@ -96,13 +86,10 @@ export const BountiesList: FC<BountiesListProps> = ({ bounties }) => {
             <div>{recency}</div>
             <div className={styles.amount}>{amount} NEAR</div>
             <div>
-              <IconButton
-                size="medium"
-                icon="buttonShare"
+              <CopyButton
+                text={`/dao/${bounty.proposal?.dao?.id}/proposals/${bounty.proposal?.id}`}
+                tooltipPlacement="auto"
                 className={styles.icon}
-                onClick={() => {
-                  // TODO
-                }}
               />
             </div>
             <div>
