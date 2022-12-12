@@ -8,6 +8,8 @@ import { ALL_FEED_URL } from 'constants/routing';
 import { CookieService } from 'services/CookieService';
 import { NotificationsService } from 'services/NotificationsService';
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
+import { getClient } from 'utils/launchdarkly-server-client';
+import { fetcher as getUserContacts } from 'services/ApiService/hooks/useUserContacts';
 
 import MyAccountPage, { MyAccountPageProps } from './MyAccountPage';
 
@@ -25,9 +27,17 @@ export const getServerSideProps: GetServerSideProps<
     };
   }
 
-  const contactsConfig = await NotificationsService.getUserContactConfig(
-    accountId
+  const client = await getClient();
+  const flags = await client.allFlagsState({
+    key: accountId ?? '',
+  });
+  const useOpenSearchDataApiUserContacts = flags.getFlagValue(
+    'useOpenSearchDataApiUserContacts'
   );
+
+  const contactsConfig = useOpenSearchDataApiUserContacts
+    ? await getUserContacts('userContacts', accountId)
+    : await NotificationsService.getUserContactConfig(accountId);
 
   const notyConfig = await NotificationsService.getNotificationsSettings(
     accountId
