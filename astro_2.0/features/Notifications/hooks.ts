@@ -594,7 +594,32 @@ export function useNotificationsListOpenSearch(reactOnUpdates?: boolean): {
           isArchived,
         });
 
-        await mutate();
+        await mutate(
+          currentData => {
+            if (!currentData) {
+              return undefined;
+            }
+
+            return currentData.map(cur => {
+              return {
+                ...cur,
+                data: cur?.data.map(d => {
+                  if (d.id === id) {
+                    return {
+                      ...d,
+                      isRead: !d.isRead,
+                    };
+                  }
+
+                  return d;
+                }),
+              };
+            });
+          },
+          {
+            revalidate: false,
+          }
+        );
 
         triggerUpdate();
       }
@@ -650,7 +675,21 @@ export function useNotificationsListOpenSearch(reactOnUpdates?: boolean): {
           isArchived,
         });
 
-        await mutate();
+        await mutate(
+          currentData => {
+            if (!currentData) {
+              return undefined;
+            }
+
+            return currentData.map(cur => {
+              return {
+                total: cur.total - 1,
+                data: cur.data.filter(d => d.id !== id),
+              };
+            });
+          },
+          { revalidate: false }
+        );
 
         triggerUpdate();
       }

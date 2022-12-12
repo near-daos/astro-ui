@@ -2,11 +2,12 @@ import { GetServerSideProps } from 'next';
 import { getClient } from 'utils/launchdarkly-server-client';
 import { CookieService } from 'services/CookieService';
 import { SputnikHttpService } from 'services/sputnik';
-import { OpenSearchApiService } from 'services/SearchService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { DaoFeedItem } from 'types/dao';
 import { getTranslations } from 'utils/getTranslations';
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
+
+import { fetcher as getDaos } from 'services/ApiService/hooks/useAccountDaos';
 
 import MyDaosPage from './MyDaosPage';
 
@@ -27,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   if (account) {
     accountDaos = useOpenSearchDataApi
-      ? await new OpenSearchApiService().getAccountDaos(account)
+      ? (await getDaos('accountDaos', account)) ?? []
       : await SputnikHttpService.getAccountDaos(account);
   }
 
