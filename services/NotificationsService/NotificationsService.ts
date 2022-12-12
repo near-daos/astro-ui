@@ -211,17 +211,15 @@ class NotificationsServiceClass {
   public async updateNotification(
     id: string,
     params: UpdateNotificationParams
-  ): Promise<Notification> {
-    const response = await this.httpService.patch<
+  ): Promise<void> {
+    await this.httpService.patch<
       UpdateNotificationParams,
       AxiosResponse<NotificationDTO>
-    >(`/account-notifications/${id}`, params, {
+    >(`/account-notifications/${params.accountId}/${id}`, params, {
       queryRequest: {
         name: API_QUERIES.UPDATE_NOTIFICATION,
       },
     });
-
-    return mapNotificationDtoToNotification([response.data])[0];
   }
 
   public async readAllNotifications(

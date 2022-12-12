@@ -11,6 +11,11 @@ import { SearchResultsData } from 'types/search';
 import { DaoPolicy } from 'services/sputnik/types/policy';
 import { DAO as TDAO, DaoDelegation, DaoVersion } from 'types/dao';
 import { Settings } from 'types/settings';
+import {
+  NotificationMetadata,
+  NotificationStatus,
+  NotifiedActionType,
+} from 'types/notification';
 
 export type BaseParams = {
   id?: string;
@@ -294,4 +299,37 @@ export interface DraftCommentIndex extends OffChainEntity {
   daoId: string;
   replyTo: string | undefined;
   replies: DraftCommentIndex[];
+}
+
+export interface AccountNotificationIndex {
+  accountId: string;
+  accounts: string;
+  dao: {
+    metadata: {
+      flagLogo: string;
+      flagCover: string;
+    };
+  };
+  daoId: string;
+  description: string;
+  id: string;
+  index: 'AccountNotification';
+  indexedBy: 'Enrichment Lambda';
+  processingTimeStamp: number;
+  isArchived: boolean;
+  isPhone: boolean;
+  isRead: boolean;
+  ttl: number;
+  notification: {
+    metadata: NotificationMetadata;
+    signerId: string | null;
+    targetId: string;
+    id: string;
+    type: NotifiedActionType;
+    status: NotificationStatus;
+    timestamp: string;
+  };
+  creatingTimeStamp: number;
+  isEmail: boolean;
+  isMuted: boolean;
 }

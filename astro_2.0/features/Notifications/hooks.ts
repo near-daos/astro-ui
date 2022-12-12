@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import get from 'lodash/get';
 import isNil from 'lodash/isNil';
 import omitBy from 'lodash/omitBy';
@@ -25,6 +25,7 @@ import { mapNotificationDtoToNotification } from 'services/NotificationsService/
 
 import { dispatchCustomEvent } from 'utils/dispatchCustomEvent';
 import { NOTIFICATIONS_UPDATED } from 'features/notifications/notificationConstants';
+import { useNotificationsInfinite } from 'services/ApiService/hooks/useNotifications';
 
 import { DAO_RELATED_SETTINGS, PLATFORM_RELATED_SETTINGS } from './helpers';
 
@@ -347,24 +348,13 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
           }),
         });
 
-        const res = await NotificationsService.updateNotification(id, {
+        await NotificationsService.updateNotification(id, {
           accountId,
           publicKey,
           signature,
           isRead,
           isMuted,
           isArchived,
-        });
-
-        setNotifications({
-          ...notifications,
-          data: notifications?.data?.map(item => {
-            if (item.id === res.id) {
-              return res;
-            }
-
-            return item;
-          }),
         });
 
         triggerUpdate();
@@ -483,4 +473,199 @@ export function useNotificationsCount(): number | null {
   }, [handleUpdates]);
 
   return counter;
+}
+
+export function useNotificationsListOpenSearch(reactOnUpdates?: boolean): {
+  notifications: PaginationResponse<Notification[]> | null;
+  loadMore: () => void;
+  loading: boolean;
+  hasMore: boolean;
+  dataLength: number;
+  handleRemove: (
+    id: string,
+    {
+      isMuted,
+      isRead,
+      isArchived,
+    }: {
+      isMuted: boolean;
+      isRead: boolean;
+      isArchived: boolean;
+    }
+  ) => void;
+  handleUpdate: (
+    id: string,
+    {
+      isMuted,
+      isRead,
+      isArchived,
+    }: {
+      isMuted: boolean;
+      isRead: boolean;
+      isArchived: boolean;
+    }
+  ) => void;
+  handleUpdateAll: (action: 'READ' | 'ARCHIVE') => void;
+} {
+  const { socket } = useSocket();
+  const { accountId, pkAndSignature } = useWalletContext();
+  const { data: accountDaos } = useAccountDaos();
+  const { data: subscribedDaos } = useSubscribedDaos();
+
+  const isMounted = useMountedState();
+
+  const accountDaosIds = useMemo(() => {
+    return accountDaos?.map(item => item.id) ?? [];
+  }, [accountDaos]);
+
+  const subscribedDaosIds = useMemo(() => {
+    return subscribedDaos?.map(item => item.id) ?? [];
+  }, [subscribedDaos]);
+
+  const { size, setSize, data, isValidating, mutate } =
+    useNotificationsInfinite(accountDaosIds, subscribedDaosIds);
+
+  const handleLoadMore = useCallback(() => setSize(size + 1), [setSize, size]);
+
+  const notificationsData = useMemo(() => {
+    return {
+      data:
+        data?.reduce<Notification[]>((acc, item) => {
+          acc.push(...item.data);
+
+          return acc;
+        }, []) ?? [],
+      total: 0,
+    };
+  }, [data]);
+
+  const hasMore = data
+    ? data[data?.length - 1].data.length === LIST_LIMIT_DEFAULT
+    : false;
+
+  const dataLength = data?.length ?? 0;
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('account-notification', async () => {
+        await mutate();
+      });
+    }
+  }, [mutate, socket]);
+
+  const triggerUpdate = useCallback(() => {
+    dispatchCustomEvent(NOTIFICATIONS_UPDATED, true);
+  }, []);
+
+  const handleUpdates = useCallback(async () => {
+    await mutate();
+  }, [mutate]);
+
+  useEffect(() => {
+    if (reactOnUpdates) {
+      document.addEventListener(
+        NOTIFICATIONS_UPDATED,
+        handleUpdates as EventListener
+      );
+    }
+
+    return () =>
+      document.removeEventListener(
+        NOTIFICATIONS_UPDATED,
+        handleUpdates as EventListener
+      );
+  }, [handleUpdates, reactOnUpdates]);
+
+  const handleUpdate = useCallback(
+    async (id, { isRead, isMuted, isArchived }) => {
+      if (!pkAndSignature) {
+        return;
+      }
+
+      const { publicKey, signature } = pkAndSignature;
+
+      if (accountId && publicKey && signature && isMounted()) {
+        await NotificationsService.updateNotification(id, {
+          accountId,
+          publicKey,
+          signature,
+          isRead,
+          isMuted,
+          isArchived,
+        });
+
+        await mutate();
+
+        triggerUpdate();
+      }
+    },
+    [pkAndSignature, accountId, isMounted, mutate, triggerUpdate]
+  );
+
+  const handleUpdateAll = useCallback(
+    async (action: 'READ' | 'ARCHIVE') => {
+      if (!pkAndSignature) {
+        return;
+      }
+
+      const { publicKey, signature } = pkAndSignature;
+
+      if (accountId && publicKey && signature && isMounted()) {
+        if (action === 'READ') {
+          await NotificationsService.readAllNotifications({
+            accountId,
+            publicKey,
+            signature,
+          });
+          triggerUpdate();
+        } else if (action === 'ARCHIVE') {
+          await NotificationsService.archiveAllNotifications({
+            accountId,
+            publicKey,
+            signature,
+          });
+        }
+
+        await mutate();
+      }
+    },
+    [accountId, isMounted, mutate, triggerUpdate, pkAndSignature]
+  );
+
+  const handleRemove = useCallback(
+    async (id: string, { isRead, isMuted, isArchived }) => {
+      if (!pkAndSignature) {
+        return;
+      }
+
+      const { publicKey, signature } = pkAndSignature;
+
+      if (accountId && publicKey && signature && isMounted()) {
+        await NotificationsService.updateNotification(id, {
+          accountId,
+          publicKey,
+          signature,
+          isRead,
+          isMuted,
+          isArchived,
+        });
+
+        await mutate();
+
+        triggerUpdate();
+      }
+    },
+    [pkAndSignature, accountId, isMounted, mutate, triggerUpdate]
+  );
+
+  return {
+    notifications: notificationsData,
+    loadMore: handleLoadMore,
+    hasMore,
+    dataLength,
+    handleRemove,
+    handleUpdate,
+    handleUpdateAll,
+    loading: isValidating,
+  };
 }
