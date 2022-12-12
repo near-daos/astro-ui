@@ -1,6 +1,8 @@
-import React, { VFC, useState, useEffect } from 'react';
+import React, { VFC, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { DebouncedInput } from 'components/inputs/Input';
+
+import { useUpdateEffect } from 'react-use';
 
 import axios from 'axios';
 import { Icon } from 'components/Icon';
@@ -18,7 +20,12 @@ import styles from './BountiesV2.module.scss';
 
 const PAGING_SIZE = 50;
 
-const fetch = (filter: Filter, from = 0) => {
+export type BountiesData = { total: number; bounties: BountyIndex[] };
+
+export const fetchBounties = async (
+  filter: Filter,
+  from = 0
+): Promise<BountiesData> => {
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
     : appConfig.SEARCH_API_URL;
@@ -64,7 +71,7 @@ const fetch = (filter: Filter, from = 0) => {
     });
   }
 
-  return axios.post<unknown, { data: OpenSearchResponse }>(
+  const res = await axios.post<unknown, { data: OpenSearchResponse }>(
     `${baseUrl}/bounty/_search`,
     {
       from,
@@ -77,6 +84,18 @@ const fetch = (filter: Filter, from = 0) => {
       },
     }
   );
+
+  const bountyIndexes =
+    res.data?.hits?.hits?.map(hit => {
+      const { _source: rawBounty } = hit;
+
+      return rawBounty;
+    }) ?? [];
+
+  return {
+    total: res.data?.hits?.total.value,
+    bounties: bountyIndexes as BountyIndex[],
+  };
 };
 
 type Filter = {
@@ -95,11 +114,19 @@ const STATUS_LIST = {
   Rejected: 'Rejected',
 };
 
-export const BountiesV2: VFC = () => {
-  const [bounties, setBounties] = useState<BountyIndex[]>([]);
-  const [loading, setLoading] = useState(true);
+interface Props {
+  initialData: BountiesData | null;
+}
+
+export const BountiesV2: VFC<Props> = ({ initialData }) => {
+  const [bounties, setBounties] = useState<BountyIndex[]>(
+    initialData?.bounties ?? []
+  );
+
   const [error, setError] = useState();
-  const [paginationTotal, setPaginationTotal] = useState(0);
+  const [paginationTotal, setPaginationTotal] = useState(
+    initialData?.total ?? 0
+  );
   const [filter, setFilter] = useState<Filter>({
     daoId: '',
     tags: [],
@@ -110,20 +137,11 @@ export const BountiesV2: VFC = () => {
     },
   });
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(filter)
-      .then(res => {
-        const bountyIndexes =
-          res.data?.hits?.hits?.map(hit => {
-            const { _source: rawBounty } = hit;
-
-            return rawBounty;
-          }) ?? ([] as BountyIndex[]);
-
-        setBounties(bountyIndexes as BountyIndex[]);
-        setPaginationTotal(res.data.hits.total.value);
-        setLoading(false);
+  useUpdateEffect(() => {
+    fetchBounties(filter)
+      .then(bountiesData => {
+        setBounties(bountiesData.bounties);
+        setPaginationTotal(bountiesData.total);
         setError(undefined);
       })
       .catch(err => {
@@ -132,10 +150,6 @@ export const BountiesV2: VFC = () => {
   }, [filter]);
 
   const renderContent = () => {
-    if (loading) {
-      return <Loader />;
-    }
-
     if (!bounties?.length) {
       return <NoResultsView title="no results" />;
     }
@@ -205,16 +219,10 @@ export const BountiesV2: VFC = () => {
         <InfiniteScroll
           dataLength={bounties.length}
           next={async () => {
-            const res = await fetch(filter, bounties.length);
-            const bountyIndexes =
-              res.data?.hits?.hits?.map(hit => {
-                const { _source: rawBounty } = hit;
+            const bountiesData = await fetchBounties(filter, bounties.length);
 
-                return rawBounty;
-              }) ?? ([] as BountyIndex[]);
-
-            setBounties(bounties.concat(bountyIndexes as BountyIndex[]));
-            setPaginationTotal(res.data.hits.total.value);
+            setBounties(bounties.concat(bountiesData.bounties));
+            setPaginationTotal(bountiesData.total);
             setError(undefined);
           }}
           hasMore={bounties.length < paginationTotal}
