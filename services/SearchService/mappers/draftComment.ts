@@ -4,6 +4,10 @@ import { DraftCommentIndex } from 'services/SearchService/types';
 export function mapDraftCommentIndexToDraftComment(
   index: DraftCommentIndex
 ): DraftComment {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const createTime = index.creatingTimeStamp || index.createTimestamp;
+
   return {
     id: index.id,
     contextId: index.contextId,
@@ -16,9 +20,7 @@ export function mapDraftCommentIndexToDraftComment(
       [],
     likeAccounts: index.likeAccounts ?? [],
     dislikeAccounts: index.dislikeAccounts ?? [],
-    createdAt: index.creatingTimeStamp
-      ? new Date(index.creatingTimeStamp).toISOString()
-      : '',
+    createdAt: createTime ? new Date(createTime).toISOString() : '',
     updatedAt: index.processingTimeStamp
       ? new Date(index.processingTimeStamp).toISOString()
       : '',
