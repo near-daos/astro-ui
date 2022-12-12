@@ -47,26 +47,32 @@ const ProposalsPage: VFC<ProposalsPageProps> = props => {
 
   useBlockchainWarning();
 
+  function renderFeed() {
+    if (useOpenSearchDataApiFeed === undefined) {
+      return null;
+    }
+
+    return useOpenSearchDataApiFeed ? (
+      <DaoProposalsFeed />
+    ) : (
+      <FeedProposals
+        dao={dao}
+        key={dao.id}
+        showFlag={false}
+        title={t('proposals')}
+        initialProposals={initialProposalsData}
+        initialProposalsStatusFilterValue={initialProposalsStatusFilterValue}
+      />
+    );
+  }
+
   return (
     <SWRConfig value={{ fallback }}>
       <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
         <Head>
           <title>DAO Proposals</title>
         </Head>
-        {useOpenSearchDataApiFeed ? (
-          <DaoProposalsFeed />
-        ) : (
-          <FeedProposals
-            dao={dao}
-            key={dao.id}
-            showFlag={false}
-            title={t('proposals')}
-            initialProposals={initialProposalsData}
-            initialProposalsStatusFilterValue={
-              initialProposalsStatusFilterValue
-            }
-          />
-        )}
+        {renderFeed()}
       </NestedDaoPageWrapper>
     </SWRConfig>
   );

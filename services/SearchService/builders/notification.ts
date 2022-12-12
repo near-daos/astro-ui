@@ -2,10 +2,11 @@ import { OpenSearchQuery } from 'services/SearchService/types';
 
 export function buildNotificationsQuery(query: {
   filter: string;
+  accountId: string;
   accountDaosIds: string[];
   subscribedDaosIds: string[];
 }): OpenSearchQuery {
-  let q: OpenSearchQuery = {
+  const q: OpenSearchQuery = {
     bool: {
       must: [] as Record<string, unknown>[],
       must_not: [] as Record<string, unknown>[],
@@ -42,29 +43,25 @@ export function buildNotificationsQuery(query: {
 
       break;
     }
-    case 'archived': {
-      q.bool?.must?.push({
-        simple_query_string: {
-          query: true,
-          fields: ['isArchived'],
-        },
-      });
-
-      break;
-    }
     default: {
       // nothing
       break;
     }
   }
 
-  if (
-    !q.bool?.must?.length &&
-    !q.bool?.must_not?.length &&
-    !q.bool?.should?.length
-  ) {
-    q = { match_all: {} };
-  }
+  q.bool?.must?.push({
+    simple_query_string: {
+      query: query.filter === 'archived',
+      fields: ['isArchived'],
+    },
+  });
+
+  q.bool?.must?.push({
+    simple_query_string: {
+      query: `"${query.accountId}"`,
+      fields: ['accountId'],
+    },
+  });
 
   return q;
 }

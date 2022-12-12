@@ -93,7 +93,7 @@ export const NotificationsPageContent: FC<Props> = ({ config }) => {
 
         <div className={styles.notifications}>
           <Notifications
-            loading={loading}
+            loading={loading && !notifications}
             onUpdate={handleUpdate}
             loadMore={loadMore}
             notifications={notifications}

@@ -8,19 +8,21 @@ import { Notification } from 'types/notification';
 import { AccountNotificationIndex } from 'services/SearchService/types';
 import { mapAccountNotificationIndexToNotification } from 'services/SearchService/mappers/notification';
 import { buildNotificationsQuery } from 'services/SearchService/builders/notification';
+import { useWalletContext } from 'context/WalletContext';
 
 /* eslint-disable no-underscore-dangle */
 export async function fetcher(
   url: string,
   filter: string,
+  accountId: string,
   accountDaosIds: string[],
   subscribedDaosIds: string[],
   offset: number,
   limit: number
   // sort?: string
 ): Promise<PaginationResponse<Notification[]>> {
-  // const initialSort = sort ?? 'createTimestamp,DESC';
-  // const sortOptions = initialSort.split(',');
+  const initialSort = 'creatingTimeStamp,DESC';
+  const sortOptions = initialSort.split(',');
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
     : appConfig.SEARCH_API_URL;
@@ -30,16 +32,17 @@ export async function fetcher(
     {
       query: buildNotificationsQuery({
         filter,
+        accountId,
         accountDaosIds,
         subscribedDaosIds,
       }),
-      // sort: [
-      //   {
-      //     [sortOptions[0]]: {
-      //       order: sortOptions[1].toLowerCase(),
-      //     },
-      //   },
-      // ],
+      sort: [
+        {
+          [sortOptions[0]]: {
+            order: sortOptions[1].toLowerCase(),
+          },
+        },
+      ],
     }
   );
 
@@ -71,6 +74,8 @@ export function useNotificationsInfinite(
   const filter = query.notyType ?? '';
   const sort = query.sort ?? 'createTimestamp,DESC';
 
+  const { accountId } = useWalletContext();
+
   return useSWRInfinite(
     index => {
       const offset = index * limit;
@@ -78,6 +83,7 @@ export function useNotificationsInfinite(
       return [
         'notifications',
         filter,
+        accountId,
         accountDaosIds,
         subscribedDaosIds,
         offset,
