@@ -199,7 +199,8 @@ export type OpenSearchResponse = {
         | NftIndex
         | DraftProposalIndex
         | DraftCommentIndex
-        | DaoStatsIndex;
+        | DaoStatsIndex
+        | AccountIndex;
     }[];
     max_score: null;
     total: {
@@ -317,6 +318,21 @@ export interface DaoStatsIndex {
   accounts: string;
   description: string;
   index: 'DaoStats';
+}
+
+export interface AccountIndex extends OffChainEntity {
+  accountId: string;
+  accounts: string;
+  description: string;
+  email: string;
+  id: string;
+  index: 'Account';
+  isArchived: boolean;
+  isEmailVerified: boolean;
+  isPhoneVerified: boolean;
+  notifiAlertId: string;
+  notifiUserId: string;
+  phoneNumber: string;
 }
 
 export interface AccountNotificationIndex {
