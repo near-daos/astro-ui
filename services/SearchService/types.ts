@@ -198,7 +198,8 @@ export type OpenSearchResponse = {
         | TokenIndex
         | NftIndex
         | DraftProposalIndex
-        | DraftCommentIndex;
+        | DraftCommentIndex
+        | DaoStatsIndex;
     }[];
     max_score: null;
     total: {
@@ -299,6 +300,23 @@ export interface DraftCommentIndex extends OffChainEntity {
   daoId: string;
   replyTo: string | undefined;
   replies: DraftCommentIndex[];
+}
+
+export interface DaoStatsIndex {
+  nftCount: number;
+  totalDaoFunds: number;
+  processingTimeStamp: number;
+  activeProposalCount: number;
+  creatingTimeStamp: number;
+  bountyCount: number;
+  id: string;
+  transactionsCount: number;
+  timestamp: number;
+  totalProposalCount: number;
+  daoId: string;
+  accounts: string;
+  description: string;
+  index: 'DaoStats';
 }
 
 export interface AccountNotificationIndex {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
@@ -8,6 +8,9 @@ import {
 } from 'astro_2.0/features/DaoDashboard/types';
 
 import { SputnikHttpService } from 'services/sputnik';
+import { useDaoStats } from 'services/ApiService/hooks/useDaoStats';
+import { DaoStatsState } from 'types/daoStats';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 type DaoDasboardFilteredData = {
   chartData: ChartDataElement[] | null;
@@ -24,12 +27,17 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
   const [dashboardData, setDashboardData] = useState<DaoDashboardData>({});
   const [loading, setLoading] = useState(false);
+  const { useOpenSearchDataApiDaoStats } = useFlags();
+
+  const { data: openSearchData } = useDaoStats();
 
   useEffect(() => {
     setLoading(true);
     Promise.allSettled([
       SputnikHttpService.getDaoStatsState(daoId),
-      SputnikHttpService.getDaoStatsFunds(daoId),
+      useOpenSearchDataApiDaoStats || useOpenSearchDataApiDaoStats === undefined
+        ? Promise.reject()
+        : SputnikHttpService.getDaoStatsFunds(daoId),
     ])
       .then(res => {
         const [state, funds] = res;
@@ -52,7 +60,66 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
       .catch(() => {
         setLoading(false);
       });
-  }, [daoId]);
+  }, [daoId, useOpenSearchDataApiDaoStats]);
+
+  function getActiveViewData(view: DashboardView, item: DaoStatsState) {
+    switch (view) {
+      case 'PROPOSALS': {
+        return {
+          x: new Date(item.timestamp),
+          y: item.activeProposalCount.value,
+          y2: item.totalProposalCount.value,
+        };
+      }
+      case 'NFTS': {
+        return {
+          x: new Date(item.timestamp),
+          y: item.nftCount.value,
+        };
+      }
+      case 'BOUNTIES': {
+        return {
+          x: new Date(item.timestamp),
+          y: item.bountyCount.value,
+        };
+      }
+      case 'DAO_FUNDS':
+      default: {
+        return {
+          x: new Date(item.timestamp),
+          y: item.totalDaoFunds.value,
+        };
+      }
+    }
+  }
+
+  const preparedChartData = useMemo<ChartDataElement[] | null>(() => {
+    if (openSearchData) {
+      return openSearchData.map(item => getActiveViewData(activeView, item));
+    }
+
+    if (chartData) {
+      return chartData;
+    }
+
+    return null;
+  }, [chartData, openSearchData, activeView]);
+
+  const preparedDashboardData = useMemo<DaoDashboardData>(() => {
+    if (openSearchData && openSearchData.length) {
+      return {
+        state: {
+          ...openSearchData[openSearchData.length - 1],
+        },
+      };
+    }
+
+    if (dashboardData) {
+      return dashboardData;
+    }
+
+    return {};
+  }, [openSearchData, dashboardData]);
 
   const toggleView = useCallback(
     async view => {
@@ -90,8 +157,8 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
   );
 
   return {
-    chartData,
-    dashboardData,
+    chartData: preparedChartData,
+    dashboardData: preparedDashboardData,
     toggleView,
     activeView,
     loading,

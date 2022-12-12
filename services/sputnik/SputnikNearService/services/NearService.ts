@@ -484,6 +484,7 @@ export class NearService extends BaseService {
     return this.walletService.sendTransactions(trx);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private mapTokenTransferProposal(
     proposal: CreateProposalParams,
     opts: Record<string, string> = {}
@@ -493,108 +494,22 @@ export class NearService extends BaseService {
     const { token_id: tokenContract, receiver_id: recipient } =
       data as Transfer;
 
-    let storageDepositTransactionAction;
-    let transferTransaction;
-
-    switch (this.getWalletType()) {
-      case WalletType.SENDER: {
-        storageDepositTransactionAction = {
-          receiverId: tokenContract,
-          actions: [
-            {
-              methodName: 'storage_deposit',
-              args: {
-                account_id: recipient,
-                registration_only: true,
-              },
-              gas: GAS_VALUE.toString(),
-              deposit: '100000000000000000000000',
-            },
-          ],
-        };
-
-        transferTransaction = {
-          receiverId: daoId,
-          actions: [
-            {
-              methodName: 'add_proposal',
-              args: {
-                proposal: {
-                  description,
-                  kind: {
-                    [kind]: data,
-                  },
-                },
-                ...opts,
-              },
-              gas: GAS_VALUE.toString(),
-              deposit: bond,
-            },
-          ],
-        };
-        break;
-      }
-      case WalletType.SELECTOR_NEAR:
-      case WalletType.SELECTOR_SENDER: {
-        storageDepositTransactionAction =
-          getWalletSelectorStorageDepositTransaction(tokenContract, recipient);
-
-        transferTransaction = getPlainFunctionCallTransaction({
-          receiverId: daoId,
-          methodName: 'add_proposal',
-          args: {
-            proposal: {
-              description,
-              kind: {
-                [kind]: data,
-              },
-            },
-            ...opts,
+    const storageDepositTransactionAction =
+      getWalletSelectorStorageDepositTransaction(tokenContract, recipient);
+    const transferTransaction = getPlainFunctionCallTransaction({
+      receiverId: daoId,
+      methodName: 'add_proposal',
+      args: {
+        proposal: {
+          description,
+          kind: {
+            [kind]: data,
           },
-          deposit: bond,
-        });
-
-        break;
-      }
-      case WalletType.NEAR:
-      default: {
-        storageDepositTransactionAction = {
-          receiverId: tokenContract,
-          actions: [
-            transactions.functionCall(
-              'storage_deposit',
-              {
-                account_id: recipient,
-                registration_only: true,
-              },
-              GAS_VALUE,
-              // 0.1 NEAR, minimal value
-              new BN('100000000000000000000000')
-            ),
-          ],
-        };
-
-        transferTransaction = {
-          receiverId: daoId,
-          actions: [
-            transactions.functionCall(
-              'add_proposal',
-              {
-                proposal: {
-                  description,
-                  kind: {
-                    [kind]: data,
-                  },
-                },
-                ...opts,
-              },
-              GAS_VALUE,
-              new BN(bond)
-            ),
-          ],
-        };
-      }
-    }
+        },
+        ...opts,
+      },
+      deposit: bond,
+    });
 
     return tokenContract && !USN_TOKEN_CONTRACTS.includes(tokenContract)
       ? [storageDepositTransactionAction, transferTransaction]
