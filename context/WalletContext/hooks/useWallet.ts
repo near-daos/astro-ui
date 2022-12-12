@@ -13,6 +13,7 @@ import {
   setupWalletSelector,
   WalletSelector,
 } from '@near-wallet-selector/core';
+import { setupNearWallet } from '@near-wallet-selector/near-wallet';
 import { setupHereWallet } from '@near-wallet-selector/here-wallet';
 import { setupMeteorWallet } from '@near-wallet-selector/meteor-wallet';
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet';
@@ -37,6 +38,7 @@ export const useWallet = (): ReturnVal => {
     return setupWalletSelector({
       network: nearConfig.networkId as NetworkId,
       modules: [
+        setupNearWallet(),
         setupMyNearWallet(),
         setupSender(),
         setupHereWallet(),

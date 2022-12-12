@@ -2029,13 +2029,21 @@
     react "18.2.0"
     react-dom "18.2.0"
 
-"@near-wallet-selector/my-near-wallet@^7.3.0":
+"@near-wallet-selector/my-near-wallet@7.3.0", "@near-wallet-selector/my-near-wallet@^7.3.0":
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/@near-wallet-selector/my-near-wallet/-/my-near-wallet-7.3.0.tgz#e6ecbe5864aca60c76a55be69a6227b0005794f8"
   integrity sha512-Eo+r+wQySKyTh9Aq60r7V1umjdJd8WkHyLyhk6O6jiYJeh9FLHKmssoJ23CeQZIP/bGyKeeBOU+/8kaFox9fiQ==
   dependencies:
     "@near-wallet-selector/core" "7.3.0"
     "@near-wallet-selector/wallet-utils" "7.3.0"
+
+"@near-wallet-selector/near-wallet@^7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/near-wallet/-/near-wallet-7.3.0.tgz#4fde2ba41cf09f3d138e288a07fa362096f47cf6"
+  integrity sha512-Zo85ECu/1a/iM6j0dJAubQiwT8SqDngzX6bwBMK9k64EcaotoGHsdEgo8YF/yW32hEivteSHT9satDUcQL6I1A==
+  dependencies:
+    "@near-wallet-selector/core" "7.3.0"
+    "@near-wallet-selector/my-near-wallet" "7.3.0"
 
 "@near-wallet-selector/sender@^7.3.0":
   version "7.3.0"
