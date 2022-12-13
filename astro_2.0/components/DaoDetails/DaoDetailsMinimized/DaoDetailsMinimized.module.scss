@@ -133,7 +133,6 @@
   font-size: 18px;
   line-height: 1.1;
   max-width: 300px;
-  white-space: nowrap;
 
   @include astro-desktop {
     max-width: 400px;
@@ -141,7 +140,7 @@
 }
 
 .name {
-  @include ellipse-text;
+  @include truncate-multiline(1);
 
   &::first-letter {
     text-transform: uppercase;
@@ -154,9 +153,8 @@
 
 .daoId {
   @extend %body2;
+  @include truncate-multiline(1);
   color: var(--color-neutral-60);
-  display: flex;
-  white-space: nowrap;
 }
 
 .daoId {

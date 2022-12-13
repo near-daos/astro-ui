@@ -260,3 +260,10 @@
     border-radius: 0;
   }
 }
+
+@mixin truncate-multiline($lineCount) {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: $lineCount;
+  overflow: hidden;
+}
