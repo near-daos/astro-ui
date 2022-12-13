@@ -1,8 +1,8 @@
 import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
-import { useAsyncFn, useMount, useMountedState } from 'react-use';
+import { useAsyncFn, useMountedState } from 'react-use';
 import { useRouter } from 'next/router';
-import React, { ReactElement, ReactNode, useState } from 'react';
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
 
@@ -136,9 +136,9 @@ export const ProposalsFeed = ({
     }
   };
 
-  useMount(() => {
-    loadMore();
-  });
+  useEffect(() => {
+    fetchProposalsData().then(data => setProposalsData(data));
+  }, [fetchProposalsData]);
 
   return (
     <main className={cn(styles.root, className)}>
