@@ -65,11 +65,11 @@ export const DaoPolicyPageContent: FC<Props> = ({
 
       if (isCreateProposalFormOpen) {
         toggleCreateProposal();
+      } else {
+        Promise.resolve().then(() =>
+          toggleCreateProposal({ proposalVariant, initialValues })
+        );
       }
-
-      Promise.resolve().then(() =>
-        toggleCreateProposal({ proposalVariant, initialValues })
-      );
     }
   }
 
