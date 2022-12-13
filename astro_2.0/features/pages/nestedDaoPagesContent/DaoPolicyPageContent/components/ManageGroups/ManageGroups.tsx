@@ -85,7 +85,10 @@ export const ManageGroups: React.FC<Props> = ({
     );
 
   const isWalletSupportAmount = (): boolean => {
-    if (currentWallet === WalletType.NEAR) {
+    if (
+      currentWallet === WalletType.SELECTOR_NEAR ||
+      currentWallet === WalletType.SELECTOR_MY_NEAR
+    ) {
       return groups.length < 9;
     }
 
