@@ -81,7 +81,7 @@ export const BountiesV2: VFC = () => {
     statuses: {
       InProgress: false,
       Approved: false,
-      Rejected: true,
+      Rejected: false,
     },
   });
 
