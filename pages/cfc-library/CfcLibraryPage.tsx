@@ -78,7 +78,7 @@ const CfcLibraryPage: Page<Props> = ({ accountDaos }) => {
   );
 
   function renderContent() {
-    if (loading) {
+    if (loading && !data?.data?.length) {
       return <Loader />;
     }
 
