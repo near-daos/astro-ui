@@ -10,7 +10,7 @@ export function buildAccountDaosQuery(
         should: [
           {
             simple_query_string: {
-              query: account.substring(0, account.indexOf('.')),
+              query: `"${account.substring(0, account.indexOf('.'))}"`,
               fields: ['accounts'],
             },
           },
@@ -29,7 +29,7 @@ export function buildAccountDaosQuery(
       must: [
         {
           simple_query_string: {
-            query: account.substring(0, account.indexOf('.')),
+            query: `"${account.substring(0, account.indexOf('.'))}"`,
             fields: ['accounts'],
           },
         },
