@@ -42,7 +42,7 @@ export interface BountyCardProps {
   permissions?: UserPermissions;
 }
 
-function getTimestampLabel(createdAt: string) {
+export function getTimestampLabel(createdAt: string): string {
   const distance = formatDistance(parseISO(createdAt), new Date());
 
   return `Added ${distance} ago`;

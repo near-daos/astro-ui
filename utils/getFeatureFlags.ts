@@ -21,19 +21,3 @@ export async function getFeatureFlags(): Promise<{
     useOpenSearchDataApi,
   };
 }
-
-export async function getFeatureFlag(flag: string): Promise<boolean> {
-  const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
-
-  const client = await getClient();
-
-  const flagValue = await client.variation(
-    flag,
-    {
-      key: account ?? '',
-    },
-    false
-  );
-
-  return flagValue;
-}

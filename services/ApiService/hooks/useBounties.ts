@@ -4,7 +4,10 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 
 import { mapOpenSearchResponseToSearchResult } from 'services/SearchService/mappers/search';
-import { SearchResponseIndex } from 'services/SearchService/types';
+import {
+  OpenSearchQuery,
+  SearchResponseIndex,
+} from 'services/SearchService/types';
 import { buildBountiesQuery } from 'services/SearchService/builders/bounties';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 
@@ -119,6 +122,61 @@ export function useBounties(
     fetcher,
     {
       revalidateOnFocus: false,
+      dedupingInterval: DEDUPING_INTERVAL,
+    }
+  );
+}
+
+export async function fetchBountiesV2(
+  query: OpenSearchQuery,
+  limit: number = LIST_LIMIT_DEFAULT,
+  offset = 0
+): Promise<PaginationResponse<BountyContext[]>> {
+  const sort = 'createTimestamp,DESC';
+  const sortOptions = sort.split(',');
+  const baseUrl = process.browser
+    ? window.APP_CONFIG.SEARCH_API_URL
+    : appConfig.SEARCH_API_URL;
+
+  const response = await axios.post(
+    `${baseUrl}/bounty/_search?size=${limit}&from=${offset}`,
+    {
+      query,
+      sort: [
+        {
+          [sortOptions[0]]: {
+            order: sortOptions[1].toLowerCase(),
+          },
+        },
+      ],
+    }
+  );
+
+  const mappedData = mapOpenSearchResponseToSearchResult(
+    'bounties',
+    SearchResponseIndex.BOUNTY,
+    response.data
+  );
+
+  return {
+    data: mappedData.data as BountyContext[],
+    total: mappedData.total,
+  };
+}
+
+export function useBountiesInfiniteV2(
+  query: OpenSearchQuery
+): SWRInfiniteResponse<PaginationResponse<BountyContext[]>> {
+  return useSWRInfinite(
+    index => {
+      const offset = index * LIST_LIMIT_DEFAULT;
+
+      return [query, LIST_LIMIT_DEFAULT, offset];
+    },
+    fetchBountiesV2,
+    {
+      revalidateOnFocus: false,
+      revalidateFirstPage: false,
       dedupingInterval: DEDUPING_INTERVAL,
     }
   );

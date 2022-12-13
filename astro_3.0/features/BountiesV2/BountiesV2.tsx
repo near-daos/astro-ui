@@ -1,35 +1,35 @@
 import React, { VFC, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { DebouncedInput } from 'components/inputs/Input';
+import { OpenSearchQuery } from 'services/SearchService/types';
 
-import { useUpdateEffect } from 'react-use';
-
-import axios from 'axios';
 import { Icon } from 'components/Icon';
-import { appConfig } from 'config';
+
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Loader } from 'components/loader';
-import {
-  BountyIndex,
-  OpenSearchQuery,
-  OpenSearchResponse,
-} from 'services/SearchService/types';
+import { BountyContext } from 'types/bounties';
+import { useBountiesInfiniteV2 } from 'services/ApiService/hooks/useBounties';
 import { BountiesList } from './BountiesList';
 
 import styles from './BountiesV2.module.scss';
 
-const PAGING_SIZE = 50;
+const STATUS_LIST = {
+  'In Progress': 'InProgress',
+  Approved: 'Approved',
+  Rejected: 'Rejected',
+};
 
-export type BountiesData = { total: number; bounties: BountyIndex[] };
+export type Filter = {
+  daoId: string;
+  tags: string[];
+  statuses: {
+    InProgress: boolean;
+    Approved: boolean;
+    Rejected: boolean;
+  };
+};
 
-export const fetchBounties = async (
-  filter: Filter,
-  from = 0
-): Promise<BountiesData> => {
-  const baseUrl = process.browser
-    ? window.APP_CONFIG.SEARCH_API_URL
-    : appConfig.SEARCH_API_URL;
-
+export const buildQuery = (filter: Filter): OpenSearchQuery => {
   const tagsQueries =
     filter.tags?.map(tag => ({
       match: {
@@ -71,94 +71,41 @@ export const fetchBounties = async (
     });
   }
 
-  const res = await axios.post<unknown, { data: OpenSearchResponse }>(
-    `${baseUrl}/bounty/_search`,
-    {
-      from,
-      size: PAGING_SIZE,
-      query,
-      sort: {
-        creatingTimeStamp: {
-          order: 'desc',
-        },
-      },
-    }
-  );
-
-  const bountyIndexes =
-    res.data?.hits?.hits?.map(hit => {
-      const { _source: rawBounty } = hit;
-
-      return rawBounty;
-    }) ?? [];
-
-  return {
-    total: res.data?.hits?.total.value,
-    bounties: bountyIndexes as BountyIndex[],
-  };
+  return query;
 };
 
-type Filter = {
-  daoId: string;
-  tags: string[];
-  statuses: {
-    InProgress: boolean;
-    Approved: boolean;
-    Rejected: boolean;
-  };
-};
-
-const STATUS_LIST = {
-  'In Progress': 'InProgress',
-  Approved: 'Approved',
-  Rejected: 'Rejected',
-};
-
-interface Props {
-  initialData: BountiesData | null;
-}
-
-export const BountiesV2: VFC<Props> = ({ initialData }) => {
-  const [bounties, setBounties] = useState<BountyIndex[]>(
-    initialData?.bounties ?? []
-  );
-
-  const [error, setError] = useState();
-  const [paginationTotal, setPaginationTotal] = useState(
-    initialData?.total ?? 0
-  );
+export const BountiesV2: VFC = () => {
   const [filter, setFilter] = useState<Filter>({
     daoId: '',
     tags: [],
     statuses: {
       InProgress: false,
       Approved: false,
-      Rejected: false,
+      Rejected: true,
     },
   });
 
-  useUpdateEffect(() => {
-    fetchBounties(filter)
-      .then(bountiesData => {
-        setBounties(bountiesData.bounties);
-        setPaginationTotal(bountiesData.total);
-        setError(undefined);
-      })
-      .catch(err => {
-        setError(err);
-      });
-  }, [filter]);
+  const { size, setSize, data } = useBountiesInfiniteV2(buildQuery(filter));
+
+  const handleLoadMore = () => setSize(size + 1);
+
+  const bountiesContext =
+    data?.reduce<BountyContext[]>((acc, item) => {
+      acc.push(...item.data);
+
+      return acc;
+    }, []) ?? ([] as BountyContext[]);
+
+  const hasMore = data ? bountiesContext.length < data[0].total : false;
+
+  const dataLength = bountiesContext.length ?? 0;
 
   const renderContent = () => {
-    if (!bounties?.length) {
+    if (!bountiesContext?.length) {
       return <NoResultsView title="no results" />;
     }
 
-    if (error) {
-      return <div>{JSON.stringify(error)}</div>;
-    }
-
-    return <BountiesList bounties={bounties} />;
+    return <BountiesList bountiesContext={bountiesContext} />;
   };
 
   return (
@@ -217,15 +164,9 @@ export const BountiesV2: VFC<Props> = ({ initialData }) => {
 
       <div className={styles.bounties}>
         <InfiniteScroll
-          dataLength={bounties.length}
-          next={async () => {
-            const bountiesData = await fetchBounties(filter, bounties.length);
-
-            setBounties(bounties.concat(bountiesData.bounties));
-            setPaginationTotal(bountiesData.total);
-            setError(undefined);
-          }}
-          hasMore={bounties.length < paginationTotal}
+          dataLength={dataLength}
+          next={handleLoadMore}
+          hasMore={hasMore}
           loader={<Loader />}
           style={{ overflow: 'initial' }}
           endMessage=""

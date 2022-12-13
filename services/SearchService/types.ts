@@ -9,12 +9,7 @@ import {
 import { DraftProposal, DraftProposalFeedItem } from 'types/draftProposal';
 import { SearchResultsData } from 'types/search';
 import { DaoPolicy } from 'services/sputnik/types/policy';
-import {
-  DAO as TDAO,
-  DaoDelegation,
-  DaoProperties,
-  DaoVersion,
-} from 'types/dao';
+import { DAO as TDAO, DaoDelegation, DaoVersion } from 'types/dao';
 import { Settings } from 'types/settings';
 import {
   NotificationMetadata,
@@ -78,7 +73,7 @@ export interface DaoIndex extends OnChainEntity {
   lastBountyId: number;
   lastProposalId: number;
   link: string;
-  metadata: DaoProperties;
+  metadata: string;
   name: string;
   numberOfAssociates: number;
   numberOfGroups: number;

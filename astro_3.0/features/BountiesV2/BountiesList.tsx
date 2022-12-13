@@ -1,25 +1,21 @@
 import React, { FC } from 'react';
-import { formatDistanceToNow } from 'date-fns';
 
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { DATA_SEPARATOR } from 'constants/common';
-import { getDaoAvatar } from 'astro_3.0/features/Sidebar/helpers';
 import { IconButton } from 'components/button/IconButton';
 import { formatYoktoValue, kFormatter } from 'utils/format';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
+import { BountyContext } from 'types/bounties';
+import { getTimestampLabel } from 'astro_2.0/features/ViewBounty/components/BountyCard';
 
-import { BountyIndex } from 'services/SearchService/types';
-import { ProposalType } from 'types/proposal';
-
-import { DaoFeedItem } from 'types/dao';
 import styles from './BountiesList.module.scss';
 
 interface BountiesListProps {
-  bounties: BountyIndex[];
+  bountiesContext: BountyContext[];
 }
 
-export const BountiesList: FC<BountiesListProps> = ({ bounties }) => {
-  if (!bounties?.length) {
+export const BountiesList: FC<BountiesListProps> = ({ bountiesContext }) => {
+  if (!bountiesContext?.length) {
     return <NoResultsView title="no results" />;
   }
 
@@ -39,33 +35,23 @@ export const BountiesList: FC<BountiesListProps> = ({ bounties }) => {
       </div>
 
       {/* Body */}
-      {bounties.map(bounty => {
-        const desc = bounty?.description || bounty?.proposal?.description || '';
-        const description = desc.split(DATA_SEPARATOR)[0];
-        const daoLogo = getDaoAvatar(
-          bounty.proposal?.dao?.metadata as DaoFeedItem
-        );
+      {bountiesContext.map(bountyContext => {
+        const rawDescription = bountyContext.bounty.description;
+        const description = rawDescription.split(DATA_SEPARATOR)[0];
+        const daoLogo =
+          bountyContext.proposal?.dao?.flagLogo ||
+          '/avatars/defaultDaoAvatar.png';
 
-        const timestamp =
-          bounty.creatingTimeStamp ?? bounty.processingTimeStamp;
+        const { createdAt } = bountyContext.bounty;
+        const recency = createdAt ? getTimestampLabel(createdAt) : 'N/A';
 
-        let recency = '';
-
-        if (timestamp) {
-          recency = formatDistanceToNow(new Date(timestamp));
-        }
-
-        let amount = '0';
-
-        if (bounty.proposal?.kind?.type === ProposalType.AddBounty) {
-          amount = kFormatter(
-            Number(formatYoktoValue(bounty.proposal?.kind?.bounty?.amount)),
-            2
-          );
-        }
+        const rawAmount = bountyContext.bounty.amount;
+        const amount = rawAmount
+          ? kFormatter(Number(formatYoktoValue(rawAmount)), 2)
+          : '0';
 
         return (
-          <div className={styles.row} key={bounty.id}>
+          <div className={styles.row} key={bountyContext.bounty.id}>
             <div>
               <div
                 className={styles.daoLogo}
@@ -74,20 +60,24 @@ export const BountiesList: FC<BountiesListProps> = ({ bounties }) => {
                 }}
               />
             </div>
-            <div className={styles.daoName}>{bounty.proposal?.dao?.name}</div>
+            <div className={styles.daoName}>
+              {bountyContext.proposal?.dao?.name}
+            </div>
 
             <div className={styles.bountyType}>
-              {bounty.proposal?.kind?.type}
+              {bountyContext.proposal?.kind?.type}
             </div>
             <div>{description}</div>
             <div className={styles.tags}>
-              {bounty.tags?.map((tag: string) => `#${tag}`).join(', ')}
+              {bountyContext.bounty.tags
+                ?.map((tag: string) => `#${tag}`)
+                .join(', ')}
             </div>
             <div>{recency}</div>
             <div className={styles.amount}>{amount} NEAR</div>
             <div>
               <CopyButton
-                text={`/dao/${bounty.proposal?.dao?.id}/proposals/${bounty.proposal?.id}`}
+                text={`/dao/${bountyContext.proposal?.dao?.id}/proposals/${bountyContext.proposal?.id}`}
                 tooltipPlacement="auto"
                 className={styles.icon}
               />
@@ -99,7 +89,7 @@ export const BountiesList: FC<BountiesListProps> = ({ bounties }) => {
                 className={styles.icon}
                 onClick={() => {
                   window.open(
-                    `/dao/${bounty.proposal?.dao?.id}/proposals/${bounty.proposal?.id}`
+                    `/dao/${bountyContext.proposal?.dao?.id}/proposals/${bountyContext.proposal?.id}`
                   );
                 }}
               />
