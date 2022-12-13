@@ -80,6 +80,7 @@ export function mapBountyIndexToBountyContext(
       times: item.times,
       token: item.token,
       numberOfClaims: item.numberOfClaims,
+      tags: item.tags ?? [],
     },
     commentsCount: item.commentsCount,
   };

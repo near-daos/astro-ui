@@ -139,6 +139,9 @@ export interface BountyIndex extends OnChainEntity {
   times: string;
   token: string;
   transactionHash: string;
+  creatingTimeStamp?: number;
+  processingTimeStamp?: number;
+  tags?: string[];
 }
 
 export interface NftIndex extends OnChainEntity {
