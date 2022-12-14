@@ -32,11 +32,10 @@ export async function getProposalsList(
     params.daoId = daoId;
 
     res = await SputnikHttpService.getProposalsList(params);
-  } else if (isMyFeed && accountId) {
-    res = await SputnikHttpService.getProposalsListByAccountId(
-      params,
-      accountId
-    );
+  } else if (isMyFeed) {
+    res = accountId
+      ? await SputnikHttpService.getProposalsListByAccountId(params, accountId)
+      : null;
   } else {
     res = await SputnikHttpService.getProposalsList(params);
   }

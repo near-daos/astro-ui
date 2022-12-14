@@ -3,7 +3,7 @@ import { DaoFeedItem } from 'types/dao';
 const DEFAULT_DAO_AVATAR = '/avatars/defaultDaoAvatar.png';
 
 export function getDaoAvatar(dao: DaoFeedItem): string {
-  if (!dao.flagLogo && !dao.logo) {
+  if (!dao?.flagLogo && !dao?.logo) {
     return DEFAULT_DAO_AVATAR;
   }
 

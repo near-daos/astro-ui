@@ -230,7 +230,7 @@ export function mapOpenSearchResponseToSearchResult(
             const source = item._source as BountyIndex;
 
             if (!source.daoId) {
-              return res;
+              source.daoId = source.proposal.daoId;
             }
 
             res.push(mapBountyIndexToBountyContext(source));
