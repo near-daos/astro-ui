@@ -31,6 +31,7 @@ import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { DAO } from 'types/dao';
 import { UserPermissions } from 'types/context';
 import { useAllCustomTokens } from 'context/AllTokensContext';
+import { DaoTokensContext } from 'context/DaoTokensContext';
 
 import styles from './ViewProposal.module.scss';
 
@@ -65,7 +66,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   dao,
   userPermissions,
 }) => {
-  const { tokens } = useAllCustomTokens();
+  const { tokens: allTokens } = useAllCustomTokens();
   const { accountId } = useWalletContext();
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
   const [commentsCount, setCommentsCount] = useState(proposal?.commentsCount);
@@ -73,6 +74,10 @@ export const ViewProposal: FC<ViewProposalProps> = ({
     proposal,
     accountId
   );
+
+  // For OpenSearch fetched data we expect tokens to be part of DAO
+  // For legacy api we expect tokens data from alltokens provider
+  const tokens = proposal.dao.tokens ?? allTokens;
 
   useMount(() => {
     if (localStorage.getItem(VOTE_ACTION_SOURCE_PAGE)) {
@@ -199,7 +204,13 @@ export const ViewProposal: FC<ViewProposalProps> = ({
                 ).details
               : undefined
           }
-          content={<ErrorBoundary>{contentNode}</ErrorBoundary>}
+          content={
+            <ErrorBoundary>
+              <DaoTokensContext.Provider value={{ tokens }}>
+                {contentNode}
+              </DaoTokensContext.Provider>
+            </ErrorBoundary>
+          }
         />
       }
       infoPanelNode={

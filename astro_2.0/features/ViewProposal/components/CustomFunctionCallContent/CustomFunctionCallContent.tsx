@@ -8,12 +8,11 @@ import {
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { Icon } from 'components/Icon';
 
-import { useAllCustomTokens } from 'context/AllTokensContext';
-
 import { formatYoktoValue } from 'utils/format';
 
-import { CommonContent } from './components/CommonContent';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
+import { CommonContent } from './components/CommonContent';
 import { useRoketoStreamCheck } from './components/helpers';
 import { CreateStreamContent } from './components/Stream/CreateStreamContent';
 
@@ -36,7 +35,7 @@ export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
   deposit,
   isLastItem,
 }) => {
-  const { tokens } = useAllCustomTokens();
+  const { tokens } = useDaoCustomTokens();
   const { t } = useTranslation();
   const isStream = useRoketoStreamCheck(json);
 

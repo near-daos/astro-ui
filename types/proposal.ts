@@ -4,6 +4,7 @@ import { PolicyType } from 'types/policy';
 import { ProposalAction } from 'types/role';
 import { Authorization } from 'types/auth';
 import { DaoPolicy } from 'services/sputnik/types/policy';
+import { Token } from 'types/token';
 
 export type DaoDetails = {
   name: string;
@@ -411,6 +412,7 @@ export type ProposalFeedItem = {
     };
     numberOfMembers: number;
     policy: DaoPolicy;
+    tokens?: Record<string, Token>;
   };
   permissions: {
     canApprove: boolean;

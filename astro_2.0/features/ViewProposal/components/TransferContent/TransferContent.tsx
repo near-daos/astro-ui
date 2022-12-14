@@ -1,15 +1,15 @@
 import React, { FC } from 'react';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
-import { useAllCustomTokens } from 'context/AllTokensContext';
+import { useDaoCustomTokens } from 'context/DaoTokensContext';
 import {
   FieldValue,
   FieldWrapper,
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { formatYoktoValue } from 'utils/format';
+
 import { useTranslation } from 'next-i18next';
 
 import { TokenIcon } from 'astro_2.0/components/TokenIcon';
-
 import styles from './TransferContent.module.scss';
 
 interface TransferContentProps {
@@ -25,7 +25,7 @@ export const TransferContent: FC<TransferContentProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const { tokens } = useAllCustomTokens();
+  const { tokens } = useDaoCustomTokens();
 
   const tokenData = token ? tokens[token] : tokens.NEAR;
 

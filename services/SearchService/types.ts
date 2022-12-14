@@ -241,23 +241,15 @@ export interface OpenSearchQuery {
 
 export interface TokenIndex {
   accountId: string;
-  balance: string;
+  symbol: string;
   tokenId: string;
-  partitionId: string;
-  isArchived: boolean;
-  token: {
-    reference: null;
-    symbol: string;
-    totalSupply: string;
-    price: null;
-    decimals: number;
-    icon: string;
-    name: string;
-    id: string;
-    ownerId: string;
-    spec: string;
-    referenceHash: null;
-  };
+  balance: string;
+  totalSupply: string;
+  decimals: number;
+  id: string;
+  ownerId: string;
+  icon?: string;
+  price?: string;
 }
 
 export interface DraftProposalIndex extends OffChainEntity {

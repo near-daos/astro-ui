@@ -26,10 +26,11 @@ import { DATA_SEPARATOR } from 'constants/common';
 import { toMillis } from 'utils/format';
 import { BountyContext } from 'types/bounties';
 import { getParsedVotes } from 'services/SearchService/mappers/helpers';
-import { NftToken } from 'types/token';
+import { NftToken, Token } from 'types/token';
 import { mapNftIndexToNftToken } from 'services/SearchService/mappers/nft';
 import { mapDraftCommentIndexToDraftComment } from 'services/SearchService/mappers/draftComment';
 import { mapDraftProposalIndexToDraftProposal } from 'services/SearchService/mappers/draft';
+import { mapTokenIndexToToken } from 'services/SearchService/mappers/tokens';
 import { mapBountyIndexToBountyContext } from './bounty';
 
 export function mapDaoIndexToDaoFeedItem(
@@ -124,6 +125,13 @@ export function mapProposalIndexToProposalFeedItem(
       legal: meta?.legal || {},
       numberOfMembers: item.dao?.numberOfMembers,
       policy,
+      tokens: item.dao.tokens
+        .map(mapTokenIndexToToken)
+        .reduce<Record<string, Token>>((acc, tkn) => {
+          acc[tkn.tokenId || tkn.symbol] = tkn;
+
+          return acc;
+        }, {}),
     },
     daoDetails: {
       name: item.dao?.config?.name ?? '',

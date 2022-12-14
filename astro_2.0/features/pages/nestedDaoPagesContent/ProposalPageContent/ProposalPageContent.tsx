@@ -47,7 +47,7 @@ export const ProposalPageContent: FC<Props> = ({
 
   // Temp - to fetch data from old API until we fully migrate to opensearch
   const { value } = useAsync(async () => {
-    if (useOpenSearchDataApi) {
+    if (useOpenSearchDataApi || useOpenSearchDataApi === undefined) {
       return undefined;
     }
 
