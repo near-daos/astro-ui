@@ -28,7 +28,7 @@ export async function fetcher(
       }),
       sort: [
         {
-          creatingTimeStamp: {
+          createdAt: {
             order: 'desc',
           },
         },

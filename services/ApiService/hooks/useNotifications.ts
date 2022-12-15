@@ -21,7 +21,7 @@ export async function fetcher(
   limit: number
   // sort?: string
 ): Promise<PaginationResponse<Notification[]>> {
-  const initialSort = 'creatingTimeStamp,DESC';
+  const initialSort = 'createdAt,DESC';
   const sortOptions = initialSort.split(',');
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
@@ -72,7 +72,7 @@ export function useNotificationsInfinite(
 
   const limit = LIST_LIMIT_DEFAULT;
   const filter = query.notyType ?? '';
-  const sort = query.sort ?? 'createTimestamp,DESC';
+  const sort = query.sort ?? 'createdAt,DESC';
 
   const { accountId } = useWalletContext();
 

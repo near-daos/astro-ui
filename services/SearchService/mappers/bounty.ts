@@ -4,6 +4,8 @@ import { toMillis } from 'utils/format';
 import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
 import get from 'lodash/get';
 import { fromBase64ToMetadata } from 'services/sputnik/mappers';
+import { mapTokenIndexToToken } from 'services/SearchService/mappers/tokens';
+import { Token } from 'types/token';
 
 export function mapBountyIndexToBountyContext(
   item: BountyIndex
@@ -51,6 +53,13 @@ export function mapBountyIndexToBountyContext(
             legal: meta?.legal || {},
             numberOfMembers: proposal.dao?.numberOfMembers,
             policy: proposal.dao?.policy,
+            tokens: proposal.dao?.tokens
+              .map(mapTokenIndexToToken)
+              .reduce<Record<string, Token>>((acc, tkn) => {
+                acc[tkn.tokenId || tkn.symbol] = tkn;
+
+                return acc;
+              }, {}),
           },
           votePeriodEnd: new Date(
             toMillis(proposal.votePeriodEnd)
