@@ -325,133 +325,30 @@ export class GovernanceTokenService extends BaseService {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
-    let userStorageDepositTransactionAction;
-    let storageDepositTransactionAction;
-    let transferTransaction;
-
     const accountId = await this.walletService.getAccountId();
 
-    switch (this.walletService.getWalletType()) {
-      case WalletType.SENDER: {
-        userStorageDepositTransactionAction = {
-          receiverId: stakingContract,
-          actions: [
-            {
-              methodName: 'storage_deposit',
-              args: {
-                account_id: accountId,
-              },
-              gas: GAS_VALUE.toString(),
-              deposit: new Decimal(0.003).mul(10 ** 24).toFixed(),
-            },
-          ],
-        };
+    const userStorageDepositTransactionAction =
+      getWalletSelectorStorageDepositTransaction(
+        stakingContract ?? '',
+        accountId
+      );
+    const storageDepositTransactionAction =
+      getWalletSelectorStorageDepositTransaction(
+        tokenContract ?? '',
+        stakingContract
+      );
 
-        storageDepositTransactionAction = {
-          receiverId: tokenContract,
-          actions: [
-            {
-              methodName: 'storage_deposit',
-              args: {
-                account_id: stakingContract,
-              },
-              gas: GAS_VALUE.toString(),
-              deposit: '100000000000000000000000',
-            },
-          ],
-        };
-
-        transferTransaction = {
-          receiverId: tokenContract,
-          actions: [
-            {
-              methodName: 'ft_transfer_call',
-              args: {
-                receiver_id: stakingContract,
-                amount,
-                msg: '',
-              },
-              gas: GAS_VALUE.toString(),
-              deposit: '1',
-            },
-          ],
-        };
-
-        break;
-      }
-      case WalletType.SELECTOR_NEAR: {
-        userStorageDepositTransactionAction =
-          getWalletSelectorStorageDepositTransaction(
-            stakingContract ?? '',
-            accountId
-          );
-        storageDepositTransactionAction =
-          getWalletSelectorStorageDepositTransaction(
-            tokenContract ?? '',
-            stakingContract
-          );
-
-        transferTransaction = getPlainFunctionCallTransaction({
-          receiverId: tokenContract,
-          methodName: 'ft_transfer_call',
-          args: {
-            receiver_id: stakingContract,
-            amount,
-            msg: '',
-          },
-          gas: GAS_VALUE.toString(),
-          deposit: '1',
-        });
-
-        break;
-      }
-      case WalletType.NEAR:
-      default: {
-        userStorageDepositTransactionAction = {
-          receiverId: stakingContract,
-          actions: [
-            transactions.functionCall(
-              'storage_deposit',
-              {
-                account_id: accountId,
-              },
-              GAS_VALUE,
-              new BN(new Decimal(0.003).mul(10 ** 24).toFixed())
-            ),
-          ],
-        };
-
-        storageDepositTransactionAction = {
-          receiverId: tokenContract,
-          actions: [
-            transactions.functionCall(
-              'storage_deposit',
-              {
-                account_id: stakingContract,
-              },
-              GAS_VALUE,
-              new BN('100000000000000000000000')
-            ),
-          ],
-        };
-
-        transferTransaction = {
-          receiverId: tokenContract,
-          actions: [
-            transactions.functionCall(
-              'ft_transfer_call',
-              {
-                receiver_id: stakingContract,
-                amount,
-                msg: '',
-              },
-              GAS_VALUE,
-              new BN('1')
-            ),
-          ],
-        };
-      }
-    }
+    const transferTransaction = getPlainFunctionCallTransaction({
+      receiverId: tokenContract,
+      methodName: 'ft_transfer_call',
+      args: {
+        receiver_id: stakingContract,
+        amount,
+        msg: '',
+      },
+      gas: GAS_VALUE.toString(),
+      deposit: '1',
+    });
 
     return this.walletService.sendTransactions([
       storageDepositTransactionAction,
