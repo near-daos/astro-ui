@@ -188,6 +188,10 @@ export class WalletSelectorService implements WalletService {
 
     const keyStore = this.getKeyStore();
 
+    if (!keyStore) {
+      return null;
+    }
+
     const keyPair = await keyStore.getKey(nearConfig.networkId, accountId);
 
     if (!keyPair) {
