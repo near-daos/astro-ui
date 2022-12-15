@@ -55,7 +55,7 @@ export const ProposalPageContent: FC<Props> = ({
       router.query.proposal as string,
       accountId
     );
-  }, [accountId]);
+  }, [accountId, useOpenSearchDataApi]);
 
   const proposal = value || proposalData;
 

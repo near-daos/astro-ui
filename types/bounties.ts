@@ -1,4 +1,5 @@
 import { ProposalKind } from 'types/proposal';
+import { Token } from 'types/token';
 import { DaoPolicy } from 'services/sputnik/types/policy';
 
 export interface BountyResponse {
@@ -128,5 +129,6 @@ export type BountyProposal = {
     };
     numberOfMembers: number;
     policy: DaoPolicy;
+    tokens: Record<string, Token>;
   };
 };
