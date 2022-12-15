@@ -30,7 +30,7 @@ export async function fetcher(
   limit: number,
   offset: number
 ): Promise<PaginationResponse<BountyContext[]>> {
-  const sort = bountySort ?? 'createTimestamp,DESC';
+  const sort = bountySort ?? 'createdAt,DESC';
   const sortOptions = sort.split(',');
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
@@ -132,7 +132,7 @@ export async function fetchBountiesV2(
   limit: number = LIST_LIMIT_DEFAULT,
   offset = 0
 ): Promise<PaginationResponse<BountyContext[]>> {
-  const sort = 'createTimestamp,DESC';
+  const sort = 'createdAt,DESC';
   const sortOptions = sort.split(',');
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL

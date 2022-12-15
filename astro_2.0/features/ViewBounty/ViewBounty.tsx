@@ -18,7 +18,6 @@ import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import { DaoContext } from 'types/context';
 import { useAllCustomTokens } from 'context/AllTokensContext';
 import { DaoTokensContext } from 'context/DaoTokensContext';
-import { Token } from 'types/token';
 
 export interface ViewBountyProps {
   contextId: string;
@@ -63,13 +62,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
     return null;
   }
 
-  const tokens = dao?.tokens
-    ? dao.tokens.reduce<Record<string, Token>>((acc, tkn) => {
-        acc[tkn.tokenId || tkn.symbol] = tkn;
-
-        return acc;
-      }, {})
-    : allTokens;
+  const tokens = proposal.dao?.tokens ?? allTokens;
 
   const contentNode = getContentNode(bounty, proposal);
 

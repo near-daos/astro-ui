@@ -18,7 +18,7 @@ export async function fetcher(
   url: string,
   daoId: string
 ): Promise<ProposalFeedItem[]> {
-  const sort = 'createTimestamp,DESC';
+  const sort = 'createdAt,DESC';
   const sortOptions = sort.split(',');
   const baseUrl = process.browser
     ? window.APP_CONFIG.SEARCH_API_URL
