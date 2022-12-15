@@ -162,94 +162,18 @@ export class NearService extends BaseService {
     const accountId = await this.getAccountId();
     const { bountyId: id, deadline, bountyBond, gas, tokenId } = args;
 
-    let storageDepositTransactionAction;
-    let claimAction;
-
-    switch (this.getWalletType()) {
-      case WalletType.SENDER: {
-        storageDepositTransactionAction = {
-          receiverId: tokenId ?? '',
-          actions: [
-            {
-              methodName: 'storage_deposit',
-              args: {
-                account_id: accountId,
-                registration_only: true,
-              },
-              gas: GAS_VALUE.toString(),
-              deposit: '100000000000000000000000',
-            },
-          ],
-        };
-
-        claimAction = {
-          receiverId: daoId,
-          actions: [
-            {
-              methodName: 'bounty_claim',
-              args: {
-                id,
-                deadline,
-              },
-              gas: (gas ? formatGasValue(gas) : GAS_VALUE).toString(),
-              deposit: bountyBond,
-            },
-          ],
-        };
-        break;
-      }
-      case WalletType.SELECTOR_NEAR:
-      case WalletType.SELECTOR_SENDER: {
-        storageDepositTransactionAction =
-          getWalletSelectorStorageDepositTransaction(tokenId ?? '', accountId);
-
-        claimAction = getPlainFunctionCallTransaction({
-          receiverId: daoId,
-          methodName: 'bounty_claim',
-          args: {
-            id,
-            deadline,
-          },
-          gas: (gas ? formatGasValue(gas) : GAS_VALUE).toString(),
-          deposit: bountyBond,
-        });
-
-        break;
-      }
-      case WalletType.NEAR:
-      default: {
-        storageDepositTransactionAction = {
-          receiverId: tokenId ?? '',
-          actions: [
-            transactions.functionCall(
-              'storage_deposit',
-              {
-                account_id: accountId,
-                registration_only: true,
-              },
-              GAS_VALUE,
-              // 0.1 NEAR, minimal value
-              new BN('100000000000000000000000')
-            ),
-          ],
-        };
-
-        claimAction = {
-          receiverId: daoId,
-          actions: [
-            transactions.functionCall(
-              'bounty_claim',
-              {
-                id,
-                deadline,
-              },
-              gas ? formatGasValue(gas) : GAS_VALUE,
-              new BN(bountyBond)
-            ),
-          ],
-        };
-      }
-    }
+    const storageDepositTransactionAction =
+      getWalletSelectorStorageDepositTransaction(tokenId ?? '', accountId);
+    const claimAction = getPlainFunctionCallTransaction({
+      receiverId: daoId,
+      methodName: 'bounty_claim',
+      args: {
+        id,
+        deadline,
+      },
+      gas: (gas ? formatGasValue(gas) : GAS_VALUE).toString(),
+      deposit: bountyBond,
+    });
 
     const trx =
       tokenId && !USN_TOKEN_CONTRACTS.includes(tokenId)
@@ -406,65 +330,20 @@ export class NearService extends BaseService {
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private mapVoteProposalAction(
     daoId: string,
     proposalId: string,
     action: string
   ) {
-    let transaction;
-
-    switch (this.getWalletType()) {
-      case WalletType.SENDER: {
-        transaction = {
-          receiverId: daoId,
-          actions: [
-            {
-              methodName: 'act_proposal',
-              args: {
-                id: Number(proposalId),
-                action,
-              },
-              gas: GAS_VALUE.toString(),
-              deposit: '0',
-            },
-          ],
-        };
-
-        break;
-      }
-      case WalletType.SELECTOR_NEAR:
-      case WalletType.SELECTOR_SENDER: {
-        transaction = getPlainFunctionCallTransaction({
-          receiverId: daoId,
-          methodName: 'act_proposal',
-          args: {
-            id: Number(proposalId),
-            action,
-          },
-        });
-
-        break;
-      }
-      case WalletType.NEAR:
-      default: {
-        transaction = {
-          receiverId: daoId,
-          actions: [
-            transactions.functionCall(
-              'act_proposal',
-              {
-                id: Number(proposalId),
-                action,
-              },
-              GAS_VALUE,
-              new BN(0)
-            ),
-          ],
-        };
-      }
-    }
-
-    return transaction;
+    return getPlainFunctionCallTransaction({
+      receiverId: daoId,
+      methodName: 'act_proposal',
+      args: {
+        id: Number(proposalId),
+        action,
+      },
+    });
   }
 
   public async multiVote(
