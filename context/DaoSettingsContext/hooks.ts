@@ -30,7 +30,7 @@ export function useDaoSettingsData(daoId: string | undefined): {
       setSettings(res);
       daoRef.current = daoId;
     }
-  }, [daoId, isMounted]);
+  }, [daoId, isMounted, useOpenSearchDataApi]);
 
   const [{ loading: updatingStatus }, update] = useAsyncFn(
     async updates => {
