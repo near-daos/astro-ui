@@ -26,17 +26,14 @@ export const WalletIcon: React.FC<WalletIconProps> = ({
   };
 
   switch (walletType) {
-    case WalletType.NEAR: {
-      return renderIcon(<NearIcon showLoader={showLoader} />);
-    }
-    case WalletType.SELECTOR_SENDER:
-    case WalletType.SENDER: {
+    case WalletType.SELECTOR_SENDER: {
       return renderIcon(<SenderIcon showLoader={showLoader} />);
     }
     case WalletType.SELECTOR_NEAR: {
-      return renderIcon(<SelectorNearIcon showLoader={showLoader} />);
+      return renderIcon(<NearIcon showLoader={showLoader} />);
     }
+    case WalletType.SELECTOR_MY_NEAR:
     default:
-      return renderIcon(<NearIcon />);
+      return renderIcon(<SelectorNearIcon showLoader={showLoader} />);
   }
 };
