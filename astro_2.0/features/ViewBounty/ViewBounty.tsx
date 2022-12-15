@@ -16,6 +16,9 @@ import { ClaimsInfo } from 'astro_2.0/features/ViewBounty/components/ClaimsInfo'
 import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments';
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import { DaoContext } from 'types/context';
+import { useAllCustomTokens } from 'context/AllTokensContext';
+import { DaoTokensContext } from 'context/DaoTokensContext';
+import { Token } from 'types/token';
 
 export interface ViewBountyProps {
   contextId: string;
@@ -49,6 +52,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
   daoContext,
   showFlag = true,
 }) => {
+  const { tokens: allTokens } = useAllCustomTokens();
   const [showInfoPanel, setShowInfoPanel] = useState<string | null>(
     initialInfoPanelView
   );
@@ -58,6 +62,14 @@ export const ViewBounty: FC<ViewBountyProps> = ({
   if (!(bounty || proposal)) {
     return null;
   }
+
+  const tokens = dao?.tokens
+    ? dao.tokens.reduce<Record<string, Token>>((acc, tkn) => {
+        acc[tkn.tokenId || tkn.symbol] = tkn;
+
+        return acc;
+      }, {})
+    : allTokens;
 
   const contentNode = getContentNode(bounty, proposal);
 
@@ -96,7 +108,13 @@ export const ViewBounty: FC<ViewBountyProps> = ({
               }
             }}
             activeInfoView={showInfoPanel}
-            content={<ErrorBoundary>{contentNode}</ErrorBoundary>}
+            content={
+              <ErrorBoundary>
+                <DaoTokensContext.Provider value={{ tokens }}>
+                  {contentNode}
+                </DaoTokensContext.Provider>
+              </ErrorBoundary>
+            }
             commentsCount={commentsNum}
             toggleInfoPanel={setShowInfoPanel}
             permissions={daoContext?.userPermissions}
