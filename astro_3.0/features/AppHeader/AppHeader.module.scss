@@ -18,6 +18,7 @@
 }
 
 .logoWrapper {
+  margin-right: 24px;
   min-width: 75px;
 }
 
@@ -38,13 +39,9 @@
 
 .search {
   left: unset;
-  margin-left: auto;
+  margin-left: 24px;
   max-width: 600px;
   position: relative;
-
-  @include desktop {
-    margin-left: unset;
-  }
 }
 
 .bell {

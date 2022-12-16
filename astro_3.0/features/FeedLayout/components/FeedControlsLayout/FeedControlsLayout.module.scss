@@ -10,16 +10,12 @@
   width: 100%;
 
   @include desktop {
+    margin: auto;
+    max-width: 1200px;
     padding: 0 64px 0 96px;
   }
 
-  @include large-desktop {
-    margin: auto;
-  }
-
   @include large-x-desktop {
-    margin: auto;
-    max-width: unset;
-    padding: 0 64px 0 128px;
+    padding: 0 24px;
   }
 }
