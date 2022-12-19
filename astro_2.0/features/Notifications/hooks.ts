@@ -26,6 +26,7 @@ import { mapNotificationDtoToNotification } from 'services/NotificationsService/
 import { dispatchCustomEvent } from 'utils/dispatchCustomEvent';
 import { NOTIFICATIONS_UPDATED } from 'features/notifications/notificationConstants';
 import { useNotificationsInfinite } from 'services/ApiService/hooks/useNotifications';
+import { useNotificationsStatus } from 'services/ApiService/hooks/useNotificationsStatus';
 
 import { DAO_RELATED_SETTINGS, PLATFORM_RELATED_SETTINGS } from './helpers';
 
@@ -437,23 +438,34 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
 export function useNotificationsCount(): number | null {
   const isMounted = useMountedState();
   const { accountId } = useWalletContext();
-  const [counter, setCounter] = useState<number | null>(null);
+  const { useOpenSearchDataApi } = useFlags();
+  const { count: unreadNotificationsCount, mutate } = useNotificationsStatus();
 
-  const [, fetchData] = useAsyncFn(async () => {
+  const [{ value }, fetchData] = useAsyncFn(async () => {
+    if (useOpenSearchDataApi || useOpenSearchDataApi === undefined) {
+      return undefined;
+    }
+
     try {
-      const count = await NotificationsService.getNotificationsCount(accountId);
-
-      if (isMounted()) {
-        setCounter(count);
-      }
+      return NotificationsService.getNotificationsCount(accountId);
     } catch (e) {
       console.error(e);
+
+      return undefined;
     }
-  }, [accountId, isMounted]);
+  }, [accountId, isMounted, useOpenSearchDataApi]);
 
   const handleUpdates = useCallback(async () => {
-    await fetchData();
-  }, [fetchData]);
+    if (useOpenSearchDataApi === undefined) {
+      return;
+    }
+
+    if (useOpenSearchDataApi) {
+      await mutate();
+    } else {
+      await fetchData();
+    }
+  }, [fetchData, mutate, useOpenSearchDataApi]);
 
   useMount(async () => {
     await fetchData();
@@ -472,7 +484,7 @@ export function useNotificationsCount(): number | null {
       );
   }, [handleUpdates]);
 
-  return counter;
+  return unreadNotificationsCount ?? value ?? 0;
 }
 
 export function useNotificationsListOpenSearch(reactOnUpdates?: boolean): {
