@@ -7,7 +7,6 @@ import { AppLogo } from 'astro_3.0/features/AppHeader/components/AppLogo';
 
 import { useWalletContext } from 'context/WalletContext';
 import { NotificationsBell } from 'astro_2.0/components/AppHeader/components/NotificationsBell';
-import { MainLayout } from 'astro_3.0/features/MainLayout';
 import { SearchBar } from 'astro_3.0/features/SearchBar';
 import { AppHealth } from 'astro_2.0/features/AppHealth';
 import { AccountDropdown } from 'astro_2.0/components/AppHeader/components/AccountDropdown';
@@ -31,13 +30,11 @@ export const AppHeader: FC = () => {
         </Link>
       </div>
 
-      <MainLayout className={styles.main}>
-        <SearchBar
-          withSideBar
-          placeholder={t('header.search.placeholder')}
-          className={styles.search}
-        />
-      </MainLayout>
+      <SearchBar
+        withSideBar
+        placeholder={t('header.search.placeholder')}
+        className={styles.search}
+      />
 
       <div className={styles.rightSection}>
         <AppHealth />
