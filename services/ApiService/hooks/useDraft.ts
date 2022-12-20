@@ -25,7 +25,7 @@ export async function fetcher(
     : appConfig.SEARCH_API_URL;
 
   const response = await axios.post<unknown, { data: OpenSearchResponse }>(
-    `${baseUrl}/draftproposal/_search?size=1&from=0`,
+    `${baseUrl}/search/draftproposal?size=1&from=0`,
     {
       query: buildDraftQuery({
         daoId,

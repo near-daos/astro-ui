@@ -20,7 +20,7 @@ export async function fetcher(
     : appConfig.SEARCH_API_URL;
 
   const response = await axios.post(
-    `${baseUrl}/draftproposalcomment/_search?size=1000&from=0`,
+    `${baseUrl}/search/draftproposalcomment?size=1000&from=0`,
     {
       query: buildDraftProposalCommentsQuery({
         daoId,

@@ -18,7 +18,7 @@ export async function fetcher(
     : appConfig.SEARCH_API_URL;
 
   const response = await axios.post<unknown, { data: OpenSearchResponse }>(
-    `${baseUrl}/tokenbalance/_search?size=300&from=0`,
+    `${baseUrl}/search/tokenbalance?size=300&from=0`,
     {
       query: buildTokensQuery(accountId),
     }

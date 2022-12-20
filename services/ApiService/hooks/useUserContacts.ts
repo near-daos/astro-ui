@@ -17,7 +17,7 @@ export async function fetcher(
     : appConfig.SEARCH_API_URL;
 
   const response = await axios.post<unknown, { data: OpenSearchResponse }>(
-    `${baseUrl}/account/_search`,
+    `${baseUrl}/search/account`,
     {
       query: {
         simple_query_string: {

@@ -17,7 +17,7 @@ export async function fetcher(
     : appConfig.SEARCH_API_URL;
 
   const response = await axios.post<unknown, { data: OpenSearchResponse }>(
-    `${baseUrl}/bounty/_search?size=1&from=0`,
+    `${baseUrl}/search/bounty?size=1&from=0`,
     {
       query: {
         bool: {

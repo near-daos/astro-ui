@@ -34,7 +34,7 @@ export async function fetcher(
     : appConfig.SEARCH_API_URL;
 
   const response = await axios.post(
-    `${baseUrl}/proposal/_search?size=${limit}&from=${offset}`,
+    `${baseUrl}/search/proposal?size=${limit}&from=${offset}`,
     {
       query: buildProposalsQuery(
         {

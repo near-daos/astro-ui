@@ -14,7 +14,7 @@ export async function fetcher(url: string, accountId: string): Promise<number> {
     ? window.APP_CONFIG.SEARCH_API_URL
     : appConfig.SEARCH_API_URL;
 
-  const response = await axios.post(`${baseUrl}/proposal/_search`, {
+  const response = await axios.post(`${baseUrl}/search/proposal`, {
     query: buildProposalsQuery(
       {
         status: ProposalsFeedStatuses.VoteNeeded,
