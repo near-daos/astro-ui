@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { appWithTranslation } from 'next-i18next';
 import type { AppContext, AppProps } from 'next/app';
 import type { NextPage, GetServerSideProps } from 'next';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 
 import nextI18NextConfig from 'next-i18next.config';
 
@@ -67,37 +68,64 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
     return null;
   }
 
+  const theme = extendTheme({
+    breakpoints: {
+      xs: '640px',
+      sm: '768px',
+      mobile: '920px',
+      md: '1024px',
+      lg: '1280px',
+      lgx: '1440px',
+    },
+    colors: {
+      neutral: {
+        10: '#fafafa',
+        20: '#f5f5f5',
+        30: '#f0f0f0',
+        40: '#d9d9d9',
+        50: '#bfbfbf',
+        60: '#8c8c8c',
+        70: '#595959',
+        80: '#434343',
+        85: '#2c2c2c',
+        90: '#201f1f',
+      },
+    },
+  });
+
   return (
     <>
       <AppMonitoring />
       <WrappedWalletContext>
-        <FeatureFlagsProvider>
-          <AllTokensProvider>
-            <DaoSettingsProvider>
-              <DaoTokensProvider>
-                <ModalProvider>
-                  <SocketProvider>
-                    <SearchResults>
-                      <Head>
-                        <title>Astro</title>
-                      </Head>
-                      <PageLayout appVersion={appVersion}>
-                        <ErrorBoundary>
-                          {getLayout(<Component {...pageProps} />)}
-                        </ErrorBoundary>
-                      </PageLayout>
-                      {appVersion === 3 ? (
-                        <MobileAppNavigation />
-                      ) : (
-                        <MobileNav />
-                      )}
-                    </SearchResults>
-                  </SocketProvider>
-                </ModalProvider>
-              </DaoTokensProvider>
-            </DaoSettingsProvider>
-          </AllTokensProvider>
-        </FeatureFlagsProvider>
+        <ChakraProvider theme={theme}>
+          <FeatureFlagsProvider>
+            <AllTokensProvider>
+              <DaoSettingsProvider>
+                <DaoTokensProvider>
+                  <ModalProvider>
+                    <SocketProvider>
+                      <SearchResults>
+                        <Head>
+                          <title>Astro</title>
+                        </Head>
+                        <PageLayout appVersion={appVersion}>
+                          <ErrorBoundary>
+                            {getLayout(<Component {...pageProps} />)}
+                          </ErrorBoundary>
+                        </PageLayout>
+                        {appVersion === 3 ? (
+                          <MobileAppNavigation />
+                        ) : (
+                          <MobileNav />
+                        )}
+                      </SearchResults>
+                    </SocketProvider>
+                  </ModalProvider>
+                </DaoTokensProvider>
+              </DaoSettingsProvider>
+            </AllTokensProvider>
+          </FeatureFlagsProvider>
+        </ChakraProvider>
       </WrappedWalletContext>
     </>
   );
