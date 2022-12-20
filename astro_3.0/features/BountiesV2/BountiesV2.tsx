@@ -16,7 +16,6 @@ import {
 
 import { Icon } from 'components/Icon';
 
-import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Loader } from 'components/loader';
 import { BountyContext } from 'types/bounties';
 import { useBountiesInfiniteV2 } from 'services/ApiService/hooks/useBounties';
@@ -106,7 +105,9 @@ export const BountiesV2: VFC = () => {
     },
   });
 
-  const { size, setSize, data } = useBountiesInfiniteV2(buildQuery(filter));
+  const { size, setSize, data, isValidating } = useBountiesInfiniteV2(
+    buildQuery(filter)
+  );
 
   const handleLoadMore = () => setSize(size + 1);
 
@@ -122,8 +123,8 @@ export const BountiesV2: VFC = () => {
   const dataLength = bountiesContext.length ?? 0;
 
   const renderContent = () => {
-    if (!bountiesContext?.length) {
-      return <NoResultsView title="no results" />;
+    if (isValidating && !bountiesContext?.length) {
+      return <Loader />;
     }
 
     return <BountiesList bountiesContext={bountiesContext} />;
