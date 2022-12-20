@@ -16,7 +16,6 @@ exports[`default voting policy Should render component 1`] = `
       <div
         class="bold"
       >
-        
         %
       </div>
       <div>

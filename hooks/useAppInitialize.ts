@@ -4,6 +4,21 @@ import { useCallback, useEffect, useState } from 'react';
 // see https://github.com/WICG/resize-observer/issues/38
 const SAFELY_IGNORE_ERRORS = ['ResizeObserver loop limit exceeded'];
 
+// Following warnings in console are comes from wallet selector modal-ui and we cannot control it right now
+// Anyway they are just warnings and do not affect any functionality
+// so we can temp hide them until next version of selector mal will be released
+const consoleError = console.error;
+const SUPPRESSED_WARNINGS = [
+  'You are calling ReactDOMClient.createRoot()',
+  'Render methods should be a pure function of props and state',
+];
+
+console.error = function filterWarnings(msg, ...args) {
+  if (!SUPPRESSED_WARNINGS.some(entry => msg.includes(entry))) {
+    consoleError(msg, ...args);
+  }
+};
+
 export function useAppInitialize(): boolean {
   const [initialized, setInitialized] = useState(false);
 
