@@ -20,7 +20,7 @@ export async function fetcher(
     : appConfig.SEARCH_API_URL;
 
   const response = await axios.post<unknown, { data: OpenSearchResponse }>(
-    `${baseUrl}/dao/_search?size=200&from=0`,
+    `${baseUrl}/search/dao?size=200&from=0`,
     {
       query: buildAccountDaosQuery(accountId, includeSubscribed),
       sort: [

@@ -25,7 +25,7 @@ export async function fetcher(
     : appConfig.SEARCH_API_URL;
 
   const response = await axios.post(
-    `${baseUrl}/proposal/_search?size=${50}&from=${0}`,
+    `${baseUrl}/search/proposal?size=${50}&from=${0}`,
     {
       query: buildProposalsQuery({
         category: ProposalCategories.Governance,

@@ -17,7 +17,7 @@ export async function fetcher(
     ? window.APP_CONFIG.SEARCH_API_URL
     : appConfig.SEARCH_API_URL;
 
-  const response = await axios.post(`${baseUrl}/draftproposal/_search`, {
+  const response = await axios.post(`${baseUrl}/search/draftproposal`, {
     query: buildDraftProposalsQuery(
       {
         daoId,

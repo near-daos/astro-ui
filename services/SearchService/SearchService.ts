@@ -36,7 +36,7 @@ export class SearchService {
       unknown,
       AxiosResponse<OpenSearchResponse | null>
     >(
-      `/${index}/_search`,
+      `/search/${index}`,
       {
         query: {
           simple_query_string: {

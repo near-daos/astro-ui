@@ -28,7 +28,7 @@ export async function fetcher(
     : appConfig.SEARCH_API_URL;
 
   const response = await axios.post(
-    `${baseUrl}/accountnotification/_search?size=${limit}&from=${offset}`,
+    `${baseUrl}/search/accountnotification?size=${limit}&from=${offset}`,
     {
       query: buildNotificationsQuery({
         filter,

@@ -23,7 +23,7 @@ export async function fetcher(
     : appConfig.SEARCH_API_URL;
 
   const response = await axios.post<unknown, { data: OpenSearchResponse }>(
-    `${baseUrl}/daostats/_search?size=1000&from=0`,
+    `${baseUrl}/search/daostats?size=1000&from=0`,
     {
       query: buildDaoStatsQuery(daoId),
     }

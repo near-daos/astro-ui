@@ -20,7 +20,7 @@ export class OpenSearchApiService {
       unknown,
       { data: { data: DaoFeedItem[]; total: number } }
     >(
-      `/dao/_search`,
+      `/search/dao`,
       {
         query: buildAccountDaosQuery(account),
       },

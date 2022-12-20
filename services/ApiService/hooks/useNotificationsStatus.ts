@@ -10,7 +10,7 @@ export async function fetcher(url: string, accountId: string): Promise<number> {
     ? window.APP_CONFIG.SEARCH_API_URL
     : appConfig.SEARCH_API_URL;
 
-  const response = await axios.post(`${baseUrl}/accountnotification/_search`, {
+  const response = await axios.post(`${baseUrl}/search/accountnotification`, {
     query: {
       bool: {
         must: [

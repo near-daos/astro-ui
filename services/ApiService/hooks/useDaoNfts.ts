@@ -22,7 +22,7 @@ export async function fetcher(
     : appConfig.SEARCH_API_URL;
 
   const response = await axios.post(
-    `${baseUrl}/nft/_search?size=${limit}&from=${offset}`,
+    `${baseUrl}/search/nft?size=${limit}&from=${offset}`,
     {
       query: buildNftsQuery(daoId),
     }
