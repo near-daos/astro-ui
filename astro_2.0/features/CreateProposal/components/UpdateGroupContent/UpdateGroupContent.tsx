@@ -99,9 +99,7 @@ export const UpdateGroupContent: FC<Props> = ({
               %
             </b>
           </p>
-        </div>
 
-        <div className={styles.column}>
           <h6 className={cn(styles.contentTitle, styles.contentTitleSmall)}>
             {t('proposalCard.upgradeContent.members')}
           </h6>
