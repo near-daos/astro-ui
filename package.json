@@ -26,7 +26,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@chakra-ui/react": "2.4.4",
     "@datadog/browser-rum": "^4.17.1",
+    "@emotion/react": "11.10.5",
+    "@emotion/styled": "11.10.5",
     "@hookform/resolvers": "^2.7.1",
     "@near-wallet-selector/core": "^7.3.0",
     "@near-wallet-selector/here-wallet": "^7.3.0",

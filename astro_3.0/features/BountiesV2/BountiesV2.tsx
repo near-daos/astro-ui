@@ -3,15 +3,23 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { DebouncedInput } from 'components/inputs/Input';
 import { OpenSearchQuery } from 'services/SearchService/types';
 
+import {
+  Flex,
+  Show,
+  Box,
+  Grid,
+  GridItem,
+  Button,
+  forwardRef,
+  BoxProps,
+} from '@chakra-ui/react';
+
 import { Icon } from 'components/Icon';
 
-import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Loader } from 'components/loader';
 import { BountyContext } from 'types/bounties';
 import { useBountiesInfiniteV2 } from 'services/ApiService/hooks/useBounties';
 import { BountiesList } from './BountiesList';
-
-import styles from './BountiesV2.module.scss';
 
 const STATUS_LIST = {
   'In Progress': 'InProgress',
@@ -74,6 +82,18 @@ export const buildQuery = (filter: Filter): OpenSearchQuery => {
   return query;
 };
 
+const FilterLabel = forwardRef<BoxProps, 'div'>((props, ref) => (
+  <Box pt="10px" color="neutral.60" fontWeight="bold" ref={ref} {...props} />
+));
+
+const FilterInput = (props: {
+  onValueChange: (
+    value: string | number | readonly string[] | undefined
+  ) => void;
+}) => (
+  <DebouncedInput inputStyles={{ height: '35px' }} size="block" {...props} />
+);
+
 export const BountiesV2: VFC = () => {
   const [filter, setFilter] = useState<Filter>({
     daoId: '',
@@ -85,7 +105,9 @@ export const BountiesV2: VFC = () => {
     },
   });
 
-  const { size, setSize, data } = useBountiesInfiniteV2(buildQuery(filter));
+  const { size, setSize, data, isValidating } = useBountiesInfiniteV2(
+    buildQuery(filter)
+  );
 
   const handleLoadMore = () => setSize(size + 1);
 
@@ -101,79 +123,88 @@ export const BountiesV2: VFC = () => {
   const dataLength = bountiesContext.length ?? 0;
 
   const renderContent = () => {
-    if (!bountiesContext?.length) {
-      return <NoResultsView title="no results" />;
+    if (isValidating && !bountiesContext?.length) {
+      return <Loader />;
     }
 
     return <BountiesList bountiesContext={bountiesContext} />;
   };
 
   return (
-    <main className={styles.root}>
-      <div className={styles.filter}>
-        <h3>FILTERS</h3>
-        <div className={styles.label}>DAO ID</div>
-        <div className={styles.input}>
-          <DebouncedInput
+    <Flex w="100%" pl={{ base: '10px', md: '96px' }} pr="10px">
+      <Show above="lg">
+        <Box pt="50px" pr="30px" minW="200px" width="200px">
+          <h3>FILTERS </h3>
+          <FilterLabel>DAO ID</FilterLabel>
+
+          <FilterInput
             onValueChange={val => {
               setFilter({ ...filter, daoId: val as string });
             }}
-            size="block"
           />
-        </div>
 
-        <div className={styles.label}>Tags</div>
-        <div className={styles.input}>
-          <DebouncedInput
+          <FilterLabel>Tags</FilterLabel>
+
+          <FilterInput
             onValueChange={val => {
               const tags = (val as string).trim();
 
               setFilter({ ...filter, tags: tags ? tags.split(',') : [] });
             }}
-            size="block"
           />
-        </div>
-      </div>
-      <h1 className={styles.title}>Bounties</h1>
-      <div className={styles.quickFilter}>
-        {Object.entries(STATUS_LIST).map(([key, value]) => {
-          const status = value as keyof typeof filter.statuses;
+        </Box>
+      </Show>
+      <Grid flex="1">
+        <GridItem>
+          <h1>Bounties</h1>
+        </GridItem>
+        <GridItem>
+          <Flex>
+            {Object.entries(STATUS_LIST).map(([key, value]) => {
+              const status = value as keyof typeof filter.statuses;
 
-          return (
-            <button
-              type="button"
-              className={styles.item}
-              onClick={() => {
-                const { statuses } = filter;
+              return (
+                <Button
+                  size="sm"
+                  bg="white"
+                  border="1px"
+                  borderColor="neutral.40"
+                  borderRadius="full"
+                  mr="8px"
+                  onClick={() => {
+                    const { statuses } = filter;
 
-                statuses[status] = !statuses[status];
+                    statuses[status] = !statuses[status];
 
-                setFilter({ ...filter, statuses });
-              }}
-            >
-              {filter.statuses[status] ? (
-                <Icon name="check" className={styles.icon} />
-              ) : (
-                ''
-              )}
-              {key}
-            </button>
-          );
-        })}
-      </div>
-
-      <div className={styles.bounties}>
-        <InfiniteScroll
-          dataLength={dataLength}
-          next={handleLoadMore}
-          hasMore={hasMore}
-          loader={<Loader />}
-          style={{ overflow: 'initial' }}
-          endMessage=""
-        >
-          {renderContent()}
-        </InfiniteScroll>
-      </div>
-    </main>
+                    setFilter({ ...filter, statuses });
+                  }}
+                >
+                  {filter.statuses[status] ? (
+                    <Flex h="10px" mr="5px">
+                      <Icon name="check" />
+                    </Flex>
+                  ) : (
+                    ''
+                  )}
+                  {key}
+                </Button>
+              );
+            })}
+          </Flex>
+        </GridItem>
+        <GridItem>
+          <InfiniteScroll
+            dataLength={dataLength}
+            next={handleLoadMore}
+            hasMore={hasMore}
+            loader={<Loader />}
+            style={{ overflow: 'initial' }}
+            endMessage=""
+          >
+            {renderContent()}
+          </InfiniteScroll>
+        </GridItem>
+      </Grid>
+    </Flex>
   );
 };
