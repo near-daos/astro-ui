@@ -139,7 +139,7 @@ export async function fetchBountiesV2(
     : appConfig.SEARCH_API_URL;
 
   const response = await axios.post(
-    `${baseUrl}/bounty/_search?size=${limit}&from=${offset}`,
+    `${baseUrl}/search/bounty?size=${limit}&from=${offset}`,
     {
       query,
       sort: [
