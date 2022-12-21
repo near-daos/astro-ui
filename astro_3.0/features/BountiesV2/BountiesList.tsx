@@ -7,7 +7,6 @@ import {
   GridItemProps,
   forwardRef,
 } from '@chakra-ui/react';
-
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { DATA_SEPARATOR } from 'constants/common';
 import { IconButton } from 'components/button/IconButton';
@@ -15,6 +14,7 @@ import { formatYoktoValue, kFormatter } from 'utils/format';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { BountyContext } from 'types/bounties';
 import { getTimestampLabel } from 'astro_2.0/features/ViewBounty/components/BountyCard';
+import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
 
 import styles from './BountiesList.module.scss';
 
@@ -77,7 +77,7 @@ export const BountiesList: FC<BountiesListProps> = ({ bountiesContext }) => {
         const rawDescription = bountyContext.bounty.description;
         const description = rawDescription.split(DATA_SEPARATOR)[0];
         const daoLogo =
-          bountyContext.proposal?.dao?.flagLogo ||
+          getAwsImageUrl(bountyContext.proposal?.dao?.flagLogo) ||
           '/avatars/defaultDaoAvatar.png';
 
         const { createdAt } = bountyContext.bounty;
