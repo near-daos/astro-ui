@@ -84,7 +84,7 @@ export const BreadCrumbs: React.VFC<BreadCrumbsProps> = ({
       </li>,
       !isLastItem && (
         <li className={styles.item}>
-          <Icon name={separator} width={16} />
+          <Icon name={separator} width={16} style={{ display: 'inline' }} />
         </li>
       ),
     ];

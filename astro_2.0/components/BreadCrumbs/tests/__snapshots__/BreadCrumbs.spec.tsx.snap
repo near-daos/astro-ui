@@ -19,6 +19,7 @@ exports[`breadcrumbs Should render component 1`] = `
         class="item"
       >
         <svg
+          style="display: inline;"
           width="16"
         >
           <use
@@ -39,6 +40,7 @@ exports[`breadcrumbs Should render component 1`] = `
         class="item"
       >
         <svg
+          style="display: inline;"
           width="16"
         >
           <use
@@ -59,6 +61,7 @@ exports[`breadcrumbs Should render component 1`] = `
         class="item"
       >
         <svg
+          style="display: inline;"
           width="16"
         >
           <use
@@ -79,6 +82,7 @@ exports[`breadcrumbs Should render component 1`] = `
         class="item"
       >
         <svg
+          style="display: inline;"
           width="16"
         >
           <use
@@ -99,6 +103,7 @@ exports[`breadcrumbs Should render component 1`] = `
         class="item"
       >
         <svg
+          style="display: inline;"
           width="16"
         >
           <use
