@@ -41,9 +41,9 @@ export const BountiesList: FC<BountiesListProps> = ({ bountiesContext }) => {
   }
 
   const templateColumns = {
-    base: '40px 1fr 1fr 1fr 40px 40px',
-    // md: '40px 1fr 1fr 2fr 2fr 1fr 1fr 50px 50px',
-    md: '40px 1fr 1fr 2fr 1fr 1fr 50px 50px',
+    base: '40px 1fr 2fr 1fr 40px 40px',
+    // md: '40px 1fr 2fr 2fr 1fr 1fr 50px 50px',
+    md: '40px 1fr 2fr 1fr 1fr 50px 50px',
   };
 
   return (
@@ -58,10 +58,7 @@ export const BountiesList: FC<BountiesListProps> = ({ bountiesContext }) => {
       >
         <DataCell />
         <DataCell w="40px">DAO</DataCell>
-        <DataCell>TYPE</DataCell>
-        <Show above="md">
-          <DataCell>DESCRIPTION</DataCell>
-        </Show>
+        <DataCell>DESCRIPTION</DataCell>
         {/* <Show above="md">
           <DataCell>TAGS</DataCell>
         </Show> */}
@@ -116,14 +113,7 @@ export const BountiesList: FC<BountiesListProps> = ({ bountiesContext }) => {
             >
               {bountyContext.proposal?.dao?.name}
             </DataCell>
-
-            <DataCell fontWeight="bold" color="#201d29">
-              {bountyContext.proposal?.kind?.type}
-            </DataCell>
-
-            <Show above="md">
-              <DataCell>{description}</DataCell>
-            </Show>
+            <DataCell>{description}</DataCell>
             {/* <Show above="md">
               <DataCell>
                 {bountyContext.bounty.tags
