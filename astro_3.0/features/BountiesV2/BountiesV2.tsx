@@ -143,7 +143,7 @@ export const BountiesV2: VFC = () => {
             }}
           />
 
-          <FilterLabel>Tags</FilterLabel>
+          {/* <FilterLabel>Tags</FilterLabel>
 
           <FilterInput
             onValueChange={val => {
@@ -151,7 +151,7 @@ export const BountiesV2: VFC = () => {
 
               setFilter({ ...filter, tags: tags ? tags.split(',') : [] });
             }}
-          />
+          /> */}
         </Box>
       </Show>
       <Grid flex="1">
