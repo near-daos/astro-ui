@@ -71,7 +71,7 @@ export const ClaimRow: FC<ClaimRowProps> = ({
         link = {
           pathname: SINGLE_PROPOSAL_PAGE_URL,
           query: {
-            dao: proposal.daoId,
+            dao: dao.id,
             proposal: proposal.id,
           },
         };

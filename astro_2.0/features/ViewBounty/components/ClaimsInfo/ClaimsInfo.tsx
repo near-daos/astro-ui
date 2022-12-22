@@ -30,6 +30,7 @@ export const ClaimsInfo: FC<ClaimsInfoProps> = ({ bounty }) => {
           <ClaimCard
             key={item.id}
             data={item}
+            daoId={bounty.daoId}
             doneProposals={bounty.bountyDoneProposals}
             maxDeadline={bounty.maxDeadline}
             className={styles.card}

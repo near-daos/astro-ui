@@ -19,6 +19,7 @@ interface ClaimCardProps {
   doneProposals: BountyProposal[];
   maxDeadline: string;
   className?: string;
+  daoId: string;
 }
 
 const FORMAT = 'dd MMM, yyyy';
@@ -28,6 +29,7 @@ export const ClaimCard: FC<ClaimCardProps> = ({
   doneProposals,
   maxDeadline,
   className,
+  daoId,
 }) => {
   const { startTime, id } = data;
 
@@ -60,7 +62,7 @@ export const ClaimCard: FC<ClaimCardProps> = ({
         link = {
           pathname: SINGLE_PROPOSAL_PAGE_URL,
           query: {
-            dao: proposal.daoId,
+            dao: daoId,
             proposal: proposal.id,
           },
         };
