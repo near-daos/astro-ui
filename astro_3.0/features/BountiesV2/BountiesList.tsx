@@ -140,7 +140,7 @@ export const BountiesList: FC<BountiesListProps> = ({ bountiesContext }) => {
                 className={styles.icon}
                 onClick={() => {
                   window.open(
-                    `/dao/${bountyContext.proposal?.dao?.id}/proposals/${bountyContext.proposal?.id}`
+                    `/dao/${bountyContext.proposal?.dao?.id}/tasks/bounties/${bountyContext.id}`
                   );
                 }}
               />
