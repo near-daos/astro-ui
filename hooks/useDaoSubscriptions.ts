@@ -2,10 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { useAsyncFn } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import { DAO, DaoSubscription } from 'types/dao';
+import { DAO, DaoFeedItem, DaoSubscription } from 'types/dao';
 import { useWalletContext } from 'context/WalletContext';
 import { useRouter } from 'next/router';
 import { useAccountDaos } from 'services/ApiService/hooks/useAccountDaos';
+import { useSubscribedDaos } from 'services/ApiService/hooks/useSubscribedDaos';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 function normalizeSubscriptions(
   data: DaoSubscription[]
@@ -24,21 +26,32 @@ function normalizeSubscriptions(
 }
 
 export function useDaoSubscriptions(): {
-  subscriptions: Record<string, { subscriptionId: string; dao: DAO }> | null;
+  // subscriptions: Record<string, { subscriptionId: string; dao: DAO }> | null;
   handleFollow: (daoId: string) => void;
-  handleUnfollow: (id: string) => void;
+  handleUnfollow: () => void;
   isLoading: boolean;
+  isSubscribed: boolean;
 } {
+  const { useOpenSearchDataApi } = useFlags();
   const { query } = useRouter();
   const dao = query.dao as string;
   const { accountId, nearService, pkAndSignature } = useWalletContext();
   const [subscriptions, setSubscriptions] = useState<Record<
     string,
-    { subscriptionId: string; dao: DAO }
+    { dao: DAO }
   > | null>(null);
   const { mutate: refreshAccountDaos } = useAccountDaos(true);
+  const { data: subscribedDaos, mutate: refreshSubscribedDaos } =
+    useSubscribedDaos();
+  const subscription = subscriptions ? subscriptions[dao] : null;
+  const isSubscribed =
+    !!subscription || !!subscribedDaos?.find(item => item.id === dao);
 
   const getSubscriptions = useCallback(async () => {
+    if (useOpenSearchDataApi || useOpenSearchDataApi === undefined) {
+      return;
+    }
+
     try {
       if (accountId) {
         const data = await SputnikHttpService.getAccountDaoSubscriptions(
@@ -55,7 +68,7 @@ export function useDaoSubscriptions(): {
         description: err.message,
       });
     }
-  }, [accountId, refreshAccountDaos]);
+  }, [accountId, refreshAccountDaos, useOpenSearchDataApi]);
 
   const [{ loading }, handleFollow] = useAsyncFn(
     async daoId => {
@@ -75,14 +88,28 @@ export function useDaoSubscriptions(): {
 
         if (result) {
           await getSubscriptions();
+          await refreshSubscribedDaos(
+            currentData => {
+              currentData?.push({
+                id: daoId,
+                daoId,
+              } as unknown as DaoFeedItem);
+
+              return currentData;
+            },
+            {
+              revalidate: false,
+            }
+          );
+          await refreshAccountDaos();
         }
       }
     },
-    [nearService, pkAndSignature]
+    [nearService, pkAndSignature, refreshSubscribedDaos]
   );
 
-  const [{ loading: loadingUnfollow }, handleUnfollow] = useAsyncFn(
-    async subscriptionId => {
+  const [{ loading: loadingUnfollow }, handleUnfollow] =
+    useAsyncFn(async () => {
       if (!pkAndSignature) {
         return;
       }
@@ -90,22 +117,29 @@ export function useDaoSubscriptions(): {
       const { publicKey, signature } = pkAndSignature;
 
       if (publicKey && signature && accountId) {
-        await SputnikHttpService.deleteAccountSubscription(
-          dao,
+        await SputnikHttpService.deleteAccountSubscription(dao, accountId, {
           accountId,
-          subscriptionId,
-          {
-            accountId,
-            publicKey,
-            signature,
-          }
-        );
+          publicKey,
+          signature,
+        });
 
         await getSubscriptions();
+        await refreshSubscribedDaos(
+          currentData => {
+            return currentData?.filter(item => item.id !== dao);
+          },
+          { revalidate: false }
+        );
+        await refreshAccountDaos();
       }
-    },
-    [accountId, getSubscriptions, nearService, pkAndSignature, dao]
-  );
+    }, [
+      accountId,
+      getSubscriptions,
+      nearService,
+      pkAndSignature,
+      dao,
+      refreshSubscribedDaos,
+    ]);
 
   useEffect(() => {
     if (accountId) {
@@ -114,7 +148,7 @@ export function useDaoSubscriptions(): {
   }, [accountId, getSubscriptions]);
 
   return {
-    subscriptions,
+    isSubscribed,
     handleFollow,
     handleUnfollow,
     isLoading: loading || loadingUnfollow,

@@ -59,8 +59,7 @@ export function useSubscribedDaos(): {
     useOpenSearchDataApi ? ['subscribedDaos', accountId] : undefined,
     fetcher,
     {
-      revalidateOnFocus: false,
-      dedupingInterval: 5000,
+      revalidateOnMount: true,
     }
   );
 

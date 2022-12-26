@@ -832,14 +832,13 @@ class SputnikHttpServiceClass {
   public async deleteAccountSubscription(
     daoId: string,
     accountId: string,
-    subscriptionId: string,
     params: DaoSubscriptionInput
   ): Promise<string> {
     try {
       const response = await this.httpService.delete<
         DaoSubscriptionInput,
         { data: { accountId: string } }
-      >(`/subscriptions/${daoId}/${accountId}/${subscriptionId}`, params, {
+      >(`/subscriptions/${daoId}/${accountId}`, params, {
         queryRequest: {
           name: API_QUERIES.DELETE_ACCOUNT_SUBSCRIPTION,
         },

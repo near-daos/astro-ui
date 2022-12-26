@@ -1,3 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FollowButton FollowButton Should render nothing if no subscriptions 1`] = `<div />`;
+exports[`FollowButton FollowButton Should render nothing if no subscriptions 1`] = `
+<div>
+  <button
+    class="btn green sizeSmall root"
+    type="button"
+  >
+    <div
+      class="subscribed"
+    >
+      <svg
+        class="followIcon"
+      >
+        <use
+          href="/_next/undefined"
+        />
+      </svg>
+      follow
+    </div>
+  </button>
+</div>
+`;

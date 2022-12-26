@@ -10,7 +10,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk';
 import { useDao } from 'services/ApiService/hooks/useDao';
 
 function normalizeTokens(tkns: Token[]): Tokens {
-  const hasNear = tkns.find(item => !item.tokenId);
+  const hasNear = tkns.find(item => item.symbol === 'NEAR');
 
   const input = hasNear
     ? tkns

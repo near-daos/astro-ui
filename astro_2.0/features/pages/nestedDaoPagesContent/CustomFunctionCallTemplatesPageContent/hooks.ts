@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useAsyncFn, useMount, useMountedState } from 'react-use';
+import { useAsyncFn, useMount } from 'react-use';
 
 import { SputnikHttpService } from 'services/sputnik';
 
@@ -12,6 +11,8 @@ import {
   TemplateUpdatePayload,
 } from 'types/proposalTemplate';
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
+import { useFlags } from 'launchdarkly-react-client-sdk';
+import { useDaoProposalTemplates } from 'services/ApiService/hooks/useDaoProposalTemplates';
 
 export function useProposalTemplates(daoId: string): {
   deleteTemplate: (id: string) => void;
@@ -19,17 +20,23 @@ export function useProposalTemplates(daoId: string): {
   templates: ProposalTemplate[];
   loading: boolean;
 } {
+  const { useOpenSearchDataApi } = useFlags();
   const { accountId, pkAndSignature } = useWalletContext();
-  const isMounted = useMountedState();
-  const [templates, setTemplates] = useState<ProposalTemplate[]>([]);
+  const {
+    data: templatesFromOpenSearch,
+    isLoading,
+    mutate,
+  } = useDaoProposalTemplates(daoId);
 
-  const [{ loading }, getTemplates] = useAsyncFn(async () => {
-    const res = await SputnikHttpService.getProposalTemplates(daoId);
-
-    if (isMounted()) {
-      setTemplates(res);
+  const [{ loading, value }, getTemplates] = useAsyncFn(async () => {
+    if (useOpenSearchDataApi || useOpenSearchDataApi === undefined) {
+      return undefined;
     }
-  }, [accountId, isMounted]);
+
+    return SputnikHttpService.getProposalTemplates(daoId);
+  }, [accountId, useOpenSearchDataApi]);
+
+  const templates = templatesFromOpenSearch ?? value ?? [];
 
   useMount(async () => {
     await getTemplates();
@@ -46,16 +53,15 @@ export function useProposalTemplates(daoId: string): {
 
       if (publicKey && signature) {
         try {
-          const updatedTemplate =
-            await SputnikHttpService.updateProposalTemplate(daoId, id, {
-              accountId,
-              publicKey,
-              signature,
-              name,
-              description,
-              isEnabled,
-              config,
-            });
+          await SputnikHttpService.updateProposalTemplate(daoId, id, {
+            accountId,
+            publicKey,
+            signature,
+            name,
+            description,
+            isEnabled,
+            config,
+          });
 
           showNotification({
             type: NOTIFICATION_TYPES.SUCCESS,
@@ -63,15 +69,8 @@ export function useProposalTemplates(daoId: string): {
             description: 'Successfully updated proposal template',
           });
 
-          setTemplates(
-            templates.map(item => {
-              if (item.id === updatedTemplate.id) {
-                return updatedTemplate;
-              }
-
-              return item;
-            })
-          );
+          await getTemplates();
+          await mutate();
         } catch (e) {
           showNotification({
             type: NOTIFICATION_TYPES.ERROR,
@@ -81,7 +80,7 @@ export function useProposalTemplates(daoId: string): {
         }
       }
     },
-    [accountId, pkAndSignature, templates]
+    [accountId, pkAndSignature, getTemplates, mutate]
   );
 
   const [, deleteTemplate] = useAsyncFn(
@@ -106,7 +105,8 @@ export function useProposalTemplates(daoId: string): {
             description: 'Successfully deleted proposal template',
           });
 
-          setTemplates(templates.filter(item => item.id !== id));
+          await getTemplates();
+          await mutate();
         } catch (e) {
           showNotification({
             type: NOTIFICATION_TYPES.ERROR,
@@ -116,14 +116,14 @@ export function useProposalTemplates(daoId: string): {
         }
       }
     },
-    [accountId, pkAndSignature, templates]
+    [accountId, pkAndSignature, getTemplates, mutate]
   );
 
   return {
     deleteTemplate,
     updateTemplate,
     templates,
-    loading,
+    loading: loading || isLoading,
   };
 }
 

@@ -114,7 +114,7 @@ export const CustomFcTemplateCard: FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const { tokens } = useAllCustomTokens();
-  const tokenData = config.token ? tokens[config.token] : tokens.NEAR;
+  const tokenData = config?.token ? tokens[config.token] : tokens.NEAR;
   const formKeyRef = useRef(uniqid());
 
   const parsedJson = useMemo(() => {
