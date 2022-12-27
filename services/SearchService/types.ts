@@ -368,6 +368,7 @@ export interface AccountNotificationIndex {
 export interface ProposalTemplateIndex {
   processingTimeStamp: number;
   isArchived: boolean;
+  isEnabled: boolean;
   description: string;
   createTimestamp: number;
   createdAt: number;
