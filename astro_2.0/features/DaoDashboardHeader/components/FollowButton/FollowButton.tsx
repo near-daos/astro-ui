@@ -53,10 +53,8 @@ export const FollowButton: FC<FollowButtonProps> = ({
   visible,
 }) => {
   const { t } = useTranslation();
-  const { subscriptions, handleFollow, handleUnfollow, isLoading } =
+  const { isSubscribed, handleFollow, handleUnfollow, isLoading } =
     useDaoSubscriptions();
-  const subscription = subscriptions ? subscriptions[daoId] : null;
-  const isSubscribed = !!subscription;
 
   const [showModal] = useModal(ConfirmModal, {
     daoName: daoName || daoId,
@@ -65,10 +63,10 @@ export const FollowButton: FC<FollowButtonProps> = ({
   const confirmUnfollow = useCallback(async () => {
     const res = await showModal();
 
-    if (res?.length && subscription) {
-      handleUnfollow(subscription?.subscriptionId);
+    if (res?.length) {
+      handleUnfollow();
     }
-  }, [handleUnfollow, showModal, subscription]);
+  }, [handleUnfollow, showModal]);
 
   const toggleSubscription = useCallback(() => {
     if (isSubscribed) {
@@ -78,7 +76,7 @@ export const FollowButton: FC<FollowButtonProps> = ({
     }
   }, [daoId, handleFollow, isSubscribed, confirmUnfollow]);
 
-  if (!subscriptions || !visible) {
+  if (!visible) {
     return null;
   }
 

@@ -77,9 +77,7 @@ describe('FollowButton', () => {
 
       // @ts-ignore
       useDaoSubscriptions.mockImplementation(() => ({
-        subscriptions: {
-          [daoId]: 'subscription',
-        },
+        isSubscribed: true,
       }));
 
       const { getByRole } = render(
@@ -96,7 +94,7 @@ describe('FollowButton', () => {
 
       // @ts-ignore
       useDaoSubscriptions.mockImplementation(() => ({
-        subscriptions: {},
+        isSubscribed: false,
         handleFollow,
       }));
 

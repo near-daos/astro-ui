@@ -1,5 +1,6 @@
 import { CancelToken } from 'axios';
 import {
+  CustomFcTemplatePayload,
   ProposalActionData,
   ProposalComment,
   ProposalKind,
@@ -203,7 +204,8 @@ export type OpenSearchResponse = {
         | DraftProposalIndex
         | DraftCommentIndex
         | DaoStatsIndex
-        | AccountIndex;
+        | AccountIndex
+        | ProposalTemplateIndex;
     }[];
     max_score: null;
     total: {
@@ -361,4 +363,21 @@ export interface AccountNotificationIndex {
   creatingTimeStamp: number;
   isEmail: boolean;
   isMuted: boolean;
+}
+
+export interface ProposalTemplateIndex {
+  processingTimeStamp: number;
+  isArchived: boolean;
+  description: string;
+  createTimestamp: number;
+  createdAt: number;
+  createdBy: string;
+  name: string;
+  id: string;
+  config: CustomFcTemplatePayload;
+  daoCount: number;
+  updatedAt: number;
+  accounts: string;
+  index: 'ProposalTemplate';
+  daoId: string;
 }

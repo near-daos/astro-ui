@@ -35,7 +35,6 @@ export const Modal: FC<ModalProps> = memo(
     return (
       <ReactModal
         ariaHideApp={false}
-        bodyOpenClassName={styles.modalOpen}
         isOpen={open}
         onAfterClose={handleClose}
         onRequestClose={() => setOpen(false)}

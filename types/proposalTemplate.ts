@@ -19,7 +19,7 @@ export type TemplateUpdatePayload = Pick<
 export type ProposalTemplate = {
   id?: string;
   daoId: string;
-  dao: DAO;
+  dao?: DAO;
   name: string;
   description?: string;
   isEnabled: boolean;
