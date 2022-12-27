@@ -22,18 +22,18 @@ import { useBountiesInfiniteV2 } from 'services/ApiService/hooks/useBounties';
 import { BountiesList } from './BountiesList';
 
 const STATUS_LIST = {
+  Available: 'Available',
   'In Progress': 'InProgress',
-  Approved: 'Approved',
-  Rejected: 'Rejected',
+  Completed: 'Completed',
 };
 
 export type Filter = {
   daoId: string;
   tags: string[];
   statuses: {
+    Available: boolean;
     InProgress: boolean;
-    Approved: boolean;
-    Rejected: boolean;
+    Completed: boolean;
   };
 };
 
@@ -45,14 +45,60 @@ export const buildQuery = (filter: Filter): OpenSearchQuery => {
       },
     })) ?? ([] as Record<string, unknown>[]);
 
-  const statusQueries =
-    Object.entries(filter.statuses)
-      .filter(([, value]) => value)
-      .map(([key]) => ({
-        match: {
-          proposalStatus: key,
-        },
-      })) ?? ([] as Record<string, unknown>[]);
+  const statusQueries = [] as Record<string, unknown>[];
+
+  if (filter.statuses.Available) {
+    statusQueries.push({
+      bool: {
+        must: [
+          {
+            simple_query_string: {
+              query: 0,
+              fields: ['numberOfClaims'],
+            },
+          },
+        ],
+        must_not: [
+          {
+            simple_query_string: {
+              query: 0,
+              fields: ['times'],
+            },
+          },
+        ],
+      },
+    });
+  }
+
+  if (filter.statuses.InProgress) {
+    statusQueries.push({
+      bool: {
+        must_not: [
+          {
+            simple_query_string: {
+              query: 0,
+              fields: ['numberOfClaims'],
+            },
+          },
+        ],
+      },
+    });
+  }
+
+  if (filter.statuses.Completed) {
+    statusQueries.push({
+      bool: {
+        must: [
+          {
+            simple_query_string: {
+              query: 0,
+              fields: ['times'],
+            },
+          },
+        ],
+      },
+    });
+  }
 
   const query: OpenSearchQuery = {
     bool: {
@@ -99,9 +145,9 @@ export const BountiesV2: VFC = () => {
     daoId: '',
     tags: [],
     statuses: {
+      Available: false,
       InProgress: false,
-      Approved: false,
-      Rejected: false,
+      Completed: false,
     },
   });
 
@@ -143,7 +189,7 @@ export const BountiesV2: VFC = () => {
             }}
           />
 
-          <FilterLabel>Tags</FilterLabel>
+          {/* <FilterLabel>Tags</FilterLabel>
 
           <FilterInput
             onValueChange={val => {
@@ -151,7 +197,7 @@ export const BountiesV2: VFC = () => {
 
               setFilter({ ...filter, tags: tags ? tags.split(',') : [] });
             }}
-          />
+          /> */}
         </Box>
       </Show>
       <Grid flex="1">

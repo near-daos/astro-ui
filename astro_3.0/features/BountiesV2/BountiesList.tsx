@@ -41,8 +41,9 @@ export const BountiesList: FC<BountiesListProps> = ({ bountiesContext }) => {
   }
 
   const templateColumns = {
-    base: '40px 1fr 1fr 1fr 40px 40px',
-    md: '40px 1fr 1fr 2fr 2fr 1fr 1fr 50px 50px',
+    base: '40px 1fr 2fr 1fr 40px 40px',
+    // md: '40px 1fr 2fr 2fr 1fr 1fr 50px 50px',
+    md: '40px 1fr 2fr 1fr 1fr 50px 50px',
   };
 
   return (
@@ -57,13 +58,10 @@ export const BountiesList: FC<BountiesListProps> = ({ bountiesContext }) => {
       >
         <DataCell />
         <DataCell w="40px">DAO</DataCell>
-        <DataCell>TYPE</DataCell>
-        <Show above="md">
-          <DataCell>DESCRIPTION</DataCell>
-        </Show>
-        <Show above="md">
+        <DataCell>DESCRIPTION</DataCell>
+        {/* <Show above="md">
           <DataCell>TAGS</DataCell>
-        </Show>
+        </Show> */}
         <Show above="md">
           <DataCell>RECENCY</DataCell>
         </Show>
@@ -115,21 +113,14 @@ export const BountiesList: FC<BountiesListProps> = ({ bountiesContext }) => {
             >
               {bountyContext.proposal?.dao?.name}
             </DataCell>
-
-            <DataCell fontWeight="bold" color="#201d29">
-              {bountyContext.proposal?.kind?.type}
-            </DataCell>
-
-            <Show above="md">
-              <DataCell>{description}</DataCell>
-            </Show>
-            <Show above="md">
+            <DataCell>{description}</DataCell>
+            {/* <Show above="md">
               <DataCell>
                 {bountyContext.bounty.tags
                   ?.map((tag: string) => `#${tag}`)
                   .join(', ')}
               </DataCell>
-            </Show>
+            </Show> */}
             <Show above="md">
               <DataCell>{recency}</DataCell>
             </Show>
@@ -149,7 +140,7 @@ export const BountiesList: FC<BountiesListProps> = ({ bountiesContext }) => {
                 className={styles.icon}
                 onClick={() => {
                   window.open(
-                    `/dao/${bountyContext.proposal?.dao?.id}/proposals/${bountyContext.proposal?.id}`
+                    `/dao/${bountyContext.proposal?.dao?.id}/tasks/bounties/${bountyContext.id}`
                   );
                 }}
               />
