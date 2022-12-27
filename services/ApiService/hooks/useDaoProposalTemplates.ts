@@ -41,6 +41,13 @@ export async function fetcher(
           ],
         },
       },
+      sort: [
+        {
+          createdAt: {
+            order: 'DESC',
+          },
+        },
+      ],
     }
   );
 

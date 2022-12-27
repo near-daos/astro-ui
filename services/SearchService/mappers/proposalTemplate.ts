@@ -10,7 +10,7 @@ export function mapProposalTemplateIndexToProposalTemplate(
     // dao: DAO;
     name: index.name,
     description: index.description,
-    isEnabled: true,
+    isEnabled: index.isEnabled,
     config: index.config,
     updatedAt: new Date(index.updatedAt).toISOString(),
   };
