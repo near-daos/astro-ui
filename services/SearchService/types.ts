@@ -205,7 +205,8 @@ export type OpenSearchResponse = {
         | DraftCommentIndex
         | DaoStatsIndex
         | AccountIndex
-        | ProposalTemplateIndex;
+        | ProposalTemplateIndex
+        | SharedProposalTemplateIndex;
     }[];
     max_score: null;
     total: {
@@ -381,4 +382,21 @@ export interface ProposalTemplateIndex {
   accounts: string;
   index: 'ProposalTemplate';
   daoId: string;
+}
+
+export interface SharedProposalTemplateIndex {
+  processingTimeStamp: number;
+  isArchived: boolean;
+  isEnabled: boolean;
+  description: string;
+  createTimestamp: number;
+  createdAt: number;
+  createdBy: string;
+  name: string;
+  id: string;
+  config: CustomFcTemplatePayload;
+  daoCount: number;
+  updatedAt: number;
+  accounts: string;
+  index: 'SharedProposalTemplate';
 }

@@ -14,9 +14,17 @@ interface Props {
   total: number;
   data: SharedProposalTemplate[] | null;
   next: () => void;
+  hasMore?: boolean;
+  dataLength?: number;
 }
 
-export const TemplatesList: FC<Props> = ({ total, data, next }) => {
+export const TemplatesList: FC<Props> = ({
+  total,
+  data,
+  next,
+  hasMore,
+  dataLength,
+}) => {
   const { t } = useTranslation();
 
   if (!data) {
@@ -36,9 +44,9 @@ export const TemplatesList: FC<Props> = ({ total, data, next }) => {
         <div className={styles.control}>&nbsp;</div>
       </div>
       <InfiniteScroll
-        dataLength={data.length}
+        dataLength={dataLength !== undefined ? dataLength : data.length}
         next={next}
-        hasMore={data.length < total}
+        hasMore={hasMore !== undefined ? hasMore : data.length < total}
         loader={
           <div className={styles.loadingMore}>
             <LoadingIndicator />
