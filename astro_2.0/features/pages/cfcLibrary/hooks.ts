@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAsyncFn, useMount, useMountedState } from 'react-use';
+import { useAsync, useAsyncFn, useMount, useMountedState } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { PaginationResponse } from 'types/api';
@@ -7,6 +7,8 @@ import { SharedProposalTemplate } from 'types/proposalTemplate';
 import { useRouter } from 'next/router';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 import { useWalletContext } from 'context/WalletContext';
+import { useFlags } from 'launchdarkly-react-client-sdk';
+import { useSharedProposalTemplate } from 'services/ApiService/hooks/useSharedProposalTemplate';
 
 export type PageData = PaginationResponse<SharedProposalTemplate[]>;
 
@@ -192,23 +194,25 @@ export function useSharedTemplatePageData(): {
   loadingSmartContractData: boolean;
   templatesBySmartContract: SharedProposalTemplate[] | null | undefined;
 } {
+  const { useOpenSearchDataApi } = useFlags();
   const router = useRouter();
-  const isMounted = useMountedState();
   const {
     query: { template },
   } = router;
 
   const templateId = template as string;
 
-  const [data, setData] = useState<SharedProposalTemplate | null>(null);
+  const { data: templateFromOpenSearch } = useSharedProposalTemplate();
 
-  const [{ loading }, fetchData] = useAsyncFn(async () => {
-    const res = await SputnikHttpService.getSharedProposalTemplate(templateId);
-
-    if (res && isMounted()) {
-      setData(res);
+  const { loading, value: templateFromApi } = useAsync(async () => {
+    if (useOpenSearchDataApi || useOpenSearchDataApi === undefined) {
+      return undefined;
     }
-  }, [templateId, isMounted]);
+
+    return SputnikHttpService.getSharedProposalTemplate(templateId);
+  }, [templateId]);
+
+  const data = templateFromOpenSearch ?? templateFromApi ?? null;
 
   const [
     { loading: loadingSmartContractData, value: templatesBySmartContract },
@@ -227,12 +231,6 @@ export function useSharedTemplatePageData(): {
   useEffect(() => {
     fetchSmartContractData();
   }, [fetchSmartContractData]);
-
-  useEffect(() => {
-    (async () => {
-      await fetchData();
-    })();
-  }, [fetchData]);
 
   return {
     data,

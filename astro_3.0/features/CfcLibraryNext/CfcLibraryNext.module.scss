@@ -1,0 +1,78 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  @include tablet-landscape {
+    margin-top: 72px;
+  }
+
+  h1 {
+    margin: 16px 0;
+  }
+
+  .description {
+    @extend %body1;
+    margin: 16px 0;
+  }
+
+  .search {
+    margin: 16px 0;
+  }
+}
+
+.body {
+  margin: 0 -24px;
+
+  @include tablet-landscape {
+    border-radius: 8px;
+    box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+
+    margin: 32px 0 0;
+  }
+}
+
+.filters {
+  align-items: center;
+
+  border-bottom: 1px solid var(--color-neutral-40);
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 24px;
+}
+
+.sorting {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+
+  .label {
+    @extend %body2;
+    color: var(--color-neutral-60);
+    margin-right: 8px;
+  }
+}
+
+.dropdown {
+  @extend %subtitle4;
+  margin: 0;
+}
+
+.menu {
+  @extend %body2;
+  right: 0;
+}
+
+.content {
+  padding: 24px;
+  @include tablet-landscape {
+    padding: 24px;
+  }
+}
