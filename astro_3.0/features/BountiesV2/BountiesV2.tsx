@@ -1,8 +1,8 @@
 import React, { VFC, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 import { DebouncedInput } from 'components/inputs/Input';
 import { OpenSearchQuery } from 'services/SearchService/types';
-
 import {
   Flex,
   Show,
@@ -15,7 +15,6 @@ import {
 } from '@chakra-ui/react';
 
 import { Icon } from 'components/Icon';
-
 import { Loader } from 'components/loader';
 import { BountyContext } from 'types/bounties';
 import { useBountiesInfiniteV2 } from 'services/ApiService/hooks/useBounties';
@@ -141,6 +140,8 @@ const FilterInput = (props: {
 );
 
 export const BountiesV2: VFC = () => {
+  const { showBountyTags } = useFlags();
+
   const [filter, setFilter] = useState<Filter>({
     daoId: '',
     tags: [],
@@ -182,22 +183,24 @@ export const BountiesV2: VFC = () => {
         <Box pt="50px" pr="30px" minW="200px" width="200px">
           <h3>FILTERS </h3>
           <FilterLabel>DAO ID</FilterLabel>
-
           <FilterInput
             onValueChange={val => {
               setFilter({ ...filter, daoId: val as string });
             }}
           />
 
-          {/* <FilterLabel>Tags</FilterLabel>
+          {showBountyTags && (
+            <>
+              <FilterLabel>Tags</FilterLabel>
+              <FilterInput
+                onValueChange={val => {
+                  const tags = (val as string).trim();
 
-          <FilterInput
-            onValueChange={val => {
-              const tags = (val as string).trim();
-
-              setFilter({ ...filter, tags: tags ? tags.split(',') : [] });
-            }}
-          /> */}
+                  setFilter({ ...filter, tags: tags ? tags.split(',') : [] });
+                }}
+              />
+            </>
+          )}
         </Box>
       </Show>
       <Grid flex="1">

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 import {
   Box,
   Show,
@@ -36,20 +37,22 @@ const DataCell = forwardRef<GridItemProps, 'div'>((props, ref) => (
 ));
 
 export const BountiesList: FC<BountiesListProps> = ({ bountiesContext }) => {
+  const { showBountyTags } = useFlags();
+
   if (!bountiesContext?.length) {
     return <NoResultsView title="no results" />;
   }
 
   const templateColumns = {
     base: '40px 1fr 2fr 1fr 40px 40px',
-    // md: '40px 1fr 2fr 2fr 1fr 1fr 50px 50px',
-    md: '40px 1fr 2fr 1fr 1fr 50px 50px',
+    md: !showBountyTags
+      ? '40px 1fr 2fr 1fr 1fr 50px 50px'
+      : '40px 1fr 2fr 2fr 1fr 1fr 50px 50px',
   };
 
   return (
     <Box mt="10px">
       {/* Headers */}
-
       <Grid
         fontWeight="bold"
         color="neutral.60"
@@ -59,9 +62,11 @@ export const BountiesList: FC<BountiesListProps> = ({ bountiesContext }) => {
         <DataCell />
         <DataCell w="40px">DAO</DataCell>
         <DataCell>DESCRIPTION</DataCell>
-        {/* <Show above="md">
-          <DataCell>TAGS</DataCell>
-        </Show> */}
+        {showBountyTags && (
+          <Show above="md">
+            <DataCell>TAGS</DataCell>
+          </Show>
+        )}
         <Show above="md">
           <DataCell>RECENCY</DataCell>
         </Show>
@@ -114,13 +119,15 @@ export const BountiesList: FC<BountiesListProps> = ({ bountiesContext }) => {
               {bountyContext.proposal?.dao?.name}
             </DataCell>
             <DataCell>{description}</DataCell>
-            {/* <Show above="md">
-              <DataCell>
-                {bountyContext.bounty.tags
-                  ?.map((tag: string) => `#${tag}`)
-                  .join(', ')}
-              </DataCell>
-            </Show> */}
+            {showBountyTags && (
+              <Show above="md">
+                <DataCell>
+                  {bountyContext.bounty.tags
+                    ?.map((tag: string) => `#${tag}`)
+                    .join(', ')}
+                </DataCell>
+              </Show>
+            )}
             <Show above="md">
               <DataCell>{recency}</DataCell>
             </Show>
