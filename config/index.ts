@@ -18,6 +18,7 @@ export const appConfig = {
   STATS_API_URL: process.env.STATS_API_URL,
   DRAFTS_API_URL: process.env.DRAFTS_API_URL,
   SEARCH_API_URL: process.env.SEARCH_API_URL,
+  API_GATEWAY_API_URL: process.env.API_GATEWAY_API_URL,
   OPEN_SEARCH_USERNAME: process.env.OPEN_SEARCH_USERNAME,
   OPEN_SEARCH_PASSWORD: process.env.OPEN_SEARCH_PASSWORD,
   APP_DOMAIN: process.env.APP_DOMAIN,
