@@ -3,9 +3,6 @@
 @import 'styles/typography';
 
 .root {
-  background-color: var(--color-white);
-  border-radius: 0 8px 8px 0;
-  box-shadow: 3px 2px 24px var(--color-black-opacity-14);
   display: grid;
   grid-row-gap: 22px;
   grid-template-areas:
@@ -17,9 +14,7 @@
     'content'
     'voteControl';
   grid-template-columns: 1fr;
-  padding: 22px 20px;
   position: relative;
-  transition: box-shadow 0.3s ease-out;
   z-index: 1;
 
   @include tablet-landscape {
@@ -30,15 +25,6 @@
       'description description description'
       'content content voteControl';
     grid-template-columns: 1fr 2fr 3fr;
-    padding: 22px 30px;
-  }
-
-  &.clickable {
-    cursor: pointer;
-  }
-
-  &:hover {
-    box-shadow: 3px 2px 24px var(--color-black-opacity-25);
   }
 }
 

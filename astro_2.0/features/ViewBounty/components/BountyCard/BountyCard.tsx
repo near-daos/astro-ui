@@ -1,8 +1,10 @@
 import React, { ReactNode, useCallback } from 'react';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 import cn from 'classnames';
 import { useRouter } from 'next/router';
 import { formatDistance, parseISO } from 'date-fns';
 import { useTranslation } from 'next-i18next';
+import { Box } from '@chakra-ui/react';
 
 import { Bounty, BountyProposal } from 'types/bounties';
 
@@ -26,6 +28,8 @@ import { SINGLE_BOUNTY_PAGE_URL } from 'constants/routing';
 
 import { AddBountyRequest, ProposalType } from 'types/proposal';
 import { UserPermissions } from 'types/context';
+
+import { BountyEditor } from './BountyEditor';
 
 import styles from './BountyCard.module.scss';
 
@@ -63,6 +67,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   const router = useRouter();
   const { t } = useTranslation();
   const { accountId } = useWalletContext();
+  const { showBountyTags } = useFlags();
   const canNavigateToBounty = !router.query.bounty;
 
   const desc = bounty ? bounty.description : proposal.description;
@@ -206,117 +211,138 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   }
 
   return (
-    <div
-      tabIndex={0}
-      role="button"
-      onKeyPress={handleCardClick}
-      className={cn(styles.root, {
-        [styles.clickable]: canNavigateToBounty,
-      })}
-      onClick={handleCardClick}
+    <Box
+      bgColor="white"
+      borderRadius="0 8px 8px 0"
+      boxShadow="3px 2px 24px var(--chakra-colors-blackAlpha-300)"
+      cursor="pointer"
+      p={{ base: '22px 20px', sm: '22px 30px' }}
+      sx={{
+        '&:hover': {
+          'box-shadow': '3px 2px 24px var(--chakra-colors-blackAlpha-400)',
+        },
+        transition: 'box-shadow 0.3s ease-out',
+      }}
     >
-      {loading && (
-        <div className={styles.signingTransactionState}>
-          <LoadingIndicator />
-          {t('proposalCard.signingTransaction')}
-        </div>
+      {showBountyTags && (
+        <BountyEditor bounty={bounty} permissions={permissions} />
       )}
-      <div className={styles.proposalCell}>
-        <InfoBlockWidget
-          valueFontSize="L"
-          label="Bounty name"
-          value={
-            <div className={styles.proposalType}>
-              <div className={styles.ellipse}>{description}</div>
-              <ExplorerLink
-                linkData={proposal.transactionHash}
-                linkType="transaction"
-                className={styles.proposalWalletLink}
-              />
-            </div>
-          }
-        />
-      </div>
-      <div className={styles.countdownCell}>
-        {getTimestampLabel(bounty ? bounty.createdAt : proposal.createdAt)}
-      </div>
-      <div className={styles.proposerCell}>
-        <InfoBlockWidget label="Proposer" value={proposal.proposer} />
-      </div>
-      <div className={styles.progressCell}>
-        <BountyProgress proposal={proposal} bounty={bounty} />
-      </div>
-      <div className={styles.descriptionCell}>
-        <FieldWrapper label="Description" fullWidth>
-          <div className={styles.proposalDescription}>{description}</div>
-        </FieldWrapper>
 
-        <div className={styles.proposalExternalLink}>
-          <ExternalLink to={url} />
+      <div
+        tabIndex={0}
+        role="button"
+        onKeyPress={handleCardClick}
+        className={cn(styles.root, {
+          [styles.clickable]: canNavigateToBounty,
+        })}
+        onClick={handleCardClick}
+      >
+        {loading && (
+          <div className={styles.signingTransactionState}>
+            <LoadingIndicator />
+            {t('proposalCard.signingTransaction')}
+          </div>
+        )}
+
+        <div className={styles.proposalCell}>
+          <InfoBlockWidget
+            valueFontSize="L"
+            label="Bounty name"
+            value={
+              <div className={styles.proposalType}>
+                <div className={styles.ellipse}>{description}</div>
+                <ExplorerLink
+                  linkData={proposal.transactionHash}
+                  linkType="transaction"
+                  className={styles.proposalWalletLink}
+                />
+              </div>
+            }
+          />
         </div>
-      </div>
-      <div className={styles.contentCell}>{content}</div>
-      <div className={styles.voteControlCell}>
-        <div className={cn(styles.controlItem, styles.comments)}>
-          <Button
-            variant="transparent"
-            size="small"
-            className={styles.toggleBtn}
-            onClick={e => {
-              e.stopPropagation();
-              toggleInfoPanel(
-                activeInfoView === 'comments' ? null : 'comments'
-              );
-            }}
-            disabled={false}
-          >
-            <Icon
-              name="chat"
-              className={cn(styles.toggleCommentsButton, {
-                [styles.active]: activeInfoView === 'comments',
-              })}
-            />
-            <div className={styles.controlValue}>
-              <span className={styles.bold}>{kFormatter(commentsCount)}</span>
-            </div>
-          </Button>
+        <div className={styles.countdownCell}>
+          {getTimestampLabel(bounty ? bounty.createdAt : proposal.createdAt)}
         </div>
-        {bounty && (
-          <div className={cn(styles.controlItem, styles.claims)}>
+        <div className={styles.proposerCell}>
+          <InfoBlockWidget label="Proposer" value={proposal.proposer} />
+        </div>
+        <div className={styles.progressCell}>
+          <BountyProgress proposal={proposal} bounty={bounty} />
+        </div>
+        <div className={styles.descriptionCell}>
+          <FieldWrapper label="Description" fullWidth>
+            <div className={styles.proposalDescription}>{description}</div>
+          </FieldWrapper>
+
+          <div className={styles.proposalExternalLink}>
+            <ExternalLink to={url} />
+          </div>
+        </div>
+        <div className={styles.contentCell}>{content}</div>
+        <div className={styles.voteControlCell}>
+          <div className={cn(styles.controlItem, styles.comments)}>
             <Button
               variant="transparent"
               size="small"
               className={styles.toggleBtn}
               onClick={e => {
                 e.stopPropagation();
-                toggleInfoPanel(activeInfoView === 'claims' ? null : 'claims');
+                toggleInfoPanel(
+                  activeInfoView === 'comments' ? null : 'comments'
+                );
               }}
               disabled={false}
             >
               <Icon
-                name="claimsLink"
+                name="chat"
                 className={cn(styles.toggleCommentsButton, {
-                  [styles.active]: activeInfoView === 'claims',
+                  [styles.active]: activeInfoView === 'comments',
                 })}
               />
               <div className={styles.controlValue}>
-                <span className={styles.bold}>
-                  {Number(bounty?.numberOfClaims ?? 0)}
-                </span>
-                /<span>{bounty?.times ?? bountyData.times}</span>
+                <span className={styles.bold}>{kFormatter(commentsCount)}</span>
               </div>
             </Button>
           </div>
-        )}
-        {renderButtons()}
+          {bounty && (
+            <div className={cn(styles.controlItem, styles.claims)}>
+              <Button
+                variant="transparent"
+                size="small"
+                className={styles.toggleBtn}
+                onClick={e => {
+                  e.stopPropagation();
+                  toggleInfoPanel(
+                    activeInfoView === 'claims' ? null : 'claims'
+                  );
+                }}
+                disabled={false}
+              >
+                <Icon
+                  name="claimsLink"
+                  className={cn(styles.toggleCommentsButton, {
+                    [styles.active]: activeInfoView === 'claims',
+                  })}
+                />
+                <div className={styles.controlValue}>
+                  <span className={styles.bold}>
+                    {Number(bounty?.numberOfClaims ?? 0)}
+                  </span>
+                  /<span>{bounty?.times ?? bountyData.times}</span>
+                </div>
+              </Button>
+            </div>
+          )}
+          {renderButtons()}
+        </div>
+        <div className={styles.actionBar}>
+          <BountyActions
+            description={description}
+            contextId={contextId}
+            daoId={daoId}
+          />
+        </div>
       </div>
-      <div className={styles.actionBar}>
-        <BountyActions
-          description={description}
-          contextId={contextId}
-          daoId={daoId}
-        />
-      </div>
-    </div>
+    </Box>
   );
 };
