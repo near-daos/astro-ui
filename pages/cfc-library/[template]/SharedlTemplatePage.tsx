@@ -229,9 +229,7 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
                   >
                     <a className={styles.link}>
                       {item.name}
-                      <span className={styles.sub}>
-                        {item.config.methodName}
-                      </span>
+                      <div className={styles.sub}>{item.config.methodName}</div>
                     </a>
                   </Link>
                 </li>

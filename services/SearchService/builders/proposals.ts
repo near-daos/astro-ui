@@ -13,7 +13,14 @@ export function buildProposalsQuery(
   let q: OpenSearchQuery = {
     bool: {
       must: [] as Record<string, unknown>[],
-      must_not: [] as Record<string, unknown>[],
+      must_not: [
+        {
+          simple_query_string: {
+            query: '"goerli-dao.sputnikv2.testnet"',
+            fields: ['daoId'],
+          },
+        },
+      ] as Record<string, unknown>[],
       should: [] as Record<string, unknown>[],
     },
   };

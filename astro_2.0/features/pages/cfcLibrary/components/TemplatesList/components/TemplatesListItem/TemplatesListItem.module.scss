@@ -13,7 +13,7 @@
   white-space: nowrap;
 
   @include tablet-landscape {
-    grid-template-columns: 2fr 1.2fr 80px 1fr;
+    grid-template-columns: 2fr 1.2fr 1fr;
   }
 }
 

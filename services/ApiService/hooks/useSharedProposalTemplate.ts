@@ -5,6 +5,7 @@ import axios from 'axios';
 import { appConfig } from 'config';
 import {
   OpenSearchResponse,
+  ProposalTemplateIndex,
   SharedProposalTemplateIndex,
 } from 'services/SearchService/types';
 import { useFlags } from 'launchdarkly-react-client-sdk';
@@ -32,11 +33,27 @@ export async function fetcher(
     }
   );
 
+  const response2 = await axios.post<unknown, { data: OpenSearchResponse }>(
+    `${baseUrl}/search/proposaltemplate`,
+    {
+      query: {
+        simple_query_string: {
+          query: templateId,
+          fields: ['sourceTemplateId'],
+        },
+      },
+    }
+  );
+  const rawDaosWithThisTemplate = response2?.data?.hits?.hits.map(
+    item => (item._source as ProposalTemplateIndex).daoId
+  );
+
   const rawData = response?.data?.hits?.hits[0]?._source;
 
   return rawData
     ? mapSharedProposalTemplateIndexToSharedProposalTemplate(
-        rawData as SharedProposalTemplateIndex
+        rawData as SharedProposalTemplateIndex,
+        rawDaosWithThisTemplate
       )
     : undefined;
 }
@@ -58,8 +75,6 @@ export function useSharedProposalTemplate(): {
     fetcher,
     {
       revalidateOnFocus: false,
-      revalidateOnMount: false,
-      dedupingInterval: 5000,
     }
   );
 

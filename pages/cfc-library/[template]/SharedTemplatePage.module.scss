@@ -136,7 +136,8 @@
 }
 
 .link {
-  display: flex;
+  @include ellipse-text;
+  display: block;
   flex-direction: column;
 
   .sub {

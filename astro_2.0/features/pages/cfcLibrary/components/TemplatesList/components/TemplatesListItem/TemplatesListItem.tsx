@@ -29,7 +29,6 @@ export const TemplatesListItem: FC<Props> = ({ data }) => {
     id,
     name,
     description,
-    daoCount,
     config: { smartContractAddress },
   } = data;
 
@@ -74,7 +73,6 @@ export const TemplatesListItem: FC<Props> = ({ data }) => {
           textTruncateChild={null}
         />
       </div>
-      <div className={cn(styles.duplicated, styles.hideMobile)}>{daoCount}</div>
       <div className={styles.control}>
         <ApplyToDaos
           simpleView
