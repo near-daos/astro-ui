@@ -78,6 +78,7 @@ export const API_QUERIES = {
   FIND_TRANSFER_PROPOSALS: 'findTransferProposals',
   ADD_AUTHORIZATION: 'addAuthorization',
   OPEN_SEARCH_AUTHORIZATION: 'openSearchAuthorization',
+  UPDATE_BOUNTY_TAGS: 'updateBountyTags',
 };
 
 export type ApiQueries = keyof typeof API_QUERIES;

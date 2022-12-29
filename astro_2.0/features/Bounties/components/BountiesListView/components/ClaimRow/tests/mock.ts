@@ -110,4 +110,6 @@ export const bounty = {
   numberOfClaims: 0,
   bountyClaims: [],
   bountyDoneProposals: [],
+  tags: [],
+  entityId: 'Bounty:1114',
 };

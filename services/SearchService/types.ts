@@ -143,6 +143,7 @@ export interface BountyIndex extends OnChainEntity {
   creatingTimeStamp?: number;
   processingTimeStamp?: number;
   tags?: string[];
+  entityId: string;
 }
 
 export interface NftIndex extends OnChainEntity {

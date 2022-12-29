@@ -90,6 +90,7 @@ export function mapBountyIndexToBountyContext(
       token: item.token,
       numberOfClaims: item.numberOfClaims,
       tags: item.tags ?? [],
+      entityId: item.entityId,
     },
     commentsCount: item.commentsCount,
   };

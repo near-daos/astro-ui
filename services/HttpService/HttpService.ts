@@ -993,6 +993,7 @@ export class HttpService {
         case API_QUERIES.DELETE_COMMENT:
         case API_QUERIES.REPORT_COMMENT:
         case API_QUERIES.SEND_COMMENT:
+        case API_QUERIES.UPDATE_BOUNTY_TAGS:
         case API_QUERIES.ADD_AUTHORIZATION: {
           const { accountId, publicKey, signature } = request.data;
 
@@ -1004,8 +1005,11 @@ export class HttpService {
             'signature',
           ]);
 
+          const token = buff.toString('base64');
+
           request.headers = {
-            'X-Authorization': `Bearer ${buff.toString('base64')}`,
+            'X-Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           };
           break;
         }
@@ -1172,6 +1176,15 @@ export class HttpService {
     config?: CustomAxiosRequestConfig
   ): Promise<R> {
     return this.client.patch<T, R>(url, data, config);
+  }
+
+  put<T, R>(
+    url: string,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    data?: any,
+    config?: CustomAxiosRequestConfig
+  ): Promise<R> {
+    return this.client.put<T, R>(url, data, config);
   }
 
   delete<T, R>(

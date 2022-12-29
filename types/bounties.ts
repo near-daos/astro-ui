@@ -72,6 +72,7 @@ export type Bounty = {
   amount: string;
   description: string;
   tags?: string[];
+  entityId: string;
 };
 
 export type BountyClaim = {
