@@ -29,6 +29,7 @@
   top: var(--app-header-height);
   z-index: 90;
 
+
   @include tablet-landscape {
     &::before {
       display: block;
