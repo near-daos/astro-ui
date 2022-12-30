@@ -33,6 +33,10 @@ import { DaoSettingsProvider } from 'context/DaoSettingsContext';
 
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
+import '@fontsource/roboto/index.css';
+import '@fontsource/inter/index.css';
+import '@fontsource/rubik/index.css';
+
 import '@near-wallet-selector/modal-ui/styles.css';
 import 'styles/globals.scss';
 
