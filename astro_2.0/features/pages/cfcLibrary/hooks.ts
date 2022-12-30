@@ -210,9 +210,9 @@ export function useSharedTemplatePageData(): {
     }
 
     return SputnikHttpService.getSharedProposalTemplate(templateId);
-  }, [templateId]);
+  }, [templateId, useOpenSearchDataApi]);
 
-  const data = templateFromOpenSearch ?? templateFromApi ?? null;
+  const data = (templateFromApi || templateFromOpenSearch) ?? null;
 
   const [
     { loading: loadingSmartContractData, value: templatesBySmartContract },

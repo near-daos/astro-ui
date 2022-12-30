@@ -38,9 +38,6 @@ export const TemplatesList: FC<Props> = ({
         <div className={cn(styles.creator, styles.hideMobile)}>
           {t('actions.smartContractAddress')}
         </div>
-        <div className={cn(styles.duplicated, styles.hideMobile)}>
-          {t('actions.usedNumberDaos')}
-        </div>
         <div className={styles.control}>&nbsp;</div>
       </div>
       <InfiniteScroll

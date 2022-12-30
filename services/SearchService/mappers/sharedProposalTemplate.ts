@@ -2,7 +2,8 @@ import { SharedProposalTemplateIndex } from 'services/SearchService/types';
 import { SharedProposalTemplate } from 'types/proposalTemplate';
 
 export function mapSharedProposalTemplateIndexToSharedProposalTemplate(
-  index: SharedProposalTemplateIndex
+  index: SharedProposalTemplateIndex,
+  daosIds: string[]
 ): SharedProposalTemplate {
   return {
     id: index.id,
@@ -13,5 +14,6 @@ export function mapSharedProposalTemplateIndexToSharedProposalTemplate(
     createdAt: new Date(index.createdAt).toISOString(),
     updatedAt: new Date(index.updatedAt).toISOString(),
     daoCount: index.daoCount,
+    daos: daosIds.map(item => ({ id: item })),
   };
 }
