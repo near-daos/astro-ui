@@ -1,4 +1,5 @@
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .root {
   display: grid;
@@ -21,6 +22,7 @@
   }
 
   .title {
+    @extend %heading1;
     margin: 0 0 20px;
 
     @include tablet-portrait {

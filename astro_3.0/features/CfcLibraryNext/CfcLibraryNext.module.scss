@@ -15,6 +15,7 @@
   }
 
   h1 {
+    @extend %heading1;
     margin: 16px 0;
   }
 
