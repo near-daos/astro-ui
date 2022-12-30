@@ -28,8 +28,8 @@ export const DaoPurpose: FC<Props> = ({ description, className, links }) => {
   function renderContent() {
     return (
       <div className={styles.content}>
-        <div>{description || 'DAO Links'}</div>
-        {links && (
+        <div>{description || !!links?.length ? 'DAO Links' : ''}</div>
+        {!!links?.length && (
           <div
             className={cn(styles.links, {
               [styles.visible]: isOpen,

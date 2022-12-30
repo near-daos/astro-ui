@@ -12,6 +12,8 @@
   white-space: nowrap;
 
   @include mobile-only {
+    min-width: unset;
+
     .accountId {
       display: none;
     }
