@@ -71,9 +71,9 @@
 }
 
 .sideFilter {
-  top: 167px;
+  top: 160px;
   @include tablet-landscape {
-    top: 200px;
+    top: 190px;
   }
 }
 
@@ -130,13 +130,13 @@
   justify-content: space-around;
   position: sticky;
   right: 0;
-  top: calc(167px + 24px);
+  top: calc(168px + 24px);
   width: 100%;
   z-index: 3;
 
   @include large-desktop-max {
     height: 36px;
-    top: 238px;
+    top: 228px;
   }
 
   @include tablet-landscape {
@@ -144,7 +144,7 @@
   }
 
   @include tablet-landscape-max {
-    top: 204px;
+    top: 197px;
   }
 }
 

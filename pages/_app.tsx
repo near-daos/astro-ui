@@ -33,6 +33,10 @@ import { DaoSettingsProvider } from 'context/DaoSettingsContext';
 
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 
+import '@fontsource/roboto/index.css';
+import '@fontsource/inter/index.css';
+import '@fontsource/rubik/index.css';
+
 import '@near-wallet-selector/modal-ui/styles.css';
 import 'styles/globals.scss';
 
@@ -90,6 +94,10 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
         85: '#2c2c2c',
         90: '#201f1f',
       },
+    },
+    fonts: {
+      heading: `'Roboto', sans-serif`,
+      body: `'Inter', sans-serif`,
     },
   });
 

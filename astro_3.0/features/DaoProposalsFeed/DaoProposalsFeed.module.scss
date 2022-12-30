@@ -1,3 +1,5 @@
+@import 'styles/mixins';
+
 .root {
   //margin-top: 24px;
   width: 100%;
@@ -26,6 +28,23 @@
   position: sticky;
   top: var(--app-header-height);
   z-index: 90;
+
+  @include tablet-landscape {
+    &::before {
+      display: block;
+    }
+  }
+
+  &::before {
+    background-color: var(--color-background);
+    content: '';
+    display: none;
+    height: 100%;
+    position: absolute;
+    right: -48px;
+    top: 0;
+    width: 48px;
+  }
 
   &::after {
     background-image: linear-gradient(
