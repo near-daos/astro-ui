@@ -91,6 +91,10 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
         90: '#201f1f',
       },
     },
+    fonts: {
+      heading: `'Roboto', sans-serif`,
+      body: `'Inter', sans-serif`,
+    },
   });
 
   return (
