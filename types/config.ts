@@ -22,7 +22,6 @@ export type Config = {
   LAUNCHDARKLY_SDK_KEY: string;
   DRAFTS_API_URL: string;
   SEARCH_API_URL: string;
-  API_GATEWAY_API_URL: string;
   OPEN_SEARCH_USERNAME: string;
   OPEN_SEARCH_PASSWORD: string;
   GENERIC_FACTORY_CONTRACT_NAME: string;

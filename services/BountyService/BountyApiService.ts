@@ -10,8 +10,8 @@ class BountyApiService {
   constructor() {
     this.httpService = new HttpService({
       baseURL: process.browser
-        ? window.APP_CONFIG.API_GATEWAY_API_URL
-        : appConfig.API_GATEWAY_API_URL,
+        ? window.APP_CONFIG.SEARCH_API_URL
+        : appConfig.SEARCH_API_URL,
     });
   }
 
