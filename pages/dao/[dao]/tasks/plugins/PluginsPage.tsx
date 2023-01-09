@@ -15,8 +15,9 @@ import styles from 'pages/dao/[dao]/tasks/plugins/plugins.module.scss';
 import { PLUGIN_INITIAL_DATA, PLUGINS_DATA } from 'mocks/pluginsPageData';
 import { useWalletContext } from 'context/WalletContext';
 import Head from 'next/head';
+import { MainLayout } from 'astro_3.0/features/MainLayout';
 
-interface PluginPageProps {
+export interface PluginPageProps {
   plugins: PluginCardProps[];
 }
 
@@ -74,37 +75,39 @@ const PluginsPage: FC<PluginPageProps> = ({ plugins = PLUGINS_DATA }) => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.header}>
-        <Head>
-          <title>Plugins</title>
-        </Head>
-        <h1>Plugins</h1>
-        <Button variant="black" size="small" onClick={handleCreateClick}>
-          Run a plugin
-        </Button>
-      </div>
-      <div className={styles.description}>
-        NEAR function calls let your DAO interact with applications in the NEAR
-        ecosystem.
-      </div>
-      <div className={styles.plugins}>
-        <ScrollList
-          itemCount={pluginsList.length}
-          onScroll={handleScroll}
-          height={700}
-          itemSize={() => (isMobileOrTablet ? 194 : 96)}
-          ref={scrollListRef}
-          renderItem={renderCard}
-        />
-        {showResetScroll ? (
-          <IconButton
-            icon="buttonResetScroll"
-            size={isMobileOrTablet ? 'medium' : 'large'}
-            className={styles.reset}
-            onClick={resetScroll}
+      <MainLayout>
+        <div className={styles.header}>
+          <Head>
+            <title>Plugins</title>
+          </Head>
+          <h1>Plugins</h1>
+          <Button variant="black" size="small" onClick={handleCreateClick}>
+            Run a plugin
+          </Button>
+        </div>
+        <div className={styles.description}>
+          NEAR function calls let your DAO interact with applications in the
+          NEAR ecosystem.
+        </div>
+        <div className={styles.plugins}>
+          <ScrollList
+            itemCount={pluginsList.length}
+            onScroll={handleScroll}
+            height={700}
+            itemSize={() => (isMobileOrTablet ? 194 : 96)}
+            ref={scrollListRef}
+            renderItem={renderCard}
           />
-        ) : null}
-      </div>
+          {showResetScroll ? (
+            <IconButton
+              icon="buttonResetScroll"
+              size={isMobileOrTablet ? 'medium' : 'large'}
+              className={styles.reset}
+              onClick={resetScroll}
+            />
+          ) : null}
+        </div>
+      </MainLayout>
     </div>
   );
 };
