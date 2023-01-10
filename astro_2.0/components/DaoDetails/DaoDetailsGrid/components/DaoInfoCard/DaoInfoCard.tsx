@@ -33,7 +33,7 @@ export const DaoInfoCard: FC<DaoMembersProps> = ({
   const lightText = infoType === 'members' ? `/${groups}` : ' USD';
 
   const handleClick = useCallback(
-    e => {
+    (e: { preventDefault: () => void }) => {
       e.preventDefault();
 
       router.push(url);

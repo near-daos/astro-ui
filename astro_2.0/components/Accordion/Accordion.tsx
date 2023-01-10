@@ -1,11 +1,18 @@
 import cn from 'classnames';
-import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
+import React, {
+  FC,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+  PropsWithChildren,
+} from 'react';
 
 import { IconButton } from 'components/button/IconButton';
 
 import styles from './Accordion.module.scss';
 
-interface AccordionProps {
+interface AccordionProps extends PropsWithChildren {
   title: ReactNode;
   isOpen?: boolean;
   className?: string;

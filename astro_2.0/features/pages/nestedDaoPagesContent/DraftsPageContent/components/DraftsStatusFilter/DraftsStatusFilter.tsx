@@ -32,7 +32,7 @@ export const DraftsStatusFilter: FC = () => {
   );
 
   const handleChange = useCallback(
-    async value => {
+    async (value: string) => {
       const nextQuery = {
         ...query,
         state: value,

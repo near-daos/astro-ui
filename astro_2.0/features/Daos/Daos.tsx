@@ -92,7 +92,7 @@ export const Daos: FC<Props> = ({
   };
 
   const handleSort = useCallback(
-    async value => {
+    async (value: string) => {
       const nextQuery = {
         ...router.query,
         sort: value,

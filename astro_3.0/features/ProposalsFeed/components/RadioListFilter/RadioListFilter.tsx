@@ -12,8 +12,6 @@ interface Props {
   queryName: string;
   className?: string;
   list?: ListItem[];
-  hideAllOption?: boolean;
-  shallowUpdate?: boolean;
   itemClassName?: string;
   onChange: (query: string, val: string) => void;
   active: string;
@@ -29,7 +27,7 @@ export const RadioListFilter: FC<Props> = ({
   active,
 }) => {
   const handleChange = useCallback(
-    val => {
+    (val: string) => {
       onChange(queryName, val);
     },
     [onChange, queryName]

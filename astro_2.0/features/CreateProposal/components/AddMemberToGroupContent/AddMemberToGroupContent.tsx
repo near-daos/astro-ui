@@ -23,7 +23,7 @@ export const AddMemberToGroupContent: FC<AddMemberToGroupContentProps> = ({
   const currentValue = watch('memberName');
 
   const onChange = useCallback(
-    v => {
+    (v: string | undefined) => {
       setValue('group', v as string, {
         shouldDirty: true,
         shouldValidate: true,

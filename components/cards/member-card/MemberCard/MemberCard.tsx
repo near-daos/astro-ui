@@ -1,6 +1,13 @@
 import cn from 'classnames';
 import TextTruncate from 'react-text-truncate';
-import React, { FC, ReactNode, useCallback } from 'react';
+import React, {
+  ComponentType,
+  FC,
+  ReactNode,
+  useCallback,
+  KeyboardEvent,
+  MouseEvent,
+} from 'react';
 
 import { Token } from 'components/cards/member-card/types';
 
@@ -11,6 +18,10 @@ import { ExplorerLink } from 'components/ExplorerLink';
 import { SmileSvg } from './components/SmileSvg';
 
 import styles from './MemberCard.module.scss';
+
+const TextTruncateSafeForReact18 = TextTruncate as ComponentType<
+  TextTruncate['props']
+>;
 
 export interface MemberCardProps {
   children: ReactNode;
@@ -48,7 +59,7 @@ const MemberCard: FC<MemberCardProps> = ({
   }, [title, children, votes, tokens, onClick]);
 
   const handleKeyPress = useCallback(
-    e => {
+    (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
         onCardClick();
       }
@@ -57,7 +68,7 @@ const MemberCard: FC<MemberCardProps> = ({
   );
 
   const onRemoveButton = useCallback(
-    e => {
+    (e: MouseEvent) => {
       e.stopPropagation();
 
       if (onRemoveClick) {
@@ -82,7 +93,7 @@ const MemberCard: FC<MemberCardProps> = ({
       <div className={styles.body}>
         <SmileSvg />
         <div className={cn(styles.title, 'title2')}>
-          <TextTruncate
+          <TextTruncateSafeForReact18
             line={expandedView ? 10 : 2}
             element="span"
             truncateText="…"

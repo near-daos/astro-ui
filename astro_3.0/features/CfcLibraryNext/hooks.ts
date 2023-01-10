@@ -45,13 +45,13 @@ export function useCfcFeed(): {
   }, [data]);
 
   const hasMore = data
-    ? data[data?.length - 1].data.length === LIST_LIMIT_DEFAULT
+    ? data[data.length - 1].data.length === LIST_LIMIT_DEFAULT
     : false;
 
   const dataLength = data?.length ?? 0;
 
   const handleSearch = useCallback(
-    async value => {
+    async (value: string) => {
       const nextQuery = {
         ...query,
         search: value,
@@ -84,7 +84,7 @@ export function useCfcFeed(): {
   }, [query, router]);
 
   const handleSort = useCallback(
-    async value => {
+    async (value: string) => {
       const nextQuery = {
         ...query,
         sort: value,

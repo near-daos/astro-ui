@@ -30,6 +30,8 @@ function createMockRouter(router?: Partial<NextRouter>): NextRouter {
     defaultLocale: 'en',
     domainLocales: [],
     isPreview: false,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    forward: () => {},
     ...router,
   };
 }

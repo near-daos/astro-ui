@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback } from 'react';
+import React, { ReactNode, useCallback, MouseEvent } from 'react';
 import { useAsyncFn, useLocalStorage, useLocation } from 'react-use';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
@@ -288,11 +288,11 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     }, [daoId, proposalId, router, nearService]);
 
   const handleCardClick = useCallback(
-    e => {
+    (e: MouseEvent) => {
       if (
         preventNavigate ||
-        e?.target?.closest(`.${styles.voteControlCell}`) ||
-        e?.target?.closest(`.${styles.actionBar}`)
+        (e?.target as HTMLElement)?.closest(`.${styles.voteControlCell}`) ||
+        (e?.target as HTMLElement)?.closest(`.${styles.actionBar}`)
       ) {
         return;
       }
@@ -442,11 +442,10 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
                 proposal: `${daoId}-${proposalId}`,
               },
             }}
+            className={styles.createdProposalLink}
           >
-            <a className={styles.createdProposalLink}>
-              <Icon name="buttonLink" className={styles.createdProposalIcon} />
-              Proposal link
-            </a>
+            <Icon name="buttonLink" className={styles.createdProposalIcon} />
+            Proposal link
           </Link>
         }
       />

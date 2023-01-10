@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { useTranslation } from 'next-i18next';
@@ -9,7 +9,7 @@ import { DraftProposalFeedItem } from 'types/draftProposal';
 
 import styles from './ResultSection.module.scss';
 
-interface ResultSectionProps {
+interface ResultSectionProps extends PropsWithChildren {
   title: string;
   data:
     | DaoFeedItem[]

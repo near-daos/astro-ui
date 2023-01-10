@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, PropsWithChildren } from 'react';
 
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
@@ -6,7 +6,7 @@ import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 
 import styles from './FiltersPanel.module.scss';
 
-export const FiltersPanel: FC = ({ children }) => {
+export const FiltersPanel: FC<PropsWithChildren> = ({ children }) => {
   const [open, setOpen] = useState(false);
 
   return (

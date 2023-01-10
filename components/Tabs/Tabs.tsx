@@ -2,13 +2,7 @@ import cn from 'classnames';
 import isNil from 'lodash/isNil';
 import { useRouter } from 'next/router';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
-import {
-  resetIdCounter,
-  Tab,
-  TabList,
-  TabPanel,
-  Tabs as ReactTabs,
-} from 'react-tabs';
+import { Tab, TabList, TabPanel, Tabs as ReactTabs } from 'react-tabs';
 
 import 'react-tabs/style/react-tabs.css';
 
@@ -29,8 +23,6 @@ export interface TabsProps<T> {
   tabsWrapperClassName?: string;
   tabsListRootClassName?: string;
 }
-
-resetIdCounter();
 
 export const Tabs = <T,>(
   props: PropsWithChildren<TabsProps<T>>
@@ -130,6 +122,8 @@ export const Tabs = <T,>(
                   selectedClassName={styles.tabComponentActive}
                   className={cn(styles.tabComponent, item.className)}
                 >
+                  {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                  {/* @ts-ignore */}
                   {item.label}
                 </Tab>
               );

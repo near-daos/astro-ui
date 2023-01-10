@@ -4,6 +4,7 @@ exports[`expandable details Should render component 1`] = `
 <div>
   <button
     class=""
+    data-testid="button"
     type="button"
   >
     <svg

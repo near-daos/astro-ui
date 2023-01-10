@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { ComponentType, FC } from 'react';
 import cn from 'classnames';
 import TextTruncate from 'react-text-truncate';
 import { useTranslation } from 'next-i18next';
@@ -15,6 +15,10 @@ interface ChangeLinksContentProps {
   daoId: string;
   links: string[];
 }
+
+const TextTruncateSafeForReact18 = TextTruncate as ComponentType<
+  TextTruncate['props']
+>;
 
 export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({
   daoId,
@@ -40,7 +44,7 @@ export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({
                 </div>
                 &nbsp;
                 <span className={cn(styles.link)}>
-                  <TextTruncate
+                  <TextTruncateSafeForReact18
                     line={3}
                     element="span"
                     truncateText="…"

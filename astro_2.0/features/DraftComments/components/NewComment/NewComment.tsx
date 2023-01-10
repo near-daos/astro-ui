@@ -18,7 +18,7 @@ export const NewComment: FC<Props> = ({ onSubmit }) => {
   const { t } = useTranslation();
 
   const handleSend = useCallback(
-    async msg => {
+    async (msg: string) => {
       setHTML('');
 
       await onSubmit(msg);

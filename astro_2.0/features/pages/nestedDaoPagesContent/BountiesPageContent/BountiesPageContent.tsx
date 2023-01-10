@@ -1,4 +1,10 @@
-import React, { Children, cloneElement, isValidElement, FC } from 'react';
+import React, {
+  Children,
+  cloneElement,
+  isValidElement,
+  FC,
+  PropsWithChildren,
+} from 'react';
 import useQuery from 'hooks/useQuery';
 import cn from 'classnames';
 
@@ -16,7 +22,7 @@ import { useDaoCustomTokens } from 'context/DaoTokensContext';
 
 import styles from './BountiesPageContent.module.scss';
 
-export interface BountiesPageContentProps {
+export interface BountiesPageContentProps extends PropsWithChildren {
   daoContext: DaoContext;
   toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
   hideFilters?: boolean;

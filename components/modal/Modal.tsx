@@ -1,10 +1,20 @@
-import React, { FC, memo, ReactNode, useCallback, useState } from 'react';
+import React, {
+  FC,
+  memo,
+  ReactNode,
+  useCallback,
+  useState,
+  ComponentType,
+} from 'react';
 import cn from 'classnames';
+
 import ReactModal from 'react-modal';
 
 import { IconButton } from 'components/button/IconButton';
 
 import styles from './Modal.module.scss';
+
+const ModalSafeForReact18 = ReactModal as ComponentType<ReactModal['props']>;
 
 export interface ModalProps {
   isOpen: boolean;
@@ -33,7 +43,7 @@ export const Modal: FC<ModalProps> = memo(
     }, [onClose]);
 
     return (
-      <ReactModal
+      <ModalSafeForReact18
         ariaHideApp={false}
         isOpen={open}
         onAfterClose={handleClose}
@@ -68,7 +78,7 @@ export const Modal: FC<ModalProps> = memo(
           />
         )}
         <div>{children}</div>
-      </ReactModal>
+      </ModalSafeForReact18>
     );
   }
 );

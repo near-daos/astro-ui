@@ -77,7 +77,7 @@ export const SidebarNavItem: FC<Props> = ({
   }
 
   return (
-    <Link href={{ pathname: link }} shallow>
+    <Link href={{ pathname: link }} shallow legacyBehavior>
       {content}
     </Link>
   );

@@ -1,4 +1,10 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+  PropsWithChildren,
+} from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
@@ -35,7 +41,7 @@ interface Props {
   ) => void;
 }
 
-const AnimatedContent: FC = ({ children }) => {
+const AnimatedContent: FC<PropsWithChildren> = ({ children }) => {
   return (
     <motion.div
       className={styles.notificationCardWrapper}
@@ -71,7 +77,7 @@ export const CloneDaoWarning: FC<Props> = ({
   const [isCloneFailed, setIsCloneFailed] = useState(false);
 
   const onCreate = useCallback(
-    async proposalId => {
+    async (proposalId: number) => {
       await update({ cloneState: { proposalId } });
     },
     [update]
@@ -84,7 +90,7 @@ export const CloneDaoWarning: FC<Props> = ({
   }, [update]);
 
   const onCreateTransfer = useCallback(
-    async res => {
+    async (res: number) => {
       const target = `${daoName}.${nearConfig.contractName}`;
 
       if (res && cloneState) {
@@ -201,14 +207,18 @@ export const CloneDaoWarning: FC<Props> = ({
                   <Link
                     key={proposal.id}
                     href={`/dao/${dao.id}/proposals/${proposal.id}`}
+                    className={styles.linkProposal}
                   >
-                    <a className={styles.linkProposal}>{proposal.id}</a>
+                    {proposal.id}
                   </Link>
                 );
               })}
               {transferProposals.length > 5 ? (
-                <Link href={`/dao/${dao.id}/proposals/`}>
-                  <a className={styles.linkButton}>Show all</a>
+                <Link
+                  href={`/dao/${dao.id}/proposals/`}
+                  className={styles.linkButton}
+                >
+                  Show all
                 </Link>
               ) : null}
             </div>

@@ -57,10 +57,8 @@ export const VoteAction: FC<VoteActionProps> = ({
           </span>
         }
       >
-        <Link href={explorerLink}>
-          <a rel="noreferrer" target="_blank">
-            <Icon name={type === 'VoteApprove' ? 'votingYes' : 'votingNo'} />
-          </a>
+        <Link href={explorerLink} rel="noreferrer" target="_blank">
+          <Icon name={type === 'VoteApprove' ? 'votingYes' : 'votingNo'} />
         </Link>
       </Tooltip>
     </div>

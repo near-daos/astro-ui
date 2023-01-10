@@ -1,4 +1,10 @@
-import React, { FC, ReactElement, useCallback, useMemo } from 'react';
+import React, {
+  FC,
+  ReactElement,
+  useCallback,
+  useMemo,
+  PropsWithChildren,
+} from 'react';
 import { DaoWarning } from 'astro_2.0/components/DaoWarning';
 import { useModal } from 'components/modal';
 import { ConfirmDismissModal } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/components/ConfirmDismissModal';
@@ -6,7 +12,7 @@ import { Button } from 'components/button/Button';
 
 import styles from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/CloneDaoWarning.module.scss';
 
-interface Props {
+interface Props extends PropsWithChildren {
   variant: 'progress' | 'info' | 'success' | 'fail';
   title: string;
   control?: ReactElement;

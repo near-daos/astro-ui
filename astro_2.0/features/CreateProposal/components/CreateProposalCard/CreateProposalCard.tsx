@@ -307,7 +307,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   }
 
   const handlerChangeTitle = useCallback(
-    titleValue => {
+    (titleValue: string) => {
       setValue('title', titleValue, { shouldDirty: true });
       trigger('title');
     },
@@ -315,7 +315,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   );
 
   const handlerChangeDescription = useCallback(
-    html => {
+    (html: string) => {
       let value = html;
 
       if (value === '<p><br></p>') {

@@ -15,11 +15,9 @@ export interface BackButtonProps {
 
 export const BackButton: FC<BackButtonProps> = ({ className, href, name }) => {
   return (
-    <Link href={href}>
-      <a href="*" className={cn(styles.backButton, className)}>
-        <Icon name="backLink" className={styles.icon} />
-        <span>{name}</span>
-      </a>
+    <Link href={href} className={cn(styles.backButton, className)}>
+      <Icon name="backLink" className={styles.icon} />
+      <span>{name}</span>
     </Link>
   );
 };

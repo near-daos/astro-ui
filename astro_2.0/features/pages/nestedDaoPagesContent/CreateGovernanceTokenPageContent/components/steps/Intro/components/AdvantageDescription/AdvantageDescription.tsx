@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 
 import { Icon, IconName } from 'components/Icon';
 
 import styles from './AdvantageDescription.module.scss';
 
-interface AdvantageDescriptionProps {
+interface AdvantageDescriptionProps extends PropsWithChildren {
   className?: string;
   icon: IconName;
 }

@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import cn from 'classnames';
 
 import { PAGE_LAYOUT_ID } from 'constants/common';
 
 import styles from './MainLayout.module.scss';
 
-interface Props {
+interface Props extends PropsWithChildren {
   className?: string;
 }
 

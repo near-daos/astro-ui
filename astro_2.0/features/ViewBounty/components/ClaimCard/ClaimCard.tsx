@@ -99,10 +99,8 @@ export const ClaimCard: FC<ClaimCardProps> = ({
         <div className={styles.status}>
           {statusLabel}
           {link && (
-            <Link href={link} passHref>
-              <a className={styles.proposalLink}>
-                <Icon name="buttonExternal" className={styles.icon} />
-              </a>
+            <Link href={link} passHref className={styles.proposalLink}>
+              <Icon name="buttonExternal" className={styles.icon} />
             </Link>
           )}
         </div>

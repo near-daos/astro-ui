@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import cn from 'classnames';
 
 import styles from './CardTitle.module.scss';
 
-interface CardTitleProps {
+interface CardTitleProps extends PropsWithChildren {
   className?: string;
 }
 

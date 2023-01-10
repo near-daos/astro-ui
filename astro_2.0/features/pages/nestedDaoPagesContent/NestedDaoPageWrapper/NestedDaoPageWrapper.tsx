@@ -5,6 +5,7 @@ import React, {
   cloneElement,
   isValidElement,
   ReactNode,
+  PropsWithChildren,
 } from 'react';
 import { UrlObject } from 'url';
 import cn from 'classnames';
@@ -29,7 +30,7 @@ import { DELEGATE_VOTING_KEY } from 'constants/localStorage';
 
 import styles from './NestedDaoPageWrapper.module.scss';
 
-interface NestedDaoPageWrapperProps {
+interface NestedDaoPageWrapperProps extends PropsWithChildren {
   daoContext: DaoContext;
   defaultProposalType?: ProposalVariant;
   breadcrumbs?: {

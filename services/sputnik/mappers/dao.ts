@@ -110,7 +110,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
     .filter((item: DaoRole) => item.kind === 'Group')
     .map((item: DaoRole) => {
       return {
-        members: item.accountIds,
+        members: item.accountIds ?? [],
         name: item.name,
         permissions: item.permissions,
         votePolicy: item.votePolicy,

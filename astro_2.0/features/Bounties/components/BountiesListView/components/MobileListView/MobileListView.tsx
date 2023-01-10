@@ -14,7 +14,6 @@ interface MobileListViewProps {
   proposals: SectionItem[];
   bounties: SectionItem[];
   completed: SectionItem[];
-  accountId: string;
   dao: DAO;
 }
 
@@ -22,7 +21,6 @@ export const MobileListView: FC<MobileListViewProps> = ({
   proposals,
   bounties,
   completed,
-  accountId,
   dao,
 }) => {
   const { t } = useTranslation();
@@ -39,7 +37,6 @@ export const MobileListView: FC<MobileListViewProps> = ({
             <SectionRow
               id={item.id}
               key={item.id}
-              accountId={accountId}
               dao={dao}
               isFirstRow={false}
               item={item}

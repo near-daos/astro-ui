@@ -52,7 +52,7 @@ export const AddBountyContent: FC = () => {
   const selectedTokenData = tokens[getValues().token];
 
   const onTokenChange = useCallback(
-    v => {
+    (v: string | undefined) => {
       setValue('token', v, {
         shouldDirty: true,
       });
@@ -60,15 +60,18 @@ export const AddBountyContent: FC = () => {
     [setValue]
   );
 
-  const onTokenAmountUpdate = useCallback(event => {
-    const intRx = /\d/;
+  const onTokenAmountUpdate = useCallback(
+    (event: { key: string | string[]; preventDefault: () => void }) => {
+      const intRx = /\d/;
 
-    if (event.key.length > 1 || intRx.test(event.key)) {
-      return;
-    }
+      if (event.key.length > 1 || intRx.test(event.key as string)) {
+        return;
+      }
 
-    event.preventDefault();
-  }, []);
+      event.preventDefault();
+    },
+    []
+  );
 
   return (
     <div className={styles.root}>

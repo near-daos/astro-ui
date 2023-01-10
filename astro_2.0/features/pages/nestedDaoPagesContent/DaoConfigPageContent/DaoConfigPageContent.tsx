@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { ComponentType, FC } from 'react';
 import classNames from 'classnames';
 import TextTruncate from 'react-text-truncate';
 import { useRouter } from 'next/router';
@@ -19,6 +19,10 @@ interface Props {
   daoContext: DaoContext;
   toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
 }
+
+const TextTruncateSafeForReact18 = TextTruncate as ComponentType<
+  TextTruncate['props']
+>;
 
 export const DaoConfigPageContent: FC<Props> = ({
   daoContext,
@@ -121,7 +125,7 @@ export const DaoConfigPageContent: FC<Props> = ({
                 )}
               >
                 <Icon name="socialAnyUrl" className={styles.linkIcon} />
-                <TextTruncate
+                <TextTruncateSafeForReact18
                   line={1}
                   element="div"
                   containerClassName={styles.linkText}

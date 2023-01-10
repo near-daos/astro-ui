@@ -23,7 +23,7 @@ export const HistorySelector: FC<Props> = ({ data }) => {
   const [showModal] = useModal(CompareVersionsModal);
 
   const handleCompare = useCallback(
-    async prevVersionInd => {
+    async (prevVersionInd: number) => {
       await showModal({ data, index: prevVersionInd });
     },
     [data, showModal]

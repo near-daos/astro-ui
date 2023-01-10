@@ -1,4 +1,11 @@
-import { createContext, FC, useContext, useState } from 'react';
+import {
+  createContext,
+  FC,
+  PropsWithChildren,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import { useToggle } from 'react-use';
 
 import { DraftsService } from 'services/DraftsService';
@@ -25,25 +32,28 @@ const DraftsContext = createContext<IDraftsContext>({
 
 export const useDraftsContext = (): IDraftsContext => useContext(DraftsContext);
 
-export const DraftsDataProvider: FC = ({ children }) => {
+export const DraftsDataProvider: FC<PropsWithChildren> = ({ children }) => {
   const [amountComments, setAmountComments] = useState(0);
   const [toggleWriteComment, setToggleWriteComment] = useToggle(false);
   const draftsService = useDraftService();
+
+  const contextValue = useMemo(
+    () => ({
+      draftsService: draftsService as DraftsService,
+      toggleWriteComment,
+      setToggleWriteComment,
+      setAmountComments,
+      amountComments,
+    }),
+    [amountComments, draftsService, setToggleWriteComment, toggleWriteComment]
+  );
 
   if (!draftsService) {
     return null;
   }
 
   return (
-    <DraftsContext.Provider
-      value={{
-        draftsService,
-        toggleWriteComment,
-        setToggleWriteComment,
-        setAmountComments,
-        amountComments,
-      }}
-    >
+    <DraftsContext.Provider value={contextValue}>
       {children}
     </DraftsContext.Provider>
   );

@@ -65,7 +65,7 @@ export const useFilteredProposalsData = (
   );
 
   const onFilterChange = useCallback(
-    (name, value) => {
+    (name: FilterName, value: string | boolean | undefined) => {
       setFilter({
         ...filter,
         [name]: value,

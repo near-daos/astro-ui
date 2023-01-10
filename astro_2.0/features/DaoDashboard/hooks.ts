@@ -122,7 +122,7 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
   }, [openSearchData, dashboardData]);
 
   const toggleView = useCallback(
-    async view => {
+    async (view: DashboardView) => {
       setLoading(true);
 
       let data;

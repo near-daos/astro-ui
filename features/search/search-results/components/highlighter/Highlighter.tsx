@@ -1,11 +1,11 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, ReactNode, useEffect, useRef } from 'react';
 import Mark from 'mark.js';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 
-export const Highlighter: FC<{ className?: string }> = ({
-  children,
-  className,
-}) => {
+export const Highlighter: FC<{
+  className?: string;
+  children?: ReactNode | undefined;
+}> = ({ children, className }) => {
   const root = useRef<HTMLDivElement | null>(null);
   const { searchResults } = useSearchResults();
 

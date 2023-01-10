@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 
 import styles from './ContentPanel.module.scss';
 
-interface ContentPanelProps {
+interface ContentPanelProps extends PropsWithChildren {
   title: string;
 }
 

@@ -22,19 +22,18 @@ export const FeedTabs: FC = () => {
 
   function renderTab(label: string, href: string, actionsCount?: number) {
     return (
-      <Link href={{ pathname: href, query: router.query }}>
-        <a
-          className={cn(styles.tabLink, {
-            [styles.active]: router.asPath.indexOf(href) !== -1,
-          })}
-        >
-          {label}
-          {!!actionsCount && (
-            <div className={styles.actionsCount}>
-              {kFormatter(actionsCount ?? 0)}
-            </div>
-          )}
-        </a>
+      <Link
+        href={{ pathname: href, query: router.query }}
+        className={cn(styles.tabLink, {
+          [styles.active]: router.asPath.indexOf(href) !== -1,
+        })}
+      >
+        {label}
+        {!!actionsCount && (
+          <div className={styles.actionsCount}>
+            {kFormatter(actionsCount ?? 0)}
+          </div>
+        )}
       </Link>
     );
   }

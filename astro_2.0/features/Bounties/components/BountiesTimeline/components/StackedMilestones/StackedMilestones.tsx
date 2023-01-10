@@ -93,24 +93,26 @@ export const StackedMilestones: FC<StackedMilestonesProps> = ({ data }) => {
         [styles.open]: open,
       })}
     >
-      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
-      <div
-        onClick={() => setOpen(!open)}
-        ref={ref}
-        className={cn(styles.indicator, {
-          [styles.hasGroupMilestones]: hasGrouptMilestones,
-        })}
-        style={{
-          backgroundColor:
-            !hasGrouptMilestones && withColor ? withColor.color : '#000',
-        }}
-      />
-      <div className={styles.count}>{data.length}</div>
-      <div
-        className={styles.anchor}
-        ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
-      />
-      {renderResultsDropdown()}
+      <>
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
+        <div
+          onClick={() => setOpen(!open)}
+          ref={ref}
+          className={cn(styles.indicator, {
+            [styles.hasGroupMilestones]: hasGrouptMilestones,
+          })}
+          style={{
+            backgroundColor:
+              !hasGrouptMilestones && withColor ? withColor.color : '#000',
+          }}
+        />
+        <div className={styles.count}>{data.length}</div>
+        <div
+          className={styles.anchor}
+          ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
+        />
+        {renderResultsDropdown()}
+      </>
     </div>
   );
 };

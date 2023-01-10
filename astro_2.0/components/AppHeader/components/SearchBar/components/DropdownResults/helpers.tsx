@@ -1,9 +1,13 @@
 import styles from 'astro_2.0/components/AppHeader/components/SearchBar/components/DropdownResults/DropdownResults.module.scss';
 import { Badge } from 'components/Badge';
-import React, { ReactNode } from 'react';
+import React, { ComponentType, ReactNode } from 'react';
 import { Proposal, ProposalType } from 'types/proposal';
 import { Button } from 'components/button/Button';
-import TextTruncate from 'react-text-truncate';
+import TextTruncateComponent from 'react-text-truncate';
+
+const TextTruncate = TextTruncateComponent as ComponentType<
+  TextTruncateComponent['props']
+>;
 
 export function getProposalSearchSummary(
   proposal: Proposal,

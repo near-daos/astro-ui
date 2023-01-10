@@ -1,9 +1,9 @@
 import cn from 'classnames';
-import { FC, MutableRefObject, ReactNode } from 'react';
+import { FC, MutableRefObject, ReactNode, PropsWithChildren } from 'react';
 
 import styles from './HeaderWithFilter.module.scss';
 
-interface HeaderWithFilterProps {
+interface HeaderWithFilterProps extends PropsWithChildren {
   title?: ReactNode;
   className?: string;
   classNameContainer?: string;

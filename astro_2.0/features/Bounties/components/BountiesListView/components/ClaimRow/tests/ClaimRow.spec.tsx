@@ -5,7 +5,7 @@ import { BountyProposal } from 'types/bounties';
 
 import { ClaimRow } from 'astro_2.0/features/Bounties/components/BountiesListView/components/ClaimRow';
 
-import { bounty, daoMock } from './mock';
+import { daoMock } from './mock';
 
 jest.mock(
   'astro_2.0/features/Bounties/components/BountiesListView/components/VotingContent',
@@ -35,10 +35,8 @@ describe('ClaimRow', () => {
       <ClaimRow
         data={data}
         dao={daoMock}
-        bounty={bounty}
         doneProposals={proposals}
         maxDeadline="1000000000000"
-        claimedByMe
       />
     );
   }

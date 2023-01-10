@@ -12,7 +12,6 @@ import { Dot } from './dot';
 import styles from './ChartTooltip.module.scss';
 
 export interface ChartTooltipProps extends TooltipProps<number, string> {
-  showArrow?: boolean;
   payload: Payload[] | undefined;
   isIntegerDataset?: boolean;
   unit?: string | ReactNode;

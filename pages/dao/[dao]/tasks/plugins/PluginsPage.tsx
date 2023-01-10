@@ -95,6 +95,8 @@ const PluginsPage: FC<PluginPageProps> = ({ plugins = PLUGINS_DATA }) => {
             onScroll={handleScroll}
             height={700}
             itemSize={() => (isMobileOrTablet ? 194 : 96)}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             ref={scrollListRef}
             renderItem={renderCard}
           />

@@ -62,20 +62,20 @@ export const DaoNameForm: VFC = () => {
   const displayName = watch('displayName');
 
   const handleAddressChange = useCallback(
-    val => {
+    (val: string) => {
       setValue('address', val, { shouldValidate: true });
     },
     [setValue]
   );
 
   const handleAddressError = useCallback(
-    address => {
+    (address: string | undefined) => {
       setError('address', {
         type: 'manual',
         message: t('createDAO.daoExists'),
       });
       actions.updateAction({
-        info: { ...state.info, address, isValid: false },
+        info: { ...state.info, address: address as string, isValid: false },
       });
     },
     [actions, setError, state.info, t]

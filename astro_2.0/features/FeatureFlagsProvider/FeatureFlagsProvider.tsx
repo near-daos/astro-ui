@@ -1,10 +1,10 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, PropsWithChildren, useMemo } from 'react';
 import { configService } from 'services/ConfigService';
 import { LDProvider } from 'launchdarkly-react-client-sdk';
 import { useWalletContext } from 'context/WalletContext';
 import { useCookie } from 'react-use';
 
-export const FeatureFlagsProvider: FC = ({ children }) => {
+export const FeatureFlagsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { accountId } = useWalletContext();
   const [accountIdCookie] = useCookie('account');
   const account = accountId || accountIdCookie;

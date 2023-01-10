@@ -85,7 +85,7 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
   );
 
   const handleUpdateData = useCallback(
-    val => {
+    (val: SelectorRow[]) => {
       setRows(val);
 
       if (onChange) {

@@ -17,7 +17,6 @@ interface CollapsableSectionProps {
   dao: DAO;
   data: SectionItem[];
   status: 'Pending' | 'InProgress' | 'Completed';
-  accountId: string;
 }
 
 export const CollapsableSection: FC<CollapsableSectionProps> = ({
@@ -26,7 +25,6 @@ export const CollapsableSection: FC<CollapsableSectionProps> = ({
   dao,
   data,
   status,
-  accountId,
 }) => {
   const [open, setOpen] = useState(true);
 
@@ -69,7 +67,6 @@ export const CollapsableSection: FC<CollapsableSectionProps> = ({
               <SectionRow
                 id={item.id}
                 key={item.id}
-                accountId={accountId}
                 dao={dao}
                 isFirstRow={i === 0}
                 item={item}

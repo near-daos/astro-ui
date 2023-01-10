@@ -71,7 +71,7 @@ export const CreateProposalSelector: FC = () => {
   }, []);
 
   const handleDaoSelect = useCallback(
-    async val => {
+    async (val: string | undefined) => {
       const selectedDao = daos?.find(item => item.id === val);
 
       if (selectedDao) {

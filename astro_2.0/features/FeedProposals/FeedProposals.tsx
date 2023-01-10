@@ -230,7 +230,7 @@ export const FeedProposals = ({
           setChips(Array.from(newChips));
         }}
       >
-        {item}
+        <>{item}</>
       </button>
     );
   }

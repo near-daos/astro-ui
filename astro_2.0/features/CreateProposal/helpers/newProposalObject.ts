@@ -276,8 +276,8 @@ export async function getNewProposalObject(
         return '';
       };
 
-      const flagCover = get(data.flagCover, '0');
-      const flagLogo = get(data.flagLogo, '0');
+      const flagCover = get(data.flagCover, '0') as unknown as File;
+      const flagLogo = get(data.flagLogo, '0') as unknown as File;
 
       const [flagCoverFileName, flagLogoFileName] = await Promise.all([
         uploadImg(flagCover),

@@ -1,11 +1,11 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, PropsWithChildren, ReactNode, useState } from 'react';
 import cn from 'classnames';
 
 import { Popup } from 'components/Popup';
 
 import styles from './Tooltip.module.scss';
 
-interface TooltipProps {
+interface TooltipProps extends PropsWithChildren {
   placement?:
     | 'auto'
     | 'auto-start'

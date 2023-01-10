@@ -26,7 +26,7 @@ export const BountiesFeedSort: FC = () => {
   }, []);
 
   const handleSort = useCallback(
-    async value => {
+    async (value: string) => {
       const nextQuery = {
         ...query,
         bountySort: value,

@@ -34,13 +34,13 @@ export function useAppInitialize(): boolean {
     setInitialized(true);
   }, []);
 
-  const handleError = useCallback(e => {
+  const handleError = useCallback((e: ErrorEvent) => {
     if (SAFELY_IGNORE_ERRORS.includes(e?.message)) {
       return false;
     }
 
     console.error(
-      `Global error: ${e.message}, ${e.source}, ${e.lineno}, ${e.colno}`
+      `Global error: ${e.message}, ${e.filename}, ${e.lineno}, ${e.colno}`
     );
     // eslint-disable-next-line
     console.trace(e);

@@ -1,9 +1,9 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, PropsWithChildren } from 'react';
 import cn from 'classnames';
 
 import styles from './NoResultsView.module.scss';
 
-interface NoResultsViewProps {
+interface NoResultsViewProps extends PropsWithChildren {
   title: ReactNode;
   subTitle?: string;
   className?: string;

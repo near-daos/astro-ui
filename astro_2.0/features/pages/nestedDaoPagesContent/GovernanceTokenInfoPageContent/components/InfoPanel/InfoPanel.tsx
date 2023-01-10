@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import cn from 'classnames';
 
 import styles from './InfoPanel.module.scss';
 
-interface InfoPanelProps {
+interface InfoPanelProps extends PropsWithChildren {
   className?: string;
 }
 

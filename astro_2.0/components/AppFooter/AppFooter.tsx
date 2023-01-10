@@ -69,10 +69,8 @@ export const AppFooter: FC<AppFooterProps> = ({
             </a>
           </div>
           <div className={styles.terms}>
-            <Link passHref href="/terms-conditions">
-              <a href="*" className={styles.devLink}>
-                {t('termsAndConditions')}
-              </a>
+            <Link passHref href="/terms-conditions" className={styles.devLink}>
+              {t('termsAndConditions')}
             </Link>
           </div>
           <div className={styles.release}>

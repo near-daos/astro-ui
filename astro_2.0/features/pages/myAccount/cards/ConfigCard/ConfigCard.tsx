@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import cn from 'classnames';
 
 import styles from './ConfigCard.module.scss';
 
-interface ConfigCardProps {
+interface ConfigCardProps extends PropsWithChildren {
   className?: string;
 }
 

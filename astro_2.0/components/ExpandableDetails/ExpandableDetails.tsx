@@ -26,6 +26,7 @@ export const ExpandableDetails: FC<ExpandableDetailsProps> = ({
         size="small"
         variant="tertiary"
         className={styles.label}
+        data-testid="button"
         onClick={() => toggle(!isOpen)}
       >
         <Icon

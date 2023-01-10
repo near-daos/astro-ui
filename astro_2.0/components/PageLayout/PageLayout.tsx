@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import { useRouter } from 'next/router';
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import Tooltip from 'react-tooltip';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 
@@ -17,7 +17,7 @@ import { AppAnnouncerModal } from 'astro_3.0/components/AppAnnouncerModal';
 
 import styles from './PageLayout.module.scss';
 
-interface Props {
+interface Props extends PropsWithChildren {
   appVersion: number | null;
 }
 

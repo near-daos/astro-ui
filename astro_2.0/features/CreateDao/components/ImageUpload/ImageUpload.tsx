@@ -4,6 +4,7 @@ import { useMount, useToggle } from 'react-use';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import React, {
+  ChangeEvent,
   PropsWithRef,
   ReactNode,
   RefObject,
@@ -72,13 +73,16 @@ export const ImageUpload = <T extends Element>(
     };
   }, [imageFileList]);
 
-  const handleDragOver = useCallback(e => {
-    e.stopPropagation();
-    e.preventDefault();
-  }, []);
+  const handleDragOver = useCallback(
+    (e: { stopPropagation: () => void; preventDefault: () => void }) => {
+      e.stopPropagation();
+      e.preventDefault();
+    },
+    []
+  );
 
   const handleChange = useCallback(
-    e => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       e.stopPropagation();
       e.preventDefault();
 
@@ -92,7 +96,11 @@ export const ImageUpload = <T extends Element>(
   );
 
   const handleDrop = useCallback(
-    e => {
+    (e: {
+      stopPropagation: () => void;
+      preventDefault: () => void;
+      dataTransfer: { files: FileList };
+    }) => {
       e.stopPropagation();
       e.preventDefault();
 

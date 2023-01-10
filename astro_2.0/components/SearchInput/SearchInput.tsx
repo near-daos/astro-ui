@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useRef,
   useState,
+  ChangeEvent,
 } from 'react';
 import ReactDOM from 'react-dom';
 import cn from 'classnames';
@@ -122,7 +123,7 @@ export const SearchInput: FC<SearchInputProps> = ({
     }
   }, [handleCancel, onSubmit, showResults, value]);
 
-  const handleChange = useCallback(e => {
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
 
     setValue(newValue);
@@ -250,43 +251,45 @@ export const SearchInput: FC<SearchInputProps> = ({
           inputRef.current?.focus();
         }}
       >
-        {showLoader ? (
-          <div className={cn(styles.iconHolder, iconClassName)}>
-            <AnimatePresence>
-              {loading ? (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                >
-                  <LoadingIndicator
-                    className={cn(styles.loader, iconClassName)}
-                  />
-                </motion.div>
-              ) : (
-                <Icon name="buttonSearch" className={styles.icon} />
-              )}
-            </AnimatePresence>
-          </div>
-        ) : null}
-        <input
-          ref={inputRef}
-          tabIndex={0}
-          value={value}
-          onChange={handleChange}
-          className={cn(styles.input, inputClassName, {
-            [styles.withoutLoading]: !showLoader,
-          })}
-          type="text"
-          placeholder={placeholder || t('searchBountyPlaceholder')}
-          onKeyUp={handleKeys}
-        />
-        {renderCloseButton()}
-        <div
-          className={styles.anchor}
-          ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
-        />
-        {renderResultsDropdown()}
+        <>
+          {showLoader ? (
+            <div className={cn(styles.iconHolder, iconClassName)}>
+              <AnimatePresence>
+                {loading ? (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    <LoadingIndicator
+                      className={cn(styles.loader, iconClassName)}
+                    />
+                  </motion.div>
+                ) : (
+                  <Icon name="buttonSearch" className={styles.icon} />
+                )}
+              </AnimatePresence>
+            </div>
+          ) : null}
+          <input
+            ref={inputRef}
+            tabIndex={0}
+            value={value}
+            onChange={handleChange}
+            className={cn(styles.input, inputClassName, {
+              [styles.withoutLoading]: !showLoader,
+            })}
+            type="text"
+            placeholder={placeholder || t('searchBountyPlaceholder')}
+            onKeyUp={handleKeys}
+          />
+          {renderCloseButton()}
+          <div
+            className={styles.anchor}
+            ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
+          />
+          {renderResultsDropdown()}
+        </>
       </div>
     </div>
   );

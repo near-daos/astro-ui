@@ -9,6 +9,7 @@ import {
   NavButton,
   NavButtonProps,
 } from 'astro_2.0/components/navigation/NavButton';
+import { act } from '@testing-library/react';
 
 jest.mock('next/router', () => {
   return {
@@ -85,7 +86,9 @@ describe('Nav button', () => {
   it('Should render "hover" icon on hover', () => {
     const { getByRole, getAllByText } = renderNavButton({ authRequired: true });
 
-    fireEvent.mouseOver(getByRole('button'));
+    act(() => {
+      fireEvent.mouseOver(getByRole('button'));
+    });
 
     expect(getAllByText('aAllDaosHover')).toHaveLength(1);
   });

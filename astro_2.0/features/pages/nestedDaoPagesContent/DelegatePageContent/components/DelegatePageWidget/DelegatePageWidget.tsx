@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import cn from 'classnames';
 
 import { Tooltip } from 'astro_2.0/components/Tooltip';
@@ -6,7 +6,7 @@ import { Icon, IconName } from 'components/Icon';
 
 import styles from './DelegatePageWidget.module.scss';
 
-interface Props {
+interface Props extends PropsWithChildren {
   title: string;
   className?: string;
   titleClassName?: string;

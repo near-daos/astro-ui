@@ -119,11 +119,14 @@ export const SearchBar: FC<SearchBarProps> = ({
     calculateExpanded();
   }, [calculateWidth, calculateExpanded]);
 
-  const onSearchStateToggle = useCallback(state => {
-    if (!isDesktopResolution()) {
-      setExpanded(state);
-    }
-  }, []);
+  const onSearchStateToggle = useCallback(
+    (state: boolean | ((prevState: boolean) => boolean)) => {
+      if (!isDesktopResolution()) {
+        setExpanded(state);
+      }
+    },
+    []
+  );
 
   const { styles: popperStyles, attributes } = usePopper(
     referenceElement,
@@ -191,7 +194,7 @@ export const SearchBar: FC<SearchBarProps> = ({
   }, [handleSearch, value]);
 
   const handleChange = useCallback(
-    e => {
+    (e: { target: { value: React.SetStateAction<string> } }) => {
       if (!focused) {
         setFocused(true);
       }
@@ -246,7 +249,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 
     return document?.body?.offsetWidth <
       searchMaxWidth + POPUP_LEFT_MARGIN + POPUP_RIGHT_MARGIN
-      ? document?.body?.offsetWidth - (POPUP_LEFT_MARGIN + POPUP_RIGHT_MARGIN)
+      ? document.body.offsetWidth - (POPUP_LEFT_MARGIN + POPUP_RIGHT_MARGIN)
       : searchMaxWidth;
   }
 
@@ -329,44 +332,46 @@ export const SearchBar: FC<SearchBarProps> = ({
         maxWidth: searchWidth,
       }}
     >
-      <div className={styles.iconHolder}>
-        <AnimatePresence>
-          {loading ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <LoadingIndicator className={styles.loader} />
-            </motion.div>
-          ) : (
-            <IconButton
-              size="medium"
-              icon="buttonSearch"
-              className={styles.icon}
-              onClick={openSearch}
-            />
-          )}
-        </AnimatePresence>
-      </div>
+      <>
+        <div className={styles.iconHolder}>
+          <AnimatePresence>
+            {loading ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <LoadingIndicator className={styles.loader} />
+              </motion.div>
+            ) : (
+              <IconButton
+                size="medium"
+                icon="buttonSearch"
+                className={styles.icon}
+                onClick={openSearch}
+              />
+            )}
+          </AnimatePresence>
+        </div>
 
-      <input
-        ref={inputRef}
-        tabIndex={0}
-        value={value}
-        onFocus={() => setFocused(true)}
-        onChange={handleChange}
-        className={cn(styles.input, 'body1')}
-        type="text"
-        placeholder={placeholder}
-        onKeyUp={handleKeys}
-      />
-      {renderCloseButton()}
-      <div
-        className={styles.anchor}
-        ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
-      />
-      {renderResultsDropdown()}
+        <input
+          ref={inputRef}
+          tabIndex={0}
+          value={value}
+          onFocus={() => setFocused(true)}
+          onChange={handleChange}
+          className={cn(styles.input, 'body1')}
+          type="text"
+          placeholder={placeholder}
+          onKeyUp={handleKeys}
+        />
+        {renderCloseButton()}
+        <div
+          className={styles.anchor}
+          ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
+        />
+        {renderResultsDropdown()}
+      </>
     </div>
   );
 };

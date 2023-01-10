@@ -4,6 +4,7 @@ import React, {
   MouseEvent,
   useCallback,
   KeyboardEvent,
+  PropsWithChildren,
 } from 'react';
 import cn from 'classnames';
 
@@ -15,7 +16,7 @@ import { copyToClipboard } from 'utils/copyToClipboard';
 
 import styles from './CopyButton.module.scss';
 
-interface CopyButtonProps {
+interface CopyButtonProps extends PropsWithChildren {
   text: string;
   className?: string;
   iconHolderClassName?: string;

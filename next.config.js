@@ -18,7 +18,6 @@ module.exports = (phase, { defaultConfig }) => {
       return nextConfig;
     },
     {
-      ...defaultConfig,
       swcMinify: true,
       reactStrictMode: true,
       images: {
@@ -48,9 +47,6 @@ module.exports = (phase, { defaultConfig }) => {
       publicRuntimeConfig: {
         shouldUseExternalAssetUrl: process.env.NODE_ENV === 'production',
         assetUrl: '/_next/static/sprite.svg',
-      },
-      api: {
-        responseLimit: false,
       },
     }
   );

@@ -1,6 +1,7 @@
 import React, {
   createContext,
   FC,
+  PropsWithChildren,
   useCallback,
   useContext,
   useMemo,
@@ -47,7 +48,7 @@ const SearchResultsContext = createContext<SearchResultsContextProps>({
 export const useSearchResults = (): SearchResultsContextProps =>
   useContext(SearchResultsContext);
 
-export const SearchResults: FC = ({ children }) => {
+export const SearchResults: FC<PropsWithChildren> = ({ children }) => {
   const { accountId } = useWalletContext();
   const [searchResults, setSearchResults] = useState<null | SearchResultsData>(
     null
@@ -92,17 +93,25 @@ export const SearchResults: FC = ({ children }) => {
     setSearchResults(null);
   }, []);
 
+  const contextValue = useMemo(() => {
+    return {
+      searchResults,
+      handleSearch,
+      handleClose,
+      setSearchResults,
+      loading,
+      searchServiceInstance,
+    };
+  }, [
+    handleClose,
+    handleSearch,
+    loading,
+    searchResults,
+    searchServiceInstance,
+  ]);
+
   return (
-    <SearchResultsContext.Provider
-      value={{
-        searchResults,
-        handleSearch,
-        handleClose,
-        setSearchResults,
-        loading,
-        searchServiceInstance,
-      }}
-    >
+    <SearchResultsContext.Provider value={contextValue}>
       {children}
     </SearchResultsContext.Provider>
   );

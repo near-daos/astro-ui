@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { ComponentType, FC, useMemo, useState } from 'react';
 import Measure from 'react-measure';
 
 import { Chart } from 'components/AreaChartRenderer/components/Chart';
@@ -9,6 +9,8 @@ import RangeToggle from './components/range-toggle/RangeToggle';
 
 import { useDomainControl } from './hooks';
 import { Range } from './types';
+
+const MeasureSafeForReact18 = Measure as ComponentType<Measure['props']>;
 
 export interface AreaChartProps {
   data: { timestamp: number; balance: number; tooltip?: string }[] | undefined;
@@ -43,7 +45,7 @@ export const AreaChartRenderer: FC<AreaChartProps> = ({
   }
 
   return (
-    <Measure
+    <MeasureSafeForReact18
       onResize={contentRect => {
         const newWidth = contentRect?.entry?.width;
 
@@ -88,6 +90,6 @@ export const AreaChartRenderer: FC<AreaChartProps> = ({
           </div>
         </div>
       )}
-    </Measure>
+    </MeasureSafeForReact18>
   );
 };

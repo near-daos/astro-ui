@@ -10,7 +10,6 @@ import { DaoAddressLink } from 'components/DaoAddressLink';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ChartCaption } from 'components/AreaChartRenderer/components/chart-caption';
 import { TokenCard } from 'components/cards/TokenCard';
-import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Loader } from 'components/loader';
 import { DashboardChart } from 'astro_2.0/features/DaoDashboard/components/DashboardChart';
@@ -45,7 +44,6 @@ const TRANSACTIONS_PER_PAGE = 10;
 
 interface Props {
   daoContext: DaoContext;
-  toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
 }
 
 export const TokensPageContent: FC<Props> = ({ daoContext }) => {
@@ -93,9 +91,12 @@ export const TokensPageContent: FC<Props> = ({ daoContext }) => {
   const filterClickHandler = useCallback(() => {
     setSortAsc(!sortAsc);
   }, [sortAsc]);
-  const pageChangeHandler = useCallback(({ selected }) => {
-    setActivePage(selected);
-  }, []);
+  const pageChangeHandler = useCallback(
+    ({ selected }: { selected: number }) => {
+      setActivePage(selected);
+    },
+    []
+  );
 
   function renderContent() {
     if (error) {

@@ -30,7 +30,7 @@ const MyDaosPage: Page<MyDaosPageProps> = ({ accountDaos }) => {
             title={
               <span>
                 You have no DAOs, but you can{' '}
-                <Link passHref href={CREATE_DAO_URL}>
+                <Link passHref href={CREATE_DAO_URL} legacyBehavior>
                   <span className={styles.createDaoLink}>create</span>
                 </Link>{' '}
                 one

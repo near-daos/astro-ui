@@ -20,7 +20,7 @@ export function useMultiVoteActions(): {
   const [list, { push, removeAt, clear }] = useList<string>([]);
 
   const handleSelect = useCallback(
-    id => {
+    (id: string) => {
       const itemIndex = list.findIndex(item => item === id);
 
       if (itemIndex !== -1) {

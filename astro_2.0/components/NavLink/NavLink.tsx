@@ -26,7 +26,7 @@ export const NavLink: React.FC<NavLinkProps> = ({
   );
 
   return href ? (
-    <Link passHref href={href}>
+    <Link passHref href={href} legacyBehavior>
       {content}
     </Link>
   ) : (

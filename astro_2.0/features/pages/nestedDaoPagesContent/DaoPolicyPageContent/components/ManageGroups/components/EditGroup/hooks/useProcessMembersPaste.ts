@@ -29,7 +29,7 @@ export function useProcessMembersPaste(input: Input): PasteProcessOutput {
   const { nearService } = useWalletContext();
 
   const onPasteMembers = useCallback(
-    async e => {
+    async (e: { clipboardData: { getData: (arg0: string) => string } }) => {
       if (groupUploadOfGroupMembers) {
         setProcessing(true);
 

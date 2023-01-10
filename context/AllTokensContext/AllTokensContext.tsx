@@ -1,4 +1,10 @@
-import { createContext, FC, useContext, useMemo } from 'react';
+import {
+  createContext,
+  FC,
+  PropsWithChildren,
+  useContext,
+  useMemo,
+} from 'react';
 import { useAllCustomTokens as useAllCustomTokensData } from 'hooks/useCustomTokens';
 import { TokensContext } from 'context/types';
 
@@ -18,7 +24,7 @@ export const useAllCustomTokens = (): TokensContext => {
   return context;
 };
 
-export const AllTokensProvider: FC = ({ children }) => {
+export const AllTokensProvider: FC<PropsWithChildren> = ({ children }) => {
   const { tokens } = useAllCustomTokensData();
 
   const contextValue = useMemo(() => {

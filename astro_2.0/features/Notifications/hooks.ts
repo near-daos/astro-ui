@@ -288,7 +288,7 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
         if (isMounted()) {
           const newData = {
             total: notifications?.total || 0,
-            data: notifications?.data ? [newNoty, ...notifications?.data] : [],
+            data: notifications?.data ? [newNoty, ...notifications.data] : [],
           };
 
           setNotifications(newData);
@@ -325,7 +325,14 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
   }, [handleUpdates, reactOnUpdates]);
 
   const handleUpdate = useCallback(
-    async (id, { isRead, isMuted, isArchived }) => {
+    async (
+      id: string,
+      {
+        isRead,
+        isMuted,
+        isArchived,
+      }: { isRead: boolean; isMuted: boolean; isArchived: boolean }
+    ) => {
       if (!pkAndSignature) {
         return;
       }
@@ -395,7 +402,14 @@ export function useNotificationsList(reactOnUpdates?: boolean): {
   );
 
   const handleRemove = useCallback(
-    async (id: string, { isRead, isMuted, isArchived }) => {
+    async (
+      id: string,
+      {
+        isRead,
+        isMuted,
+        isArchived,
+      }: { isRead: boolean; isMuted: boolean; isArchived: boolean }
+    ) => {
       if (!pkAndSignature) {
         return;
       }
@@ -552,7 +566,7 @@ export function useNotificationsListOpenSearch(reactOnUpdates?: boolean): {
   }, [data]);
 
   const hasMore = data
-    ? data[data?.length - 1].data.length === LIST_LIMIT_DEFAULT
+    ? data[data.length - 1].data.length === LIST_LIMIT_DEFAULT
     : false;
 
   const dataLength = data?.length ?? 0;
@@ -589,7 +603,14 @@ export function useNotificationsListOpenSearch(reactOnUpdates?: boolean): {
   }, [handleUpdates, reactOnUpdates]);
 
   const handleUpdate = useCallback(
-    async (id, { isRead, isMuted, isArchived }) => {
+    async (
+      id: string,
+      {
+        isRead,
+        isMuted,
+        isArchived,
+      }: { isRead: boolean; isMuted: boolean; isArchived: boolean }
+    ) => {
       if (!pkAndSignature) {
         return;
       }
@@ -670,7 +691,14 @@ export function useNotificationsListOpenSearch(reactOnUpdates?: boolean): {
   );
 
   const handleRemove = useCallback(
-    async (id: string, { isRead, isMuted, isArchived }) => {
+    async (
+      id: string,
+      {
+        isRead,
+        isMuted,
+        isArchived,
+      }: { isRead: boolean; isMuted: boolean; isArchived: boolean }
+    ) => {
       if (!pkAndSignature) {
         return;
       }

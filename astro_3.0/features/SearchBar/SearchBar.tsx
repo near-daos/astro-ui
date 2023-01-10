@@ -5,6 +5,7 @@ import React, {
   useCallback,
   MutableRefObject,
   KeyboardEventHandler,
+  ChangeEvent,
 } from 'react';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 import { useTranslation } from 'next-i18next';
@@ -82,7 +83,7 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
   useOnRouterChange(setValueOnRouterChange);
 
   const onSearchStateToggle = useCallback(
-    state => {
+    (state: boolean) => {
       if (isMobile) {
         setExpanded(state);
       }
@@ -158,7 +159,7 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
   }, [handleSearch, value]);
 
   const handleChange = useCallback(
-    e => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       if (!focused) {
         setFocused(true);
       }
@@ -211,9 +212,13 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
   function getDropdownWidth() {
     const searchMaxWidth = parseInt(styles.searchMaxWidth, 10);
 
+    if (!document?.body) {
+      return 0;
+    }
+
     return document?.body?.offsetWidth <
       searchMaxWidth + POPUP_LEFT_MARGIN + POPUP_RIGHT_MARGIN
-      ? document?.body?.offsetWidth - (POPUP_LEFT_MARGIN + POPUP_RIGHT_MARGIN)
+      ? document.body.offsetWidth - (POPUP_LEFT_MARGIN + POPUP_RIGHT_MARGIN)
       : searchMaxWidth;
   }
 
@@ -320,33 +325,35 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
                 [styles.expanded]: expanded,
               })}
             >
-              <div className={styles.iconHolder}>
-                <AnimatePresence>
-                  {loading ? (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <LoadingIndicator className={styles.loader} />
-                    </motion.div>
-                  ) : (
-                    <IconButton
-                      size="medium"
-                      icon="buttonSearch"
-                      className={styles.icon}
-                    />
-                  )}
-                </AnimatePresence>
-              </div>
+              <>
+                <div className={styles.iconHolder}>
+                  <AnimatePresence>
+                    {loading ? (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        <LoadingIndicator className={styles.loader} />
+                      </motion.div>
+                    ) : (
+                      <IconButton
+                        size="medium"
+                        icon="buttonSearch"
+                        className={styles.icon}
+                      />
+                    )}
+                  </AnimatePresence>
+                </div>
 
-              {renderInput()}
-              {renderCloseButton()}
-              <div
-                className={styles.anchor}
-                ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
-              />
-              {renderResultsDropdown()}
+                {renderInput()}
+                {renderCloseButton()}
+                <div
+                  className={styles.anchor}
+                  ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
+                />
+                {renderResultsDropdown()}
+              </>
             </motion.div>
           )}
         </AnimatePresence>
@@ -364,34 +371,36 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
 
   return (
     <div className={cn(styles.root, className)} ref={ref}>
-      <div className={styles.iconHolder}>
-        <AnimatePresence>
-          {loading ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <LoadingIndicator className={styles.loader} />
-            </motion.div>
-          ) : (
-            <IconButton
-              size="medium"
-              icon="buttonSearch"
-              className={styles.icon}
-              onClick={openSearch}
-            />
-          )}
-        </AnimatePresence>
-      </div>
+      <>
+        <div className={styles.iconHolder}>
+          <AnimatePresence>
+            {loading ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <LoadingIndicator className={styles.loader} />
+              </motion.div>
+            ) : (
+              <IconButton
+                size="medium"
+                icon="buttonSearch"
+                className={styles.icon}
+                onClick={openSearch}
+              />
+            )}
+          </AnimatePresence>
+        </div>
 
-      {renderInput()}
-      {renderCloseButton()}
-      <div
-        className={styles.anchor}
-        ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
-      />
-      {renderResultsDropdown()}
+        {renderInput()}
+        {renderCloseButton()}
+        <div
+          className={styles.anchor}
+          ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
+        />
+        {renderResultsDropdown()}
+      </>
     </div>
   );
 };

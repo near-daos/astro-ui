@@ -15,7 +15,7 @@ export interface CaptchaModalProps {
 
 export const CaptchaModal: FC<CaptchaModalProps> = ({ isOpen, onClose }) => {
   const submitHandler = useCallback(
-    res => {
+    (res: boolean | undefined) => {
       if (!res) {
         return;
       }

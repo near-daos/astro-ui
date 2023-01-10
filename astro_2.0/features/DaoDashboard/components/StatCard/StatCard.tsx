@@ -1,10 +1,10 @@
-import React, { CSSProperties, FC } from 'react';
+import React, { CSSProperties, FC, PropsWithChildren } from 'react';
 import cn from 'classnames';
 import { Button } from 'components/button/Button';
 
 import styles from './StatCard.module.scss';
 
-interface StatCardProps {
+interface StatCardProps extends PropsWithChildren {
   onClick?: () => void;
   className?: string;
   selected: boolean;

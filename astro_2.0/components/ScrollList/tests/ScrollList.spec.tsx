@@ -19,7 +19,11 @@ describe('Scroll list', () => {
         height={100}
         itemSize={i => i}
         itemCount={5}
-        renderItem={i => <div>{i}</div>}
+        renderItem={i => (
+          <div>
+            <>{i}</>
+          </div>
+        )}
       />
     );
 
