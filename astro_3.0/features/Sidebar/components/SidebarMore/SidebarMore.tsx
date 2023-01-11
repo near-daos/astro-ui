@@ -154,7 +154,7 @@ export const SidebarMore: FC<PropsWithChildren> = () => {
                 <span>
                   <LocaleSelector />
                 </span>
-                <span>
+                <span className={styles.row}>
                   {renderSocialIcon(
                     'https://discord.com/invite/KmMqF4KNBM',
                     'socialDiscord'

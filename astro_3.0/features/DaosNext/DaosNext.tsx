@@ -36,7 +36,7 @@ export const DaosNext: FC = () => {
   }, [data]);
 
   const hasMore = data
-    ? data[data?.length - 1].data.length === LIST_LIMIT_DEFAULT
+    ? data[data.length - 1].data.length === LIST_LIMIT_DEFAULT
     : false;
 
   const dataLength = data?.length ?? 0;

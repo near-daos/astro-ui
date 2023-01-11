@@ -8,7 +8,8 @@ import { DaoContext } from 'types/context';
 
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 
-import { TokensPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/TokensPageContent';
+// import { TokensPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/TokensPageContent';
+import { TokensPageContentV2 } from 'astro_3.0/features/TokensPageContentV2';
 
 export interface TokensPageProps {
   daoContext: DaoContext;
@@ -34,7 +35,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
       breadcrumbs={breadcrumbs}
       defaultProposalType={ProposalVariant.ProposeTransfer}
     >
-      <TokensPageContent daoContext={daoContext} />
+      <TokensPageContentV2 daoContext={daoContext} />
     </NestedDaoPageWrapper>
   );
 };
