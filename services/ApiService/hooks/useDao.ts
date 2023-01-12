@@ -9,6 +9,10 @@ import { buildDaoQuery } from 'services/SearchService/builders/dao';
 import { mapDaoIndexToDao } from 'services/SearchService/mappers/dao';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 
+interface ApiError {
+  status?: number;
+}
+
 /* eslint-disable no-underscore-dangle */
 export async function fetcher(
   url: string,
@@ -27,6 +31,14 @@ export async function fetcher(
 
   const rawData = response?.data?.hits?.hits[0]?._source;
 
+  if (!rawData) {
+    const error = new Error('Empty response') as ApiError;
+
+    error.status = 444;
+
+    throw error;
+  }
+
   return rawData ? mapDaoIndexToDao(rawData as DaoIndex) : undefined;
 }
 
@@ -42,19 +54,23 @@ export function useDao(daoId?: string): {
 
   const dao = daoId ?? query.dao ?? '';
 
-  const { data, error, mutate } = useSWR(
+  const { data, error, mutate, isValidating } = useSWR(
     useOpenSearchDataApi ? ['dao', dao] : undefined,
     fetcher,
     {
       revalidateOnFocus: false,
-      // revalidateOnMount: false,
       dedupingInterval: 5000,
+      errorRetryCount: 3,
+      errorRetryInterval: 3000,
+      shouldRetryOnError: err => {
+        return err.status !== 404;
+      },
     }
   );
 
   return {
     dao: data,
-    isLoading: !data,
+    isLoading: !data && isValidating,
     isError: !!error,
     mutate,
   };
