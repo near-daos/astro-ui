@@ -14,6 +14,10 @@ import {
 import { mapProposalIndexToProposalFeedItem } from 'services/SearchService/mappers/search';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 
+interface ApiError {
+  status?: number;
+}
+
 /* eslint-disable no-underscore-dangle */
 export async function fetcher(
   url: string,
@@ -35,6 +39,14 @@ export async function fetcher(
   );
 
   const rawData = response?.data?.hits?.hits[0]?._source;
+
+  if (!rawData) {
+    const error = new Error('Empty response') as ApiError;
+
+    error.status = 444;
+
+    throw error;
+  }
 
   return rawData
     ? mapProposalIndexToProposalFeedItem(rawData as ProposalIndex)
@@ -61,6 +73,11 @@ export function useProposal(): {
       revalidateOnFocus: false,
       revalidateOnMount: false,
       dedupingInterval: 5000,
+      errorRetryCount: 3,
+      errorRetryInterval: 3000,
+      shouldRetryOnError: err => {
+        return err.status !== 404;
+      },
     }
   );
 
