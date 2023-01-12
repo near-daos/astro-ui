@@ -6,6 +6,7 @@ import {
   useContext,
   useCallback,
   createContext,
+  PropsWithChildren,
 } from 'react';
 import get from 'lodash/get';
 import { useRouter } from 'next/router';
@@ -50,7 +51,7 @@ export interface WalletContext {
 
 const WalletContext = createContext<WalletContext>({} as WalletContext);
 
-export const WrappedWalletContext: FC = ({ children }) => {
+export const WrappedWalletContext: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
   const { nearConfig } = configService.get();
 

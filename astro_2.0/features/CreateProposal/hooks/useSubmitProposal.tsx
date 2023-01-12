@@ -78,7 +78,7 @@ export function useSubmitProposal({
   const [showModal] = useModal(CaptchaModal);
 
   const onSubmit = useCallback(
-    async data => {
+    async (data: Record<string, unknown>) => {
       if (actionType) {
         // Save LS flag to identify that newly created proposal is from governance token wizard
         localStorage.setItem(CREATE_PROPOSAL_ACTION_TYPE, actionType);

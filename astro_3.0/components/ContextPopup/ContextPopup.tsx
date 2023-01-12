@@ -1,4 +1,11 @@
-import React, { FC, ReactNode, useCallback, useRef, useState } from 'react';
+import React, {
+  FC,
+  ReactNode,
+  useCallback,
+  useRef,
+  useState,
+  PropsWithChildren,
+} from 'react';
 import ReactDOM from 'react-dom';
 import { usePopper } from 'react-popper';
 import { useClickAway } from 'react-use';
@@ -7,7 +14,7 @@ import cn from 'classnames';
 
 import styles from './ContextPopup.module.scss';
 
-interface Props {
+interface Props extends PropsWithChildren {
   controlItem: (callback: () => void) => ReactNode;
   className?: string;
   offset?: [number, number];
@@ -97,9 +104,11 @@ export const ContextPopup: FC<Props> = ({
 
   return (
     <div ref={ref}>
-      {controlItem(handleClick)}
-      <div className={styles.anchor} ref={setReferenceElement} />
-      {renderContent()}
+      <>
+        {controlItem(handleClick)}
+        <div className={styles.anchor} ref={setReferenceElement} />
+        {renderContent()}
+      </>
     </div>
   );
 };

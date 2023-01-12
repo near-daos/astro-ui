@@ -112,7 +112,7 @@ export const NotificationsToastsContainer: FC = () => {
               }}
             >
               <Link href={NOTIFICATIONS_PAGE_URL}>
-                <a>Read all new notifications</a>
+                Read all new notifications
               </Link>
               <Icon name="buttonArrowRight" className={styles.icon} />
             </Button>

@@ -12,10 +12,12 @@ interface LogoProps {
 
 export const Logo: React.VFC<LogoProps> = ({ className }) => {
   return (
-    <Link href="https://astrodao.com/" passHref>
-      <a className={cn(styles.logo, className)}>
-        <Icon width={120} name="appLogo" />
-      </a>
+    <Link
+      href="https://astrodao.com/"
+      passHref
+      className={cn(styles.logo, className)}
+    >
+      <Icon width={120} name="appLogo" />
     </Link>
   );
 };

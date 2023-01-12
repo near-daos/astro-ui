@@ -75,7 +75,9 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
   };
 
   const handleSelect = useCallback(
-    r => {
+    (sel: unknown) => {
+      const r = sel as Option;
+
       if (selectedItems.map(k => k.label).includes(r.label)) {
         const newSelectedItems = selectedItems.filter(k => k.label !== r.label);
 

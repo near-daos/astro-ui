@@ -1,9 +1,9 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, PropsWithChildren } from 'react';
 import cn from 'classnames';
 
 import styles from './FieldWrapper.module.scss';
 
-interface InputWrapperProps {
+interface InputWrapperProps extends PropsWithChildren {
   label: string;
   fullWidth?: boolean;
   alignRight?: boolean;

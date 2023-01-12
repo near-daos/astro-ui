@@ -2,7 +2,7 @@ import { useId } from '@reach/auto-id';
 import classNames from 'classnames';
 import inputStyles from 'components/inputs/Input/Input.module.scss';
 import { Property } from 'csstype';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, ChangeEvent } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import styles from './Textarea.module.scss';
 
@@ -55,7 +55,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
     const [currentLength, setCurrentLength] = useState(0);
 
     const onChangeCallback = useCallback(
-      e => {
+      (e: ChangeEvent<HTMLTextAreaElement>) => {
         onChange?.(e);
         setCurrentLength(e.currentTarget.value?.length);
       },

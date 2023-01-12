@@ -1,4 +1,6 @@
+import { act } from '@testing-library/react';
 import { render } from 'jest/testUtils';
+
 import { fireEvent } from '@testing-library/dom';
 
 import { ExpandableDetails } from 'astro_2.0/components/ExpandableDetails';
@@ -26,7 +28,9 @@ describe('expandable details', () => {
       <ExpandableDetails label="Label">Hello World</ExpandableDetails>
     );
 
-    fireEvent.click(component.getByRole('button'));
+    act(() => {
+      fireEvent.click(component.getByTestId('button'));
+    });
 
     expect(component.getByText('Hello World')).toHaveClass('opened');
   });

@@ -1,5 +1,13 @@
 import io, { Socket as TSocket } from 'socket.io-client';
-import { createContext, FC, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  FC,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+} from 'react';
 import { useWalletContext } from 'context/WalletContext';
 import { useMountedState } from 'react-use';
 import { configService } from 'services/ConfigService';
@@ -16,7 +24,7 @@ export const SocketContext = createContext<ISocketContext>({
 
 export const useSocket = (): ISocketContext => useContext(SocketContext);
 
-export const SocketProvider: FC = ({ children }) => {
+export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const { accountId, pkAndSignature } = useWalletContext();
   const isMounted = useMountedState();
@@ -49,8 +57,12 @@ export const SocketProvider: FC = ({ children }) => {
     initSocket();
   }, [accountId, isMounted, pkAndSignature]);
 
+  const contextValue = useMemo(() => {
+    return { socket };
+  }, [socket]);
+
   return (
-    <SocketContext.Provider value={{ socket }}>
+    <SocketContext.Provider value={contextValue}>
       {children}
     </SocketContext.Provider>
   );

@@ -1,4 +1,10 @@
-import React, { createContext, FC, useContext, useMemo } from 'react';
+import React, {
+  createContext,
+  FC,
+  useContext,
+  useMemo,
+  PropsWithChildren,
+} from 'react';
 import { useHideBounty } from 'astro_2.0/features/Bounties/components/hooks';
 import { useRouter } from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -23,7 +29,9 @@ export const HideBountyContext = createContext<IHideBountyContext>({
 });
 /* eslint-enable @typescript-eslint/no-empty-function */
 
-export const HideBountyContextProvider: FC = ({ children }) => {
+export const HideBountyContextProvider: FC<PropsWithChildren> = ({
+  children,
+}) => {
   const router = useRouter();
   const showHidden = router.query?.bountyFilter === 'hidden';
   const { handleSubmit, handleSelect, selected, loading } = useHideBounty();

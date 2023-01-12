@@ -26,14 +26,14 @@ export const CreateDaoContent: FC<Props> = () => {
   const displayName = watch('displayName');
 
   const handleAddressChange = useCallback(
-    val => {
+    (val: string) => {
       setValue('address', val, { shouldValidate: true });
     },
     [setValue]
   );
 
   const handleAddressError = useCallback(
-    address => {
+    (address: string | undefined) => {
       setValue('address', address);
       setError('address', {
         type: 'manual',

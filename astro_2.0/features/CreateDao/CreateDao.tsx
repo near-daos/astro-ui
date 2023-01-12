@@ -92,6 +92,8 @@ export const CreateDao: VFC<CreateDaoProps> = ({ defaultFlag }) => {
   }
 
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     <StateMachineProvider>
       <Head>
         <title>Create DAO</title>

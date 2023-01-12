@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { ComponentType, FC, useCallback } from 'react';
 import { useTranslation } from 'next-i18next';
 import TextTruncate from 'react-text-truncate';
 import { useRouter } from 'next/router';
@@ -21,6 +21,10 @@ import styles from './TemplatesListItem.module.scss';
 interface Props {
   data: SharedProposalTemplate;
 }
+
+const TextTruncateSafeForReact18 = TextTruncate as ComponentType<
+  TextTruncate['props']
+>;
 
 export const TemplatesListItem: FC<Props> = ({ data }) => {
   const { t } = useTranslation();
@@ -55,7 +59,7 @@ export const TemplatesListItem: FC<Props> = ({ data }) => {
     >
       <div className={styles.name}>
         <div className={styles.title}>{name}</div>
-        <TextTruncate
+        <TextTruncateSafeForReact18
           containerClassName={styles.desc}
           line={2}
           element="div"
@@ -65,7 +69,7 @@ export const TemplatesListItem: FC<Props> = ({ data }) => {
         />
       </div>
       <div className={cn(styles.creator, styles.hideMobile)}>
-        <TextTruncate
+        <TextTruncateSafeForReact18
           line={2}
           element="div"
           truncateText="…"

@@ -1,4 +1,11 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  ComponentType,
+  FC,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import cn from 'classnames';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
@@ -17,6 +24,8 @@ import { useModal } from 'components/modal';
 import { formatISODate } from 'utils/format';
 
 import styles from './Comment.module.scss';
+
+const LinkifySafeForReact18 = Linkify as ComponentType<Linkify['props']>;
 
 interface CommentProps {
   isMyComment: boolean;
@@ -187,7 +196,7 @@ export const Comment: FC<CommentProps> = ({
     >
       {isMyComment ? TICK_RIGHT : TICK_LEFT}
       {!isMyComment && <div className={styles.commentAuthor}>{accountId}</div>}
-      <Linkify
+      <LinkifySafeForReact18
         componentDecorator={decoratedHref => {
           return (
             <a
@@ -212,7 +221,7 @@ export const Comment: FC<CommentProps> = ({
         }}
       >
         <p>{message}</p>
-      </Linkify>
+      </LinkifySafeForReact18>
       <div className={styles.time}>{formatISODate(createdAt, 'hh:mm a')}</div>
       <div
         className={cn(styles.commentControls, {

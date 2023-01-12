@@ -4,6 +4,7 @@ import { appWithTranslation } from 'next-i18next';
 import type { AppContext, AppProps } from 'next/app';
 import type { NextPage, GetServerSideProps } from 'next';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import omit from 'lodash/omit';
 
 import nextI18NextConfig from 'next-i18next.config';
 
@@ -50,6 +51,9 @@ export type Page<P = {}, IP = P> = NextPage<P, IP> & {
 // eslint-disable-next-line @typescript-eslint/ban-types
 type MyAppProps<P = {}> = AppProps<P> & {
   Component: Page<P>;
+  pageProps: {
+    defaultApplicationUiVersion: number | null;
+  };
 };
 
 const defaultGetLayout: GetLayout = (page: ReactNode): ReactNode => page;
@@ -118,7 +122,14 @@ function App({ Component, pageProps }: MyAppProps): JSX.Element | null {
                         </Head>
                         <PageLayout appVersion={appVersion}>
                           <ErrorBoundary>
-                            {getLayout(<Component {...pageProps} />)}
+                            {getLayout(
+                              <Component
+                                {...omit(
+                                  pageProps,
+                                  'defaultApplicationUiVersion'
+                                )}
+                              />
+                            )}
                           </ErrorBoundary>
                         </PageLayout>
                         {appVersion === 3 ? (

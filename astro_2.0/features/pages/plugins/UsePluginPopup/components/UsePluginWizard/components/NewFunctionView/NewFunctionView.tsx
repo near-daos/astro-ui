@@ -19,7 +19,7 @@ export const NewFunctionView: VFC = () => {
   const [code, setCode] = useState('');
   const { setData, onClose } = useWizardContext();
 
-  const handleChange = useCallback(v => {
+  const handleChange = useCallback((v: React.SetStateAction<string>) => {
     setCode(v);
   }, []);
 

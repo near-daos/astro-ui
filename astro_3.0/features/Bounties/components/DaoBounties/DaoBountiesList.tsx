@@ -33,9 +33,12 @@ export const DaoBountiesList: FC<Props> = ({
 
   const { data } = useBounties(activePage);
 
-  const pageChangeHandler = useCallback(({ selected }) => {
-    setActivePage(selected);
-  }, []);
+  const pageChangeHandler = useCallback(
+    ({ selected }: { selected: number }) => {
+      setActivePage(selected);
+    },
+    []
+  );
 
   const pageCount = Math.ceil(total / LIST_LIMIT_DEFAULT);
   const bountiesContext = data ? data.data : [];

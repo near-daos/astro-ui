@@ -1,4 +1,11 @@
-import { createContext, FC, useContext, useMemo, useState } from 'react';
+import {
+  createContext,
+  FC,
+  PropsWithChildren,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import { DOMAIN_RANGES } from 'components/AreaChartRenderer/helpers';
 import { Range } from 'components/AreaChartRenderer/types';
 
@@ -14,7 +21,7 @@ export const DiscoverPageContext = createContext<IDiscoverPageContext>({
 });
 /* eslint-enable @typescript-eslint/no-empty-function */
 
-export const DiscoverPageProvider: FC = ({ children }) => {
+export const DiscoverPageProvider: FC<PropsWithChildren> = ({ children }) => {
   const [range, setRange] = useState(DOMAIN_RANGES.ALL);
 
   const contextValue = useMemo(

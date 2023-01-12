@@ -39,7 +39,7 @@ export const CustomContent: FC = () => {
   >(null);
 
   const handleChange = useCallback(
-    v => {
+    (v: string) => {
       setValue('json', v, { shouldValidate: true });
     },
     [setValue]

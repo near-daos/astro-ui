@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 
@@ -84,7 +84,7 @@ const PRELOADER = (
   </svg>
 );
 
-interface LoaderProps {
+interface LoaderProps extends PropsWithChildren {
   title?: string;
   className?: string;
 }

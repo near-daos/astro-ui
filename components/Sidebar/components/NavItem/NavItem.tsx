@@ -109,10 +109,8 @@ export const NavItem: FC<NavItemProps> = ({
 
     if (href) {
       return (
-        <Link href={{ pathname: href, query: urlParams }} passHref>
-          <a href="*" {...props}>
-            {content}
-          </a>
+        <Link href={{ pathname: href, query: urlParams }} passHref {...props}>
+          {content}
         </Link>
       );
     }

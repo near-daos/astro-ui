@@ -1,0 +1,141 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'header header'
+    'account account'
+    'total total'
+    'tokens tokens'
+    'chart chart'
+    'label filter'
+    'transactions transactions'
+    'pagination pagination';
+  grid-template-columns: 2fr 1fr;
+  margin-bottom: 20px;
+  padding-top: 56px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  grid-area: header;
+
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+    gap: 35px;
+  }
+
+  .title {
+    @extend %subtitle5;
+    margin: 0 22px 0 0;
+  }
+}
+
+.requestStatus {
+  align-items: center;
+  display: flex;
+  grid-column: span 2;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+.account {
+  grid-area: account;
+
+  .label {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+    padding-bottom: 4px;
+  }
+
+  .name {
+    @extend %title3;
+    align-items: center;
+    color: var(--color-brand-black);
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .icon {
+    margin-left: 8px;
+  }
+}
+
+.total {
+  grid-area: total;
+  margin-top: 8px;
+}
+
+.tokens {
+  display: flex;
+  flex-wrap: wrap;
+  grid-area: tokens;
+  margin: 20px 0 26px;
+
+  > button {
+    margin: 0 32px 32px 0;
+  }
+}
+
+.chart {
+  grid-area: chart;
+  margin-bottom: 26px;
+}
+
+.label {
+  @include font(1.25em, 28px, 500);
+  align-self: center;
+  font-family: var(--font-family-tertiary);
+  grid-area: label;
+
+  @include tablet-landscape {
+    @include font(1.5em, 36px, 500);
+  }
+}
+
+.filter {
+  @extend %title3;
+  align-items: center;
+  color: var(--color-primary-50);
+  display: flex;
+  grid-area: filter;
+  justify-content: flex-end;
+  padding: 0;
+  text-transform: none;
+}
+
+.filterIcon {
+  margin-left: 7px;
+  transition: all 0.5s;
+  width: 24px;
+
+  &.rotate {
+    transform: rotate(180deg);
+  }
+}
+
+.transactions {
+  grid-area: transactions;
+  margin-top: 18px;
+
+  button {
+    text-transform: none;
+  }
+}
+
+.row {
+  margin-bottom: 16px;
+}
+
+.pagination {
+  grid-area: pagination;
+  justify-self: center;
+}
+
+.createGovToken {
+  margin-top: 38px;
+}

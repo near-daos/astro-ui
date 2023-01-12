@@ -362,7 +362,7 @@ exports[`BountiesListView Should render component 1`] = `
         >
           <div
             class="react-tabs"
-            data-tabs="true"
+            data-rttabs="true"
           >
             <div
               class="tabsWrapper tabsRoot"
@@ -372,35 +372,38 @@ exports[`BountiesListView Should render component 1`] = `
                 role="tablist"
               >
                 <li
-                  aria-controls="react-tabs-1"
+                  aria-controls="panel:r6:0"
                   aria-disabled="false"
                   aria-selected="true"
                   class="tab tabsListItem active activeTabsListItem"
                   data-name="bountiesPage.comingSoon"
-                  id="react-tabs-0"
+                  data-rttab="true"
+                  id="tab:r6:0"
                   role="tab"
                   tabindex="0"
                 >
                   bountiesPage.comingSoon
                 </li>
                 <li
-                  aria-controls="react-tabs-3"
+                  aria-controls="panel:r6:1"
                   aria-disabled="false"
                   aria-selected="false"
                   class="tab tabsListItem"
                   data-name="bountiesPage.bounty"
-                  id="react-tabs-2"
+                  data-rttab="true"
+                  id="tab:r6:1"
                   role="tab"
                 >
                   bountiesPage.bounty
                 </li>
                 <li
-                  aria-controls="react-tabs-5"
+                  aria-controls="panel:r6:2"
                   aria-disabled="false"
                   aria-selected="false"
                   class="tab tabsListItem"
                   data-name="bountiesPage.completed"
-                  id="react-tabs-4"
+                  data-rttab="true"
+                  id="tab:r6:2"
                   role="tab"
                 >
                   bountiesPage.completed
@@ -411,9 +414,9 @@ exports[`BountiesListView Should render component 1`] = `
               />
             </div>
             <div
-              aria-labelledby="react-tabs-0"
+              aria-labelledby="tab:r6:0"
               class="react-tabs__tab-panel react-tabs__tab-panel--selected"
-              id="react-tabs-1"
+              id="panel:r6:0"
               role="tabpanel"
             >
               <div
@@ -497,15 +500,15 @@ exports[`BountiesListView Should render component 1`] = `
               </div>
             </div>
             <div
-              aria-labelledby="react-tabs-2"
+              aria-labelledby="tab:r6:1"
               class="react-tabs__tab-panel"
-              id="react-tabs-3"
+              id="panel:r6:1"
               role="tabpanel"
             />
             <div
-              aria-labelledby="react-tabs-4"
+              aria-labelledby="tab:r6:2"
               class="react-tabs__tab-panel"
-              id="react-tabs-5"
+              id="panel:r6:2"
               role="tabpanel"
             />
           </div>

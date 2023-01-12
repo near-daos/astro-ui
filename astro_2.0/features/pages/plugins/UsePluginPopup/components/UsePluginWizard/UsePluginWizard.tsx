@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 
 import { Tabs } from 'components/Tabs';
 import {
@@ -14,6 +14,8 @@ import { PreviousFunctionsView } from './components/PeviousFunctionsView';
 import styles from './UsePluginWizard.module.scss';
 
 const NewFunctionView = dynamic<unknown>(
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   import('./components/NewFunctionView').then(mod => mod.NewFunctionView),
   {
     ssr: false,
@@ -53,6 +55,8 @@ export const UsePluginWizard: FC<UsePluginWizardProps> = ({
   });
 
   const setData = useCallback(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     d => {
       setWizardData({
         ...data,
@@ -68,9 +72,13 @@ export const UsePluginWizard: FC<UsePluginWizardProps> = ({
     [activeStep, data, onSubmit]
   );
 
+  const contextValue = useMemo(() => {
+    return { data, setData, initialData, onClose };
+  }, [data, setData, initialData, onClose]);
+
   return (
     <div className={styles.root}>
-      <WizardContext.Provider value={{ data, setData, initialData, onClose }}>
+      <WizardContext.Provider value={contextValue}>
         {activeStep === 1 && <Tabs tabs={TABS} isControlled={false} />}
         {activeStep === 2 && <CreateTokenView />}
       </WizardContext.Provider>

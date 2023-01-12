@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import AnimateHeight, { AnimateHeightProps } from 'react-animate-height';
 import { useId } from '@reach/auto-id';
 import { useToggle } from 'react-use';
@@ -23,6 +23,7 @@ interface CollapsableProps extends Pick<AnimateHeightProps, PickProps> {
   toggle?: (nextValue?: boolean) => void;
   initialOpenState?: boolean;
   className?: string;
+  children?: ReactNode | ((isOpen: boolean) => ReactNode);
 }
 
 export const Collapsable: React.FC<CollapsableProps> = ({

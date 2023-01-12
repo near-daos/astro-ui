@@ -20,7 +20,7 @@ export const SortMenu: FC<Props> = ({ sortOptions, sortFieldName }) => {
   const { [sortFieldName]: sort } = query;
 
   const handleSort = useCallback(
-    async value => {
+    async (value: string) => {
       const nextQuery = {
         ...query,
         [sortFieldName]: value,

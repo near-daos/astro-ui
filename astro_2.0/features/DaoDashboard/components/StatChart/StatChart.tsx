@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { ComponentType, FC, useState } from 'react';
 import Measure from 'react-measure';
 import { LineChart, Line, YAxis } from 'recharts';
 
@@ -11,6 +11,8 @@ import styles from './StatChart.module.scss';
 interface StatChartProps {
   data: ChartDataElement[];
 }
+
+const MeasureSafeForReact18 = Measure as ComponentType<Measure['props']>;
 
 export const StatChart: FC<StatChartProps> = ({ data }) => {
   const [width, setWidth] = useState(0);
@@ -40,7 +42,7 @@ export const StatChart: FC<StatChartProps> = ({ data }) => {
   );
 
   return (
-    <Measure
+    <MeasureSafeForReact18
       onResize={contentRect => {
         const newWidth = contentRect?.entry?.width;
 
@@ -73,6 +75,6 @@ export const StatChart: FC<StatChartProps> = ({ data }) => {
           </LineChart>
         </div>
       )}
-    </Measure>
+    </MeasureSafeForReact18>
   );
 };

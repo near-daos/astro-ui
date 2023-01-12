@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, MouseEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { useSwipeable } from 'react-swipeable';
@@ -67,8 +67,8 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     [styles.swipedLeft]: swipedLeft,
   });
 
-  const handleMarkReadClick = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMarkReadClick = useCallback<MouseEventHandler>(
+    e => {
       e.stopPropagation();
 
       if (onUpdate) {
@@ -79,7 +79,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   );
 
   const handleDeleteClick = useCallback(
-    async archived => {
+    async (archived: boolean) => {
       if (onRemove) {
         onRemove(id, { isMuted, isArchived: archived, isRead });
       }
@@ -87,7 +87,9 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     [id, isMuted, isRead, onRemove]
   );
 
-  const handleNotificationClick = useCallback(
+  const handleNotificationClick = useCallback<
+    MouseEventHandler<HTMLDivElement>
+  >(
     e => {
       handleMarkReadClick(e);
 
@@ -165,7 +167,11 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
         role="button"
         tabIndex={0}
         onClick={handleNotificationClick}
-        onKeyPress={handleNotificationClick}
+        onKeyPress={e =>
+          handleNotificationClick(
+            e as unknown as React.MouseEvent<HTMLDivElement, MouseEvent>
+          )
+        }
         {...swipeProps}
       >
         <div className={styles.flagContainer}>

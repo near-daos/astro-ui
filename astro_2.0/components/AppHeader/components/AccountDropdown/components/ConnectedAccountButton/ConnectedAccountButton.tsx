@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import { useWalletContext } from 'context/WalletContext';
 
@@ -8,7 +8,9 @@ import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountDro
 
 import styles from './ConnectedAccountButton.module.scss';
 
-export const ConnectedAccountButton: React.FC = ({ children }) => {
+export const ConnectedAccountButton: React.FC<PropsWithChildren> = ({
+  children,
+}) => {
   const { currentWallet, accountId, switchWallet } = useWalletContext();
 
   return (

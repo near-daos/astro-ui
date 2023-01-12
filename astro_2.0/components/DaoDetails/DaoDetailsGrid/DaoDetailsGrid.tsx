@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { ComponentType, FC } from 'react';
 import Link from 'next/link';
 import TextTruncate from 'react-text-truncate';
 import { useRouter } from 'next/router';
@@ -32,6 +32,10 @@ export interface DaoDetailsGridProps {
   totalProposals: number;
   loading?: boolean;
 }
+
+const TextTruncateSafeForReact18 = TextTruncate as ComponentType<
+  TextTruncate['props']
+>;
 
 export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
   dao,
@@ -69,168 +73,164 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
       {loading ? (
         <DaoDetailsSkeleton />
       ) : (
-        <Link href={`/dao/${id}`}>
-          <a className={styles.content}>
-            <div>
-              <section className={styles.general}>
-                <div className={styles.flagWrapper}>
-                  {flagLogo ? (
-                    <div
-                      className={cn(styles.flag, {
-                        [styles.scaled]: !flagLogo && !!oldFlag,
-                      })}
-                      style={{
-                        backgroundImage: `url(${flagLogo || oldFlag})`,
-                      }}
-                    />
-                  ) : (
-                    <div className={styles.logo}>
-                      <Icon
-                        name="defaultDaoLogo"
-                        className={styles.defaultLogo}
-                        width={24}
-                      />
-                    </div>
-                  )}
-                </div>
-                <div className={styles.title}>
-                  <ExplorerLink
-                    linkData={dao.id}
-                    linkType="member"
-                    className={styles.explorerLink}
+        <Link href={`/dao/${id}`} className={styles.content}>
+          <div>
+            <section className={styles.general}>
+              <div className={styles.flagWrapper}>
+                {flagLogo ? (
+                  <div
+                    className={cn(styles.flag, {
+                      [styles.scaled]: !flagLogo && !!oldFlag,
+                    })}
+                    style={{
+                      backgroundImage: `url(${flagLogo || oldFlag})`,
+                    }}
                   />
-                  <Tooltip
-                    placement="top"
-                    overlay={
-                      <span className={styles.nameTooltip}>
-                        {displayName || id}
-                      </span>
-                    }
-                  >
-                    <div
-                      className={styles.name}
-                      style={{
-                        maxWidth: width - 142,
-                      }}
-                    >
-                      {displayName || id}
-                    </div>
-                  </Tooltip>
-                  <div className={styles.address}>
-                    <CopyButton
-                      text={id}
-                      tooltipPlacement="auto"
-                      className={styles.copyAddress}
-                    >
-                      <div className={styles.addressId}>
-                        {shortenString(id, isMobile ? 16 : 26)}
-                      </div>
-                    </CopyButton>
+                ) : (
+                  <div className={styles.logo}>
+                    <Icon
+                      name="defaultDaoLogo"
+                      className={styles.defaultLogo}
+                      width={24}
+                    />
                   </div>
+                )}
+              </div>
+              <div className={styles.title}>
+                <ExplorerLink
+                  linkData={dao.id}
+                  linkType="member"
+                  className={styles.explorerLink}
+                />
+                <Tooltip
+                  placement="top"
+                  overlay={
+                    <span className={styles.nameTooltip}>
+                      {displayName || id}
+                    </span>
+                  }
+                >
+                  <div
+                    className={styles.name}
+                    style={{
+                      maxWidth: width - 142,
+                    }}
+                  >
+                    {displayName || id}
+                  </div>
+                </Tooltip>
+                <div className={styles.address}>
+                  <CopyButton
+                    text={id}
+                    tooltipPlacement="auto"
+                    className={styles.copyAddress}
+                  >
+                    <div className={styles.addressId}>
+                      {shortenString(id, isMobile ? 16 : 26)}
+                    </div>
+                  </CopyButton>
                 </div>
-              </section>
+              </div>
+            </section>
 
-              <section className={styles.description}>
-                <TextTruncate
-                  line={3}
-                  element="span"
-                  truncateText="…"
-                  text={description ?? ''}
-                  textTruncateChild={null}
-                />
-              </section>
-            </div>
-            <div>
-              <section className={styles.fundsAndMembers}>
-                <DaoInfoCard
-                  infoType="funds"
-                  url={`/dao/${id}/treasury/tokens`}
-                  title={t('daoFunds')}
-                  daoFunds={formatCurrency(Number(totalDaoFunds ?? 0))}
-                  tooltip={t('daoFunds')}
-                />
-                <DaoInfoCard
-                  infoType="members"
-                  url={{
-                    pathname: GROUPS_PAGE_URL,
+            <section className={styles.description}>
+              <TextTruncateSafeForReact18
+                line={3}
+                element="span"
+                truncateText="…"
+                text={description ?? ''}
+                textTruncateChild={null}
+              />
+            </section>
+          </div>
+          <div>
+            <section className={styles.fundsAndMembers}>
+              <DaoInfoCard
+                infoType="funds"
+                url={`/dao/${id}/treasury/tokens`}
+                title={t('daoFunds')}
+                daoFunds={formatCurrency(Number(totalDaoFunds ?? 0))}
+                tooltip={t('daoFunds')}
+              />
+              <DaoInfoCard
+                infoType="members"
+                url={{
+                  pathname: GROUPS_PAGE_URL,
+                  query: {
+                    dao: dao.id,
+                    group: 'all',
+                  },
+                }}
+                title={t('membersGroups')}
+                members={numberOfMembers}
+                groups={numberOfGroups}
+                tooltip={t('daoMembers')}
+              />
+            </section>
+
+            <section className={styles.controls}>
+              <ActionButton
+                iconName="settings"
+                onClick={e => handleClick(e, `/dao/${id}/governance/settings`)}
+                className={styles.controlIcon}
+              >
+                {t('settings')}
+              </ActionButton>
+              <ActionButton
+                iconName="nfts"
+                onClick={e => handleClick(e, `/dao/${id}/treasury/nfts`)}
+                className={styles.controlIcon}
+              >
+                {t('nfts')}
+              </ActionButton>
+              <ActionButton
+                iconName="proposalBounty"
+                onClick={e =>
+                  handleClick(e, {
+                    pathname: ALL_BOUNTIES_PAGE_URL,
                     query: {
-                      dao: dao.id,
-                      group: 'all',
+                      dao: id,
                     },
-                  }}
-                  title={t('membersGroups')}
-                  members={numberOfMembers}
-                  groups={numberOfGroups}
-                  tooltip={t('daoMembers')}
-                />
-              </section>
+                  })
+                }
+                className={styles.controlIcon}
+              >
+                {t('bounties')}
+              </ActionButton>
+              <ActionButton
+                iconName="proposalPoll"
+                onClick={e => handleClick(e, `/dao/${id}/tasks/polls`)}
+                className={styles.controlIcon}
+              >
+                {t('polls')}
+              </ActionButton>
+            </section>
 
-              <section className={styles.controls}>
-                <ActionButton
-                  iconName="settings"
-                  onClick={e =>
-                    handleClick(e, `/dao/${id}/governance/settings`)
-                  }
-                  className={styles.controlIcon}
-                >
-                  {t('settings')}
-                </ActionButton>
-                <ActionButton
-                  iconName="nfts"
-                  onClick={e => handleClick(e, `/dao/${id}/treasury/nfts`)}
-                  className={styles.controlIcon}
-                >
-                  {t('nfts')}
-                </ActionButton>
-                <ActionButton
-                  iconName="proposalBounty"
-                  onClick={e =>
-                    handleClick(e, {
-                      pathname: ALL_BOUNTIES_PAGE_URL,
-                      query: {
-                        dao: id,
-                      },
-                    })
-                  }
-                  className={styles.controlIcon}
-                >
-                  {t('bounties')}
-                </ActionButton>
-                <ActionButton
-                  iconName="proposalPoll"
-                  onClick={e => handleClick(e, `/dao/${id}/tasks/polls`)}
-                  className={styles.controlIcon}
-                >
-                  {t('polls')}
-                </ActionButton>
-              </section>
-
-              <section className={styles.proposals}>
-                <Typography.Subtitle
-                  className={cn(styles.proposalsTitle, styles.active)}
-                  size={2}
-                >
-                  <span>{activeProposals}</span>{' '}
-                  {activeProposals === 1
-                    ? t('components.daoDetails.proposalTrackerCard.active')
-                    : t(
-                        'components.daoDetails.proposalTrackerCard.activePlural'
-                      )}{' '}
-                  {activeProposals === 1
-                    ? t('components.daoDetails.proposalTrackerCard.proposal')
-                    : t('components.daoDetails.proposalTrackerCard.proposals')}
-                </Typography.Subtitle>
-                <Typography.Subtitle
-                  className={styles.proposalsSubtitle}
-                  size={6}
-                >
-                  {`${totalProposals} ${t(
-                    'components.daoDetails.proposalTrackerCard.proposalsInTotal'
-                  )}`}
-                </Typography.Subtitle>
-              </section>
-            </div>
-          </a>
+            <section className={styles.proposals}>
+              <Typography.Subtitle
+                className={cn(styles.proposalsTitle, styles.active)}
+                size={2}
+              >
+                <span>{activeProposals}</span>{' '}
+                {activeProposals === 1
+                  ? t('components.daoDetails.proposalTrackerCard.active')
+                  : t(
+                      'components.daoDetails.proposalTrackerCard.activePlural'
+                    )}{' '}
+                {activeProposals === 1
+                  ? t('components.daoDetails.proposalTrackerCard.proposal')
+                  : t('components.daoDetails.proposalTrackerCard.proposals')}
+              </Typography.Subtitle>
+              <Typography.Subtitle
+                className={styles.proposalsSubtitle}
+                size={6}
+              >
+                {`${totalProposals} ${t(
+                  'components.daoDetails.proposalTrackerCard.proposalsInTotal'
+                )}`}
+              </Typography.Subtitle>
+            </section>
+          </div>
         </Link>
       )}
     </div>

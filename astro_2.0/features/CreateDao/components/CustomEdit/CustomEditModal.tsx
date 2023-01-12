@@ -64,7 +64,7 @@ export const CustomEditModal: FC<CustomEditModalProps> = ({
   } = methods;
 
   const handleChange = useCallback(
-    v => {
+    (v: string) => {
       setValue('json', v, { shouldValidate: true });
     },
     [setValue]

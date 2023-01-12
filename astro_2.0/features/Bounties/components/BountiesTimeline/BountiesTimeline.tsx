@@ -49,7 +49,7 @@ export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
   );
 
   const toggleGroup = useCallback(
-    groupId => {
+    (groupId: string) => {
       const updatedDataSet = dataset.map(group => {
         if (group.id === groupId) {
           return {
@@ -66,9 +66,16 @@ export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
     [dataset]
   );
 
-  const toggleRange = useCallback(val => {
-    setGranularity(val);
-  }, []);
+  const toggleRange = useCallback(
+    (
+      val:
+        | TimelineGranularity
+        | ((prevState: TimelineGranularity) => TimelineGranularity)
+    ) => {
+      setGranularity(val);
+    },
+    []
+  );
 
   useEffect(() => {
     // We want milestone to be visible on load

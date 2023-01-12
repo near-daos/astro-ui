@@ -176,11 +176,16 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   const draftDescription = methods.watch('description');
 
   const onTypeSelect = useCallback(
-    (value, skip) => {
+    (
+      value:
+        | ProposalVariant
+        | ((prevState: ProposalVariant) => ProposalVariant),
+      skip: boolean | undefined
+    ) => {
       if (!skip) {
         const defaults = getFormInitialValues(
           t,
-          value,
+          value as ProposalVariant,
           accountId,
           isDraft
             ? {
@@ -196,7 +201,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         methods.reset({ ...defaults });
       }
 
-      setSchemaContext({ selectedProposalVariant: value });
+      setSchemaContext({ selectedProposalVariant: value as ProposalVariant });
 
       setSelectedProposalVariant(value);
     },

@@ -19,7 +19,6 @@ import { Loader } from 'components/loader';
 import { ViewBounty } from 'astro_2.0/features/ViewBounty';
 import { SearchInput } from 'astro_2.0/components/SearchInput';
 
-import { Tokens } from 'types/token';
 import { useWalletContext } from 'context/WalletContext';
 import { HideBountyContextProvider } from 'astro_2.0/features/Bounties/components/HideBountyContext';
 
@@ -31,7 +30,6 @@ import styles from './BountiesFeed.module.scss';
 interface BountiesFeedProps {
   initialData: PaginationResponse<BountyContext[]> | null;
   dao?: DAO;
-  tokens?: Tokens;
 }
 
 const FEED_OPTIONS = [
@@ -129,7 +127,7 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
   };
 
   const handleBountyInoutSearch = useCallback(
-    async val => {
+    async (val: string) => {
       if (!val || !val.trim()) {
         return null;
       }

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 
 import styles from 'astro_2.0/features/DaoGovernance/components/DaoSetting/DaoSetting.module.scss';
 
-interface DaoSettingProps {
+interface DaoSettingProps extends PropsWithChildren {
   settingsName: string;
   className?: string;
   settingsChangeHandler?: () => void;

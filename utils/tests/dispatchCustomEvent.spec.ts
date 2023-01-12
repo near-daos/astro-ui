@@ -19,7 +19,11 @@ describe('dispatch custom event', () => {
 
     dispatchCustomEvent(name, payload);
 
-    const { type, detail } = get(document.dispatchEvent, 'mock.calls.0.0');
+    const { type, detail } = get(
+      document.dispatchEvent,
+      'mock.calls.0.0',
+      {} as { type: string; detail: { hello: string } }
+    );
 
     expect(type).toStrictEqual(name);
     expect(detail).toStrictEqual(payload);

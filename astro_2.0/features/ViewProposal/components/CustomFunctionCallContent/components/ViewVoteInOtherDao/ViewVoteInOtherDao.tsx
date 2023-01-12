@@ -32,7 +32,7 @@ export const ViewVoteInOtherDao: VFC<ViewVoteInOtherDaoProps> = ({
     return null;
   }
 
-  const { id, action } = fromBase64ToObj(get(actions, '0.args')) || {};
+  const { id, action } = fromBase64ToObj(get(actions, '0.args', '')) || {};
 
   const getLabel = (field: string) =>
     t(`proposalCard.voteInDao.${field}.label`);
@@ -55,14 +55,11 @@ export const ViewVoteInOtherDao: VFC<ViewVoteInOtherDaoProps> = ({
                     proposal: `${receiverId}-${id}`,
                   },
                 }}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.proposalLink}
               >
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.proposalLink}
-                >
-                  ID: {id}
-                </a>
+                ID:{id}
               </Link>
             }
           />

@@ -66,7 +66,7 @@ export const CardContent: FC<Props> = ({
   }, [onDelete, showModal]);
 
   const handleChange = useCallback(
-    v => {
+    (v: string) => {
       setValue('json', v, { shouldValidate: true, shouldDirty: true });
     },
     [setValue]

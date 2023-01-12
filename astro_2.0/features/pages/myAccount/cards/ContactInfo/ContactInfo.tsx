@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 
 import { Icon, IconName } from 'components/Icon';
 
 import styles from './ContactInfo.module.scss';
 
-interface ContactInfoProps {
+interface ContactInfoProps extends PropsWithChildren {
   icon: IconName;
 }
 

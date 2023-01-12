@@ -33,12 +33,12 @@ export function getStatusFilterOptions(
     ...initialList,
     {
       value: ProposalsFeedStatuses.Approved,
-      label: t('feed.filters.approved'),
+      label: <>{t('feed.filters.approved')}</>,
       className: styles.categoriesListApprovedInputWrapperChecked,
     },
     {
       value: ProposalsFeedStatuses.Failed,
-      label: t('feed.filters.failed'),
+      label: <>{t('feed.filters.failed')}</>,
       className: styles.categoriesListFailedInputWrapperChecked,
     },
   ];

@@ -1,8 +1,10 @@
 import React, {
   createContext,
   FC,
+  PropsWithChildren,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { HttpService } from 'services/HttpService';
@@ -22,7 +24,7 @@ const DaoStatsContext = createContext<IDaoStatsContext>({
 export const useDaoStatsContext = (): IDaoStatsContext =>
   useContext(DaoStatsContext);
 
-export const DaoStatsDataProvider: FC = ({ children }) => {
+export const DaoStatsDataProvider: FC<PropsWithChildren> = ({ children }) => {
   const [daoStatsService, setDaoStatsService] = useState<
     DaoStatsService | undefined
   >();
@@ -43,12 +45,16 @@ export const DaoStatsDataProvider: FC = ({ children }) => {
     }, 1000);
   }, []);
 
+  const contextValue = useMemo(() => {
+    return { daoStatsService: daoStatsService as DaoStatsService };
+  }, [daoStatsService]);
+
   if (!daoStatsService) {
     return null;
   }
 
   return (
-    <DaoStatsContext.Provider value={{ daoStatsService }}>
+    <DaoStatsContext.Provider value={contextValue}>
       {children}
     </DaoStatsContext.Provider>
   );

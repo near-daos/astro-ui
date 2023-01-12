@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, PropsWithChildren } from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
 
@@ -11,7 +11,7 @@ import { kFormatter } from 'utils/format';
 
 import styles from './ActionButton.module.scss';
 
-interface ActionButtonProps {
+interface ActionButtonProps extends PropsWithChildren {
   testId?: string;
   className?: string;
   iconName: IconName;
@@ -40,15 +40,14 @@ const Wrapper = ({
 }) =>
   link ? (
     // eslint-disable-next-line jsx-a11y/control-has-associated-label
-    <Link href={link}>
-      <a
-        ref={addRef}
-        className={className}
-        {...rest}
-        style={{ display: 'inline-block' }}
-      >
-        {children}
-      </a>
+    <Link
+      href={link}
+      ref={addRef}
+      className={className}
+      {...rest}
+      style={{ display: 'inline-block' }}
+    >
+      {children}
     </Link>
   ) : (
     <div ref={addRef} className={className} {...rest}>

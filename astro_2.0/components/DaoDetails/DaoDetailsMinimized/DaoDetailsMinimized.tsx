@@ -38,7 +38,6 @@ export interface DaoDetailsMinimizedProps {
   >;
   className?: string;
   onCreateProposalClick?: () => void;
-  disableNewProposal?: boolean;
   userPermissions: UserPermissions;
 }
 
@@ -88,41 +87,39 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   function renderDaoLink() {
     return (
       <Link href={`/dao/${dao.id}`}>
-        <a>
-          <section className={cn(styles.nextPadding, styles.general)}>
-            {!isMobile && (
-              <div className={styles.flagWrapper}>
-                <DaoLogo size="md" src={dao.flagLogo} className={styles.logo} />
-              </div>
-            )}
-
-            <div>
-              <div className={styles.displayName}>
-                <div className={styles.name}>
-                  {shortenString(dao.displayName, isXsMobile ? 25 : 40)}
-                </div>
-
-                <ExplorerLink
-                  linkData={dao.id}
-                  linkType="member"
-                  className={styles.explorerLink}
-                />
-              </div>
-
-              <div className={styles.daoId}>
-                <CopyButton
-                  text={dao.id}
-                  tooltipPlacement="auto"
-                  className={styles.copyAddress}
-                >
-                  <div className={styles.daoId}>
-                    {shortenString(dao.id, isXsMobile ? 32 : 45)}
-                  </div>
-                </CopyButton>
-              </div>
+        <section className={cn(styles.nextPadding, styles.general)}>
+          {!isMobile && (
+            <div className={styles.flagWrapper}>
+              <DaoLogo size="md" src={dao.flagLogo} className={styles.logo} />
             </div>
-          </section>
-        </a>
+          )}
+
+          <div>
+            <div className={styles.displayName}>
+              <div className={styles.name}>
+                {shortenString(dao.displayName, isXsMobile ? 25 : 40)}
+              </div>
+
+              <ExplorerLink
+                linkData={dao.id}
+                linkType="member"
+                className={styles.explorerLink}
+              />
+            </div>
+
+            <div className={styles.daoId}>
+              <CopyButton
+                text={dao.id}
+                tooltipPlacement="auto"
+                className={styles.copyAddress}
+              >
+                <div className={styles.daoId}>
+                  {shortenString(dao.id, isXsMobile ? 32 : 45)}
+                </div>
+              </CopyButton>
+            </div>
+          </div>
+        </section>
       </Link>
     );
   }

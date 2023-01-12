@@ -34,7 +34,6 @@ describe('CollapsableSection', () => {
         dao={{} as unknown as DAO}
         data={[]}
         status="Pending"
-        accountId="accountId"
       />
     );
 

@@ -24,7 +24,6 @@ interface SectionRowProps {
   status: string;
   item: SectionItem;
   dao: DAO;
-  accountId: string;
 }
 
 const EMPTY_OBJECT = {};
@@ -34,7 +33,6 @@ export const SectionRow: FC<SectionRowProps> = ({
   status,
   item,
   dao,
-  accountId,
 }) => {
   const isMobile = useMedia('(max-width: 768px)');
   const router = useRouter();
@@ -154,20 +152,13 @@ export const SectionRow: FC<SectionRowProps> = ({
                   return null;
                 }
 
-                const claimedByMe = !!item.bounty.bountyClaims.find(
-                  _claim => _claim.accountId === accountId
-                );
-
                 return (
                   <ClaimRow
                     maxDeadline={item.bounty.maxDeadline}
                     key={claim.id}
                     dao={dao}
-                    bounty={item.bounty}
                     data={claim}
-                    completeHandler={item.completeHandler}
                     doneProposals={item.bounty?.bountyDoneProposals}
-                    claimedByMe={claimedByMe}
                   />
                 );
               })}

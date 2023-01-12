@@ -1,5 +1,12 @@
-import React, { CSSProperties } from 'react';
-import { VariableSizeList, ListOnScrollProps } from 'react-window';
+import React, { CSSProperties, ComponentType } from 'react';
+import {
+  VariableSizeList as VariableSizeListComp,
+  ListOnScrollProps,
+} from 'react-window';
+
+const VariableSizeList = VariableSizeListComp as ComponentType<
+  VariableSizeListComp['props']
+>;
 
 export interface ScrollListProps {
   height: number;
@@ -15,19 +22,22 @@ export interface ScrollListProps {
   }) => JSX.Element;
 }
 
-export const ScrollList = React.forwardRef<VariableSizeList, ScrollListProps>(
-  ({ height, itemSize, itemCount, onScroll, renderItem }, ref) => {
-    return (
-      <VariableSizeList
-        height={height}
-        itemCount={itemCount}
-        itemSize={itemSize}
-        ref={ref}
-        width="100%"
-        onScroll={onScroll}
-      >
-        {renderItem}
-      </VariableSizeList>
-    );
-  }
-);
+export const ScrollList = React.forwardRef<
+  typeof VariableSizeList,
+  ScrollListProps
+>(({ height, itemSize, itemCount, onScroll, renderItem }, ref) => {
+  return (
+    <VariableSizeList
+      height={height}
+      itemCount={itemCount}
+      itemSize={itemSize}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      ref={ref}
+      width="100%"
+      onScroll={onScroll}
+    >
+      {renderItem}
+    </VariableSizeList>
+  );
+});

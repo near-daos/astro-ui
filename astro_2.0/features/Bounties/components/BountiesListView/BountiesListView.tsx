@@ -58,7 +58,6 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
           {!!proposalPhase.length && (
             <CollapsableSection
               status="Pending"
-              accountId={accountId}
               title={`Coming Soon (Proposal Phase) (${proposalPhase.length})`}
               contentTitle="Voting"
               dao={dao}
@@ -68,7 +67,6 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
           {!!bounties.length && (
             <CollapsableSection
               status="InProgress"
-              accountId={accountId}
               title={`Bounties (${bounties.length})`}
               contentTitle="Amount"
               dao={dao}
@@ -78,7 +76,6 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
           {!!completed.length && (
             <CollapsableSection
               status="Completed"
-              accountId={accountId}
               title={`Completed (${completed.length})`}
               contentTitle="Amount"
               dao={dao}
@@ -92,7 +89,6 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
             bounties={bounties}
             completed={completed}
             dao={dao}
-            accountId={accountId}
           />
         </div>
       </HideBountyContextProvider>

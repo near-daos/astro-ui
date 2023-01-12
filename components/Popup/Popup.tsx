@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import classNames from 'classnames';
 import { Config } from 'react-popper-tooltip/dist/types';
 import styles from './Popup.module.scss';
 
-interface PopupProps {
+interface PopupProps extends PropsWithChildren {
   className?: string;
   arrowClassName?: string;
   anchor: HTMLElement | null;

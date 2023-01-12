@@ -1,4 +1,10 @@
-import { createContext, FC, useContext, useMemo } from 'react';
+import {
+  createContext,
+  FC,
+  PropsWithChildren,
+  useContext,
+  useMemo,
+} from 'react';
 
 import { useDaoSettingsData } from 'context/DaoSettingsContext/hooks';
 import { Settings } from 'types/settings';
@@ -27,7 +33,7 @@ export const useDaoSettings = (): IDaoSettingContext => {
   return context;
 };
 
-export const DaoSettingsProvider: FC = ({ children }) => {
+export const DaoSettingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const {
     query: { dao: daoId },
   } = useQuery<{ dao: string }>();

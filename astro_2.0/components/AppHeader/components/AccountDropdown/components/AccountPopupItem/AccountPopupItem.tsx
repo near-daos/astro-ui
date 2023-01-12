@@ -1,9 +1,9 @@
 import cn from 'classnames';
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 
 import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/AccountPopupItem/AccountPopupItem.module.scss';
 
-interface AccountPopupItemProps {
+interface AccountPopupItemProps extends PropsWithChildren {
   icon: React.ReactNode;
   classes?: {
     root?: string;

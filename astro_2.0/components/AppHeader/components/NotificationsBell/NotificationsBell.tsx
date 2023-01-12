@@ -23,7 +23,7 @@ export const NotificationsBell: VFC<NotificationsBellProps> = ({
 
   return FEATURE_FLAGS.NOTIFICATIONS ? (
     <>
-      <Link href="/notifications" passHref>
+      <Link href="/notifications" passHref legacyBehavior>
         <div className={cn(styles.root, className)}>
           <Icon
             name="noteBell"

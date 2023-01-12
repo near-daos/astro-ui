@@ -90,6 +90,8 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
         <div className={styles.header}>
           <div className={styles.meta}>
             <div className={styles.title}>
+              {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+              {/* @ts-ignore */}
               <TextTruncate
                 line={2}
                 element="span"
@@ -101,6 +103,8 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
             <div className={styles.creator}>
               <span>{t('actions.by')}</span>{' '}
               <span className={styles.creatorName}>
+                {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                {/* @ts-ignore */}
                 <TextTruncate
                   line={2}
                   element="span"
@@ -205,8 +209,9 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
                       pathname: SINGLE_DAO_PAGE,
                       query: { dao: item.id },
                     }}
+                    className={styles.link}
                   >
-                    <a className={styles.link}>{item.id}</a>
+                    {item.id}
                   </Link>
                 </li>
               )}
@@ -226,11 +231,10 @@ const SharedTemplatePage: Page<Props> = ({ accountDaos }) => {
                       pathname: CFC_LIBRARY_TEMPLATE_VIEW,
                       query: { template: item.id },
                     }}
+                    className={styles.link}
                   >
-                    <a className={styles.link}>
-                      {item.name}
-                      <div className={styles.sub}>{item.config.methodName}</div>
-                    </a>
+                    {item.name}
+                    <div className={styles.sub}>{item.config.methodName}</div>
                   </Link>
                 </li>
               )}

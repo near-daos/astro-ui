@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { ComponentType, FC, ReactNode, useState } from 'react';
 import Measure from 'react-measure';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -33,6 +33,8 @@ const variants = {
   visible: { opacity: 1 },
   hidden: { opacity: 0 },
 };
+
+const MeasureSafeForReact18 = Measure as ComponentType<Measure['props']>;
 
 export const DashboardChart: FC<DashboardChartProps> = ({
   data,
@@ -78,7 +80,7 @@ export const DashboardChart: FC<DashboardChartProps> = ({
   }
 
   return (
-    <Measure
+    <MeasureSafeForReact18
       onResize={contentRect => {
         const newWidth = contentRect?.entry?.width;
 
@@ -158,6 +160,6 @@ export const DashboardChart: FC<DashboardChartProps> = ({
           </div>
         </div>
       )}
-    </Measure>
+    </MeasureSafeForReact18>
   );
 };

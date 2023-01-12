@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 
 import styles from './ContactValue.module.scss';
 
-interface ContactProps {
+interface ContactProps extends PropsWithChildren {
   isVerified: boolean;
 }
 

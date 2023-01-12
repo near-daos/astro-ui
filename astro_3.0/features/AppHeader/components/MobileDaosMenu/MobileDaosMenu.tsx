@@ -92,21 +92,17 @@ export const MobileDaosMenu: FC = () => {
                 <Link
                   key={dao.id}
                   href={{ pathname: SINGLE_DAO_PAGE, query: { dao: dao.id } }}
+                  className={cn(styles.listItem, {
+                    [styles.active]: router.asPath.indexOf(dao.id) !== -1,
+                  })}
                 >
-                  <a
-                    className={cn(styles.listItem, {
-                      [styles.active]: router.asPath.indexOf(dao.id) !== -1,
-                    })}
-                  >
-                    <div
-                      className={cn(styles.avatar)}
-                      style={{
-                        backgroundImage: `url(${avatar})`,
-                      }}
-                    />
-
-                    <div className={styles.label}>{dao.name || dao.id}</div>
-                  </a>
+                  <div
+                    className={cn(styles.avatar)}
+                    style={{
+                      backgroundImage: `url(${avatar})`,
+                    }}
+                  />
+                  <div className={styles.label}>{dao.name || dao.id}</div>
                 </Link>
               );
             })}

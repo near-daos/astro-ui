@@ -1,4 +1,10 @@
-import { createContext, FC, useContext, useMemo } from 'react';
+import {
+  createContext,
+  FC,
+  PropsWithChildren,
+  useContext,
+  useMemo,
+} from 'react';
 import { useDaoCustomTokens as useDaoCustomTokensData } from 'hooks/useCustomTokens';
 import { TokensContext } from 'context/types';
 
@@ -18,7 +24,7 @@ export const useDaoCustomTokens = (): TokensContext => {
   return context;
 };
 
-export const DaoTokensProvider: FC = ({ children }) => {
+export const DaoTokensProvider: FC<PropsWithChildren> = ({ children }) => {
   const { tokens } = useDaoCustomTokensData();
 
   const contextValue = useMemo(() => {

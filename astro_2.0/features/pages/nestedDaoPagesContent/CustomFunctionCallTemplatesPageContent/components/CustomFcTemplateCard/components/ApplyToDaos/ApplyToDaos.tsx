@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, PropsWithChildren, useCallback, MouseEvent } from 'react';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 
@@ -16,7 +16,7 @@ import { useWalletContext } from 'context/WalletContext';
 
 import styles from './ApplyToDaos.module.scss';
 
-interface Props {
+interface Props extends PropsWithChildren {
   accountDaos?: DaoFeedItem[];
   template?: Partial<ProposalTemplate>;
   className?: string;
@@ -41,7 +41,7 @@ export const ApplyToDaos: FC<Props> = ({
   const [showModal] = useModal(SaveFcTemplateModal);
 
   const handleClick = useCallback(
-    async e => {
+    async (e: MouseEvent) => {
       e.stopPropagation();
 
       if (!accountDaos || !template) {

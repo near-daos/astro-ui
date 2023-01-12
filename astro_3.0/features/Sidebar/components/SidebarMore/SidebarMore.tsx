@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useRef, useState, PropsWithChildren } from 'react';
 import ReactDOM from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { usePopper } from 'react-popper';
@@ -20,7 +20,7 @@ import styles from './SidebarMore.module.scss';
 const POPUP_LEFT_MARGIN = 20;
 const POPUP_RIGHT_MARGIN = 20;
 
-export const SidebarMore: FC = () => {
+export const SidebarMore: FC<PropsWithChildren> = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -154,7 +154,7 @@ export const SidebarMore: FC = () => {
                 <span>
                   <LocaleSelector />
                 </span>
-                <span>
+                <span className={styles.row}>
                   {renderSocialIcon(
                     'https://discord.com/invite/KmMqF4KNBM',
                     'socialDiscord'
@@ -184,19 +184,21 @@ export const SidebarMore: FC = () => {
 
   return (
     <div ref={ref}>
-      <SidebarActionItem
-        label="More"
-        icon="buttonMore"
-        iconClassName={styles.controlIcon}
-        onClick={() => {
-          setOpen(!open);
-        }}
-      />
-      <div
-        className={styles.anchor}
-        ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
-      />
-      {renderContent()}
+      <>
+        <SidebarActionItem
+          label="More"
+          icon="buttonMore"
+          iconClassName={styles.controlIcon}
+          onClick={() => {
+            setOpen(!open);
+          }}
+        />
+        <div
+          className={styles.anchor}
+          ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
+        />
+        {renderContent()}
+      </>
     </div>
   );
 };

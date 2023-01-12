@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import cn from 'classnames';
 
 import { useRadioContext } from './hooks';
@@ -15,7 +15,7 @@ export type RadioProps = {
   labelClassName?: string;
 };
 
-export const Radio: React.FC<RadioProps> = ({
+export const Radio: React.FC<PropsWithChildren<RadioProps>> = ({
   className,
   value,
   label,

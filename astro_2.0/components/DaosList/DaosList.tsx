@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, PropsWithChildren, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
@@ -9,7 +9,7 @@ import { useWalletContext } from 'context/WalletContext';
 
 import styles from './DaosList.module.scss';
 
-interface DaosListProps {
+interface DaosListProps extends PropsWithChildren {
   label: string;
 }
 

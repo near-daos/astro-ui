@@ -13,7 +13,7 @@ export const AppVersion: FC = () => {
   const { appVersionEnabled, appVersion, updateAppVersion } = useAppVersion();
 
   const handleChange = useCallback(
-    async val => {
+    async (val: string) => {
       updateAppVersion(val);
 
       await router.reload();

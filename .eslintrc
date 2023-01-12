@@ -1,5 +1,5 @@
 {
-  "extends": ["next", "next/core-web-vitals", "airbnb-typescript-prettier"],
+  "extends": ["next", "airbnb-typescript-prettier"],
   "settings": {
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
@@ -111,6 +111,11 @@
         "prev": "*",
         "next": "return"
       }
-    ]
+    ],
+    "react/function-component-definition": "off",
+    "no-restricted-exports": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "react/jsx-no-bind": "off",
+    "react/no-unstable-nested-components": "off"
   }
 }

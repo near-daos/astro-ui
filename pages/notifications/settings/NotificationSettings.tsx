@@ -166,8 +166,8 @@ const NotificationSettings: Page<NotificationSettingsProps> = ({
   });
 
   const openGroupSettingsModal = useCallback(
-    async type => {
-      return showModal(type);
+    async (type: string) => {
+      return showModal({ text: type });
     },
     [showModal]
   );

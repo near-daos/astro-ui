@@ -22,7 +22,7 @@ export const DaoFlagWidget: React.FC<DaoFlagProps> = ({
   fallBack,
 }) => {
   return (
-    <Link href={`/dao/${daoId}`} passHref>
+    <Link href={`/dao/${daoId}`} passHref legacyBehavior>
       <div className={cn(styles.root, className)}>
         <DaoLogo src={flagUrl || fallBack} size="md" />
         <InfoBlockWidget

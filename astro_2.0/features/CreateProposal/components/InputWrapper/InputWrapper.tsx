@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useState } from 'react';
+import React, { FC, ReactElement, useState, PropsWithChildren } from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import { Icon } from 'components/Icon';
@@ -6,7 +6,7 @@ import { Popup } from 'components/Popup';
 
 import styles from './InputWrapper.module.scss';
 
-interface InputWrapperProps {
+interface InputWrapperProps extends PropsWithChildren {
   fieldName: string;
   label: string | ReactElement;
   fullWidth?: boolean;

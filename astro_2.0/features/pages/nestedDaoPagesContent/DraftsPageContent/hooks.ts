@@ -71,7 +71,7 @@ export function useDraftsPageData(daoId: string): {
   );
 
   const handleSearch = useCallback(
-    async searchInput => {
+    async (searchInput: string) => {
       const newData = await fetchData(null, searchInput);
 
       if (isMounted() && newData?.data) {
@@ -208,7 +208,7 @@ export function useMultiDraftActions(): {
   const [list, { push, removeAt, clear }] = useList<string>([]);
 
   const handleSelect = useCallback(
-    id => {
+    (id: string) => {
       const itemIndex = list.findIndex(item => item === id);
 
       if (itemIndex !== -1) {

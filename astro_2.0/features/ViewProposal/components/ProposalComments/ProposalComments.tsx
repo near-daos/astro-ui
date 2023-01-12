@@ -1,4 +1,12 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  KeyboardEvent,
+  ChangeEvent,
+} from 'react';
 import { useMedia, useMountedState } from 'react-use';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
@@ -43,7 +51,7 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
   const { comments, sendComment, reportComment, deleteComment } =
     useProposalComments(contextId, contextType);
 
-  const handleCommentInput = useCallback(e => {
+  const handleCommentInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { value: newValue } = e.target;
 
     if (newValue.length <= 500) {
@@ -65,7 +73,9 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
   }, [contextId, contextType, sendComment, value]);
 
   const handleKeyUp = useCallback(
-    e => {
+    (ev: Event) => {
+      const e = ev as unknown as KeyboardEvent;
+
       if (!focused) {
         return;
       }

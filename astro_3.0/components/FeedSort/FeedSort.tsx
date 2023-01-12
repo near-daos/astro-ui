@@ -32,7 +32,7 @@ export const FeedSort: FC<Props> = ({ field = 'creatingTimeStamp' }) => {
   }, [field, t]);
 
   const handleSort = useCallback(
-    async value => {
+    async (value: string) => {
       const nextQuery = {
         ...query,
         sort: value,

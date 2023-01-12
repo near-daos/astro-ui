@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useMemo, PropsWithChildren } from 'react';
 import useQuery from 'hooks/useQuery';
 import { useStateMachine } from 'little-state-machine';
 import { useMount } from 'react-use';
@@ -58,7 +58,7 @@ const options = [
   },
 ];
 
-export const StepWrapper: FC = ({ children }) => {
+export const StepWrapper: FC<PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation();
   const { accountId } = useWalletContext();
   const { query, updateQuery } = useQuery<{

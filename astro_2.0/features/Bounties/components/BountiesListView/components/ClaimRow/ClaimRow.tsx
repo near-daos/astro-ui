@@ -3,9 +3,8 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import cn from 'classnames';
 
-import { Bounty, BountyClaim, BountyProposal } from 'types/bounties';
+import { BountyClaim, BountyProposal } from 'types/bounties';
 import { DAO } from 'types/dao';
-import { ProposalVariant } from 'types/proposal';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
@@ -22,14 +21,8 @@ const FORMAT = 'dd MMM, yyyy';
 interface ClaimRowProps {
   data: BountyClaim;
   dao: DAO;
-  bounty: Bounty;
   doneProposals: BountyProposal[];
   maxDeadline: string;
-  claimedByMe: boolean;
-  completeHandler?: (
-    id: number,
-    variant: ProposalVariant.ProposeDoneBounty
-  ) => void;
 }
 
 export const ClaimRow: FC<ClaimRowProps> = ({
@@ -112,10 +105,8 @@ export const ClaimRow: FC<ClaimRowProps> = ({
       <div className={styles.status}>
         {statusLabel}
         {link && (
-          <Link href={link} passHref>
-            <a className={styles.proposalLink}>
-              <Icon name="buttonExternal" className={styles.icon} />
-            </a>
+          <Link href={link} passHref className={styles.proposalLink}>
+            <Icon name="buttonExternal" className={styles.icon} />
           </Link>
         )}
       </div>

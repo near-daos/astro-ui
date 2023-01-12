@@ -8,7 +8,10 @@ import { useSearchResults } from 'features/search/search-results/SearchResults';
 
 import { Badge, Variant } from 'components/Badge';
 import MemberCard from 'components/cards/member-card/MemberCard/MemberCard';
-import { MemberCardPopup } from 'components/cards/member-card/MemberCardPopup';
+import {
+  MemberCardPopup,
+  MemberCardPopupProps,
+} from 'components/cards/member-card/MemberCardPopup';
 import { useModal } from 'components/modal';
 
 import { GROUP_COLOR } from './constants';
@@ -20,7 +23,7 @@ export const MembersTabView: FC = () => {
   const [showCardModal] = useModal(MemberCardPopup);
 
   const handleCardClick = useCallback(
-    async d => {
+    async (d: Partial<MemberCardPopupProps>) => {
       await showCardModal(d);
     },
     [showCardModal]

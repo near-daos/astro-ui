@@ -51,7 +51,7 @@ export function useCfcLibraryData(): {
   );
 
   const handleSearch = useCallback(
-    async value => {
+    async (value: string) => {
       const nextQuery = {
         ...query,
         search: value,
@@ -116,7 +116,7 @@ export function useCfcLibraryData(): {
   useMount(() => loadMore());
 
   const onUpdate = useCallback(
-    (templateId, daosCount) => {
+    (templateId: string, daosCount: number) => {
       if (!data) {
         return;
       }

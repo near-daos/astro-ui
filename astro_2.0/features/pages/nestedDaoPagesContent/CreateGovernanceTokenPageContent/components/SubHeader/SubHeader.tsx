@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import cn from 'classnames';
 
 import styles from './SubHeader.module.scss';
 
-interface SubHeaderProps {
+interface SubHeaderProps extends PropsWithChildren {
   className?: string;
 }
 

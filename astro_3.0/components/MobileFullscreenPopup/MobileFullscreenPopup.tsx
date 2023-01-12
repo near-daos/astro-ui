@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { useLockBodyScroll } from 'react-use';
 
 import { Button } from 'components/button/Button';
 
 import styles from './MobileFullscreenPopup.module.scss';
 
-interface Props {
+interface Props extends PropsWithChildren {
   title: string;
   onClose: () => void;
   onSubmit: () => void;

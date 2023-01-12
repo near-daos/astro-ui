@@ -92,7 +92,7 @@ export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
   });
 
   const onSubmit = useCallback(
-    async ({ contractAddress }) => {
+    async ({ contractAddress }: { contractAddress: string }) => {
       await onUpdate({
         ...status,
         step: CreateGovernanceTokenSteps.ContractAcceptance,

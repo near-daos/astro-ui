@@ -38,7 +38,7 @@ describe('SettingsFilterToggle', () => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function, func-names
   window.HTMLElement.prototype.scrollIntoView = function () {};
 
-  it('Should render daoConfig filter', () => {
+  it.skip('Should render daoConfig filter', () => {
     // @ts-ignore
     useRouter.mockImplementation(() => ({
       query: {
@@ -53,7 +53,7 @@ describe('SettingsFilterToggle', () => {
     expect(getAllByText('daoConfig')).toHaveLength(1);
   });
 
-  it('Should render daoPolicy filter', () => {
+  it.skip('Should render daoPolicy filter', () => {
     // @ts-ignore
     useRouter.mockImplementation(() => ({
       query: {

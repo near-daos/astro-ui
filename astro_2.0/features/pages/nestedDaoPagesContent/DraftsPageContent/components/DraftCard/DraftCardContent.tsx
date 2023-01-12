@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, MouseEvent } from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
@@ -56,8 +56,8 @@ export const DraftCardContent: FC<Props> = ({
   const { handleView } = useDraftsPageActions();
 
   const handleCardClick = useCallback(
-    async e => {
-      if (e?.target?.closest(`.${styles.actions}`)) {
+    async (e: MouseEvent) => {
+      if ((e?.target as HTMLElement)?.closest(`.${styles.actions}`)) {
         return;
       }
 
@@ -135,10 +135,9 @@ export const DraftCardContent: FC<Props> = ({
                 proposal: `${daoId}-${proposalId}`,
               },
             }}
+            className={styles.linkToProposal}
           >
-            <a className={styles.linkToProposal}>
-              <Icon name="buttonLink" className={styles.linkToProposalIcon} />
-            </a>
+            <Icon name="buttonLink" className={styles.linkToProposalIcon} />
           </Link>
         </Tooltip>
       </>

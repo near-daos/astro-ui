@@ -88,10 +88,15 @@ export const SideFilter = ({
 
     return (
       <li className={styles.categoriesListItemWrapper} key={label}>
-        <Link href={href} replace scroll={false} shallow={shallowUpdate}>
-          <a className={hrefClassName} tabIndex={disabled ? -1 : 0}>
-            {label}
-          </a>
+        <Link
+          href={href}
+          replace
+          scroll={false}
+          shallow={shallowUpdate}
+          className={hrefClassName}
+          tabIndex={disabled ? -1 : 0}
+        >
+          {label}
         </Link>
       </li>
     );

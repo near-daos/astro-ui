@@ -154,7 +154,7 @@ export function useDelegatePageData(dao: DAO): {
     setData(res);
   }, [daoId, ts, governanceToken]);
 
-  const handleSearch = useCallback(async searchInput => {
+  const handleSearch = useCallback(async (searchInput: string) => {
     setSearchFilter(searchInput);
   }, []);
 

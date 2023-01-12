@@ -109,7 +109,7 @@ export const DelegatePageContent: FC<Props> = ({
   ]);
 
   const handleSort = useCallback(
-    async value => {
+    async (value: string) => {
       const nextQuery = {
         ...query,
         sort: value,

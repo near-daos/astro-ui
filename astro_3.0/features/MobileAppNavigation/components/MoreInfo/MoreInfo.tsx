@@ -157,20 +157,22 @@ export const MoreInfo: FC = () => {
 
   return (
     <div ref={ref}>
-      <Button
-        variant="transparent"
-        size="block"
-        className={cn(styles.root, {
-          [styles.open]: open,
-        })}
-        onClick={() => setOpen(!open)}
-      >
-        <div className={cn(styles.iconWrapper)}>
-          <Icon name="buttonMore" className={cn(styles.more)} />
-        </div>
-        <div className={styles.label}>More</div>
-      </Button>
-      {renderContent()}
+      <>
+        <Button
+          variant="transparent"
+          size="block"
+          className={cn(styles.root, {
+            [styles.open]: open,
+          })}
+          onClick={() => setOpen(!open)}
+        >
+          <div className={cn(styles.iconWrapper)}>
+            <Icon name="buttonMore" className={cn(styles.more)} />
+          </div>
+          <div className={styles.label}>More</div>
+        </Button>
+        {renderContent()}
+      </>
     </div>
   );
 };

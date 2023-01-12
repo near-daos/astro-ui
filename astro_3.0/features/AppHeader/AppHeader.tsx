@@ -24,9 +24,7 @@ export const AppHeader: FC = () => {
       <div className={styles.mobileMenu}>{isMobile && <MobileDaosMenu />}</div>
       <div className={styles.logoWrapper}>
         <Link href="https://astrodao.com/">
-          <a>
-            <AppLogo />
-          </a>
+          <AppLogo />
         </Link>
       </div>
 

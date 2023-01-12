@@ -90,13 +90,15 @@ export const UpdateGroupContent: FC<Props> = ({
           <p className={styles.contentValue}>
             {`${t('proposalCard.upgradeContent.groupQuorum')} `}
             <b>
-              {activeGroup.votePolicy?.quorum
-                ? activeGroup.votePolicy?.quorum
-                : calculateQuorum(
-                    activeGroup.votePolicy?.policy?.threshold ||
-                      activeGroup.votePolicy?.defaultPolicy?.threshold
-                  )}{' '}
-              %
+              <>
+                {activeGroup.votePolicy?.quorum
+                  ? activeGroup.votePolicy?.quorum
+                  : calculateQuorum(
+                      activeGroup.votePolicy?.policy?.threshold ||
+                        activeGroup.votePolicy?.defaultPolicy?.threshold
+                    )}{' '}
+                %
+              </>
             </b>
           </p>
 

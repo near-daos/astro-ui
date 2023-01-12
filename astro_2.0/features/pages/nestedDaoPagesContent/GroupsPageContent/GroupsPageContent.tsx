@@ -19,7 +19,10 @@ import {
 // Components
 import MemberCard from 'components/cards/member-card/MemberCard/MemberCard';
 import { GroupsRenderer } from 'components/cards/member-card/GroupsRenderer';
-import { MemberCardPopup } from 'components/cards/member-card/MemberCardPopup';
+import {
+  MemberCardPopup,
+  MemberCardPopupProps,
+} from 'components/cards/member-card/MemberCardPopup';
 import { Dropdown } from 'components/Dropdown';
 import { Badge, getBadgeVariant } from 'components/Badge';
 import { GroupsList } from 'astro_2.0/features/Groups/components';
@@ -94,7 +97,7 @@ export const GroupsPageContent: VFC<GroupsPageContentProps> = ({
   );
 
   const handleCardClick = useCallback(
-    async d => {
+    async (d: Partial<MemberCardPopupProps>) => {
       await showCardModal(d);
     },
     [showCardModal]

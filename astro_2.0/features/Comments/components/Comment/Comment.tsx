@@ -59,7 +59,7 @@ export const Comment: FC<CommentProps> = ({
   const isDislikedByMe = dislikeAccounts.includes(accountId);
 
   const handlerReply = useCallback(
-    async msg => {
+    async (msg: string) => {
       setHTML(msg);
 
       await onReply(msg, id);
@@ -70,7 +70,7 @@ export const Comment: FC<CommentProps> = ({
   );
 
   const handlerEdit = useCallback(
-    async msg => {
+    async (msg: string) => {
       setContentHtml(msg);
 
       await onEdit(msg, id);
