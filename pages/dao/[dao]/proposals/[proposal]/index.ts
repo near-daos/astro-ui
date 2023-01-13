@@ -10,6 +10,7 @@ import { getTranslations } from 'utils/getTranslations';
 import { getDefaultAppVersion } from 'utils/getDefaultAppVersion';
 import { fetcher as getProposal } from 'services/ApiService/hooks/useProposal';
 import { getClient } from 'utils/launchdarkly-server-client';
+import { ALL_DAOS_URL } from 'constants/routing';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -39,14 +40,14 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const dao = daoContext?.dao;
 
-  if (!daoContext || !proposal) {
+  if (!dao) {
     return {
       props: {
         ...(await getTranslations(locale)),
       },
       redirect: {
         permanent: true,
-        destination: `/dao/${daoId}/proposals`,
+        destination: ALL_DAOS_URL,
       },
     };
   }
