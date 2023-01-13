@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import Head from 'next/head';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 
+import { Loader } from 'components/loader';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { VoteTimeline } from 'features/proposal/components/VoteTimeline';
 import { VoteCollapsableList } from 'features/proposal/components/VoteCollapsableList';
@@ -16,7 +17,6 @@ import { getActiveTokenHolders } from 'astro_2.0/features/pages/nestedDaoPagesCo
 import { extractMembersFromDao } from 'astro_2.0/features/CreateProposal/helpers';
 import { useProposalVotingDetails } from 'features/proposal/hooks';
 import { DaoContext } from 'types/context';
-import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { MemberStats } from 'services/sputnik/mappers';
 
 import { useTimelineData } from 'features/proposal/components/VoteTimeline/hooks';
@@ -31,7 +31,6 @@ import styles from './ProposalPageContent.module.scss';
 interface Props {
   daoContext: DaoContext;
   membersStats: MemberStats[];
-  toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
 }
 
 export const ProposalPageContent: FC<Props> = ({
@@ -75,8 +74,20 @@ export const ProposalPageContent: FC<Props> = ({
 
   const { lastVote } = useTimelineData(proposal, proposal?.actions.length ?? 0);
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (!proposal) {
+        router.push('/404');
+      }
+    }, 10000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [proposal, router]);
+
   if (!proposal) {
-    return null;
+    return <Loader />;
   }
 
   return (
