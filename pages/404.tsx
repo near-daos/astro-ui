@@ -24,6 +24,7 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
   return {
     props: {
       ...(await getTranslations(locale)),
+      defaultApplicationUiVersion: 3,
     },
   };
 };
