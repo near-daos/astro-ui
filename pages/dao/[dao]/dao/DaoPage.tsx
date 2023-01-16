@@ -3,6 +3,7 @@ import Head from 'next/head';
 
 import { PaginationResponse } from 'types/api';
 import { Proposal } from 'types/proposal';
+import { DaoContext } from 'types/context';
 
 import { DaoDashboard } from 'astro_2.0/features/DaoDashboard';
 import { DaoDashboardHeader } from 'astro_2.0/features/DaoDashboardHeader';
@@ -23,14 +24,19 @@ import styles from './DaoPage.module.scss';
 interface DaoHomeProps {
   initialProposalsData: PaginationResponse<Proposal[]>;
   defaultApplicationUiVersion: number;
+  daoContext: DaoContext | null;
 }
 
-const DAOHome: Page<DaoHomeProps> = ({ defaultApplicationUiVersion }) => {
+const DAOHome: Page<DaoHomeProps> = ({
+  defaultApplicationUiVersion,
+  daoContext,
+}) => {
   const router = useRouter();
   const { dao: daoId } = router.query;
 
-  const daoContext = useDaoContext(daoId as string);
-  const { dao, userPermissions } = daoContext ?? {};
+  const contextFromOpenSearch = useDaoContext(daoId as string);
+  const context = contextFromOpenSearch ?? daoContext ?? ({} as DaoContext);
+  const { dao, userPermissions } = context;
 
   const { appVersion: selectedAppVersion } = useAppVersion();
   const appVersion = selectedAppVersion || defaultApplicationUiVersion;
@@ -56,7 +62,7 @@ const DAOHome: Page<DaoHomeProps> = ({ defaultApplicationUiVersion }) => {
     };
   }, [dao, router]);
 
-  if (!daoContext || !dao || !userPermissions) {
+  if (!context || !dao || !userPermissions) {
     return <Loader />;
   }
 
@@ -66,7 +72,7 @@ const DAOHome: Page<DaoHomeProps> = ({ defaultApplicationUiVersion }) => {
         <title>DAO Main Page</title>
       </Head>
       <NestedDaoPageWrapper
-        daoContext={daoContext}
+        daoContext={context}
         breadcrumbs={appVersion === 3 ? undefined : breadcrumbs}
         className={styles.pageWrapper}
         header={onCreateProposal => {
@@ -81,7 +87,7 @@ const DAOHome: Page<DaoHomeProps> = ({ defaultApplicationUiVersion }) => {
         }}
       >
         <DaoDashboard
-          daoContext={daoContext}
+          daoContext={context}
           key={`dashboard_${dao.id}`}
           className={styles.dashboard}
         />

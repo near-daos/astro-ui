@@ -1,7 +1,7 @@
 {
   "name": "astro",
   "jest": {},
-  "version": "0.1.0",
+  "version": "3.0.14",
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development && rm -rf .next && NODE_OPTIONS='--inspect' next dev -p 8080",
