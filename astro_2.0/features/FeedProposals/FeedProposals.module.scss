@@ -7,6 +7,7 @@
 }
 
 .title {
+  @extend %heading1;
   align-items: center;
   display: inline-flex;
   font-size: 18px;

@@ -39,6 +39,7 @@
 }
 
 .title {
+  @extend %heading1;
   font-size: 32px;
   grid-area: title;
   margin: 0;
