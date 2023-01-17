@@ -96,6 +96,7 @@ exports[`dao details skeleton Should render component 1`] = `
           >
             <svg
               class="icon"
+              height="18"
             >
               <use
                 href="/_next/undefined"
@@ -113,6 +114,7 @@ exports[`dao details skeleton Should render component 1`] = `
           >
             <svg
               class="icon"
+              height="18"
             >
               <use
                 href="/_next/undefined"
@@ -130,6 +132,7 @@ exports[`dao details skeleton Should render component 1`] = `
           >
             <svg
               class="icon"
+              height="18"
             >
               <use
                 href="/_next/undefined"
@@ -147,6 +150,7 @@ exports[`dao details skeleton Should render component 1`] = `
           >
             <svg
               class="icon"
+              height="18"
             >
               <use
                 href="/_next/undefined"

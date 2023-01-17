@@ -20,6 +20,7 @@ export const LocaleSelector: FC = () => {
     <div className={styles.root} onClick={e => e.stopPropagation()}>
       <GenericDropdown
         arrow
+        disabled={router.locales?.length === 1}
         arrowClassName={styles.arrow}
         isOpen={open}
         onOpenUpdate={setOpen}

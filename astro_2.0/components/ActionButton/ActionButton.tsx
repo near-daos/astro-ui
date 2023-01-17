@@ -86,6 +86,7 @@ export const ActionButton: FC<ActionButtonProps> = ({
               testId={testId}
               onClick={onClick}
               icon={iconName as IconName}
+              iconClassName={iconClassName}
             >
               {children}
             </IconTextButton>

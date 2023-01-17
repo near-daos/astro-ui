@@ -114,7 +114,9 @@ exports[`App Footer Should render AppFooter component 1`] = `
           <div
             class="root"
           >
-            <div>
+            <div
+              style="cursor: pointer;"
+            >
               <div
                 class="selector"
               >

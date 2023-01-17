@@ -102,6 +102,7 @@ exports[`dao details minimized Should render component 1`] = `
           >
             <svg
               class="icon"
+              height="18"
             >
               <use
                 href="/_next/undefined"
@@ -121,6 +122,7 @@ exports[`dao details minimized Should render component 1`] = `
           >
             <svg
               class="icon"
+              height="18"
             >
               <use
                 href="/_next/undefined"
@@ -140,6 +142,7 @@ exports[`dao details minimized Should render component 1`] = `
           >
             <svg
               class="icon"
+              height="18"
             >
               <use
                 href="/_next/undefined"
@@ -159,6 +162,7 @@ exports[`dao details minimized Should render component 1`] = `
           >
             <svg
               class="icon"
+              height="18"
             >
               <use
                 href="/_next/undefined"
@@ -178,6 +182,7 @@ exports[`dao details minimized Should render component 1`] = `
           >
             <svg
               class="icon"
+              height="18"
             >
               <use
                 href="/_next/undefined"
@@ -197,6 +202,7 @@ exports[`dao details minimized Should render component 1`] = `
           >
             <svg
               class="icon"
+              height="18"
             >
               <use
                 href="/_next/undefined"
@@ -215,7 +221,8 @@ exports[`dao details minimized Should render component 1`] = `
             type="button"
           >
             <svg
-              class="icon"
+              class="icon bounty"
+              height="18"
             >
               <use
                 href="/_next/undefined"
@@ -235,6 +242,7 @@ exports[`dao details minimized Should render component 1`] = `
           >
             <svg
               class="icon"
+              height="18"
             >
               <use
                 href="/_next/undefined"
