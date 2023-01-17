@@ -82,6 +82,7 @@ export const DaoDashboardLogo: FC<Props> = ({
     if (isNextVersion && isMobile) {
       return (
         <Button
+          className={styles.logoBtn}
           disabled={!isEditable}
           variant="transparent"
           size="block"
@@ -111,6 +112,7 @@ export const DaoDashboardLogo: FC<Props> = ({
           className={styles.popup}
           controlItem={onClick => (
             <Button
+              className={styles.logoBtn}
               disabled={!isEditable}
               variant="transparent"
               size="block"

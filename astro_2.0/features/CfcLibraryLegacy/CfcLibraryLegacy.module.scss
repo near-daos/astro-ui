@@ -3,28 +3,26 @@
 .root {
   display: flex;
   flex-direction: column;
+  padding-top: 56px;
 }
 
 .header {
-  align-items: center;
   display: flex;
   flex-direction: column;
+  grid-area: header;
 
-  @include tablet-landscape {
-    margin-top: 72px;
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
   }
 
-  h1 {
-    margin: 16px 0;
-  }
+  .title {
+    @extend %heading1;
+    margin: 0 0 20px;
 
-  .description {
-    @extend %body1;
-    margin: 16px 0;
-  }
-
-  .search {
-    margin: 16px 0;
+    @include tablet-portrait {
+      margin: 0 48px 0 0;
+    }
   }
 }
 

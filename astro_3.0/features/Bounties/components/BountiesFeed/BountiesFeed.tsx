@@ -12,20 +12,17 @@ import { BountyContext } from 'types/bounties';
 import { DAO } from 'types/dao';
 import { PaginationResponse } from 'types/api';
 
-import { MainLayout } from 'astro_3.0/features/MainLayout';
 import { Feed as FeedList } from 'astro_2.0/components/Feed';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Loader } from 'components/loader';
 import { ViewBounty } from 'astro_2.0/features/ViewBounty';
 
-import { Tokens } from 'types/token';
 import { useWalletContext } from 'context/WalletContext';
 import { HideBountyContextProvider } from 'astro_2.0/features/Bounties/components/HideBountyContext';
 
 import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 
-import { FeedControlsLayout } from 'astro_3.0/features/FeedLayout';
 import { BountiesFeedFilters } from 'astro_3.0/features/Bounties/components/BountiesFeedFilters';
 
 import styles from './BountiesFeed.module.scss';
@@ -33,7 +30,6 @@ import styles from './BountiesFeed.module.scss';
 interface BountiesFeedProps {
   initialData: PaginationResponse<BountyContext[]> | null;
   dao?: DAO;
-  tokens?: Tokens;
 }
 
 export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
@@ -114,60 +110,56 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ initialData, dao }) => {
 
   return (
     <div className={styles.root}>
-      <FeedControlsLayout>
-        <h1>Bounties</h1>
-      </FeedControlsLayout>
-      <FeedControlsLayout>
-        <BountiesFeedFilters />
-      </FeedControlsLayout>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Bounties</h1>
+      </div>
+      <BountiesFeedFilters />
       <HideBountyContextProvider>
-        <MainLayout>
-          <div className={cn(styles.row, styles.content)}>
-            <div className={styles.container}>
-              {loading ? (
-                <Loader className={styles.loader} />
-              ) : (
-                data && (
-                  <FeedList
-                    data={data}
-                    loadMore={loadMore}
-                    loader={<p className={styles.loading}>{t('loading')}...</p>}
-                    noResults={
-                      <div className={styles.loading}>
-                        <NoResultsView
-                          title={
-                            isEmpty(data?.data)
-                              ? t('noDataFound')
-                              : t('noMoreResults')
-                          }
+        <div className={cn(styles.row, styles.content)}>
+          <div className={styles.container}>
+            {loading ? (
+              <Loader className={styles.loader} />
+            ) : (
+              data && (
+                <FeedList
+                  data={data}
+                  loadMore={loadMore}
+                  loader={<p className={styles.loading}>{t('loading')}...</p>}
+                  noResults={
+                    <div className={styles.loading}>
+                      <NoResultsView
+                        title={
+                          isEmpty(data?.data)
+                            ? t('noDataFound')
+                            : t('noMoreResults')
+                        }
+                      />
+                    </div>
+                  }
+                  renderItem={bountyContext => (
+                    <div
+                      key={bountyContext.id}
+                      className={styles.bountyCardWrapper}
+                    >
+                      {bountyContext.proposal && (
+                        <ViewBounty
+                          contextId={bountyContext.id}
+                          commentsCount={bountyContext.commentsCount}
+                          dao={dao}
+                          daoId={bountyContext.daoId}
+                          bounty={bountyContext.bounty}
+                          proposal={bountyContext.proposal}
+                          initialInfoPanelView={null}
                         />
-                      </div>
-                    }
-                    renderItem={bountyContext => (
-                      <div
-                        key={bountyContext.id}
-                        className={styles.bountyCardWrapper}
-                      >
-                        {bountyContext.proposal && (
-                          <ViewBounty
-                            contextId={bountyContext.id}
-                            commentsCount={bountyContext.commentsCount}
-                            dao={dao}
-                            daoId={bountyContext.daoId}
-                            bounty={bountyContext.bounty}
-                            proposal={bountyContext.proposal}
-                            initialInfoPanelView={null}
-                          />
-                        )}
-                      </div>
-                    )}
-                    className={styles.listWrapper}
-                  />
-                )
-              )}
-            </div>
+                      )}
+                    </div>
+                  )}
+                  className={styles.listWrapper}
+                />
+              )
+            )}
           </div>
-        </MainLayout>
+        </div>
       </HideBountyContextProvider>
     </div>
   );

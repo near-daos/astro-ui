@@ -94,8 +94,7 @@ export const CfcLibraryLegacy: FC<Props> = ({ accountDaos }) => {
         <title>DAO Custom FC Templates</title>
       </Head>
       <div className={styles.header}>
-        <h1>{t('actionsLibrary')}</h1>
-        <p className={styles.description}>{t('actions.libraryDesc')}</p>
+        <h1 className={styles.title}>{t('actionsLibrary')}</h1>
         <SearchInput
           onSubmit={handleSearch}
           onClose={handleReset}
@@ -105,6 +104,7 @@ export const CfcLibraryLegacy: FC<Props> = ({ accountDaos }) => {
           className={styles.search}
         />
       </div>
+      <p className={styles.description}>{t('actions.libraryDesc')}</p>
 
       <div className={styles.body}>
         <div className={styles.filters}>
