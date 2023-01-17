@@ -3,7 +3,7 @@ import { useAsync } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
 import { useWalletContext } from 'context/WalletContext';
 import { ProposalsFeedStatuses } from 'types/proposal';
-import { useAvailableActionsProposals } from 'services/ApiService/hooks/useAvailableActionsProposals';
+import { useAvailableActions } from 'services/ApiService/hooks/useAvailableActions';
 
 export function useAvailableActionsCounters(): {
   proposalActionsCount: number | undefined;
@@ -11,7 +11,7 @@ export function useAvailableActionsCounters(): {
   const { accountId } = useWalletContext();
   const { useOpenSearchDataApi } = useFlags();
 
-  const count = useAvailableActionsProposals();
+  const count = useAvailableActions();
 
   const { value: proposalActionsCount } = useAsync(async () => {
     if (

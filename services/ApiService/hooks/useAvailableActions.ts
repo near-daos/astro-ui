@@ -5,6 +5,7 @@ import { ProposalsFeedStatuses } from 'types/proposal';
 import { buildProposalsQuery } from 'services/SearchService/builders/proposals';
 import { useWalletContext } from 'context/WalletContext';
 import { useFlags } from 'launchdarkly-react-client-sdk';
+import { buildBountiesQuery } from 'services/SearchService/builders/bounties';
 
 const PROPOSALS_DEDUPING_INTERVAL = 10000;
 
@@ -25,10 +26,22 @@ export async function fetcher(url: string, accountId: string): Promise<number> {
     track_total_hits: true,
   });
 
-  return response?.data?.hits?.total?.value ?? 0;
+  const actionableProposals = response?.data?.hits?.total?.value ?? 0;
+
+  const response2 = await axios.post(`${baseUrl}/search/bounty`, {
+    query: buildBountiesQuery({
+      bountyPhase: 'availableBounty',
+    }),
+    size: 0,
+    track_total_hits: true,
+  });
+
+  const actionableBounties = response2?.data?.hits?.total?.value ?? 0;
+
+  return actionableBounties + actionableProposals;
 }
 
-export function useAvailableActionsProposals(): number {
+export function useAvailableActions(): number {
   const { useOpenSearchDataApi } = useFlags();
   const { accountId } = useWalletContext();
 
