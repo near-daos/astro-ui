@@ -1,4 +1,8 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
 .root {
+  padding-top: 56px;
   width: 100%;
 }
 
@@ -9,4 +13,24 @@
 
 .bountyCardWrapper {
   margin-top: 32px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  grid-area: header;
+
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .title {
+    @extend %heading1;
+    margin: 0 0 20px;
+
+    @include tablet-portrait {
+      margin: 0 48px 0 0;
+    }
+  }
 }

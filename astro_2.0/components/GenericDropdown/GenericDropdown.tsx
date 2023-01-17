@@ -18,6 +18,7 @@ export interface GenericDropdownProps extends BaseDropdownProps {
   showOnHover?: boolean;
   preventOpenThroughParent?: boolean;
   placement?: Placement;
+  disabled?: boolean;
 }
 
 export const GenericDropdown: FC<GenericDropdownProps> = ({
@@ -31,6 +32,7 @@ export const GenericDropdown: FC<GenericDropdownProps> = ({
   showOnHover,
   preventOpenThroughParent,
   placement = 'auto',
+  disabled,
 }) => {
   const [open, setOpen] = useState(isOpen);
   const [popperElement, setPopperElement] = useState<HTMLElement>();
@@ -38,6 +40,10 @@ export const GenericDropdown: FC<GenericDropdownProps> = ({
 
   function openCloseDropdown(e: Event, isClickOutside: boolean) {
     if (preventOpenThroughParent && !isClickOutside) {
+      return;
+    }
+
+    if (disabled) {
       return;
     }
 
@@ -106,6 +112,7 @@ export const GenericDropdown: FC<GenericDropdownProps> = ({
   const parentEl = React.cloneElement(parent, {
     ref: setReferenceElement as React.LegacyRef<unknown>,
     onClick: openCloseDropdown,
+    style: { cursor: disabled ? 'default' : 'pointer' },
   });
 
   function getDropdown() {

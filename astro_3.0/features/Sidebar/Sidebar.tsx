@@ -108,10 +108,7 @@ export const Sidebar: FC = () => {
             </Button>
           </div>
         </div>
-        <div className={styles.daos}>
-          <SidebarDaos />
-        </div>
-        <div className={styles.separator} />
+        <SidebarDaos />
         <div className={styles.nav}>
           <SidebarActionItem
             label="Create DAO"

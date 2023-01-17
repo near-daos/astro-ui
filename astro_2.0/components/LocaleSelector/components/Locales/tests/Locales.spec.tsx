@@ -14,7 +14,7 @@ jest.mock('next/router', () => {
 describe('Locales', () => {
   it('Should render component', () => {
     const router = {
-      locales: ['en', 'ru'],
+      locales: ['en'],
     };
 
     // @ts-ignore

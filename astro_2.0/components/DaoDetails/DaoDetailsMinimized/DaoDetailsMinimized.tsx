@@ -207,6 +207,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
             href={url.bounties}
             iconName="proposalBounty"
             className={generateChapterStyle('bounties')}
+            iconClassName={styles.bounty}
           >
             {t('daoDetailsMinimized.bounties')}
           </ActionButton>

@@ -24,9 +24,7 @@ export const Locales: FC = () => {
           >
             <CircleFlag
               countryCode={locale === 'en' ? 'us' : locale}
-              className={cn(styles.flag, {
-                [styles.nonEn]: locale !== 'en',
-              })}
+              className={cn(styles.flag)}
             />{' '}
             {locale}
           </Button>

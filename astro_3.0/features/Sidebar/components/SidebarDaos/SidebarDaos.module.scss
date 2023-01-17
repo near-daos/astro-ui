@@ -74,3 +74,52 @@
   margin: 12px 0;
   width: 100%;
 }
+
+.nav,
+.daos {
+  overflow: hidden;
+  padding: 0 11px;
+  position: relative;
+  width: 100%;
+}
+
+.daos {
+  max-height: calc(100vh - 462px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: rgba(232, 224, 255, 0.09);
+
+  /* Turn on custom 2px wide scrollbar */
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    background: transparent;
+    border-radius: 0;
+    width: 2px;
+  }
+
+  /* hover effect for both scrollbar area, and scrollbar 'thumb' */
+  &::-webkit-scrollbar:hover {
+    background-color: rgba(232, 224, 255, 0.09);
+  }
+
+  /* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+  &::-webkit-scrollbar-thumb:vertical {
+    background-color: rgba(232, 224, 255, 1);
+    border-radius: 0;
+  }
+
+  &::-webkit-scrollbar-thumb:vertical:active {
+    /* Some darker color when you click it */
+    background: rgba(232, 224, 255, 0.61);
+    border-radius: 0;
+  }
+}
+
+.separator {
+  background-color: var(--color-neutral-40);
+  height: 1px;
+  margin: 12px 0;
+  position: relative;
+  width: 100%;
+}

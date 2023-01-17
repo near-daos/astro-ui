@@ -159,6 +159,7 @@ exports[`dao details grid Should render component 1`] = `
             >
               <svg
                 class="icon"
+                height="18"
               >
                 <use
                   href="/_next/undefined"
@@ -176,6 +177,7 @@ exports[`dao details grid Should render component 1`] = `
             >
               <svg
                 class="icon"
+                height="18"
               >
                 <use
                   href="/_next/undefined"
@@ -193,6 +195,7 @@ exports[`dao details grid Should render component 1`] = `
             >
               <svg
                 class="icon"
+                height="18"
               >
                 <use
                   href="/_next/undefined"
@@ -210,6 +213,7 @@ exports[`dao details grid Should render component 1`] = `
             >
               <svg
                 class="icon"
+                height="18"
               >
                 <use
                   href="/_next/undefined"

@@ -9,6 +9,7 @@ import { BountiesV2 } from 'astro_3.0/features/BountiesV2';
 
 import { PaginationResponse } from 'types/api';
 import { Page } from 'pages/_app';
+import { MainLayout } from 'astro_3.0/features/MainLayout';
 
 export interface BountiesPageProps {
   bountiesContext: PaginationResponse<BountyContext[]> | null;
@@ -33,7 +34,7 @@ const BountiesPage: Page<BountiesPageProps> = ({ bountiesContext }) => {
 };
 
 BountiesPage.getLayout = function getLagout(page: ReactNode) {
-  return <>{page}</>;
+  return <MainLayout>{page}</MainLayout>;
 };
 
 export default BountiesPage;

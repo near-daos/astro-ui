@@ -5,7 +5,9 @@ exports[`Filters Panel Should render component 1`] = `
   <div
     class="root"
   >
-    <div>
+    <div
+      style="cursor: pointer;"
+    >
       <button
         class="btn secondary sizeSmall"
         type="button"

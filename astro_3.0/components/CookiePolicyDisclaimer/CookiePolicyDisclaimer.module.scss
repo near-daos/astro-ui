@@ -1,0 +1,51 @@
+@use 'styles/breakpoints';
+
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: flex-end;
+  background-color: var(--color-black-opacity-50);
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1200;
+}
+
+.wrapper {
+  background-color: var(--color-primary-40);
+  border-radius: 12px;
+  bottom: 36px;
+  color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  padding: 24px;
+  position: fixed;
+  right: 36px;
+  z-index: 1200;
+}
+
+.title {
+  @extend %title1;
+  color: var(--color-neutral-80);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.message {
+  @extend %body1;
+  color: var(--color-white);
+}
+
+.footer {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  margin-top: 24px;
+}
