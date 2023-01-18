@@ -26,6 +26,11 @@ $search-max-width: 768;
   transition: all 0.2s ease-out;
   width: 100%;
 
+  .iconHolder {
+    align-items: center;
+    display: flex;
+  }
+
   .iconHolder .icon {
     color: var(--color-brand-purple);
   }
@@ -44,6 +49,7 @@ $search-max-width: 768;
   cursor: pointer;
   flex: 0 0 40px;
   height: 40px;
+  margin-right: 12px;
   width: 40px;
 
   .icon {
@@ -133,6 +139,7 @@ $search-max-width: 768;
   display: flex;
   height: var(--app-header-height);
   left: 0;
+  padding: 0 24px;
   position: fixed;
   right: 0;
   top: 0;
