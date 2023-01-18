@@ -10,7 +10,6 @@ import { useFlags } from 'launchdarkly-react-client-sdk';
 import { DAO } from 'types/dao';
 
 import { ActionButton } from 'astro_2.0/components/ActionButton';
-import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 import { DaoAction } from 'astro_2.0/components/DaoDetails/DaoDetailsMinimized/components/DaoAction';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
@@ -22,6 +21,7 @@ import { useDaoSettings } from 'context/DaoSettingsContext';
 import { useUnreadDraftCount } from 'hooks/useDraft';
 import { useWalletContext } from 'context/WalletContext';
 import { useUnreadDraftProposalsCount } from 'services/ApiService/hooks/useUnreadDraftProposalsCount';
+import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 
 import styles from './DaoDetailsMinimized.module.scss';
 
@@ -32,6 +32,7 @@ export interface DaoDetailsMinimizedProps {
     | 'flagCover'
     | 'flagLogo'
     | 'logo'
+    | 'name'
     | 'displayName'
     | 'stakingContract'
     | 'daoMembersList'
@@ -90,7 +91,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
         <section className={cn(styles.nextPadding, styles.general)}>
           {!isMobile && (
             <div className={styles.flagWrapper}>
-              <DaoLogo size="md" src={dao.flagLogo} className={styles.logo} />
+              <DaoFlagWidget dao={dao} hideName />
             </div>
           )}
 

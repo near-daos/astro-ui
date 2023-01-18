@@ -59,6 +59,18 @@
   }
 }
 
+.avatar {
+  $size: 100%;
+  @include centralize;
+  background-color: var(--color-neutral-20);
+  background-position: center;
+  background-size: 105%;
+  max-height: $size;
+  max-width: $size;
+  min-height: $size;
+  min-width: $size;
+}
+
 .title {
   padding: 12px 16px 12px 0;
   position: relative;

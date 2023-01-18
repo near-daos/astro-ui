@@ -35,6 +35,20 @@
   @extend %title3;
 }
 
+.avatar {
+  $size: 48px;
+  @include centralize;
+  background-color: var(--color-neutral-20);
+  background-position: center;
+  background-size: contain;
+  //border: 1px solid transparent;
+  border-radius: 10px;
+  max-height: $size;
+  max-width: $size;
+  min-height: $size;
+  min-width: $size;
+}
+
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .info {
     div {

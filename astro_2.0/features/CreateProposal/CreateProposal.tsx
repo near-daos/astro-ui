@@ -213,16 +213,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       <div className={cn(styles.root, className)} ref={formRef}>
         <ProposalCardRenderer
           showInfo={showInfo}
-          daoFlagNode={
-            showFlag && (
-              <DaoFlagWidget
-                daoName={dao.name}
-                flagUrl={dao.flagCover}
-                daoId={dao.id}
-                fallBack={dao.logo}
-              />
-            )
-          }
+          daoFlagNode={showFlag && <DaoFlagWidget dao={dao} />}
           letterHeadNode={
             <LetterHeadWidget
               type={proposalType}

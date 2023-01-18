@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { ProposalCardRenderer } from 'astro_2.0/components/ProposalCardRenderer';
@@ -58,11 +58,15 @@ export const ViewBounty: FC<ViewBountyProps> = ({
   const isCouncilUser = proposal?.permissions?.isCouncil ?? false;
   const [commentsNum, setCommentsNum] = useState(commentsCount);
 
+  const tokens = proposal?.dao?.tokens ?? allTokens;
+
+  const contextValue = useMemo(() => {
+    return { tokens };
+  }, [tokens]);
+
   if (!(bounty || proposal)) {
     return null;
   }
-
-  const tokens = proposal.dao?.tokens ?? allTokens;
 
   const contentNode = getContentNode(bounty, proposal);
 
@@ -70,16 +74,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
     <div className={className}>
       <ProposalCardRenderer
         proposalId={null}
-        daoFlagNode={
-          showFlag && (
-            <DaoFlagWidget
-              daoName={daoId}
-              flagUrl={dao?.flagLogo}
-              daoId={daoId}
-              fallBack={dao?.logo}
-            />
-          )
-        }
+        daoFlagNode={showFlag && dao && <DaoFlagWidget dao={dao} />}
         letterHeadNode={
           <LetterHeadWidget
             type={ProposalType.AddBounty}
@@ -103,7 +98,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
             activeInfoView={showInfoPanel}
             content={
               <ErrorBoundary>
-                <DaoTokensContext.Provider value={{ tokens }}>
+                <DaoTokensContext.Provider value={contextValue}>
                   {contentNode}
                 </DaoTokensContext.Provider>
               </ErrorBoundary>

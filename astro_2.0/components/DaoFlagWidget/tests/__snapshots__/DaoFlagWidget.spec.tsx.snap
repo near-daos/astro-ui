@@ -4,19 +4,12 @@ exports[`dao flag widget Should render component 1`] = `
 <div>
   <div
     class="root"
-    href="/dao/123"
+    href="/dao/1"
   >
     <div
-      class="root md"
-    >
-      <svg
-        class="defaultLogo"
-      >
-        <use
-          href="/_next/undefined"
-        />
-      </svg>
-    </div>
+      class="avatar"
+      style="background-image: url(/avatars/defaultDaoAvatar.png);"
+    />
     <div
       class="root info"
     >
@@ -35,7 +28,7 @@ exports[`dao flag widget Should render component 1`] = `
         <div
           class="valueSmall"
         >
-          Dao Name
+          1
         </div>
       </div>
     </div>
