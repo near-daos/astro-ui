@@ -3,7 +3,7 @@ import { OpenSearchQuery } from 'services/SearchService/types';
 export function buildBountiesQuery(params: {
   daoId?: string;
   account?: string;
-  bountyFilter: string | null;
+  bountyFilter?: string | null;
   bountyPhase: string | null;
 }): OpenSearchQuery {
   const q: OpenSearchQuery = {
