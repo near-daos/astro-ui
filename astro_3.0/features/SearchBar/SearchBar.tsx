@@ -357,7 +357,7 @@ export const SearchBar: FC<SearchBarProps> = ({ className, placeholder }) => {
             </motion.div>
           )}
         </AnimatePresence>
-        <div className={styles.toggle}>
+        <div className={styles.iconHolder}>
           <IconButton
             size="medium"
             icon="buttonSearch"

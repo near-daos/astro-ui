@@ -21,22 +21,31 @@ export const AppHeader: FC = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.mobileMenu}>
-        {isMobile && accountId && <MobileDaosMenu />}
-      </div>
       <div className={styles.logoWrapper}>
         <Link href="https://astrodao.com/">
           <AppLogo />
         </Link>
       </div>
 
-      <SearchBar
-        withSideBar
-        placeholder={t('header.search.placeholder')}
-        className={styles.search}
-      />
+      {!isMobile && (
+        <SearchBar
+          withSideBar
+          placeholder={t('header.search.placeholder')}
+          className={styles.search}
+        />
+      )}
 
       <div className={styles.rightSection}>
+        {isMobile && (
+          <SearchBar
+            withSideBar
+            placeholder={t('header.search.placeholder')}
+            className={styles.search}
+          />
+        )}
+        <div className={styles.mobileMenu}>
+          {isMobile && accountId && <MobileDaosMenu />}
+        </div>
         <AppHealth />
         {!!accountId && <NotificationsBell className={styles.bell} />}
         <AccountDropdown />
