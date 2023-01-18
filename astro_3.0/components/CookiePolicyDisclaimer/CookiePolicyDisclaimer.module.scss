@@ -28,6 +28,12 @@
   position: fixed;
   right: 36px;
   z-index: 1200;
+
+  @include mobile-only {
+    border-radius: 12px 12px 0 0;
+    bottom: 0;
+    right: 0;
+  }
 }
 
 .title {
