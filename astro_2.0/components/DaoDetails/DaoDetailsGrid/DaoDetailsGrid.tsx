@@ -15,10 +15,10 @@ import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'astro_2.0/components/ActionButton';
 import * as Typography from 'components/Typography';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
-import { Icon } from 'components/Icon';
 
 import { shortenString } from 'utils/format';
 import { formatCurrency } from 'utils/formatCurrency';
+import { getDaoAvatar } from 'astro_3.0/features/Sidebar/helpers';
 
 import { ExplorerLink } from 'components/ExplorerLink';
 import { DaoInfoCard } from './components/DaoInfoCard';
@@ -49,8 +49,6 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
     id,
     displayName,
     description,
-    flagLogo,
-    logo: oldFlag,
     numberOfMembers,
     numberOfGroups,
     totalDaoFunds,
@@ -68,6 +66,8 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
 
   const [measureRef, { width }] = useMeasure<HTMLDivElement>();
 
+  const avatar = getDaoAvatar(dao);
+
   return (
     <div className={styles.root} ref={measureRef}>
       {loading ? (
@@ -77,24 +77,12 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
           <div>
             <section className={styles.general}>
               <div className={styles.flagWrapper}>
-                {flagLogo ? (
-                  <div
-                    className={cn(styles.flag, {
-                      [styles.scaled]: !flagLogo && !!oldFlag,
-                    })}
-                    style={{
-                      backgroundImage: `url(${flagLogo || oldFlag})`,
-                    }}
-                  />
-                ) : (
-                  <div className={styles.logo}>
-                    <Icon
-                      name="defaultDaoLogo"
-                      className={styles.defaultLogo}
-                      width={24}
-                    />
-                  </div>
-                )}
+                <div
+                  className={cn(styles.avatar)}
+                  style={{
+                    backgroundImage: `url(${avatar})`,
+                  }}
+                />
               </div>
               <div className={styles.title}>
                 <ExplorerLink

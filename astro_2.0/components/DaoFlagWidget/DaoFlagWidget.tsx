@@ -2,34 +2,41 @@ import React from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
-import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
+
+import { getDaoAvatar } from 'astro_3.0/features/Sidebar/helpers';
+import { DaoFeedItem } from 'types/dao';
 
 import styles from './DaoFlag.module.scss';
 
 interface DaoFlagProps {
-  daoId: string;
-  daoName: string;
-  flagUrl?: string;
-  fallBack?: string;
+  dao: Pick<DaoFeedItem, 'id' | 'name' | 'flagLogo' | 'logo'>;
   className?: string;
+  hideName?: boolean;
 }
 
 export const DaoFlagWidget: React.FC<DaoFlagProps> = ({
-  daoId,
-  daoName,
-  flagUrl,
   className,
-  fallBack,
+  dao,
+  hideName = false,
 }) => {
+  const avatar = getDaoAvatar(dao);
+
   return (
-    <Link href={`/dao/${daoId}`} passHref legacyBehavior>
+    <Link href={`/dao/${dao.id}`} passHref legacyBehavior>
       <div className={cn(styles.root, className)}>
-        <DaoLogo src={flagUrl || fallBack} size="md" />
-        <InfoBlockWidget
-          label="DAO name"
-          value={daoName}
-          className={styles.info}
+        <div
+          className={cn(styles.avatar)}
+          style={{
+            backgroundImage: `url(${avatar})`,
+          }}
         />
+        {!hideName && (
+          <InfoBlockWidget
+            label="DAO name"
+            value={dao.name || dao.id}
+            className={styles.info}
+          />
+        )}
       </div>
     </Link>
   );

@@ -18,15 +18,13 @@ exports[`dao details minimized Should render component 1`] = `
             class="flagWrapper"
           >
             <div
-              class="root logo md"
+              class="root"
+              href="/dao/default-flag-test.sputnikv2.testnet"
             >
-              <svg
-                class="defaultLogo"
-              >
-                <use
-                  href="/_next/undefined"
-                />
-              </svg>
+              <div
+                class="avatar"
+                style="background-image: url(https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png);"
+              />
             </div>
           </div>
           <div>

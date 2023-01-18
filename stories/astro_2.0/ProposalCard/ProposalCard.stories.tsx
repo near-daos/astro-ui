@@ -196,7 +196,9 @@ const createProposalProps = {
 
 Template.args = {
   daoFlagNode: (
-    <DaoFlagWidget daoName="Ref.Finance" flagUrl="/dummy-flag.png" daoId="" />
+    <DaoFlagWidget
+      dao={{ name: 'Ref.Finance', flagLogo: '/dummy-flag.png', id: '' }}
+    />
   ),
   proposalCardNode: <ProposalCard {...cardProps} accountId="123" daoId="" />,
   letterHeadNode: (

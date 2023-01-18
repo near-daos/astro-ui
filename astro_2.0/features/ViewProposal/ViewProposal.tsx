@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useMount, useToggle } from 'react-use';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -38,7 +38,6 @@ import styles from './ViewProposal.module.scss';
 export interface ViewProposalProps {
   proposal: ProposalFeedItem | DraftProposal;
   isDraft?: boolean;
-  isEditDraft?: boolean;
   showFlag: boolean;
   preventNavigate?: boolean;
   optionalPostVoteAction?: () => Promise<void>;
@@ -104,6 +103,10 @@ export const ViewProposal: FC<ViewProposalProps> = ({
     }
   }, [accountId, dao, proposal, toggleCreateProposal, tokens, userPermissions]);
 
+  const tokensContextValue = useMemo(() => {
+    return { tokens };
+  }, [tokens]);
+
   if (!proposal || !proposal.dao) {
     return null;
   }
@@ -131,16 +134,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
       }
       isDraft={isDraft}
       proposal={proposal}
-      daoFlagNode={
-        showFlag && (
-          <DaoFlagWidget
-            daoName={proposal.daoDetails.displayName || proposal.dao.name}
-            flagUrl={proposal.dao.flagLogo}
-            daoId={proposal.dao.id}
-            fallBack={proposal.dao.logo}
-          />
-        )
-      }
+      daoFlagNode={showFlag && <DaoFlagWidget dao={proposal.dao} />}
       optionalActionNode={
         showOptionalControl && <SaveFcTemplate proposal={proposal} />
       }
@@ -159,7 +153,9 @@ export const ViewProposal: FC<ViewProposalProps> = ({
           convertToProposal={handleToggleCreateProposal}
           title={'title' in proposal ? proposal?.title : undefined}
           history={
-            'history' in proposal ? [...proposal?.history, proposal] : undefined
+            'history' in proposal
+              ? [...(proposal?.history ?? []), proposal]
+              : undefined
           }
           isSaved={'isSaved' in proposal ? proposal?.isSaved : undefined}
           saves={'isSaved' in proposal ? proposal?.saves : undefined}
@@ -206,7 +202,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
           }
           content={
             <ErrorBoundary>
-              <DaoTokensContext.Provider value={{ tokens }}>
+              <DaoTokensContext.Provider value={tokensContextValue}>
                 {contentNode}
               </DaoTokensContext.Provider>
             </ErrorBoundary>

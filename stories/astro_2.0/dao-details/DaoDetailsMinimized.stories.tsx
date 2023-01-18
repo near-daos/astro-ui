@@ -39,6 +39,7 @@ Template.args = {
     id: 'saturn.sputnikv2.testnet',
     logo: 'https://image.freepik.com/free-photo/blue-liquid-marble-background-abstract-flowing-texture-experimental-art_53876-104502.jpg',
     displayName: 'Saturn',
+    name: 'Saturn',
     daoMembersList: ['jason.near'],
   },
 };

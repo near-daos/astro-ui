@@ -5,7 +5,7 @@ import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 describe('dao flag widget', () => {
   it('Should render component', () => {
     const { container } = render(
-      <DaoFlagWidget daoId="123" daoName="Dao Name" />
+      <DaoFlagWidget dao={{ id: '1', name: '1', flagLogo: '', logo: '' }} />
     );
 
     expect(container).toMatchSnapshot();
