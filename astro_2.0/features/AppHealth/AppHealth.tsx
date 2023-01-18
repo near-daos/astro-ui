@@ -159,7 +159,11 @@ export const AppHealth: VFC = () => {
     };
   }
 
-  if (!appHealth) {
+  if (
+    !appHealth ||
+    !state?.lastAstroBlockDetails?.timestamp ||
+    !state?.lastHandledBlockDetails?.timestamp
+  ) {
     return null;
   }
 
