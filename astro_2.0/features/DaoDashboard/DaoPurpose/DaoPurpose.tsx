@@ -5,11 +5,6 @@ import { Icon } from 'components/Icon';
 import { useMedia, useToggle } from 'react-use';
 import AnimateHeight from 'react-animate-height';
 
-import { DAO } from 'types/dao';
-
-import { ExternalLink } from 'components/ExternalLink';
-import { getSocialLinkIcon } from 'utils/getSocialLinkIcon';
-
 import { useAppVersion } from 'hooks/useAppVersion';
 
 import styles from './DaoPurpose.module.scss';
@@ -17,10 +12,9 @@ import styles from './DaoPurpose.module.scss';
 interface Props {
   description: string;
   className?: string;
-  links: DAO['links'];
 }
 
-export const DaoPurpose: FC<Props> = ({ description, className, links }) => {
+export const DaoPurpose: FC<Props> = ({ description, className }) => {
   const [isOpen, toggle] = useToggle(false);
   const isMobile = useMedia('(max-width: 1023px)');
   const { appVersion } = useAppVersion();
@@ -28,23 +22,7 @@ export const DaoPurpose: FC<Props> = ({ description, className, links }) => {
   function renderContent() {
     return (
       <div className={styles.content}>
-        <div>{description || !!links?.length ? 'DAO Links' : ''}</div>
-        {!!links?.length && (
-          <div
-            className={cn(styles.links, {
-              [styles.visible]: isOpen,
-            })}
-          >
-            {links.map(link => (
-              <ExternalLink
-                key={link}
-                to={link}
-                icon={getSocialLinkIcon(link)}
-                iconClassName={styles.link}
-              />
-            ))}
-          </div>
-        )}
+        <div>{description}</div>
       </div>
     );
   }

@@ -52,7 +52,6 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
   return (
     <div className={cn(styles.root, className)}>
       <DaoPurpose
-        links={dao.links}
         description={dao.description}
         className={styles.descriptionSection}
       />
